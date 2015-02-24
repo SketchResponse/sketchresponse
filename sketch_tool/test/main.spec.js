@@ -27,5 +27,5 @@ describe('The main module', () => {
   it('is apparently imported again when using a different path', () => {
     expect(mod2).not.toBe(mod);
     expect(mod2.uniqueString).toEqual(mod.uniqueString);
-  })
+  });
 });
