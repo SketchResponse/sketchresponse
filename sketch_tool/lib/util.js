@@ -1,25 +1,17 @@
+// TODO: change this to `import { EventEmitter } from 'events'` once that is
+// supported by SystemJS (see https://github.com/systemjs/systemjs/issues/334)
+import events from 'events';
+let EventEmitter = events.EventEmitter;
+
 export function observable(obj) {
-    // check for __observers first to avoid overwriting it
-    if (!obj.hasOwnProperty('__observers')) {
-        obj.__observers = new Map();
-    }
+    // Check for __eventEmitter first to avoid overwriting it
+    if (obj.hasOwnProperty('__eventEmitter')) return;
 
-    let observers = obj.__observers;
+    let emitter = obj.__eventEmitter = new EventEmitter();
 
-    obj.on = function (eventName, callback) {
-        if (!observers.has(eventName)) {
-            observers.set(eventName, new Set());
-        }
-        observers.get(eventName).add(callback);
-    };
-
-    obj.off = function (eventName, callback) {
-        if (!observers.has(eventName)) return;
-        observers.get(eventName).delete(callback);
-    };
-
-    obj.emit = function (eventName, ...args) {
-        if (!observers.has(eventName)) return;
-        observers.get(eventName).forEach(callback => callback(...args));
-    };
+    // Expose a subset of the EventEmitter interface on the object itself
+    obj.on = emitter.on.bind(emitter);
+    obj.off = emitter.removeListener.bind(emitter);
+    obj.emit = emitter.emit.bind(emitter);
+    obj.once = emitter.once.bind(emitter);
 }
