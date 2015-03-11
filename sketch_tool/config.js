@@ -5,6 +5,11 @@ System.config({
     "sketch2/*": "lib/*.js",
     "github:*": "jspm_packages/github/*.js",
     "npm:*": "jspm_packages/npm/*.js"
+  },
+  "meta": {
+    "jspm_packages/babel-polyfill": {
+      "format": "global"  // Prevents misdetection as AMD
+    }
   }
 });
 

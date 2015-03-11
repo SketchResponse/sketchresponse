@@ -4,7 +4,10 @@ module.exports = function(config) {
     frameworks: ['jspm', 'jasmine'],
     browsers: ['Chrome'],
     jspm: {
-      loadFiles: ['test/**/*.js'],
+      loadFiles: [
+        'test/**/*.js',
+        'jspm_packages/babel-polyfill.js'
+      ],
       serveFiles: ['lib/**/*.js']
     }
   });
