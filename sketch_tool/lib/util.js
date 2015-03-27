@@ -5,8 +5,6 @@ updated left-to-right, so the right-most class methods have highest priority.
 */
 export function baseWithMixins(Base, ...mixins) {
     class NewBase extends Base {}
-    for (let Mixin of mixins) {
-        Object.assign(NewBase.prototype, Mixin.prototype);
-    }
+    Object.assign(NewBase.prototype, ...mixins);
     return NewBase;
 }
