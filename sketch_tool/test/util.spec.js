@@ -18,7 +18,7 @@ describe('The mixin helper utility', () => {
         let mixedInstance = new Mixed();
 
         // Methods inherit without copying:
-        expect(Mixed.prototype.baseMethod).toBe(Base.prototype.baseMethod)
+        expect(Mixed.prototype.baseMethod).toBe(Base.prototype.baseMethod);
 
         // The constructor is copied from the base, and works:
         expect(mixedInstance.instProperty).toEqual('instProperty');
@@ -47,7 +47,7 @@ describe('The mixin helper utility', () => {
         };
 
         let Mixed = baseWithMixins(Base, mixinA, mixinB);
-        
+
         expect(Mixed.prototype.baseMethod1).toBe(mixinA.baseMethod1);
         expect(Mixed.prototype.baseMethod2).toBe(mixinB.baseMethod2);
         expect(Mixed.prototype.baseMethod3).toBe(Base.prototype.baseMethod3);
@@ -61,7 +61,7 @@ describe('The mixin helper utility', () => {
     it('should return a class that can itself be extended', () => {
         let mixin = {
             mixinMethod() {},
-        }
+        };
 
         class Extended extends baseWithMixins(Object, mixin) {}
         let extendedInstance = new Extended();
