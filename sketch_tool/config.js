@@ -5,7 +5,10 @@ System.config({
     "sketch2/*": "lib/*.js",
     "github:*": "jspm_packages/github/*.js",
     "npm:*": "jspm_packages/npm/*.js"
-  },
+  }
+});
+
+System.config({
   "meta": {
     "jspm_packages/babel-polyfill": {
       "format": "global"  // Prevents misdetection as AMD
@@ -16,6 +19,7 @@ System.config({
 System.config({
   "map": {
     "events": "github:jspm/nodelibs-events@0.1.0",
+    "jquery": "github:components/jquery@2.1.3",
     "github:jspm/nodelibs-events@0.1.0": {
       "events-browserify": "npm:events-browserify@0.0.1"
     },

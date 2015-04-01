@@ -26,7 +26,8 @@
   },
   "jspm": {
     "dependencies": {
-      "events": "github:jspm/nodelibs-events@^0.1.0"
+      "events": "github:jspm/nodelibs-events@^0.1.0",
+      "jquery": "github:components/jquery@^2.1.3"
     }
   }
 }
