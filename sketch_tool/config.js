@@ -18,6 +18,7 @@ System.config({
 
 System.config({
   "map": {
+    "d3": "github:mbostock/d3@3.5.5",
     "events": "github:jspm/nodelibs-events@0.1.0",
     "jquery": "github:components/jquery@2.1.3",
     "github:jspm/nodelibs-events@0.1.0": {
