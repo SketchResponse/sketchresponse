@@ -1,11 +1,17 @@
 export default class Toolbar {
   constructor(targetElement, config) {
-    let html = '';
+    targetElement.classList.add('si-toolbar');
 
-    for (let item of config.items) {
-      html += `<div class="${item.type}"></div>`;
+    for (let itemConfig of config.items || []) {
+      let element = document.createElement('li');
+      let renderMethod = this[itemConfig.type];
+      renderMethod(element, itemConfig);
+      targetElement.appendChild(element);
     }
+  }
 
-    targetElement.innerHTML = html;
+  button(element, itemConfig) {
+    element.className = 'button';
   }
 }
+

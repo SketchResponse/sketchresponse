@@ -5,36 +5,22 @@ describe('The toolbar', () => {
   let target;
 
   beforeEach(() => {
-    target = document.createElement('div');
+    target = document.createElement('menu');
   });
 
-  it('should be instantializable with a DOM element target and config array', () => {
-    let tb = new Toolbar(target, {items: []});
+  it('should be instantializable with a DOM element target and empty config', () => {
+    let tb = new Toolbar(target, {});
     expect(tb).toEqual(jasmine.any(Toolbar));
+    expect(target.className).toEqual('si-toolbar');
   });
 
-  it('should add a `.foo` element when passed a config with an item of type `foo`', () => {
+  it('should add an `li.button` element when passed a config with an item of type `button`', () => {
     new Toolbar(target, {
       items: [
-        { type: 'foo' },
+        { type: 'button' },
       ]
     });
-    expect($(target).find('.foo').length).toEqual(1);
+    expect($(target).find('li.button').length).toEqual(1);
   });
 
-  it('should add multiple elements with classes matching their types', () => {
-    new Toolbar(target, {
-      items: [
-        { type: 'foo' },
-        { type: 'bar' },
-        { type: 'bar' },
-        { type: 'baz' },
-        { type: 'foo' },
-      ]
-    });
-
-    // Todo: refactor...
-    let classNames = $(target).children().toArray().map((el) => el.className);
-    expect(classNames).toEqual(['foo', 'bar', 'bar', 'baz', 'foo']);
-  });
 });
