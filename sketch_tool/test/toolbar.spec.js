@@ -23,4 +23,13 @@ describe('The toolbar', () => {
     expect($(target).find('li.button').length).toEqual(1);
   });
 
+  it('should add an `li.tool` element when passed a config with an item of type `tool`', () => {
+    new Toolbar(target, {
+      items: [
+        { type: 'tool' },
+      ]
+    });
+    expect($(target).find('li.tool').length).toEqual(1);
+  });
+
 });
