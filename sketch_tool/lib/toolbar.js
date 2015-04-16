@@ -1,28 +1,34 @@
-let templates = {
-  button() {
-    return (`
-      <li class="button">
-        <button></button>
-      </li>
-    `);
-  },
-
-  tool() {
-    return (`
-      <li class="tool">
-        <button></button>
-      </li>
-    `);
-  },
-};
+import d3 from 'd3';
 
 export default class Toolbar {
-  constructor(targetElement, config) {
-    targetElement.classList.add('si-toolbar');
+  constructor(el, app, items) {
+    this.el = el;
+    this.app = app;
+    this.items = items;
 
-    config.items = config.items || [];
-    targetElement.innerHTML = config.items
-      .map(item => templates[item.type](item))
-      .join('');
+    this.render();
+  }
+
+  render() {
+    const item = d3.select(this.el)
+      .selectAll('li')
+      .data(this.items);
+
+    item.exit().remove();
+
+    item.enter()
+      .append('li')
+      .html(this.createItemHTML);
+  }
+
+  createItemHTML(item) {
+    return `
+      <button id="${item.id}">
+        <img class="tb-icon" src="${item.icon}">
+        <div class="tb-label">
+          ${item.label}
+        </div>
+      </button>
+    `;
   }
 }

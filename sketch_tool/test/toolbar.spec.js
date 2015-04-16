@@ -1,35 +1,31 @@
 import Toolbar from 'sketch2/toolbar';
-import $ from 'jquery';
+
+// from http://stackoverflow.com/a/5775621/1974654
+const NULL_SRC = '//:0';
 
 describe('The toolbar', () => {
-  let target;
+  let el, app;
 
   beforeEach(() => {
-    target = document.createElement('menu');
+    el = document.createElement('menu');
+    app = jasmine.createSpy('app');
   });
 
-  it('should be instantializable with a DOM element target and empty config', () => {
-    let tb = new Toolbar(target, {});
-    expect(tb).toEqual(jasmine.any(Toolbar));
-    expect(target.className).toEqual('si-toolbar');
+  it('should be instantiated with a target element, app instance, and items list', () => {
+    const tb = new Toolbar(el, app, []);
+    expect(tb instanceof Toolbar).toBe(true);
   });
 
-  it('should add an `li.button` element when passed a config with an item of type `button`', () => {
-    new Toolbar(target, {
-      items: [
-        { type: 'button' },
-      ]
-    });
-    expect($(target).find('li.button').length).toEqual(1);
-  });
-
-  it('should add an `li.tool` element when passed a config with an item of type `tool`', () => {
-    new Toolbar(target, {
-      items: [
-        { type: 'tool' },
-      ]
-    });
-    expect($(target).find('li.tool').length).toEqual(1);
+  it('should render a single button item', () => {
+    const items = [
+      {type: 'button', id: 'testID', icon: NULL_SRC, label: 'Test label'}
+    ];
+    const tb = new Toolbar(el, app, items);
+    expect(el.children.length).toBe(1);
+    expect(el.children[0].nodeName.toLowerCase()).toEqual('li');
+    expect(el.querySelector('button').id).toEqual(items[0].id)
+    expect(el.querySelector('.tb-icon').src).toContain(items[0].icon);
+    expect(el.querySelector('.tb-label').innerHTML).toContain(items[0].label);
   });
 
 });
