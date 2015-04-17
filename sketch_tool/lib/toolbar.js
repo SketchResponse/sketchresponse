@@ -22,6 +22,8 @@ export default class Toolbar {
   }
 
   createItemHTML(item) {
+    if (item.type === 'separator') return '<hr>';
+
     return `
       <button id="${item.id}">
         <img class="tb-icon" src="${item.icon}">

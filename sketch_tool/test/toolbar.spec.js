@@ -28,4 +28,12 @@ describe('The toolbar', () => {
     expect(el.querySelector('.tb-label').innerHTML).toContain(items[0].label);
   });
 
+  it('should render a separator', () => {
+    const items = [
+      {type: 'separator'}
+    ];
+    const tb = new Toolbar(el, app, items);
+    expect(el.querySelectorAll('li > hr').length).toEqual(1)
+  });
+
 });
