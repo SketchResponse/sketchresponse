@@ -14,13 +14,14 @@ export default class Toolbar {
 
   render() {
     const item = d3.select(this.el)
-      .selectAll('li')
+      .selectAll('.tb-items')
       .data(this.items);
 
     item.exit().remove();
 
     item.enter()
       .append('li')
+      .attr('class', 'tb-items')
       .html(this.createItemHTML);
   }
 
