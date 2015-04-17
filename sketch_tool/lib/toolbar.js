@@ -28,9 +28,10 @@ export default class Toolbar {
     if (type === 'separator') return '<hr>';
 
     const hasDropdown = (items && items.length);
+    const isSplit = (type === 'splitbutton');
 
     let html = `
-      <button id="${id}" class="tb-${type}">
+      <button id="${id}" class="tb-button ${isSplit ? 'tb-split-button' : ''}">
         <img class="tb-icon" src="${icon || NULL_SRC}">
         <div class="tb-label">
           ${label + (hasDropdown ?
