@@ -1,5 +1,8 @@
 import d3 from 'd3';
 
+// from http://stackoverflow.com/a/5775621/1974654
+const NULL_SRC = '//:0';
+
 export default class Toolbar {
   constructor(el, app, items) {
     this.el = el;
@@ -21,16 +24,33 @@ export default class Toolbar {
       .html(this.createItemHTML);
   }
 
-  createItemHTML(item) {
-    if (item.type === 'separator') return '<hr>';
+  createItemHTML({type, id, icon, label, items}) {
+    if (type === 'separator') return '<hr>';
 
-    return `
-      <button id="${item.id}">
-        <img class="tb-icon" src="${item.icon}">
+    const hasDropdown = (items && items.length);
+
+    let html = `
+      <button id="${id}" class="tb-${type}">
+        <img class="tb-icon" src="${icon || NULL_SRC}">
         <div class="tb-label">
-          ${item.label}
+          ${label + (hasDropdown ?
+            '<span class="tb-dropdown-indicator">&nbsp;&#x25be;</span>' : '')}
         </div>
       </button>
     `;
+
+    if (hasDropdown) html += `
+      <menu class="tb-dropdown">
+        ${items.map(({id, icon}) => `
+          <li>
+            <button id="${id}" class="tb-dropdown-button">
+              <img class="tb-dropdown-icon" src="${icon || NULL_SRC}">
+            </button>
+          </li>
+        `).join('')}
+      </menu>
+    `;
+
+    return html;
   }
 }
