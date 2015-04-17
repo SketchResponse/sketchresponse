@@ -15,37 +15,40 @@ describe('The toolbar', () => {
 
   it('renders a single button item', () => {
     const tb = new Toolbar(el, app, [
-      {type: 'button', id: 'testID', icon: 'data:test', label: 'Test label'}
+      {type: 'button', id: 'ID', icon: 'data:icon', label: 'Button label'}
     ]);
-    expect(el.children.length).toBe(1);
-    expect(el.children[0].nodeName.toLowerCase()).toEqual('li');
-    expect(el.querySelector('button').id).toEqual('testID')
-    expect(el.querySelector('.tb-icon').src).toContain('data:test');
-    expect(el.querySelector('.tb-label').innerHTML).toContain('Test label');
+
+    expect(el.querySelectorAll('li > .tb-button').length).toEqual(1)
+    expect(el.querySelector('.tb-button').id).toEqual('ID')
+    expect(el.querySelector('.tb-icon').src).toContain('data:icon');
+    expect(el.querySelector('.tb-label').innerHTML).toContain('Button label');
   });
 
   it('renders a separator', () => {
     const tb = new Toolbar(el, app, [
       {type: 'separator'}
     ]);
+
     expect(el.querySelectorAll('li > hr').length).toEqual(1)
   });
 
   it('renders a splitbutton with an indicator after the label and a nested menu', () => {
     const tb = new Toolbar(el, app, [
-      {type: 'splitbutton', id: 'testID', label: "Test label", items: [
-        {id:'subID0', icon: 'data:test0'},
-        {id:'subID1', icon: 'data:test1'},
-        {id:'subID2', icon: 'data:test2'},
+      {type: 'splitbutton', id: 'ID', label: "Splitbutton label", items: [
+        {id:'subID0', icon: 'data:subicon0'},
+        {id:'subID1', icon: 'data:subicon1'},
+        {id:'subID2', icon: 'data:subicon2'},
       ]}
     ]);
 
-    expect(el.querySelector('.tb-label').innerHTML).toMatch(/Test label\S+/);
+    expect(el.querySelectorAll('li > .tb-split-button').length).toEqual(1)
+    expect(el.querySelector('.tb-split-button').id).toEqual('ID')
+    expect(el.querySelector('.tb-label').innerHTML).toMatch(/Splitbutton label\S+/);
     expect(el.querySelector('.tb-dropdown').children.length).toEqual(3);
 
     for (let idx of [0, 1, 2]) {
       expect(el.querySelectorAll('.tb-dropdown-button')[idx].id).toEqual(`subID${idx}`);
-      expect(el.querySelectorAll('.tb-dropdown-icon')[idx].src).toEqual(`data:test${idx}`);
+      expect(el.querySelectorAll('.tb-dropdown-icon')[idx].src).toEqual(`data:subicon${idx}`);
     }
   });
 });
