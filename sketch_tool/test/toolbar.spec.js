@@ -1,11 +1,12 @@
 import Toolbar from 'sketch2/toolbar';
+import simulant from 'simulant';
 
 describe('The toolbar', () => {
   let el, app;
 
   beforeEach(() => {
     el = document.createElement('menu');
-    app = jasmine.createSpy('app');
+    app = jasmine.createSpyObj('app', ['on', 'dispatch']);
   });
 
   it('is instantiated with a target element, app instance, and items list', () => {
@@ -48,7 +49,26 @@ describe('The toolbar', () => {
 
     for (let idx of [0, 1, 2]) {
       expect(el.querySelectorAll('.tb-dropdown-button')[idx].id).toEqual(`subID${idx}`);
-      expect(el.querySelectorAll('.tb-dropdown-icon')[idx].src).toEqual(`data:subicon${idx}`);
+      expect(el.querySelectorAll('.tb-dropdown-icon')[idx].src).toContain(`//:0/subicon${idx}`);
     }
+  });
+
+  it('dispatches an event to the app with the id of any clicked button', () => {
+    const tb = new Toolbar(el, app, [
+      {type: 'button', id: 'ID0', icon: '//:0/icon0', label: 'Button label'},
+      {type: 'splitbutton', id: 'ID1', label: "Splitbutton label", items: [
+        {id:'subID', icon: '//:0/subicon'},
+      ]}
+    ]);
+
+    const buttons = el.querySelectorAll('.tb-button, .tb-dropdown-button');
+    simulant.fire(buttons[0], 'click');
+    simulant.fire(buttons[1], 'click');
+    simulant.fire(buttons[2], 'click');
+
+    expect(app.dispatch.calls.count()).toEqual(3);
+    expect(app.dispatch).toHaveBeenCalledWith('tb-clicked', 'ID0');
+    expect(app.dispatch).toHaveBeenCalledWith('tb-clicked', 'ID1');
+    expect(app.dispatch).toHaveBeenCalledWith('tb-dropdown-clicked', 'subID');
   });
 });

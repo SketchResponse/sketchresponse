@@ -19,10 +19,22 @@ export default class Toolbar {
 
     item.exit().remove();
 
-    item.enter()
+    const newItem = item.enter()
       .append('li')
       .attr('class', 'tb-items')
       .html(this.createItemHTML);
+
+    newItem.select('button')
+      .on('click', d => {
+        this.app.dispatch('tb-clicked', d.id);
+      });
+
+    newItem.selectAll('.tb-dropdown-item')
+      .data(d => d.items || [])
+      .select('button')
+      .on('click', d => {
+        this.app.dispatch('tb-dropdown-clicked', d.id);
+      });
   }
 
   createItemHTML({type, id, icon, label, items}) {
@@ -44,7 +56,7 @@ export default class Toolbar {
     if (hasDropdown) html += `
       <menu class="tb-dropdown">
         ${items.map(({id, icon}) => `
-          <li>
+          <li class="tb-dropdown-item">
             <button id="${id}" class="tb-dropdown-button">
               <img class="tb-dropdown-icon" src="${icon || NULL_SRC}">
             </button>

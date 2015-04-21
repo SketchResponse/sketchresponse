@@ -21,6 +21,7 @@ System.config({
     "d3": "github:mbostock/d3@3.5.5",
     "events": "github:jspm/nodelibs-events@0.1.0",
     "jquery": "github:components/jquery@2.1.3",
+    "simulant": "npm:simulant@0.1.5",
     "github:jspm/nodelibs-events@0.1.0": {
       "events-browserify": "npm:events-browserify@0.0.1"
     },
