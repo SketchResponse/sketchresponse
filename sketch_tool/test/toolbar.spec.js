@@ -15,12 +15,12 @@ describe('The toolbar', () => {
 
   it('renders a single button item', () => {
     const tb = new Toolbar(el, app, [
-      {type: 'button', id: 'ID', icon: 'data:icon', label: 'Button label'}
+      {type: 'button', id: 'ID', icon: '//:0/icon', label: 'Button label'}
     ]);
 
     expect(el.querySelectorAll('li > .tb-button').length).toEqual(1)
     expect(el.querySelector('.tb-button').id).toEqual('ID')
-    expect(el.querySelector('.tb-icon').src).toContain('data:icon');
+    expect(el.querySelector('.tb-icon').src).toContain('//:0/icon');
     expect(el.querySelector('.tb-label').innerHTML).toContain('Button label');
   });
 
@@ -35,9 +35,9 @@ describe('The toolbar', () => {
   it('renders a splitbutton with an indicator after the label and a nested menu', () => {
     const tb = new Toolbar(el, app, [
       {type: 'splitbutton', id: 'ID', label: "Splitbutton label", items: [
-        {id:'subID0', icon: 'data:subicon0'},
-        {id:'subID1', icon: 'data:subicon1'},
-        {id:'subID2', icon: 'data:subicon2'},
+        {id:'subID0', icon: '//:0/subicon0'},
+        {id:'subID1', icon: '//:0/subicon1'},
+        {id:'subID2', icon: '//:0/subicon2'},
       ]}
     ]);
 
