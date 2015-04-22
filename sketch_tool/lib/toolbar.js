@@ -14,24 +14,21 @@ export default class Toolbar {
 
   render() {
     const item = d3.select(this.el)
-      .selectAll('.tb-items')
+      .selectAll('.tb-item')
       .data(this.items);
-
-    item.exit().remove();
 
     const newItem = item.enter()
       .append('li')
-      .attr('class', 'tb-items')
+      .attr('class', 'tb-item')
       .html(this.createItemHTML);
 
-    newItem.select('button')
+    newItem.select('.tb-button')
       .on('click', d => {
         this.app.dispatch('tb-clicked', d.id);
       });
 
-    newItem.selectAll('.tb-dropdown-item')
+    newItem.selectAll('.tb-dropdown-button')
       .data(d => d.items || [])
-      .select('button')
       .on('click', d => {
         this.app.dispatch('tb-dropdown-clicked', d.id);
       });
