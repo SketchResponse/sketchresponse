@@ -1,5 +1,3 @@
-import d3 from 'd3';
-
 // from http://stackoverflow.com/a/5775621/1974654
 const NULL_SRC = '//:0';
 
@@ -9,32 +7,34 @@ export default class Toolbar {
     this.app = app;
     this.items = items;
 
+    this.initDOM();
     this.render();
   }
 
+  initDOM() {
+    for (let item of this.items) {
+      const li = document.createElement('li');
+      li.className = 'tb-item';
+      li.innerHTML = this.createItemHTML(item);
+
+      for (let button of li.querySelectorAll('.tb-button')) {
+        button.addEventListener('click', e => {
+          this.app.dispatch('tb-clicked', e.currentTarget.id);
+        });
+      }
+
+      for (let button of li.querySelectorAll('.tb-dropdown-button')) {
+        button.addEventListener('click', e => {
+          this.app.dispatch('tb-dropdown-clicked', e.currentTarget.id);
+        });
+      }
+
+      this.el.appendChild(li);
+    }
+  }
+
   render() {
-    const item = d3.select(this.el)
-      .selectAll('.tb-items')
-      .data(this.items);
-
-    item.exit().remove();
-
-    const newItem = item.enter()
-      .append('li')
-      .attr('class', 'tb-items')
-      .html(this.createItemHTML);
-
-    newItem.select('button')
-      .on('click', d => {
-        this.app.dispatch('tb-clicked', d.id);
-      });
-
-    newItem.selectAll('.tb-dropdown-item')
-      .data(d => d.items || [])
-      .select('button')
-      .on('click', d => {
-        this.app.dispatch('tb-dropdown-clicked', d.id);
-      });
+    // TODO: set styles, etc. here in response to state
   }
 
   createItemHTML({type, id, icon, label, items}) {
