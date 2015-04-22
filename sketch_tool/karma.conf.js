@@ -2,7 +2,7 @@ module.exports = function(config) {
   config.set({
     autoWatch: true,
     frameworks: ['jspm', 'jasmine', 'phantomjs-shim'],
-    browsers: ['Chrome', 'PhantomJS'],
+    browsers: ['PhantomJS'],
     jspm: {
       loadFiles: [
         'test/**/*.js',
