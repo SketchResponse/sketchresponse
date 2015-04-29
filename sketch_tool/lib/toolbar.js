@@ -7,20 +7,22 @@ export default class Toolbar {
     this.app = app;
     this.items = items;
 
+    this.isActive = false;
     this.state = {
-      activeDropdownID: null,
+      openDropdownID: null,
+      activeItemID: null,
+      focusedItemID: null,
     };
 
     app.on('tb-dropdown-open', id => {
-      this.state.activeDropdownID = id;
-      this.render();
+      this.state.openDropdownID = id;
+      this.update();
     });
 
-    this.initDOM();
     this.render();
   }
 
-  initDOM() {
+  render() {
     // Create DOM elements
     for (let item of this.items) {
       const container = document.createElement('div');
@@ -37,12 +39,21 @@ export default class Toolbar {
         this.app.dispatch(name, ...args);
       });
     }
+
+    this.update();
   }
 
-  render() {
-    // Update the active dropdown menu class
+  update() {
+    // Update the active dropdown / active item classes
     for (let item of this.el.querySelectorAll('.tb-item')) {
-      item.classList.toggle('tb-dropdown-active', item.id === this.state.activeDropdownID);
+      const id = item.querySelector('.tb-button').id;
+      item.classList.toggle('tb-dropdown-open', id === this.state.openDropdownID);
+      item.classList.toggle('tb-active', id === this.state.activeItemID);
+    }
+
+    // Update focus if needed
+    if (this.isActive && document.activeElement.id !== this.state.activeItemID) {
+      document.getElementById(this.state.activeItemID).focus();
     }
   }
 
@@ -53,9 +64,9 @@ export default class Toolbar {
     const isSplit = (type === 'splitbutton');
 
     return `
-      <li id="${id}" class="tb-item">
+      <li class="tb-item">
 
-        <button data-action="tb-clicked:${id}" class="tb-button ${isSplit ? 'tb-split-button' : ''}">
+        <button id="${id}" data-action="tb-clicked:${id}" class="tb-button ${isSplit ? 'tb-split-button' : ''}">
           <img class="tb-icon" src="${icon || NULL_SRC}">
           <div class="tb-label" data-action="tb-dropdown-open:${id}">
             ${label + (hasDropdown ?
@@ -67,8 +78,8 @@ export default class Toolbar {
 
         <menu class="tb-dropdown">
           ${items.map(item => `
-            <li id="${item.id}" class="tb-dropdown-item">
-              <button data-action="tb-dropdown-clicked:${item.id}" class="tb-dropdown-button">
+            <li class="tb-dropdown-item">
+              <button id="${item.id}" data-action="tb-dropdown-clicked:${item.id}" class="tb-dropdown-button">
                 <img class="tb-dropdown-icon" src="${item.icon || NULL_SRC}">
               </button>
             </li>
