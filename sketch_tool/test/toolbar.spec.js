@@ -19,7 +19,7 @@ describe('The toolbar', () => {
       {type: 'button', id: 'ID', icon: '//:0/icon', label: 'Button label'}
     ]);
 
-    expect(el.querySelectorAll('li > .tb-button').length).toEqual(1)
+    expect(el.querySelectorAll('.tb-item > .tb-button').length).toEqual(1)
     expect(el.querySelector('.tb-button').id).toEqual('ID')
     expect(el.querySelector('.tb-icon').src).toContain('//:0/icon');
     expect(el.querySelector('.tb-label').innerHTML).toContain('Button label');
@@ -30,7 +30,7 @@ describe('The toolbar', () => {
       {type: 'separator'}
     ]);
 
-    expect(el.querySelectorAll('li > hr').length).toEqual(1)
+    expect(el.querySelectorAll('hr').length).toEqual(1)
   });
 
   it('renders a splitbutton with an indicator after the label and a nested menu', () => {
@@ -42,7 +42,7 @@ describe('The toolbar', () => {
       ]}
     ]);
 
-    expect(el.querySelectorAll('li > .tb-split-button').length).toEqual(1)
+    expect(el.querySelectorAll('.tb-item > .tb-split-button').length).toEqual(1)
     expect(el.querySelector('.tb-split-button').id).toEqual('ID')
     expect(el.querySelector('.tb-label').innerHTML).toMatch(/Splitbutton label\S+/);
     expect(el.querySelector('.tb-dropdown').children.length).toEqual(3);

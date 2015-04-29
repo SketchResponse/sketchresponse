@@ -50,13 +50,13 @@ export default class Toolbar {
   }
 
   createItemHTML({type, id, icon, label, items}) {
-    if (type === 'separator') return '<li class="tb-separator"><hr></li>';
+    if (type === 'separator') return '<hr>';
 
     const hasDropdown = (items && items.length);
     const isSplit = (type === 'splitbutton');
 
     return `
-      <li class="tb-item">
+      <div class="tb-item">
 
         <button id="${id}" data-action="tb-clicked:${id}" class="tb-button ${isSplit ? 'tb-split-button' : ''}">
           <img class="tb-icon" src="${icon || NULL_SRC}">
@@ -70,17 +70,17 @@ export default class Toolbar {
 
         <menu class="tb-dropdown">
           ${items.map(item => `
-            <li class="tb-dropdown-item">
+            <div class="tb-dropdown-item">
               <button id="${item.id}" data-action="tb-dropdown-clicked:${item.id}" class="tb-dropdown-button">
                 <img class="tb-dropdown-icon" src="${item.icon || NULL_SRC}">
               </button>
-            </li>
+            </div>
           `).join('')}
         </menu>
 
         ` : ''}
 
-      </li>
+      </div>
     `;
   }
 }
