@@ -24,13 +24,7 @@ export default class Toolbar {
 
   render() {
     // Create DOM elements
-    for (let item of this.items) {
-      const container = document.createElement('div');
-      container.innerHTML = this.createItemHTML(item);
-      while (container.childElementCount) {
-        this.el.appendChild(container.firstChild);
-      }
-    }
+    this.el.innerHTML = this.items.map(this.createItemHTML).join('');
 
     // Bind click listeners
     for (let button of this.el.querySelectorAll('[data-action]')) {
@@ -58,7 +52,7 @@ export default class Toolbar {
   }
 
   createItemHTML({type, id, icon, label, items}) {
-    if (type === 'separator') return '<li><hr></li>';
+    if (type === 'separator') return '<li class="tb-separator"><hr></li>';
 
     const hasDropdown = (items && items.length);
     const isSplit = (type === 'splitbutton');
