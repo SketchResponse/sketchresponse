@@ -20,7 +20,7 @@ describe('The toolbar', () => {
     ]);
 
     expect(el.querySelectorAll('li > .tb-button').length).toEqual(1)
-    expect(el.querySelector('.tb-button').id).toEqual('ID')
+    expect(el.querySelector('.tb-item').id).toEqual('ID')
     expect(el.querySelector('.tb-icon').src).toContain('//:0/icon');
     expect(el.querySelector('.tb-label').innerHTML).toContain('Button label');
   });
@@ -43,12 +43,12 @@ describe('The toolbar', () => {
     ]);
 
     expect(el.querySelectorAll('li > .tb-split-button').length).toEqual(1)
-    expect(el.querySelector('.tb-split-button').id).toEqual('ID')
+    expect(el.querySelector('.tb-item').id).toEqual('ID')
     expect(el.querySelector('.tb-label').innerHTML).toMatch(/Splitbutton label\S+/);
     expect(el.querySelector('.tb-dropdown').children.length).toEqual(3);
 
     for (let idx of [0, 1, 2]) {
-      expect(el.querySelectorAll('.tb-dropdown-button')[idx].id).toEqual(`subID${idx}`);
+      expect(el.querySelectorAll('.tb-dropdown-item')[idx].id).toEqual(`subID${idx}`);
       expect(el.querySelectorAll('.tb-dropdown-icon')[idx].src).toContain(`//:0/subicon${idx}`);
     }
   });

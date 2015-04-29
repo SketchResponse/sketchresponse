@@ -7,64 +7,77 @@ export default class Toolbar {
     this.app = app;
     this.items = items;
 
+    this.state = {
+      activeDropdownID: null,
+    };
+
+    app.on('tb-dropdown-open', id => {
+      this.state.activeDropdownID = id;
+      this.render();
+    });
+
     this.initDOM();
     this.render();
   }
 
   initDOM() {
+    // Create DOM elements
     for (let item of this.items) {
-      const li = document.createElement('li');
-      li.className = 'tb-item';
-      li.innerHTML = this.createItemHTML(item);
-
-      for (let button of li.querySelectorAll('.tb-button')) {
-        button.addEventListener('click', e => {
-          this.app.dispatch('tb-clicked', e.currentTarget.id);
-        });
+      const container = document.createElement('div');
+      container.innerHTML = this.createItemHTML(item);
+      while (container.childElementCount) {
+        this.el.appendChild(container.firstChild);
       }
+    }
 
-      for (let button of li.querySelectorAll('.tb-dropdown-button')) {
-        button.addEventListener('click', e => {
-          this.app.dispatch('tb-dropdown-clicked', e.currentTarget.id);
-        });
-      }
-
-      this.el.appendChild(li);
+    // Bind click listeners
+    for (let button of this.el.querySelectorAll('[data-action]')) {
+      button.addEventListener('click', e => {
+        const [name, ...args] = e.currentTarget.getAttribute('data-action').split(':');
+        this.app.dispatch(name, ...args);
+      });
     }
   }
 
   render() {
-    // TODO: set styles, etc. here in response to state
+    // Update the active dropdown menu class
+    for (let item of this.el.querySelectorAll('.tb-item')) {
+      item.classList.toggle('tb-dropdown-active', item.id === this.state.activeDropdownID);
+    }
   }
 
   createItemHTML({type, id, icon, label, items}) {
-    if (type === 'separator') return '<hr>';
+    if (type === 'separator') return '<li><hr></li>';
 
     const hasDropdown = (items && items.length);
     const isSplit = (type === 'splitbutton');
 
-    let html = `
-      <button id="${id}" class="tb-button ${isSplit ? 'tb-split-button' : ''}">
-        <img class="tb-icon" src="${icon || NULL_SRC}">
-        <div class="tb-label">
-          ${label + (hasDropdown ?
-            '<span class="tb-dropdown-indicator">&nbsp;&#x25be;</span>' : '')}
-        </div>
-      </button>
-    `;
+    return `
+      <li id="${id}" class="tb-item">
 
-    if (hasDropdown) html += `
-      <menu class="tb-dropdown">
-        ${items.map(({id, icon}) => `
-          <li class="tb-dropdown-item">
-            <button id="${id}" class="tb-dropdown-button">
-              <img class="tb-dropdown-icon" src="${icon || NULL_SRC}">
-            </button>
-          </li>
-        `).join('')}
-      </menu>
-    `;
+        <button data-action="tb-clicked:${id}" class="tb-button ${isSplit ? 'tb-split-button' : ''}">
+          <img class="tb-icon" src="${icon || NULL_SRC}">
+          <div class="tb-label" data-action="tb-dropdown-open:${id}">
+            ${label + (hasDropdown ?
+              '<span class="tb-dropdown-indicator">&nbsp;&#x25be;</span>' : '')}
+          </div>
+        </button>
 
-    return html;
+        ${hasDropdown ? `
+
+        <menu class="tb-dropdown">
+          ${items.map(item => `
+            <li id="${item.id}" class="tb-dropdown-item">
+              <button data-action="tb-dropdown-clicked:${item.id}" class="tb-dropdown-button">
+                <img class="tb-dropdown-icon" src="${item.icon || NULL_SRC}">
+              </button>
+            </li>
+          `).join('')}
+        </menu>
+
+        ` : ''}
+
+      </li>
+    `;
   }
 }
