@@ -16,28 +16,26 @@ export default class Toolbar {
 
     app.on('tb-dropdown-open', id => {
       this.state.openDropdownID = id;
-      this.update();
+      this.render();
     });
 
-    this.render();
+    this.render({firstTime: true});
   }
 
-  render() {
-    // Create DOM elements
-    this.el.innerHTML = this.items.map(this.createItemHTML).join('');
+  render({firstTime}) {
+    if (firstTime) {
+      // Create DOM elements
+      this.el.innerHTML = this.items.map(this.createItemHTML).join('');
 
-    // Bind click listeners
-    for (let button of this.el.querySelectorAll('[data-action]')) {
-      button.addEventListener('click', e => {
-        const [name, ...args] = e.currentTarget.getAttribute('data-action').split(':');
-        this.app.dispatch(name, ...args);
-      });
+      // Bind click listeners
+      for (let button of this.el.querySelectorAll('[data-action]')) {
+        button.addEventListener('click', e => {
+          const [name, ...args] = e.currentTarget.getAttribute('data-action').split(':');
+          this.app.dispatch(name, ...args);
+        });
+      }
     }
 
-    this.update();
-  }
-
-  update() {
     // Update the active dropdown / active item classes
     for (let item of this.el.querySelectorAll('.tb-item')) {
       const id = item.querySelector('.tb-button').id;
