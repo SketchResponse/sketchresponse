@@ -44,8 +44,8 @@ export default class Toolbar {
     }
 
     // Update focus if needed
-    if (this.isActive && document.activeElement.id !== this.state.activeItemID) {
-      document.getElementById(this.state.activeItemID).focus();
+    if (this.isActive && document.activeElement.id !== this.state.focusedItemID) {
+      document.getElementById(this.state.focusedItemID).focus();
     }
   }
 
