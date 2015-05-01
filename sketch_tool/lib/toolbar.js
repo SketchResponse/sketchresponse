@@ -25,6 +25,10 @@ export default class Toolbar {
   getInitialState() {
     const firstItem = this.items[0];
 
+    if (!(firstItem && firstItem.type && firstItem.id)) {
+      throw new TypeError('The first toolbar item must contain a type and an ID');
+    }
+
     let state = {
       openDropdownID: null,
       activeItemID: isSplitButton(firstItem) ? firstItem.items[0].id : firstItem.id,

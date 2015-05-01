@@ -10,8 +10,16 @@ describe('The toolbar', () => {
   });
 
   it('is instantiated with a target element, app instance, and items list', () => {
-    const tb = new Toolbar(el, app, []);
+    const tb = new Toolbar(el, app, [
+      {type: 'button', id: 'ID'}
+    ]);
     expect(tb instanceof Toolbar).toBe(true);
+  });
+
+  it('requires a first item with both a type and an ID', () => {
+    expect(() => new Toolbar(el, app, [])).toThrowError(TypeError);
+    expect(() => new Toolbar(el, app, [{type: 'button'}])).toThrowError(TypeError);
+    expect(() => new Toolbar(el, app, [{id: 'ID'}])).toThrowError(TypeError);
   });
 
   it('renders a single button item', () => {
@@ -27,6 +35,7 @@ describe('The toolbar', () => {
 
   it('renders a separator', () => {
     const tb = new Toolbar(el, app, [
+      {type: 'button', id: 'ID'},
       {type: 'separator'}
     ]);
 
