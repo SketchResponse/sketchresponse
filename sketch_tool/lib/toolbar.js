@@ -1,3 +1,6 @@
+// For IE9-11, PhantomJS 1.x, Android 4.1-3, [Safari?]
+import 'dom-shims/shim/Element.classList';
+
 // from http://stackoverflow.com/a/5775621/1974654
 const NULL_SRC = '//:0';
 
@@ -14,12 +17,20 @@ export default class Toolbar {
     this.isActive = false;
     this.state = this.getInitialState();
 
-    app.on('tb-dropdown-open', id => {
-      this.state.openDropdownID = id;
-      this.render();
-    });
+    app.on('tb-dropdown-open', this.openDropdown);
+    app.on('tb-clicked tb-dropdown-clicked', this.selectItem);
 
     this.render({firstTime: true});
+  }
+
+  openDropdown(id) {
+    this.state.openDropdownID = id;
+    this.render({firstTime: false});
+  }
+
+  selectItem(id) {
+    this.state.openDropdownID = null;
+    this.render({firstTime: false});
   }
 
   getInitialState() {
