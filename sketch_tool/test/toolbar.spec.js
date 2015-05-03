@@ -102,14 +102,14 @@ describe('The toolbar', () => {
 
     it('adds a tb-dropdown-open class to its dropdown menu', () => {
       expect(el.querySelectorAll('.tb-dropdown-open').length).toEqual(0);
-      tb.openDropdown('ID');
+      tb.handleEvent({type: 'tb-dropdown-open', id: 'ID'});
       expect(el.querySelectorAll('.tb-dropdown-open').length).toEqual(1);
       expect(el.querySelector('.tb-dropdown-open > .tb-button').id).toEqual('ID');
     })
 
-    it('removes tb-dropdown-open class to its dropdown menu when an item is clicked', () => {
-      tb.openDropdown('ID');
-      tb.selectItem('subID0');
+    it('removes tb-dropdown-open class from its dropdown menu when an item is clicked', () => {
+      tb.handleEvent({type: 'tb-dropdown-open', id: 'ID'});
+      tb.handleEvent({type: 'tb-dropdown-clicked', id: 'subID0'});
       expect(el.querySelectorAll('.tb-dropdown-open').length).toEqual(0);
     })
   });

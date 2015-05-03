@@ -17,19 +17,21 @@ export default class Toolbar {
     this.isActive = false;
     this.state = this.getInitialState();
 
-    app.on('tb-dropdown-open', this.openDropdown);
-    app.on('tb-clicked tb-dropdown-clicked', this.selectItem);
-
     this.render();
   }
 
-  openDropdown(id) {
-    this.state.openDropdownID = id;
-    this.render();
-  }
+  handleEvent(payload) {
+    switch (payload.type) {
+      case 'tb-dropdown-open':
+        this.state.openDropdownID = payload.id;
+        break;
 
-  selectItem(id) {
-    this.state.openDropdownID = null;
+      case 'tb-clicked':
+      case 'tb-dropdown-clicked':
+        this.state.openDropdownID = null;
+        break;
+    }
+
     this.render();
   }
 
