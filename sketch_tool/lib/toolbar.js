@@ -20,17 +20,17 @@ export default class Toolbar {
     app.on('tb-dropdown-open', this.openDropdown);
     app.on('tb-clicked tb-dropdown-clicked', this.selectItem);
 
-    this.render({firstTime: true});
+    this.render();
   }
 
   openDropdown(id) {
     this.state.openDropdownID = id;
-    this.render({firstTime: false});
+    this.render();
   }
 
   selectItem(id) {
     this.state.openDropdownID = null;
-    this.render({firstTime: false});
+    this.render();
   }
 
   getInitialState() {
@@ -54,8 +54,8 @@ export default class Toolbar {
     return state;
   }
 
-  render({firstTime}) {
-    if (firstTime) {
+  render() {
+    if (!this.el.childElementCount) {
       // Create DOM elements
       this.el.innerHTML = this.items.map(this.createItemHTML).join('');
 
