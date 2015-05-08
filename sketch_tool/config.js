@@ -1,5 +1,10 @@
 System.config({
   "transpiler": "babel",
+  "babelOptions": {
+    "optional": [
+      "runtime"
+    ]
+  },
   "paths": {
     "*": "*.js",
     "sketch2/*": "lib/*.js",
@@ -9,15 +14,10 @@ System.config({
 });
 
 System.config({
-  "meta": {
-    "jspm_packages/babel-polyfill": {
-      "format": "global"  // Prevents misdetection as AMD
-    }
-  }
-});
-
-System.config({
   "map": {
+    "babel": "npm:babel-core@5.2.17",
+    "babel-runtime": "npm:babel-runtime@5.2.17",
+    "core-js": "npm:core-js@0.9.7",
     "d3": "github:mbostock/d3@3.5.5",
     "dom-shims": "npm:dom-shims@0.1.4",
     "events": "github:jspm/nodelibs-events@0.1.0",
@@ -28,6 +28,9 @@ System.config({
     },
     "github:jspm/nodelibs-process@0.1.1": {
       "process": "npm:process@0.10.1"
+    },
+    "npm:core-js@0.9.7": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:events-browserify@0.0.1": {
       "process": "github:jspm/nodelibs-process@0.1.1"
