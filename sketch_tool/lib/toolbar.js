@@ -58,11 +58,6 @@ export default class Toolbar {
   }
 
   render() {
-    handleClick = e => {
-      const [name, ...args] = e.currentTarget.getAttribute('data-action').split(':');
-      this.app.dispatch(name, ...args);
-    }
-
     z.render(this.el,
       z.each(this.items, ({type, id, icon, label, items}) => {
         if (type === 'separator') return z('hr');
@@ -79,12 +74,11 @@ export default class Toolbar {
 
           z('button', {
               id: id,
-              'data-action': `tb-clicked:${id}`,
               class: `tb-button ${isSplit ? 'tb-split-button' : ''}`,
-              onclick: handleClick
+              onclick: e => this.app.dispatch('tb-clicked', id)
             },
             z('img', {class: 'tb-icon', src: icon || NULL_SRC}),
-            z('div', {class: 'tb-label', 'data-action': `tb-dropdown-open:${id}`, onclick: handleClick},
+            z('div', {class: 'tb-label', onclick: e => this.app.dispatch('tb-dropdown-open', id)},
               label || '',
               z.if(hasDropdown,
                 z('span', {class: 'tb-dropdown-indicator'}, '\u00A0\u25be')  // nbsp + 'black down-pointing small triangle'
@@ -99,9 +93,8 @@ export default class Toolbar {
               z('div', {class: 'tb-dropdown-item'},
                 z('button', {
                     id: item.id,
-                    'data-action': `tb-dropdown-clicked:${item.id}`,
                     class: 'tb-dropdown-button',
-                    onclick: handleClick
+                    onclick: e => this.app.dispatch('tb-dropdown-clicked', item.id)
                   },
                   z('img', {class: 'tb-dropdown-icon', src: item.icon || NULL_SRC})
                 )
