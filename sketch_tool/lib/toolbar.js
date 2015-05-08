@@ -70,7 +70,12 @@ export default class Toolbar {
         const hasDropdown = (items && items.length);
         const isSplit = (type === 'splitbutton');
 
-        return z('div', {class: 'tb-item'},
+        const isOpen = (id === this.state.openDropdownID);
+        const isActive = (id === this.state.activeItemID);
+
+        return z('div', {
+            class: `tb-item ${isOpen ? 'tb-dropdown-open' : ''} ${isActive ? 'tb-active' : ''}`
+          },
 
           z('button', {
               id: id,
@@ -108,13 +113,6 @@ export default class Toolbar {
         )
       })
     );
-
-    // Update the active dropdown / active item classes
-    for (let item of this.el.querySelectorAll('.tb-item')) {
-      const id = item.querySelector('.tb-button').id;
-      item.classList.toggle('tb-dropdown-open', id === this.state.openDropdownID);
-      item.classList.toggle('tb-active', id === this.state.activeItemID);
-    }
 
     // Update focus if needed
     if (this.isActive && document.activeElement.id !== this.state.focusedItemID) {
