@@ -6,8 +6,8 @@ function _implementsZNodeInterface(obj) {
 }
 
 class ZNodeCollection {
-  constructor(...children) {
-    this.children = children.map(child => {
+  constructor(...nodes) {
+    this.nodes = nodes.map(child => {
       if (_implementsZNodeInterface(child)) return child;
 
       // Note: if this is not a zNode, coerce value to text (via the browser):
@@ -16,26 +16,26 @@ class ZNodeCollection {
   }
 
   mount(parentEl, refEl) {
-    this.children.forEach(child => child.mount(parentEl, refEl));
+    this.nodes.forEach(child => child.mount(parentEl, refEl));
   }
 
   unmount(cleanupDOM) {
-    this.children.forEach(child => child.unmount(cleanupDOM));
+    this.nodes.forEach(child => child.unmount(cleanupDOM));
   }
 
   update(zNodeCollection, refEl) {
-    this.children.forEach((child, i) => {
+    this.nodes.forEach((child, i) => {
       let internalRefEl = refEl;
 
-      // Try to find an earlier reference sibling in our own children
-      for (let refIndex = i + 1; refIndex < this.children.length; refIndex++) {
-        if (this.children[refIndex].el) {
-          internalRefEl = this.children[refIndex].el;
+      // Try to find an earlier reference sibling in our own nodes
+      for (let refIndex = i + 1; refIndex < this.nodes.length; refIndex++) {
+        if (this.nodes[refIndex].el) {
+          internalRefEl = this.nodes[refIndex].el;
           break;
         }
       }
 
-      child.update(zNodeCollection.children[i], internalRefEl);
+      child.update(zNodeCollection.nodes[i], internalRefEl);
     });
   }
 }
