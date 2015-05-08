@@ -6,7 +6,6 @@ module.exports = function(config) {
     jspm: {
       loadFiles: [
         'test/**/*.js',
-        'jspm_packages/babel-polyfill.js'
       ],
       serveFiles: ['lib/**/*.js']
     }

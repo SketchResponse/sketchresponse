@@ -1,7 +1,13 @@
-import d3 from 'd3';
+// For IE9-11, PhantomJS 1.x, Android 4.1-3, [Safari?]
+import 'dom-shims/shim/Element.classList';
+import z from './zdom';
 
 // from http://stackoverflow.com/a/5775621/1974654
 const NULL_SRC = '//:0';
+
+function isSplitButton(item) {
+  return item.type === 'splitbutton';
+}
 
 export default class Toolbar {
   constructor(el, app, items) {
@@ -9,59 +15,101 @@ export default class Toolbar {
     this.app = app;
     this.items = items;
 
+    this.isActive = false;
+    this.state = this.getInitialState();
+
     this.render();
   }
 
-  render() {
-    const item = d3.select(this.el)
-      .selectAll('.tb-item')
-      .data(this.items);
+  handleEvent(payload) {
+    switch (payload.type) {
+      case 'tb-dropdown-open':
+        this.state.openDropdownID = payload.id;
+        break;
 
-    const newItem = item.enter()
-      .append('li')
-      .attr('class', 'tb-item')
-      .html(this.createItemHTML);
+      case 'tb-clicked':
+      case 'tb-dropdown-clicked':
+        this.state.openDropdownID = null;
+        break;
+    }
 
-    newItem.select('.tb-button')
-      .on('click', d => {
-        this.app.dispatch('tb-clicked', d.id);
-      });
-
-    newItem.selectAll('.tb-dropdown-button')
-      .data(d => d.items || [])
-      .on('click', d => {
-        this.app.dispatch('tb-dropdown-clicked', d.id);
-      });
+    this.render();
   }
 
-  createItemHTML({type, id, icon, label, items}) {
-    if (type === 'separator') return '<hr>';
+  getInitialState() {
+    const firstItem = this.items[0];
 
-    const hasDropdown = (items && items.length);
-    const isSplit = (type === 'splitbutton');
+    if (!(firstItem && firstItem.type && firstItem.id)) {
+      throw new TypeError('The first toolbar item must contain a type and an ID');
+    }
 
-    let html = `
-      <button id="${id}" class="tb-button ${isSplit ? 'tb-split-button' : ''}">
-        <img class="tb-icon" src="${icon || NULL_SRC}">
-        <div class="tb-label">
-          ${label + (hasDropdown ?
-            '<span class="tb-dropdown-indicator">&nbsp;&#x25be;</span>' : '')}
-        </div>
-      </button>
-    `;
+    let state = {
+      openDropdownID: null,
+      activeItemID: isSplitButton(firstItem) ? firstItem.items[0].id : firstItem.id,
+      focusedItemID: firstItem.id,
+      selectedDropdownItemMap: {},
+    };
 
-    if (hasDropdown) html += `
-      <menu class="tb-dropdown">
-        ${items.map(({id, icon}) => `
-          <li class="tb-dropdown-item">
-            <button id="${id}" class="tb-dropdown-button">
-              <img class="tb-dropdown-icon" src="${icon || NULL_SRC}">
-            </button>
-          </li>
-        `).join('')}
-      </menu>
-    `;
+    this.items
+      .filter(isSplitButton)
+      .forEach(item => state.selectedDropdownItemMap[item.id] = item.items[0].id);
 
-    return html;
+    return state;
+  }
+
+  render() {
+    z.render(this.el,
+      z.each(this.items, ({type, id, icon, label, items}) => {
+        if (type === 'separator') return z('hr');
+
+        const hasDropdown = (items && items.length);
+        const isSplit = (type === 'splitbutton');
+
+        const isOpen = (id === this.state.openDropdownID);
+        const isActive = (id === this.state.activeItemID);
+
+        return z('div', {
+            class: `tb-item ${isOpen ? 'tb-dropdown-open' : ''} ${isActive ? 'tb-active' : ''}`
+          },
+
+          z('button', {
+              id: id,
+              class: `tb-button ${isSplit ? 'tb-split-button' : ''}`,
+              onclick: e => this.app.dispatch('tb-clicked', id)
+            },
+            z('img', {class: 'tb-icon', src: icon || NULL_SRC}),
+            z('div', {class: 'tb-label', onclick: e => this.app.dispatch('tb-dropdown-open', id)},
+              label || '',
+              z.if(hasDropdown,
+                z('span', {class: 'tb-dropdown-indicator'}, '\u00A0\u25be')  // nbsp + 'black down-pointing small triangle'
+              )
+            )
+          ),
+
+          z.if(hasDropdown,
+
+          z('menu', {class: 'tb-dropdown'},
+            z.each(items, item =>
+              z('div', {class: 'tb-dropdown-item'},
+                z('button', {
+                    id: item.id,
+                    class: 'tb-dropdown-button',
+                    onclick: e => this.app.dispatch('tb-dropdown-clicked', item.id)
+                  },
+                  z('img', {class: 'tb-dropdown-icon', src: item.icon || NULL_SRC})
+                )
+              )
+            )
+          )
+
+          )
+        )
+      })
+    );
+
+    // Update focus if needed
+    if (this.isActive && document.activeElement.id !== this.state.focusedItemID) {
+      document.getElementById(this.state.focusedItemID).focus();
+    }
   }
 }

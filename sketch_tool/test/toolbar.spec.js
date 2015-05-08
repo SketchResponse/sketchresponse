@@ -10,8 +10,16 @@ describe('The toolbar', () => {
   });
 
   it('is instantiated with a target element, app instance, and items list', () => {
-    const tb = new Toolbar(el, app, []);
+    const tb = new Toolbar(el, app, [
+      {type: 'button', id: 'ID'}
+    ]);
     expect(tb instanceof Toolbar).toBe(true);
+  });
+
+  it('requires a first item with both a type and an ID', () => {
+    expect(() => new Toolbar(el, app, [])).toThrowError(TypeError);
+    expect(() => new Toolbar(el, app, [{type: 'button'}])).toThrowError(TypeError);
+    expect(() => new Toolbar(el, app, [{id: 'ID'}])).toThrowError(TypeError);
   });
 
   it('renders a single button item', () => {
@@ -19,7 +27,7 @@ describe('The toolbar', () => {
       {type: 'button', id: 'ID', icon: '//:0/icon', label: 'Button label'}
     ]);
 
-    expect(el.querySelectorAll('li > .tb-button').length).toEqual(1)
+    expect(el.querySelectorAll('.tb-item > .tb-button').length).toEqual(1)
     expect(el.querySelector('.tb-button').id).toEqual('ID')
     expect(el.querySelector('.tb-icon').src).toContain('//:0/icon');
     expect(el.querySelector('.tb-label').innerHTML).toContain('Button label');
@@ -27,10 +35,11 @@ describe('The toolbar', () => {
 
   it('renders a separator', () => {
     const tb = new Toolbar(el, app, [
+      {type: 'button', id: 'ID'},
       {type: 'separator'}
     ]);
 
-    expect(el.querySelectorAll('li > hr').length).toEqual(1)
+    expect(el.querySelectorAll('hr').length).toEqual(1)
   });
 
   it('renders a splitbutton with an indicator after the label and a nested menu', () => {
@@ -42,7 +51,7 @@ describe('The toolbar', () => {
       ]}
     ]);
 
-    expect(el.querySelectorAll('li > .tb-split-button').length).toEqual(1)
+    expect(el.querySelectorAll('.tb-item > .tb-split-button').length).toEqual(1)
     expect(el.querySelector('.tb-split-button').id).toEqual('ID')
     expect(el.querySelector('.tb-label').innerHTML).toMatch(/Splitbutton label\S+/);
     expect(el.querySelector('.tb-dropdown').children.length).toEqual(3);
@@ -70,5 +79,38 @@ describe('The toolbar', () => {
     expect(app.dispatch).toHaveBeenCalledWith('tb-clicked', 'ID0');
     expect(app.dispatch).toHaveBeenCalledWith('tb-clicked', 'ID1');
     expect(app.dispatch).toHaveBeenCalledWith('tb-dropdown-clicked', 'subID');
+  });
+
+  describe('splitbutton', () => {
+    let tb;
+
+    beforeEach(() => {
+      tb = new Toolbar(el, app, [
+        {type: 'splitbutton', id: 'ID', label: "Splitbutton label", items: [
+          {id:'subID0', icon: '//:0/subicon0'},
+          {id:'subID1', icon: '//:0/subicon1'},
+          {id:'subID2', icon: '//:0/subicon2'},
+        ]}
+      ]);
+    });
+
+    it('dispatches an event to the app when the label is clicked', () => {
+      simulant.fire(el.querySelector('.tb-label'), 'click');
+      expect(app.dispatch.calls.count()).toEqual(1);
+      expect(app.dispatch).toHaveBeenCalledWith('tb-dropdown-open', 'ID');
+    });
+
+    it('adds a tb-dropdown-open class to its dropdown menu', () => {
+      expect(el.querySelectorAll('.tb-dropdown-open').length).toEqual(0);
+      tb.handleEvent({type: 'tb-dropdown-open', id: 'ID'});
+      expect(el.querySelectorAll('.tb-dropdown-open').length).toEqual(1);
+      expect(el.querySelector('.tb-dropdown-open > .tb-button').id).toEqual('ID');
+    })
+
+    it('removes tb-dropdown-open class from its dropdown menu when an item is clicked', () => {
+      tb.handleEvent({type: 'tb-dropdown-open', id: 'ID'});
+      tb.handleEvent({type: 'tb-dropdown-clicked', id: 'subID0'});
+      expect(el.querySelectorAll('.tb-dropdown-open').length).toEqual(0);
+    })
   });
 });
