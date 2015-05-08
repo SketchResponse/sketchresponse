@@ -16,10 +16,7 @@ class ZNodeCollection {
   }
 
   mount(parentEl, refEl) {
-    this.children.forEach(child => {
-      child === undefined ? console.log(child, this.children) : '';
-      return child.mount(parentEl, refEl)
-    });
+    this.children.forEach(child => child.mount(parentEl, refEl));
   }
 
   unmount(cleanupDOM) {
