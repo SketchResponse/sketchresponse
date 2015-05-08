@@ -23,7 +23,7 @@ class ZNodeCollection {
     this.children.forEach(child => child.unmount(cleanupDOM));
   }
 
-  update(zNode, refEl) {
+  update(zNodeCollection, refEl) {
     this.children.forEach((child, i) => {
       let internalRefEl = refEl;
 
@@ -35,7 +35,7 @@ class ZNodeCollection {
         }
       }
 
-      child.update(zNode.childCollection.children[i], internalRefEl);
+      child.update(zNodeCollection.children[i], internalRefEl);
     });
   }
 }
@@ -89,7 +89,7 @@ class ZElement {
   update(zNode, refEl) {
     this._syncDOMProps(this.props, zNode.props);
     this.props = zNode.props;
-    this.childCollection.update(zNode, refEl);
+    this.childCollection.update(zNode.childCollection, refEl);
   }
 
   _syncDOMProps(oldProps, newProps) {
@@ -139,7 +139,7 @@ class ZIf {
 
   update(zNode, refEl) {
     if (this.truthy && zNode.truthy) {
-      this.childCollection.update(zNode, refEl);
+      this.childCollection.update(zNode.childCollection, refEl);
     }
     else if (!this.truthy && zNode.truthy) {
       this.childCollection.mount(this.parentEl, refEl);
@@ -169,7 +169,7 @@ class ZEach {
   }
 
   update(zNode, refEl) {
-    this.childCollection.update(zNode, refEl);
+    this.childCollection.update(zNode.childCollection, refEl);
     // TODO: Add support for entering or exiting children,
     // making sure to issue DOM cleanups as needed
   }
