@@ -118,39 +118,4 @@ export default class Toolbar {
       document.getElementById(this.state.focusedItemID).focus();
     }
   }
-
-  createItemHTML({type, id, icon, label, items}) {
-    if (type === 'separator') return '<hr>';
-
-    const hasDropdown = (items && items.length);
-    const isSplit = (type === 'splitbutton');
-
-    return `
-      <div class="tb-item">
-
-        <button id="${id}" data-action="tb-clicked:${id}" class="tb-button ${isSplit ? 'tb-split-button' : ''}">
-          <img class="tb-icon" src="${icon || NULL_SRC}">
-          <div class="tb-label" data-action="tb-dropdown-open:${id}">
-            ${label + (hasDropdown ?
-              '<span class="tb-dropdown-indicator">&nbsp;&#x25be;</span>' : '')}
-          </div>
-        </button>
-
-        ${hasDropdown ? `
-
-        <menu class="tb-dropdown">
-          ${items.map(item => `
-            <div class="tb-dropdown-item">
-              <button id="${item.id}" data-action="tb-dropdown-clicked:${item.id}" class="tb-dropdown-button">
-                <img class="tb-dropdown-icon" src="${item.icon || NULL_SRC}">
-              </button>
-            </div>
-          `).join('')}
-        </menu>
-
-        ` : ''}
-
-      </div>
-    `;
-  }
 }
