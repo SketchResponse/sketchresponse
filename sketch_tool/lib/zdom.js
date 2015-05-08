@@ -176,7 +176,34 @@ class ZEach {
 }
 
 
-function z(...args) { return new ZElement(...args); }
+function z(tagName, props, ...children) {
+  props = props || {};
+  if (typeof props === 'string' || _implementsZNodeInterface(props)) {
+    // this is actually the first child, not the props object
+    children.unshift(props);
+    props = {};
+  }
+
+  if (tagName.indexOf('#') !== -1) {
+    props.id = props.id || tagName  // explicit props.id gets priority
+      .match(/#[^.#]+/)[0]
+      .slice(1);  // remove leading '#'
+    tagName = tagName.replace(/#[^.#]+/g, '');  // remove id(s) from tagName
+  }
+
+  if (tagName.indexOf('.') !== -1) {
+    props.class = tagName
+      .match(/\.[^.#]+/g)
+      .map(str => str.slice(1))  // remove leading dots
+      .concat(props.class || '')  // add additional classes, if any
+      .join(' ')
+      .trim();
+    tagName = tagName.replace(/\.[^.#]+/g, '');  // remove classes from tagName
+  }
+
+  tagName = tagName || 'div'; // default tag is a div
+  return new ZElement(tagName, props, ...children);
+}
 
 z.if = function z_if(...args) { return new ZIf(...args); };
 z.each = function z_each(...args) { return new ZEach(...args); };

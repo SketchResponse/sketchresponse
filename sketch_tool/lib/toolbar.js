@@ -66,35 +66,34 @@ export default class Toolbar {
         const isOpen = (id === this.state.openDropdownID);
         const isActive = (id === this.state.activeItemID);
 
-        return z('div', {
-            class: classnames('tb-item', {'tb-dropdown-open': isOpen, 'tb-active': isActive})
+        return z('div.tb-item', {
+            class: classnames({'tb-dropdown-open': isOpen, 'tb-active': isActive})
           },
 
-          z('button', {
+          z('button.tb-button', {
               id: id,
-              class: classnames('tb-button', {'tb-split-button': isSplit}),
+              class: classnames({'tb-split-button': isSplit}),
               onclick: e => this.app.dispatch('tb-clicked', id)
             },
-            z('img', {class: 'tb-icon', src: icon || NULL_SRC}),
-            z('div', {class: 'tb-label', onclick: e => this.app.dispatch('tb-dropdown-open', id)},
+            z('img.tb-icon', {src: icon || NULL_SRC}),
+            z('div.tb-label', {onclick: e => this.app.dispatch('tb-dropdown-open', id)},
               label || '',
               z.if(hasDropdown,
-                z('span', {class: 'tb-dropdown-indicator'}, '\u00A0\u25be')  // nbsp + 'black down-pointing small triangle'
+                z('span.tb-dropdown-indicator', '\u00A0\u25be')  // nbsp + 'black down-pointing small triangle'
               )
             )
           ),
 
           z.if(hasDropdown,
 
-          z('menu', {class: 'tb-dropdown'},
+          z('menu.tb-dropdown',
             z.each(items, item =>
-              z('div', {class: 'tb-dropdown-item'},
-                z('button', {
+              z('div.tb-dropdown-item',
+                z('button.tb-dropdown-button', {
                     id: item.id,
-                    class: 'tb-dropdown-button',
                     onclick: e => this.app.dispatch('tb-dropdown-clicked', item.id)
                   },
-                  z('img', {class: 'tb-dropdown-icon', src: item.icon || NULL_SRC})
+                  z('img.tb-dropdown-icon', {src: item.icon || NULL_SRC})
                 )
               )
             )
