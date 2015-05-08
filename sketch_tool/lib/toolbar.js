@@ -58,7 +58,12 @@ export default class Toolbar {
   }
 
   render() {
-    const nodes =
+    handleClick = e => {
+      const [name, ...args] = e.currentTarget.getAttribute('data-action').split(':');
+      this.app.dispatch(name, ...args);
+    }
+
+    z.render(this.el,
       z.each(this.items, ({type, id, icon, label, items}) => {
         if (type === 'separator') return z('hr');
 
@@ -67,9 +72,14 @@ export default class Toolbar {
 
         return z('div', {class: 'tb-item'},
 
-          z('button', {id: id, 'data-action': `tb-clicked:${id}`, class: `tb-button ${isSplit ? 'tb-split-button' : ''}`},
+          z('button', {
+              id: id,
+              'data-action': `tb-clicked:${id}`,
+              class: `tb-button ${isSplit ? 'tb-split-button' : ''}`,
+              onclick: handleClick
+            },
             z('img', {class: 'tb-icon', src: icon || NULL_SRC}),
-            z('div', {class: 'tb-label', 'data-action': `tb-dropdown-open:${id}`},
+            z('div', {class: 'tb-label', 'data-action': `tb-dropdown-open:${id}`, onclick: handleClick},
               label || '',
               z.if(hasDropdown,
                 z('span', {class: 'tb-dropdown-indicator'}, '\u00A0\u25be')  // nbsp + 'black down-pointing small triangle'
@@ -82,7 +92,12 @@ export default class Toolbar {
           z('menu', {class: 'tb-dropdown'},
             z.each(items, item =>
               z('div', {class: 'tb-dropdown-item'},
-                z('button', {id: item.id, 'data-action': `tb-dropdown-clicked:${item.id}`, class: 'tb-dropdown-button'},
+                z('button', {
+                    id: item.id,
+                    'data-action': `tb-dropdown-clicked:${item.id}`,
+                    class: 'tb-dropdown-button',
+                    onclick: handleClick
+                  },
                   z('img', {class: 'tb-dropdown-icon', src: item.icon || NULL_SRC})
                 )
               )
@@ -91,20 +106,8 @@ export default class Toolbar {
 
           )
         )
-      });
-
-    if (!this.el.childElementCount) {
-      // Create DOM elements
-      z.render(this.el, nodes);
-
-      // Bind click listeners
-      for (let button of this.el.querySelectorAll('[data-action]')) {
-        button.addEventListener('click', e => {
-          const [name, ...args] = e.currentTarget.getAttribute('data-action').split(':');
-          this.app.dispatch(name, ...args);
-        });
-      }
-    }
+      })
+    );
 
     // Update the active dropdown / active item classes
     for (let item of this.el.querySelectorAll('.tb-item')) {
