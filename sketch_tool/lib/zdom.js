@@ -69,7 +69,6 @@ class ZElement {
   constructor(tagName, props, ...children) {
     this.tagName = tagName;
     this.props = props || {};
-    this._sugarDOMClasses();
     this.childCollection = new ZNodeCollection(...children);
     /* this.el = undefined; */
   }
@@ -91,16 +90,6 @@ class ZElement {
     this._syncDOMProps(this.props, zNode.props);
     this.props = zNode.props;
     this.childCollection.update(zNode, refEl);
-  }
-
-  _sugarDOMClasses() {
-    if (typeof this.props.class === 'object') {
-      // Add some sugar to help conditionally set classes (like React's classSet helper):
-      // for each key containing a corresponding truthy value, add that key to the class list
-      this.props.class = Object.keys(this.props.class)
-        .map(className => this.props.class[className] ? className : '')
-        .join(' ');
-    }
   }
 
   _syncDOMProps(oldProps, newProps) {
@@ -191,6 +180,13 @@ function z(...args) { return new ZElement(...args); }
 
 z.if = function z_if(...args) { return new ZIf(...args); };
 z.each = function z_each(...args) { return new ZEach(...args); };
+z.classSet = function z_classSet(classMap) {
+  // Helper for conditionally setting classes (like React's classSet)
+  // returns a string containing all keys whose values are truthy
+  return Object.keys(classMap)
+    .filter(className => classMap[className])
+    .join(' ');
+}
 
 z.render = function z_render(targetEl, ...children) {
   const zRoot = new ZElement('z-root', null, ...children);

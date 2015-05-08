@@ -66,12 +66,12 @@ export default class Toolbar {
         const isActive = (id === this.state.activeItemID);
 
         return z('div', {
-            class: {'tb-item': true, 'tb-dropdown-open': isOpen, 'tb-active': isActive}
+            class: z.classSet({'tb-item': true, 'tb-dropdown-open': isOpen, 'tb-active': isActive})
           },
 
           z('button', {
               id: id,
-              class: {'tb-button': true, 'tb-split-button': isSplit},
+              class: z.classSet({'tb-button': true, 'tb-split-button': isSplit}),
               onclick: e => this.app.dispatch('tb-clicked', id)
             },
             z('img', {class: 'tb-icon', src: icon || NULL_SRC}),
