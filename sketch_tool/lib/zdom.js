@@ -182,7 +182,7 @@ z.if = function z_if(...args) { return new ZIf(...args); };
 z.each = function z_each(...args) { return new ZEach(...args); };
 
 z.render = function z_render(targetEl, ...children) {
-  const zRoot = new ZElement('z-root', null, ...children);
+  const zRoot = new ZNodeCollection(...children);
   if (!targetEl.__zRoot__) {
     // mount
     zRoot.mount(targetEl);
