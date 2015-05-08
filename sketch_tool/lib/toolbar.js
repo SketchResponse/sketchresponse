@@ -1,5 +1,3 @@
-// For IE9-11, PhantomJS 1.x, Android 4.1-3, [Safari?]
-import 'dom-shims/shim/Element.classList';
 import z from './zdom';
 
 // from http://stackoverflow.com/a/5775621/1974654
