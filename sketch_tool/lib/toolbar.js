@@ -1,5 +1,6 @@
 // For IE9-11, PhantomJS 1.x, Android 4.1-3, [Safari?]
 import 'dom-shims/shim/Element.classList';
+import z from './zdom';
 
 // from http://stackoverflow.com/a/5775621/1974654
 const NULL_SRC = '//:0';
@@ -57,9 +58,44 @@ export default class Toolbar {
   }
 
   render() {
+    const nodes =
+      z.each(this.items, ({type, id, icon, label, items}) => {
+        if (type === 'separator') return z('hr');
+
+        const hasDropdown = (items && items.length);
+        const isSplit = (type === 'splitbutton');
+
+        return z('div', {class: 'tb-item'},
+
+          z('button', {id: id, 'data-action': `tb-clicked:${id}`, class: `tb-button ${isSplit ? 'tb-split-button' : ''}`},
+            z('img', {class: 'tb-icon', src: icon || NULL_SRC}),
+            z('div', {class: 'tb-label', 'data-action': `tb-dropdown-open:${id}`},
+              label || '',
+              z.if(hasDropdown,
+                z('span', {class: 'tb-dropdown-indicator'}, '\u00A0\u25be')  // nbsp + 'black down-pointing small triangle'
+              )
+            )
+          ),
+
+          z.if(hasDropdown,
+
+          z('menu', {class: 'tb-dropdown'},
+            z.each(items, item =>
+              z('div', {class: 'tb-dropdown-item'},
+                z('button', {id: item.id, 'data-action': `tb-dropdown-clicked:${item.id}`, class: 'tb-dropdown-button'},
+                  z('img', {class: 'tb-dropdown-icon', src: item.icon || NULL_SRC})
+                )
+              )
+            )
+          )
+
+          )
+        )
+      });
+
     if (!this.el.childElementCount) {
       // Create DOM elements
-      this.el.innerHTML = this.items.map(this.createItemHTML).join('');
+      z.render(this.el, nodes);
 
       // Bind click listeners
       for (let button of this.el.querySelectorAll('[data-action]')) {
