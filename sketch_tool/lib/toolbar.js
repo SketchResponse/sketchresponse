@@ -1,4 +1,5 @@
 import z from './zdom';
+import classnames from 'classnames';
 
 // from http://stackoverflow.com/a/5775621/1974654
 const NULL_SRC = '//:0';
@@ -66,12 +67,12 @@ export default class Toolbar {
         const isActive = (id === this.state.activeItemID);
 
         return z('div', {
-            class: z.classSet({'tb-item': true, 'tb-dropdown-open': isOpen, 'tb-active': isActive})
+            class: classnames('tb-item', {'tb-dropdown-open': isOpen, 'tb-active': isActive})
           },
 
           z('button', {
               id: id,
-              class: z.classSet({'tb-button': true, 'tb-split-button': isSplit}),
+              class: classnames('tb-button', {'tb-split-button': isSplit}),
               onclick: e => this.app.dispatch('tb-clicked', id)
             },
             z('img', {class: 'tb-icon', src: icon || NULL_SRC}),

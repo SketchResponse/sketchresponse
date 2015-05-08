@@ -180,13 +180,6 @@ function z(...args) { return new ZElement(...args); }
 
 z.if = function z_if(...args) { return new ZIf(...args); };
 z.each = function z_each(...args) { return new ZEach(...args); };
-z.classSet = function z_classSet(classMap) {
-  // Helper for conditionally setting classes (like React's classSet)
-  // returns a string containing all keys whose values are truthy
-  return Object.keys(classMap)
-    .filter(className => classMap[className])
-    .join(' ');
-}
 
 z.render = function z_render(targetEl, ...children) {
   const zRoot = new ZElement('z-root', null, ...children);
