@@ -62,17 +62,16 @@ export default class Toolbar {
 
         const hasDropdown = (items && items.length);
         const isSplit = (type === 'splitbutton');
-
         const isOpen = (id === this.state.openDropdownID);
         const isActive = (id === this.state.activeItemID);
 
         return z('div', {
-            class: `tb-item ${isOpen ? 'tb-dropdown-open' : ''} ${isActive ? 'tb-active' : ''}`
+            class: {'tb-item': true, 'tb-dropdown-open': isOpen, 'tb-active': isActive}
           },
 
           z('button', {
               id: id,
-              class: `tb-button ${isSplit ? 'tb-split-button' : ''}`,
+              class: {'tb-button': true, 'tb-split-button': isSplit},
               onclick: e => this.app.dispatch('tb-clicked', id)
             },
             z('img', {class: 'tb-icon', src: icon || NULL_SRC}),
