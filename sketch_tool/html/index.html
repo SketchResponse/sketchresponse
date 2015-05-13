@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SketchInput</title>
+    <link rel="stylesheet" href="<@css_path@>">
+  </head>
+  <body>
+    <script src="<@systemjs_path@>"></script>
+    <script src="<@configjs_path@>"></script>
+    <script>
+      System.import('lib/main').then(function(SketchInput) {
+        new SketchInput(document.body);
+      });
+    </script>
+  </body>
+</html>
