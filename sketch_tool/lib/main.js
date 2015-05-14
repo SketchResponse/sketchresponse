@@ -9,6 +9,8 @@ export default class SketchInput {
       <svg id="si-canvas"></svg>
     `;
 
-    new Toolbar(document.getElementById('si-toolbar'), this, toolbarItems);
+    if (toolbarItems) {
+      this.toolbar = new Toolbar(document.getElementById('si-toolbar'), this, toolbarItems);
+    }
   }
 }
