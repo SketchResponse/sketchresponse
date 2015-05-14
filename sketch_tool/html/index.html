@@ -11,7 +11,9 @@
     <script src="<@configjs_path@>"></script>
     <script>
       System.import('lib/main').then(function(SketchInput) {
-        new SketchInput(document.getElementById('si-container'));
+        new SketchInput(document.getElementById('si-container'), [
+          {type: 'button', id: 'select', label: 'Select'},
+        ]);
       });
     </script>
   </body>
