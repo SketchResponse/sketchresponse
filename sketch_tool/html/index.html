@@ -13,6 +13,26 @@
       System.import('lib/main').then(function(SketchInput) {
         new SketchInput(document.getElementById('si-container'), [
           {type: 'button', id: 'select', label: 'Select'},
+          {type: 'button', id: 'eraser', label: 'Erase'},
+          {type: 'splitbutton', id: 'sketch', label: 'Sketch (ungraded)', items: [
+            {id: 'sketch_freehand'},
+            {id: 'sketch_spline'},
+          ]},
+          {type: 'separator'},
+          {type: 'splitbutton', id: 'function', label: 'Function f(x)', items: [
+            {id: 'function_freehand'},
+            {id: 'function_spline'},
+          ]},
+          {type: 'splitbutton', id: 'slope', label: 'Slope f\'(x)', items: [
+            {id: 'slope_freehand'},
+            {id: 'slope_spline'},
+          ]},
+          {type: 'button', id: 'asymptote', label: 'Asymptote'},
+          {type: 'button', id: 'critpoint', label: 'Critical Point'},
+          {type: 'separator'},
+          {type: 'button', id: 'undo', label: 'Undo'},
+          {type: 'button', id: 'redo', label: 'Redo'},
+          {type: 'button', id: 'settings', label: 'Settings'},
         ]);
       });
     </script>
