@@ -6,11 +6,12 @@
     <link rel="stylesheet" href="<@css_path@>">
   </head>
   <body>
+    <div id="si-container"></div>
     <script src="<@systemjs_path@>"></script>
     <script src="<@configjs_path@>"></script>
     <script>
       System.import('lib/main').then(function(SketchInput) {
-        new SketchInput(document.body);
+        new SketchInput(document.getElementById('si-container'));
       });
     </script>
   </body>
