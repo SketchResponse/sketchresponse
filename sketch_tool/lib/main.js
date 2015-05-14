@@ -13,4 +13,9 @@ export default class SketchInput {
       this.toolbar = new Toolbar(document.getElementById('si-toolbar'), this, toolbarItems);
     }
   }
+
+  dispatch(type, id) {
+    // TODO: don't hard-code this... perhaps refactor toolbar events to be internal?
+    this.toolbar.handleEvent({type, id});
+  }
 }
