@@ -158,6 +158,7 @@ class ZElement {
     Object.keys(oldProps)
       .filter(propName => !newProps.hasOwnProperty(propName))
       .forEach(propName => {
+        const {namespaceURI, localName} = _qualify(propName);
         if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Remove an event listener
           this.el[localName] = null;
