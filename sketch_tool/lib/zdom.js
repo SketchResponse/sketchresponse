@@ -1,15 +1,32 @@
-function _implementsZNodeInterface(obj) {
+let namespaces = {
+  xmlns: 'http://www.w3.org/2000/xmlns/',
+  xhtml: 'http://www.w3.org/1999/xhtml',
+  xlink: 'http://www.w3.org/1999/xlink',
+  svg: 'http://www.w3.org/2000/svg',
+  ev: 'http://www.w3.org/2001/xml-events',
+};
+
+function qualify(name) {
+  const [nsPrefix, localName] = name.split(':');
+  if (localName == undefined || !namespaces.hasOwnProperty(nsPrefix)) {
+    return {namespaceURI: null, localName: name};
+  }
+  return {namespaceURI: namespaces[nsPrefix], localName: localName};
+}
+
+function implementsZNodeInterface(obj) {
   return obj &&
     typeof obj.mount === 'function' &&
     typeof obj.unmount === 'function' &&
     typeof obj.update === 'function';
 }
 
+
 class ZNodeCollection {
   constructor(...nodes) {
     // Coerce any non-zNodes to text
     this.nodes = nodes.map(node =>
-      _implementsZNodeInterface(node) ? node : new ZTextNode(String(node))
+      implementsZNodeInterface(node) ? node : new ZTextNode(String(node))
     );
 
     // Assign keys with precedence props.key > props.id > index
@@ -97,23 +114,6 @@ class ZTextNode {
 }
 
 
-const NAMESPACE_MAP = {
-  xmlns: 'http://www.w3.org/2000/xmlns/',
-  xhtml: 'http://www.w3.org/1999/xhtml',
-  xlink: 'http://www.w3.org/1999/xlink',
-  svg: 'http://www.w3.org/2000/svg',
-  ev: 'http://www.w3.org/2001/xml-events',
-}
-
-function _qualify(name) {
-  const [nsPrefix, localName] = name.split(':');
-  if (localName == undefined || !NAMESPACE_MAP.hasOwnProperty(nsPrefix)) {
-    return {namespaceURI: null, localName: name};
-  }
-  return {namespaceURI: NAMESPACE_MAP[nsPrefix], localName: localName};
-}
-
-
 class ZElement {
   constructor(tagName, props, ...children) {
     this.tagName = tagName;
@@ -123,7 +123,7 @@ class ZElement {
   }
 
   mount(parentEl, refEl) {
-    const {namespaceURI, localName} = _qualify(this.tagName);
+    const {namespaceURI, localName} = qualify(this.tagName);
 
     // Note: namespaceURI is inherited from the parent unless it's explicitly given
     this.el = document.createElementNS(namespaceURI || parentEl.namespaceURI, localName);
@@ -149,7 +149,7 @@ class ZElement {
     Object.keys(newProps)
       .filter(propName => oldProps[propName] !== newProps[propName])
       .forEach(propName => {
-        const {namespaceURI, localName} = _qualify(propName);
+        const {namespaceURI, localName} = qualify(propName);
         if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Handle event listeners since we can't set them with setAttribute
           this.el[localName] = newProps[localName];
@@ -165,7 +165,7 @@ class ZElement {
     Object.keys(oldProps)
       .filter(propName => !newProps.hasOwnProperty(propName))
       .forEach(propName => {
-        const {namespaceURI, localName} = _qualify(propName);
+        const {namespaceURI, localName} = qualify(propName);
         if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Remove an event listener
           this.el[localName] = null;
@@ -179,7 +179,7 @@ class ZElement {
 
 function z(tagName, props, ...children) {
   props = props || {};
-  if (typeof props === 'string' || _implementsZNodeInterface(props)) {
+  if (typeof props === 'string' || implementsZNodeInterface(props)) {
     // this is actually the first child, not the props object
     children.unshift(props);
     props = {};
