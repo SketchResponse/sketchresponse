@@ -7,21 +7,25 @@ function _implementsZNodeInterface(obj) {
 
 class ZNodeCollection {
   constructor(...nodes) {
-    this.nodes = nodes.map(node => {
-      if (_implementsZNodeInterface(node)) return node;
+    // Coerce any non-zNodes to text
+    this.nodes = nodes.map(node =>
+      _implementsZNodeInterface(node) ? node : new ZTextNode(String(node))
+    );
 
-      // Note: if this is not a zNode, coerce value to text:
-      return new ZTextNode(String(node));
-    });
-
+    // Assign keys with precedence props.key > props.id > index
     this.keys = this.nodes.map((node, i) =>
-      (node.props && (node.props.keys || node.props.id)) || i
+      node.props && (node.props.key || node.props.id) || i
     );
 
     /* this.parentEl = undefined; */
   }
 
-  get el() { return this.nodes[0] && this.nodes[0].el; }
+  // Return our first node's element when asked for our 'el'; this is sometimes used to find a
+  // reference node for 'insertBefore' (e.g., as in our own update method below).
+  // TODO: this is a bit hacky; refactor?
+  get el() {
+    return this.nodes[0] && this.nodes[0].el;
+  }
 
   mount(parentEl, refEl) {
     this.nodes.forEach(node => node.mount(parentEl, refEl));
