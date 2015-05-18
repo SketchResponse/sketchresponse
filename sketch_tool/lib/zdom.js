@@ -173,65 +173,6 @@ class ZElement {
 }
 
 
-class ZIf {
-  constructor(condition, ...children) {
-    this.truthy = !!condition;
-    this.childCollection = new ZNodeCollection(...children);
-    /* this.parentEl = undefined; */
-  }
-
-  get el() { return this.childCollection.el; }
-
-  mount(parentEl, refEl) {
-    if (this.truthy) this.childCollection.mount(parentEl, refEl);
-    this.parentEl = parentEl;
-  }
-
-  unmount(cleanupDOM) {
-    this.childCollection.unmount(cleanupDOM);
-    delete this.parentEl;
-  }
-
-  update(next, refEl) {
-    if (this.truthy && next.truthy) {
-      this.childCollection.update(next.childCollection, refEl);
-    }
-    else if (!this.truthy && next.truthy) {
-      next.childCollection.mount(this.parentEl, refEl);
-      this.childCollection = next.childCollection;
-      this.truthy = true;
-    }
-    else if (this.truthy && !next.truthy) {
-      this.childCollection.unmount(true);  // Note: make children clean up own DOM elements
-      this.truthy = false;
-    }
-  }
-}
-
-
-class ZEach {
-  constructor(items, callback) {
-    this.items = items || [];
-    this.callback = callback;
-    this.childCollection = new ZNodeCollection(...this.items.map(this.callback));
-  }
-
-  get el() { return this.childCollection.el; }
-
-  mount(parentEl, refEl) {
-    this.childCollection.mount(parentEl, refEl);
-  }
-
-  unmount(cleanupDOM) {
-    this.childCollection.unmount(cleanupDOM);
-  }
-
-  update(next, refEl) {
-    this.childCollection.update(next.childCollection, refEl);
-  }
-}
-
-
 function z(tagName, props, ...children) {
   props = props || {};
   if (typeof props === 'string' || _implementsZNodeInterface(props)) {
@@ -266,8 +207,13 @@ function z(tagName, props, ...children) {
   return new ZElement(tagName, props, ...children);
 }
 
-z.if = function z_if(...args) { return new ZIf(...args); };
-z.each = function z_each(...args) { return new ZEach(...args); };
+z.if = function z_if(condition, ...children) {
+  return condition ? new ZNodeCollection(...children) : new ZNodeCollection();
+};
+
+z.each = function z_each(items=[], callback) {
+  return new ZNodeCollection(...items.map(callback));
+};
 
 z.render = function z_render(targetEl, ...children) {
   const zRoot = new ZNodeCollection(...children);
