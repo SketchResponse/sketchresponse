@@ -33,12 +33,12 @@ class ZNodeCollection {
     delete this.parentEl;
   }
 
-  update(zNodeCollection, refEl) {
+  update(next, refEl) {
     const updatedNodes = [];
 
     // delete
     for (let oldIdx = this.keys.length - 1; oldIdx >= 0; --oldIdx) {
-      if (zNodeCollection.keys.indexOf(this.keys[oldIdx]) === -1) {
+      if (next.keys.indexOf(this.keys[oldIdx]) === -1) {
         this.nodes[oldIdx].unmount(true);
         this.nodes.splice(oldIdx, 1);
         this.keys.splice(oldIdx, 1);
@@ -47,16 +47,16 @@ class ZNodeCollection {
 
     // create & update
     // TODO: document this...
-    for (let node, oldIdx, newIdx = zNodeCollection.keys.length - 1; newIdx >= 0; --newIdx) {
-      oldIdx = this.keys.indexOf(zNodeCollection.keys[newIdx]);
+    for (let node, oldIdx, newIdx = next.keys.length - 1; newIdx >= 0; --newIdx) {
+      oldIdx = this.keys.indexOf(next.keys[newIdx]);
       if (oldIdx >= 0) {
         // old node exists; update it now
         node = this.nodes[oldIdx];
-        node.update(zNodeCollection.nodes[newIdx], refEl);
+        node.update(next.nodes[newIdx], refEl);
       }
       else {
         // mount the new node
-        node = zNodeCollection.nodes[newIdx];
+        node = next.nodes[newIdx];
         node.mount(this.parentEl, refEl);
       }
       refEl = node.el || refEl;
@@ -64,7 +64,7 @@ class ZNodeCollection {
     }
 
     this.nodes = updatedNodes;
-    this.keys = zNodeCollection.keys;
+    this.keys = next.keys;
   }
 }
 
@@ -84,10 +84,10 @@ class ZTextNode {
     if (cleanupDOM) this.el.parentNode.removeChild(this.el);
   }
 
-  update(zNode) {
-    if (zNode.text !== this.text) {
-      this.el.nodeValue = zNode.text;
-      this.text = zNode.text;
+  update(next) {
+    if (this.text !== next.text) {
+      this.el.nodeValue = next.text;
+      this.text = next.text;
     }
   }
 }
@@ -114,10 +114,10 @@ class ZElement {
     delete this.el;
   }
 
-  update(zNode, refEl) {
-    this._syncDOMProps(this.props, zNode.props);
-    this.props = zNode.props;
-    this.childCollection.update(zNode.childCollection, refEl);
+  update(next, refEl) {
+    this._syncDOMProps(this.props, next.props);
+    this.props = next.props;
+    this.childCollection.update(next.childCollection, refEl);
   }
 
   _syncDOMProps(oldProps, newProps) {
@@ -167,15 +167,15 @@ class ZIf {
     delete this.parentEl;
   }
 
-  update(zNode, refEl) {
-    if (this.truthy && zNode.truthy) {
-      this.childCollection.update(zNode.childCollection, refEl);
+  update(next, refEl) {
+    if (this.truthy && next.truthy) {
+      this.childCollection.update(next.childCollection, refEl);
     }
-    else if (!this.truthy && zNode.truthy) {
+    else if (!this.truthy && next.truthy) {
       this.childCollection.mount(this.parentEl, refEl);
       this.truthy = true;
     }
-    else if (this.truthy && !zNode.truthy) {
+    else if (this.truthy && !next.truthy) {
       this.childCollection.unmount(true);  // Note: make children clean up own DOM elements
       this.truthy = false;
     }
@@ -200,8 +200,8 @@ class ZEach {
     this.childCollection.unmount(cleanupDOM);
   }
 
-  update(zNode, refEl) {
-    this.childCollection.update(zNode.childCollection, refEl);
+  update(next, refEl) {
+    this.childCollection.update(next.childCollection, refEl);
   }
 }
 
