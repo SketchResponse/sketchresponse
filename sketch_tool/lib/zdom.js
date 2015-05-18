@@ -93,6 +93,23 @@ class ZTextNode {
 }
 
 
+const NAMESPACE_MAP = {
+  xmlns: 'http://www.w3.org/2000/xmlns/',
+  xhtml: 'http://www.w3.org/1999/xhtml',
+  xlink: 'http://www.w3.org/1999/xlink',
+  svg: 'http://www.w3.org/2000/svg',
+  ev: 'http://www.w3.org/2001/xml-events',
+}
+
+function _qualify(name) {
+  const [nsPrefix, localName] = name.split(':');
+  if (localName == undefined || !NAMESPACE_MAP.hasOwnProperty(nsPrefix)) {
+    return {namespaceURI: null, localName: name};
+  }
+  return {namespaceURI: NAMESPACE_MAP[nsPrefix], localName: localName};
+}
+
+
 class ZElement {
   constructor(tagName, props, ...children) {
     this.tagName = tagName;
@@ -102,7 +119,10 @@ class ZElement {
   }
 
   mount(parentEl, refEl) {
-    this.el = document.createElement(this.tagName);
+    const {namespaceURI, localName} = _qualify(this.tagName);
+
+    // Note: namespaceURI is inherited from the parent unless it's explicitly given
+    this.el = document.createElementNS(namespaceURI || parentEl.namespaceURI, localName);
     this._syncDOMProps({}, this.props);
     this.childCollection.mount(this.el);
     parentEl.insertBefore(this.el, refEl || null);  // null inserts as last child
@@ -125,24 +145,25 @@ class ZElement {
     Object.keys(newProps)
       .filter(propName => oldProps[propName] !== newProps[propName])
       .forEach(propName => {
-        if (propName.slice(0,2) === 'on') {
+        const {namespaceURI, localName} = _qualify(propName);
+        if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Handle event listeners since we can't set them with setAttribute
-          this.el[propName] = newProps[propName];
+          this.el[localName] = newProps[localName];
           return;
         }
-        this.el.setAttribute(propName, newProps[propName]);
+        this.el.setAttributeNS(namespaceURI, localName, newProps[propName]);
       });
 
     // delete
     Object.keys(oldProps)
       .filter(propName => !newProps.hasOwnProperty(propName))
       .forEach(propName => {
-        if (propName.slice(0,2) === 'on') {
+        if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Remove an event listener
-          this.el[propName] = null;
+          this.el[localName] = null;
           return;
         }
-        this.el.removeAttribute(propName);
+        this.el.removeAttributeNS(namespaceURI, localName);
       });
   }
 }
