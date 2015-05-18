@@ -7,24 +7,24 @@ function _implementsZNodeInterface(obj) {
 
 class ZNodeCollection {
   constructor(...nodes) {
-    this.nodes = nodes.map(child => {
-      if (_implementsZNodeInterface(child)) return child;
+    this.nodes = nodes.map(node => {
+      if (_implementsZNodeInterface(node)) return node;
 
       // Note: if this is not a zNode, coerce value to text:
-      return new ZTextNode(String(child));
+      return new ZTextNode(String(node));
     });
   }
 
   mount(parentEl, refEl) {
-    this.nodes.forEach(child => child.mount(parentEl, refEl));
+    this.nodes.forEach(node => node.mount(parentEl, refEl));
   }
 
   unmount(cleanupDOM) {
-    this.nodes.forEach(child => child.unmount(cleanupDOM));
+    this.nodes.forEach(node => node.unmount(cleanupDOM));
   }
 
   update(zNodeCollection, refEl) {
-    this.nodes.forEach((child, i) => {
+    this.nodes.forEach((node, i) => {
       let internalRefEl = refEl;
 
       // Try to find an earlier reference sibling in our own nodes
@@ -35,7 +35,7 @@ class ZNodeCollection {
         }
       }
 
-      child.update(zNodeCollection.nodes[i], internalRefEl);
+      node.update(zNodeCollection.nodes[i], internalRefEl);
     });
   }
 }
