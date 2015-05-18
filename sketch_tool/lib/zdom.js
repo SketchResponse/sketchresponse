@@ -253,6 +253,9 @@ function z(tagName, props, ...children) {
     tagName = tagName.replace(/\.[^.#]+/g, '');  // remove classes from tagName
   }
 
+  // Automatically add SVG namespace
+  if (tagName === 'svg') tagName = 'svg:svg';
+
   tagName = tagName || 'div'; // default tag is a div
   return new ZElement(tagName, props, ...children);
 }
