@@ -240,27 +240,29 @@ function z(tagName, props, ...children) {
     props = {};
   }
 
-  if (tagName.indexOf('#') !== -1) {
-    props.id = props.id || tagName  // explicit props.id gets priority
-      .match(/#[^.#]+/)[0]
+  // Hyperscript: handle ID (unless props.id already exists)
+  if (tagName.indexOf('#') >= 0 && !props.id) {
+    props.id = tagName
+      .match(/#[^.#]+/)[0]  // first match only
       .slice(1);  // remove leading '#'
-    tagName = tagName.replace(/#[^.#]+/g, '');  // remove id(s) from tagName
   }
 
-  if (tagName.indexOf('.') !== -1) {
+  // Hyperscript: handle classes
+  if (tagName.indexOf('.') >= 0) {
     props.class = tagName
       .match(/\.[^.#]+/g)
       .map(str => str.slice(1))  // remove leading dots
       .concat(props.class || '')  // add additional classes, if any
       .join(' ')
       .trim();
-    tagName = tagName.replace(/\.[^.#]+/g, '');  // remove classes from tagName
   }
+
+  // Hyperscript: extract tag name (including any namespace prefix) or default to 'div'
+  tagName = tagName.match(/^[^.#]*/)[0] || 'div';
 
   // Automatically add SVG namespace
   if (tagName === 'svg') tagName = 'svg:svg';
 
-  tagName = tagName || 'div'; // default tag is a div
   return new ZElement(tagName, props, ...children);
 }
 
