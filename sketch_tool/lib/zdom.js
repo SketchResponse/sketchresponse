@@ -13,30 +13,58 @@ class ZNodeCollection {
       // Note: if this is not a zNode, coerce value to text:
       return new ZTextNode(String(node));
     });
+
+    this.keys = this.nodes.map((node, i) =>
+      (node.props && (node.props.keys || node.props.id)) || i
+    );
+
+    /* this.parentEl = undefined; */
   }
+
+  get el() { return this.nodes[0] && this.nodes[0].el; }
 
   mount(parentEl, refEl) {
     this.nodes.forEach(node => node.mount(parentEl, refEl));
+    this.parentEl = parentEl;
   }
 
   unmount(cleanupDOM) {
     this.nodes.forEach(node => node.unmount(cleanupDOM));
+    delete this.parentEl;
   }
 
   update(zNodeCollection, refEl) {
-    this.nodes.forEach((node, i) => {
-      let internalRefEl = refEl;
+    const updatedNodes = [];
 
-      // Try to find an earlier reference sibling in our own nodes
-      for (let refIndex = i + 1; refIndex < this.nodes.length; refIndex++) {
-        if (this.nodes[refIndex].el) {
-          internalRefEl = this.nodes[refIndex].el;
-          break;
-        }
+    // delete
+    for (let oldIdx = this.keys.length - 1; oldIdx >= 0; --oldIdx) {
+      if (zNodeCollection.keys.indexOf(this.keys[oldIdx]) === -1) {
+        this.nodes[oldIdx].unmount(true);
+        this.nodes.splice(oldIdx, 1);
+        this.keys.splice(oldIdx, 1);
       }
+    }
 
-      node.update(zNodeCollection.nodes[i], internalRefEl);
-    });
+    // create & update
+    // TODO: document this...
+    for (let node, oldIdx, newIdx = zNodeCollection.keys.length - 1; newIdx >= 0; --newIdx) {
+      oldIdx = this.keys.indexOf(zNodeCollection.keys[newIdx]);
+      if (oldIdx >= 0) {
+        // old node exists; update it now
+        node = this.nodes[oldIdx];
+        node.update(zNodeCollection.nodes[newIdx], refEl);
+      }
+      else {
+        // mount the new node
+        node = zNodeCollection.nodes[newIdx];
+        node.mount(this.parentEl, refEl);
+      }
+      refEl = node.el || refEl;
+      updatedNodes.unshift(node);
+    }
+
+    this.nodes = updatedNodes;
+    this.keys = zNodeCollection.keys;
   }
 }
 
@@ -127,6 +155,8 @@ class ZIf {
     /* this.parentEl = undefined; */
   }
 
+  get el() { return this.childCollection.el; }
+
   mount(parentEl, refEl) {
     if (this.truthy) this.childCollection.mount(parentEl, refEl);
     this.parentEl = parentEl;
@@ -160,6 +190,8 @@ class ZEach {
     this.childCollection = new ZNodeCollection(...this.items.map(this.callback));
   }
 
+  get el() { return this.childCollection.el; }
+
   mount(parentEl, refEl) {
     this.childCollection.mount(parentEl, refEl);
   }
@@ -170,8 +202,6 @@ class ZEach {
 
   update(zNode, refEl) {
     this.childCollection.update(zNode.childCollection, refEl);
-    // TODO: Add support for entering or exiting children,
-    // making sure to issue DOM cleanups as needed
   }
 }
 
