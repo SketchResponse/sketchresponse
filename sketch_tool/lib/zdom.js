@@ -172,7 +172,8 @@ class ZIf {
       this.childCollection.update(next.childCollection, refEl);
     }
     else if (!this.truthy && next.truthy) {
-      this.childCollection.mount(this.parentEl, refEl);
+      next.childCollection.mount(this.parentEl, refEl);
+      this.childCollection = next.childCollection;
       this.truthy = true;
     }
     else if (this.truthy && !next.truthy) {
