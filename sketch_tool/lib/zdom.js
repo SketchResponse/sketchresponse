@@ -151,7 +151,10 @@ class ZElement {
           this.el[localName] = newProps[localName];
           return;
         }
-        this.el.setAttributeNS(namespaceURI, localName, newProps[propName]);
+        // Note: the choice of the `propName` (which may have a prefix) as the second argument to
+        // setAttributeNS instead of `localName` (no prefix) is based on the recommendation at
+        // https://developer.mozilla.org/en-US/docs/Web/SVG/Namespaces_Crash_Course
+        this.el.setAttributeNS(namespaceURI, propName, newProps[propName]);
       });
 
     // delete
