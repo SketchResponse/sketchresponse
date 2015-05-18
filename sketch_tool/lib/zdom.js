@@ -10,8 +10,8 @@ class ZNodeCollection {
     this.nodes = nodes.map(child => {
       if (_implementsZNodeInterface(child)) return child;
 
-      // Note: if this is not a zNode, coerce value to text (via the browser):
-      return new ZTextNode(child);
+      // Note: if this is not a zNode, coerce value to text:
+      return new ZTextNode(String(child));
     });
   }
 
