@@ -233,3 +233,4 @@ z.render = function z_render(targetEl, ...children) {
 };
 
 export default z;
+export { namespaces };  // allow external access (including modification)
