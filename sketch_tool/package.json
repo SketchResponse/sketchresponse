@@ -23,7 +23,8 @@
   "scripts": {
     "postinstall": "jspm install",
     "test": "karma start --single-run",
-    "start": "gobble"
+    "start": "gobble",
+    "build": "gobble build dist"
   },
   "jspm": {
     "dependencies": {
