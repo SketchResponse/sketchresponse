@@ -24,7 +24,7 @@
     "postinstall": "jspm install",
     "test": "karma start --single-run",
     "start": "gobble",
-    "build": "gobble build dist"
+    "build": "gobble build dist -f"
   },
   "jspm": {
     "dependencies": {
