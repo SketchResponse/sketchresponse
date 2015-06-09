@@ -14,8 +14,8 @@ export default class SketchInput {
     }
   }
 
-  dispatch(type, id) {
+  dispatch(type, id, subId) {
     // TODO: don't hard-code this... perhaps refactor toolbar events to be internal?
-    this.toolbar.handleEvent({type, id});
+    this.toolbar.handleEvent({type, id, subId});
   }
 }
