@@ -22,6 +22,22 @@ function implementsZNodeInterface(obj) {
 }
 
 
+class ZNode {
+  mount(parentEl, refEl) {
+    parentEl.insertBefore(this.el, refEl || null);  // null inserts as last child
+  }
+
+  unmount(cleanupDOM) {
+    if (cleanupDOM) this.el.parentNode.removeChild(this.el);
+  }
+
+  update(refEl) {
+    if (this.el.nextSibling === refEl) return;
+    this.el.parentNode.insertBefore(this.el, refEl || null);
+  }
+}
+
+
 class ZNodeCollection {
   constructor(...nodes) {
     // Coerce any non-zNodes to text
@@ -90,32 +106,35 @@ class ZNodeCollection {
 }
 
 
-class ZTextNode {
+class ZTextNode extends ZNode {
   constructor(text) {
+    super();
     this.text = text;
     /* this.el = undefined; */
   }
 
   mount(parentEl, refEl) {
     this.el = document.createTextNode(this.text);
-    parentEl.insertBefore(this.el, refEl || null);
+    super.mount(parentEl, refEl);
   }
 
   unmount(cleanupDOM) {
-    if (cleanupDOM) this.el.parentNode.removeChild(this.el);
+    super.unmount(cleanupDOM);
   }
 
-  update(next) {
+  update(next, refEl) {
     if (this.text !== next.text) {
       this.el.nodeValue = next.text;
       this.text = next.text;
     }
+    super.update(refEl);
   }
 }
 
 
-class ZElement {
+class ZElement extends ZNode {
   constructor(tagName, props, ...children) {
+    super();
     this.tagName = tagName;
     this.props = props || {};
     this.childCollection = new ZNodeCollection(...children);
@@ -129,11 +148,11 @@ class ZElement {
     this.el = document.createElementNS(namespaceURI || parentEl.namespaceURI, localName);
     this._syncDOMProps({}, this.props);
     this.childCollection.mount(this.el);
-    parentEl.insertBefore(this.el, refEl || null);  // null inserts as last child
+    super.mount(parentEl, refEl);
   }
 
   unmount(cleanupDOM) {
-    if (cleanupDOM) this.el.parentNode.removeChild(this.el);
+    super.unmount(cleanupDOM);
     this.childCollection.unmount(false);  // Note: we've already cleaned up DOM elements for them
     delete this.el;
   }
@@ -141,7 +160,10 @@ class ZElement {
   update(next, refEl) {
     this._syncDOMProps(this.props, next.props);
     this.props = next.props;
-    this.childCollection.update(next.childCollection, refEl);
+
+    // childCollection should use refEl = null since it's the only thing inside of this.el
+    this.childCollection.update(next.childCollection, null);
+    super.update(refEl);
   }
 
   _syncDOMProps(oldProps, newProps) {
