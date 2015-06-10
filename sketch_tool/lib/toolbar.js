@@ -8,6 +8,23 @@ function isSplitButton(item) {
   return item.type === 'splitbutton';
 }
 
+function renderIcon(id, src, title) {
+  return z('img.icon', {
+    id: id,
+    src: src || NULL_SRC,
+    title: title
+  });
+}
+
+function renderLabel(id, text, hasDropdown) {
+  return z('div.label',
+    z('span', {id: id}, text),
+    z.if(hasDropdown,
+      z('span', {'aria-label': 'Open dropdown menu'}, ' \u25be')
+    )
+  );
+}
+
 export default class Toolbar {
   constructor(el, app, items) {
     this.el = el;
@@ -21,13 +38,19 @@ export default class Toolbar {
   }
 
   handleEvent(payload) {
+    console.log(payload);
     switch (payload.type) {
-      case 'tb-dropdown-open':
+      case 'dropdown-open':
         this.state.openDropdownID = payload.id;
         break;
 
-      case 'tb-clicked':
-      case 'tb-dropdown-clicked':
+      case 'dropdown-clicked':
+        this.state.selectedDropdownItemMap[payload.id] = payload.subId;
+        /* falls through */
+      case 'clicked':
+        if (this.items.filter(item => item.id === payload.id)[0].type !== 'action') {
+          this.state.activeItemID = payload.id;
+        }
         this.state.openDropdownID = null;
         break;
     }
@@ -44,7 +67,7 @@ export default class Toolbar {
 
     let state = {
       openDropdownID: null,
-      activeItemID: isSplitButton(firstItem) ? firstItem.items[0].id : firstItem.id,
+      activeItemID: firstItem.id,
       focusedItemID: firstItem.id,
       selectedDropdownItemMap: {},
     };
@@ -61,44 +84,61 @@ export default class Toolbar {
       z.each(this.items, ({type, id, icon, label, items}) => {
         if (type === 'separator') return z('hr');
 
+        if (type === 'splitbutton') {
+          const selectedItem = items.filter(item =>
+            item.id === this.state.selectedDropdownItemMap[id])[0];
+
+          icon = selectedItem.icon;
+        }
+
         const hasDropdown = (items && items.length);
-        const isSplit = (type === 'splitbutton');
         const isOpen = (id === this.state.openDropdownID);
         const isActive = (id === this.state.activeItemID);
 
-        return z('div.tb-item', {
-            class: classnames({'tb-dropdown-open': isOpen, 'tb-active': isActive})
+        return z('div.item', {
+            id: id,
+            'data-is-open': isOpen,
+            'data-is-active': isActive,
           },
 
-          z('button.tb-button', {
-              id: id,
-              class: classnames({'tb-split-button': isSplit}),
-              onclick: e => this.app.dispatch('tb-clicked', id)
-            },
-            z('img.tb-icon', {src: icon || NULL_SRC}),
-            z('div.tb-label', {onclick: e => this.app.dispatch('tb-dropdown-open', id)},
-              label || '',
-              z.if(hasDropdown,
-                z('span.tb-dropdown-indicator', '\u00A0\u25be')  // nbsp + 'black down-pointing small triangle'
-              )
+          z.if(type === 'button' || type === 'action',
+            z('button', {
+                onclick: e => this.app.dispatch('clicked', id),
+                'aria-labelledby': `${id}-label ${id}-icon`,
+              },
+              renderIcon(`${id}-icon`, icon, ''),  // TODO: title
+              renderLabel(`${id}-label`, label, hasDropdown)
+            )
+          ),
+
+          z.if(type === 'splitbutton',
+            z('button.split-button-main', {
+                onclick: e => this.app.dispatch('clicked', id),
+                'aria-labelledby': `${id}-label ${id}-icon`,
+              },
+              renderIcon(`${id}-icon`, icon, '')  // TODO: title
+            ),
+            z('button.split-button-aux', {
+                onclick: e => this.app.dispatch('dropdown-open', id),
+                'aria-haspopup': 'true',
+              },
+              renderLabel(`${id}-label`, label, hasDropdown)
             )
           ),
 
           z.if(hasDropdown,
-
-          z('menu.tb-dropdown',
-            z.each(items, item =>
-              z('div.tb-dropdown-item',
-                z('button.tb-dropdown-button', {
-                    id: item.id,
-                    onclick: e => this.app.dispatch('tb-dropdown-clicked', item.id)
-                  },
-                  z('img.tb-dropdown-icon', {src: item.icon || NULL_SRC})
+            z('menu.dropdown',
+              z.each(items, item =>
+                z('div.dropdown-item',
+                  z('button.dropdown-button', {
+                      id: item.id,
+                      onclick: e => this.app.dispatch('dropdown-clicked', id, item.id)
+                    },
+                    renderIcon(`${id}-icon`, item.icon, '')  // TODO: title
+                  )
                 )
               )
             )
-          )
-
           )
         )
       })
