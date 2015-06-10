@@ -89,9 +89,6 @@ export default class Toolbar {
             item.id === this.state.selectedDropdownItemMap[id])[0];
 
           icon = selectedItem.icon;
-
-          // TODO: enabling this breaks zDOM:
-          // items = items.filter(item => item.id !== selectedItem.id);
         }
 
         const hasDropdown = (items && items.length);
