@@ -1,3 +1,4 @@
+import './polyfills';
 import Toolbar from './toolbar';
 
 export default class SketchInput {
@@ -6,7 +7,7 @@ export default class SketchInput {
 
     this.el.innerHTML = `
       <menu id="si-toolbar"></menu>
-      <svg id="si-canvas"></svg>
+      <svg id="si-canvas" touch-action="none"></svg>
     `;
 
     if (toolbarItems) {

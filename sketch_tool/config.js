@@ -23,6 +23,7 @@ System.config({
     "dom-shims": "npm:dom-shims@0.1.4",
     "events": "github:jspm/nodelibs-events@0.1.0",
     "jquery": "github:components/jquery@2.1.3",
+    "pepjs": "github:jquery/pep@0.3.0",
     "simulant": "npm:simulant@0.1.5",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
