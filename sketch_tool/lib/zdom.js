@@ -174,7 +174,9 @@ class ZElement extends ZNode {
         const {namespaceURI, localName} = qualify(propName);
         if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Handle event listeners since we can't set them with setAttribute
-          this.el[localName] = newProps[localName];
+          const eventName = localName.slice(2);
+          this.el.removeEventListener(eventName, oldProps[localName], false);  // clean up
+          this.el.addEventListener(eventName, newProps[localName], false);
           return;
         }
         // Note: the choice of the `propName` (which may have a prefix) as the second argument to
