@@ -27,10 +27,9 @@ describe('The toolbar', () => {
       {type: 'button', id: 'ID', icon: '//:0/icon', label: 'Button label'}
     ]);
 
-    expect(el.querySelectorAll('.tb-item > .tb-button').length).toEqual(1)
-    expect(el.querySelector('.tb-button').id).toEqual('ID')
-    expect(el.querySelector('.tb-icon').src).toContain('//:0/icon');
-    expect(el.querySelector('.tb-label').innerHTML).toContain('Button label');
+    expect(el.querySelectorAll('.item > button').length).toEqual(1)
+    expect(el.querySelector('.icon').src).toContain('//:0/icon');
+    expect(el.querySelector('.label').innerHTML).toContain('Button label');
   });
 
   it('renders a separator', () => {
@@ -51,34 +50,14 @@ describe('The toolbar', () => {
       ]}
     ]);
 
-    expect(el.querySelectorAll('.tb-item > .tb-split-button').length).toEqual(1)
-    expect(el.querySelector('.tb-split-button').id).toEqual('ID')
-    expect(el.querySelector('.tb-label').innerHTML).toMatch(/Splitbutton label\S+/);
-    expect(el.querySelector('.tb-dropdown').children.length).toEqual(3);
+    expect(el.querySelectorAll('.item .split-button-main').length).toEqual(1)
+    expect(el.querySelectorAll('.item .split-button-aux').length).toEqual(1)
+    expect(el.querySelector('.label').innerHTML).toMatch(/Splitbutton label\S+/);
+    expect(el.querySelector('.dropdown').children.length).toEqual(3);
 
     for (let idx of [0, 1, 2]) {
-      expect(el.querySelectorAll('.tb-dropdown-button')[idx].id).toEqual(`subID${idx}`);
-      expect(el.querySelectorAll('.tb-dropdown-icon')[idx].src).toContain(`//:0/subicon${idx}`);
+      expect(el.querySelectorAll('.dropdown .icon')[idx].src).toContain(`//:0/subicon${idx}`);
     }
-  });
-
-  it('dispatches an event to the app with the id of any clicked button', () => {
-    const tb = new Toolbar(el, app, [
-      {type: 'button', id: 'ID0', icon: '//:0/icon0', label: 'Button label'},
-      {type: 'splitbutton', id: 'ID1', label: "Splitbutton label", items: [
-        {id:'subID', icon: '//:0/subicon'},
-      ]}
-    ]);
-
-    const buttons = el.querySelectorAll('.tb-button, .tb-dropdown-button');
-    simulant.fire(buttons[0], 'click');
-    simulant.fire(buttons[1], 'click');
-    simulant.fire(buttons[2], 'click');
-
-    expect(app.dispatch.calls.count()).toEqual(3);
-    expect(app.dispatch).toHaveBeenCalledWith('tb-clicked', 'ID0');
-    expect(app.dispatch).toHaveBeenCalledWith('tb-clicked', 'ID1');
-    expect(app.dispatch).toHaveBeenCalledWith('tb-dropdown-clicked', 'subID');
   });
 
   describe('splitbutton', () => {
@@ -94,23 +73,22 @@ describe('The toolbar', () => {
       ]);
     });
 
-    it('dispatches an event to the app when the label is clicked', () => {
-      simulant.fire(el.querySelector('.tb-label'), 'click');
+    it('dispatches an event to the app when the dropdown button is clicked', () => {
+      simulant.fire(el.querySelector('.split-button-aux'), 'click');
       expect(app.dispatch.calls.count()).toEqual(1);
-      expect(app.dispatch).toHaveBeenCalledWith('tb-dropdown-open', 'ID');
+      expect(app.dispatch).toHaveBeenCalledWith('dropdown-open', 'ID');
     });
 
-    it('adds a tb-dropdown-open class to its dropdown menu', () => {
-      expect(el.querySelectorAll('.tb-dropdown-open').length).toEqual(0);
-      tb.handleEvent({type: 'tb-dropdown-open', id: 'ID'});
-      expect(el.querySelectorAll('.tb-dropdown-open').length).toEqual(1);
-      expect(el.querySelector('.tb-dropdown-open > .tb-button').id).toEqual('ID');
+    it('changes "data-is-open" to "true" when opening the dropdown menu', () => {
+      expect(el.querySelectorAll('[data-is-open="false"]').length).toEqual(1);
+      tb.handleEvent({type: 'dropdown-open', id: 'ID'});
+      expect(el.querySelectorAll('[data-is-open="true"]').length).toEqual(1);
     })
 
-    it('removes tb-dropdown-open class from its dropdown menu when an item is clicked', () => {
+    it('changes "data-is-open" to "false" when a subitem is selected', () => {
       tb.handleEvent({type: 'tb-dropdown-open', id: 'ID'});
       tb.handleEvent({type: 'tb-dropdown-clicked', id: 'subID0'});
-      expect(el.querySelectorAll('.tb-dropdown-open').length).toEqual(0);
+      expect(el.querySelectorAll('[data-is-open="false"]').length).toEqual(1);
     })
   });
 });
