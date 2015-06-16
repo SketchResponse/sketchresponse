@@ -5,7 +5,8 @@ module.exports = gobble([
     .transform('sass', {
       src: 'main.scss',
       dest: 'main.css'
-    }),
+    })
+    .transform('autoprefixer'),
 
   gobble('lib')
     .transform('babel', {
