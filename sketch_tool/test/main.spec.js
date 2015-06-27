@@ -12,6 +12,11 @@ describe('The SketchInput class', () => {
     expect(si instanceof SketchInput).toBe(true);
   });
 
+  it('throws TypeErrors if instantiated without a target element', () => {
+    expect(() => new SketchInput()).toThrowError(TypeError);
+    expect(() => new SketchInput({})).toThrowError(TypeError);
+  });
+
   it('should create elements for the toolbar and sketch container', () => {
     const si = new SketchInput(el);
     expect(el.children[0].id).toEqual('si-toolbar');

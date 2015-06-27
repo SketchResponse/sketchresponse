@@ -3,6 +3,10 @@ import Toolbar from './toolbar';
 
 export default class SketchInput {
   constructor(el, toolbarItems) {
+    if (!(el instanceof HTMLElement)) throw new TypeError(
+      'The first argument to the SketchInput constructor must be an HTMLElement'
+    );
+
     this.el = el;
 
     this.el.innerHTML = `
