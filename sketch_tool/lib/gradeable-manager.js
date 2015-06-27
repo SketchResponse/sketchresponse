@@ -1,3 +1,5 @@
+export const VERSION = 0.1;
+
 export default class GradeableManager {
   constructor(config, messageBus) {
     this.config = config;
@@ -10,7 +12,7 @@ export default class GradeableManager {
   getGradeable() {
     try {
       const response = {
-        apiVersion: 0.1,
+        apiVersion: VERSION,
         meta: {
           config: this.config,
           dataVersions: {},
