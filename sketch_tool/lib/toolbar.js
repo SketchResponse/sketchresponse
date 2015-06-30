@@ -1,4 +1,4 @@
-export const VERSION = 0.1;
+export const VERSION = '0.1';
 const TOOLBAR_ID = '$__toolbar';
 
 export default class Toolbar {
