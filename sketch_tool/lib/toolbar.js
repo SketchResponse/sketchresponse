@@ -59,12 +59,16 @@ export default class Toolbar {
   activateItem(id) {
     if (id === this.activeItemID) return;
     try {
-      this.items.find(item => item.id === this.activeItemID).deactivate();
-      this.items.find(item => item.id === id).activate();
+      const oldActiveItem = this.items.find(item => item.id === this.activeItemID);
+      const newActiveItem = this.items.find(item => item.id === id);
+
+      oldActiveItem && oldActiveItem.deactivate();
+      newActiveItem && newActiveItem.activate();
+
       this.activeItemID = id;
     }
     catch(error) {
-      this.__messageBus.emit('warnUser', 'pluginError', error);
+      this.app.__messageBus.emit('warnUser', 'pluginError', error);
     }
     this.render();
   }
