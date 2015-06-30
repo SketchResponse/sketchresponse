@@ -12,29 +12,7 @@
     <script src="<@configjs_path@>"></script>
     <script>
       System.import('lib/main').then(function(SketchInput) {
-        new SketchInput(document.getElementById('si-container'), [
-          {type: 'button', id: 'select', label: 'Select', icon: 'http://google.github.io/material-design-icons/image/svg/design/ic_photo_size_select_large_24px.svg'},
-          {type: 'button', id: 'eraser', label: 'Erase', icon: 'http://google.github.io/material-design-icons/navigation/svg/design/ic_cancel_24px.svg'},
-          {type: 'splitbutton', id: 'sketch', label: 'Ungraded sketch', items: [
-            {id: 'sketch_freehand', icon: 'http://google.github.io/material-design-icons/content/svg/design/ic_create_24px.svg'},
-            {id: 'sketch_spline', icon: 'http://google.github.io/material-design-icons/content/svg/design/ic_gesture_24px.svg'},
-          ]},
-          {type: 'separator'},
-          {type: 'splitbutton', id: 'function', label: 'Function f(x)', items: [
-            {id: 'function_freehand', icon: 'http://google.github.io/material-design-icons/content/svg/design/ic_create_24px.svg'},
-            {id: 'function_spline', icon: 'http://google.github.io/material-design-icons/content/svg/design/ic_gesture_24px.svg'},
-          ]},
-          {type: 'splitbutton', id: 'slope', label: 'Slope f\'(x)', items: [
-            {id: 'slope_freehand', icon: 'http://google.github.io/material-design-icons/content/svg/design/ic_create_24px.svg'},
-            {id: 'slope_spline', icon: 'http://google.github.io/material-design-icons/content/svg/design/ic_gesture_24px.svg'},
-          ]},
-          {type: 'button', id: 'asymptote', label: 'Asymp-tote', icon: 'http://google.github.io/material-design-icons/hardware/svg/design/ic_power_input_24px.svg'},
-          {type: 'button', id: 'critpoint', label: 'Critical Point', icon: 'http://google.github.io/material-design-icons/communication/svg/design/ic_chat_24px.svg'},
-          {type: 'separator'},
-          {type: 'action', id: 'undo', label: 'Undo', icon: 'http://google.github.io/material-design-icons/content/svg/design/ic_undo_24px.svg'},
-          {type: 'action', id: 'redo', label: 'Redo', icon: 'http://google.github.io/material-design-icons/content/svg/design/ic_redo_24px.svg'},
-          {type: 'action', id: 'settings', label: 'Settings', icon: 'http://google.github.io/material-design-icons/action/svg/design/ic_settings_24px.svg'},
-        ]);
+        new SketchInput(document.getElementById('si-container'));
       });
     </script>
   </body>
