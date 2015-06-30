@@ -29,7 +29,7 @@ export default class StateManager {
       return JSON.stringify(response);
     }
     catch(error) {
-      this.messageBus.emit('warnUser', `An error occured while preparing your submission for saving; please contact your instructor. Details: ${error.stack}`);
+      this.messageBus.emit('warnUser', 'getStateError', error);
       throw error;
     }
   }
@@ -45,7 +45,7 @@ export default class StateManager {
       });
     }
     catch(error) {
-      this.messageBus.emit('warnUser', `An error occured while importing your saved data; please contact your instructor. Details: ${error.stack}`);
+      this.messageBus.emit('warnUser', 'setStateError', error);
       throw error;
     }
   }

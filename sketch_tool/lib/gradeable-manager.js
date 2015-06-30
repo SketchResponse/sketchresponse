@@ -28,7 +28,7 @@ export default class GradeableManager {
       return JSON.stringify(response);
     }
     catch(error) {
-      this.messageBus.emit('warnUser', `An error occured while preparing your submission for grading; please contact your instructor. Details: ${error.stack}`);
+      this.messageBus.emit('warnUser', 'getGradeableError', error);
       throw error;
     }
   }

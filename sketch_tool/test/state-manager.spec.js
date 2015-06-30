@@ -69,8 +69,9 @@ describe('The State Manager', () => {
         setState: state => {},
       });
 
-      messageBus.on('warnUser', message => {
-        expect(message).toMatch(/In callback/);
+      messageBus.on('warnUser', (type, error) => {
+        expect(type).toEqual('getStateError');
+        expect(error).toEqual(jasmine.any(Error));
       });
 
       expect(() => sm.getState()).toThrowError(Error, 'In callback');
@@ -125,8 +126,9 @@ describe('The State Manager', () => {
         setState: state => { throw new Error('In callback'); },
       });
 
-      messageBus.on('warnUser', message => {
-        expect(message).toMatch(/In callback/);
+      messageBus.on('warnUser', (type, error) => {
+        expect(type).toEqual('setStateError');
+        expect(error).toEqual(jasmine.any(Error));
       });
 
       expect(() => sm.setState(JSON.stringify(data))).toThrowError(Error, 'In callback');

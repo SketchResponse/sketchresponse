@@ -66,8 +66,9 @@ describe('The Gradeable Manager', () => {
         getGradeable: () => { throw new Error('In callback'); },
       });
 
-      messageBus.on('warnUser', message => {
-        expect(message).toMatch(/In callback/);
+      messageBus.on('warnUser', (type, error) => {
+        expect(type).toEqual('getGradeableError');
+        expect(error).toEqual(jasmine.any(Error));
       });
 
       expect(() => gm.getGradeable()).toThrowError(Error, 'In callback');
