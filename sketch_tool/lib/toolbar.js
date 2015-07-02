@@ -73,10 +73,8 @@ export default class Toolbar {
   }
 
   setState(state) {
-    this.activeItemID = state.activeItemID;
     this.selectedDropdownItemMap = state.selectedDropdownItemMap;
-
-    this.activateItem(this.activeItemID);
+    this.activateItem(state.activeItemID);
     this.render();
   }
 
