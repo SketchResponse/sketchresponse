@@ -8,6 +8,7 @@ import GradeableManager from './gradeable-manager';
 import StateManager from './state-manager';
 import Toolbar from './toolbar';
 
+import Point from './plugins/point';
 import Freeform from './plugins/freeform';
 import VerticalLine from './plugins/vertical-line';
 import HorizontalLine from './plugins/horizontal-line';
@@ -59,6 +60,7 @@ export default class SketchInput {
     new Freeform({id: 'g', label: 'Derivative g(x)', color: 'orange'}, this.app);
     new VerticalLine({id: 'va', label: 'Vertical asymptote', color: 'gray', dashStyle: 'dashdotted'}, this.app);
     new HorizontalLine({id: 'ha', label: 'Horizontal asymptote', color: 'gray', dashStyle: 'dashdotted'}, this.app);
+    new Point({id: 'cp', label: 'Critical point', color: 'black', size: 15}, this.app);
 
     // Helpers: TODO: move elsewhere...
     const {width, height, left, top} = this.app.svg.getBoundingClientRect();
