@@ -18,7 +18,7 @@ export default class StateManager {
 
   // TODO: Refactor into history manager
   addUndoPoint() {
-    this.undoStack.push(this.getState());
+    this.undoStack.push(this.getUndoState());
     this.redoStack = [];
   }
 
@@ -26,14 +26,32 @@ export default class StateManager {
   undo() {
     if (this.undoStack.length <= 1) return;  // Leave one item in the undo stack
     this.redoStack.push(this.undoStack.pop());
-    this.setState(this.undoStack[this.undoStack.length - 1]);
+    this.setUndoState(this.undoStack[this.undoStack.length - 1]);
   }
 
   // TODO: Refactor into history manager
   redo() {
     if (this.redoStack.length <= 0) return;
     this.undoStack.push(this.redoStack.pop());
-    this.setState(this.undoStack[this.undoStack.length - 1]);
+    this.setUndoState(this.undoStack[this.undoStack.length - 1]);
+  }
+
+  // TODO: refactor to delete somehow (plugin state vs. app state)
+  getUndoState() {
+    const state = {};
+    this.registry.forEach(entry => {
+      state[entry.id] = entry.getState();
+    });
+    delete state.$__toolbar;  // TODO: don't hard-code constants!
+    return JSON.stringify(state);
+  }
+
+  // TODO: refactor to delete somehow (plugin state vs. app state)
+  setUndoState(stateString) {
+    const state = JSON.parse(stateString);
+    this.registry.forEach(entry => {
+      if (state.hasOwnProperty(entry.id)) entry.setState(state[entry.id]);
+    });
   }
 
   getState() {
