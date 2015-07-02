@@ -69,7 +69,36 @@ export default class SketchInput {
     this.app.left = left + window.pageXOffset;  // Translate to page coordinates
     this.app.top = top + window.pageYOffset;
 
+    // TODO: factor into... something
+    this.app.registerToolbarItem({type: 'separator'});
+    this.app.registerToolbarItem({
+      type: 'button',
+      id: 'undo',
+      label: 'Undo',
+      icon: {
+        src: 'http://google.github.io/material-design-icons/content/svg/design/ic_undo_24px.svg',
+        alt: 'Undo',
+      },
+      action: () => this.messageBus.emit('undo'),
+    });
+    this.app.registerToolbarItem({
+      type: 'button',
+      id: 'redo',
+      type: 'button',
+      label: 'Undo',
+      icon: {
+        src: 'http://google.github.io/material-design-icons/content/svg/design/ic_redo_24px.svg',
+        alt: 'Redo',
+      },
+      action: () => this.messageBus.emit('redo'),
+    });
+
     this.messageBus.emit('activateItem', 'f');
+
+    this.messageBus.emit('addUndoPoint');
+    this.app.svg.addEventListener('pointerup', event => {
+      window.setTimeout(() => this.messageBus.emit('addUndoPoint'), 0);
+    });
 
     window.si = this; // For debugging
   }

@@ -114,7 +114,7 @@ export default class Toolbar {
       ['separator', 'button', 'splitbutton'].indexOf(item.type) >= 0);
 
     z.render(this.el,
-      z.each(renderableItems, ({type, id, icon, label, items}) => {
+      z.each(renderableItems, ({type, id, icon, label, items, action}) => {
         if (type === 'separator') return z('hr');
 
         if (type === 'splitbutton') {
@@ -134,7 +134,7 @@ export default class Toolbar {
 
           z.if(type === 'button',
             z('button', {
-                onclick: e => this.app.__messageBus.emit('activateItem', id),
+                onclick: e => action ? action() : this.app.__messageBus.emit('activateItem', id),
                 'aria-labelledby': `${id}-label ${id}-icon`,
               },
               renderIcon(`${id}-icon`, icon.src, icon.alt),

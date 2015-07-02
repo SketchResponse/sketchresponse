@@ -7,6 +7,33 @@ export default class StateManager {
 
     this.registry = [];
     messageBus.on('registerState', entry => this.registry.push(entry));
+
+    // TODO: Refactor into history manager
+    this.undoStack = [];
+    this.redoStack = [];
+    messageBus.on('addUndoPoint', this.addUndoPoint.bind(this));
+    messageBus.on('undo', this.undo.bind(this));
+    messageBus.on('redo', this.redo.bind(this));
+  }
+
+  // TODO: Refactor into history manager
+  addUndoPoint() {
+    this.undoStack.push(this.getState());
+    this.redoStack = [];
+  }
+
+  // TODO: Refactor into history manager
+  undo() {
+    if (this.undoStack.length <= 1) return;  // Leave one item in the undo stack
+    this.redoStack.push(this.undoStack.pop());
+    this.setState(this.undoStack[this.undoStack.length - 1]);
+  }
+
+  // TODO: Refactor into history manager
+  redo() {
+    if (this.redoStack.length <= 0) return;
+    this.undoStack.push(this.redoStack.pop());
+    this.setState(this.undoStack[this.undoStack.length - 1]);
   }
 
   getState() {
