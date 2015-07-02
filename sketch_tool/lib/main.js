@@ -8,6 +8,8 @@ import GradeableManager from './gradeable-manager';
 import StateManager from './state-manager';
 import Toolbar from './toolbar';
 
+import Freeform from './plugins/freeform';
+
 export default class SketchInput {
   constructor(el) {
     if (!(el instanceof HTMLElement)) throw new TypeError(
@@ -43,10 +45,25 @@ export default class SketchInput {
 
     this.app = {
       registerState: entry => this.messageBus.emit('registerState', entry),
+      registerToolbarItem: entry => this.messageBus.emit('registerToolbarItem', entry),
       __messageBus: this.messageBus,
+      svg: document.getElementById('si-canvas'),
     }
 
     this.toolbar = new Toolbar(this.config, this.app);
+
+    ////////////////////////////////////////
+    new Freeform({id: 'f', label: 'Function f(x)', color: 'blue'}, this.app);
+    new Freeform({id: 'g', label: 'Derivative g(x)', color: 'orange'}, this.app);
+
+    // Helpers: TODO: move elsewhere...
+    const {width, height, left, top} = this.app.svg.getBoundingClientRect();
+    this.app.width = width;
+    this.app.height = height;
+    this.app.left = left + window.pageXOffset;  // Translate to page coordinates
+    this.app.top = top + window.pageYOffset;
+
+    this.messageBus.emit('activateItem', 'f');
 
     window.si = this; // For debugging
   }
