@@ -236,7 +236,12 @@ function z(tagName, props, ...children) {
 }
 
 z.if = function z_if(condition, ...children) {
-  return condition ? new ZNodeCollection(...children) : new ZNodeCollection();
+  if (!condition) return new ZNodeCollection();
+
+  // resolve any callbacks to their corresponding child nodes:
+  return new ZNodeCollection(
+    ...children.map(child => (typeof child === 'function') ? child() : child)
+  );
 };
 
 z.each = function z_each(items=[], callback) {
