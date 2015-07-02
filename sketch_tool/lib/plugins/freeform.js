@@ -35,7 +35,7 @@ export default class Freeform {
       id: params.id,
       label: params.label,
       icon: {
-        src: 'http://google.github.io/material-design-icons/content/svg/design/ic_create_24px.svg',
+        src: './plugins/freeform/GOOGLE_ic_create_24px.svg',
         alt: 'Freeform tool',
       },
       activate: this.activate.bind(this),

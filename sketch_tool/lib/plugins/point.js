@@ -29,7 +29,7 @@ export default class Point {
       id: params.id,
       label: params.label,
       icon: {
-        src: 'http://google.github.io/material-design-icons/device/svg/design/ic_gps_fixed_24px.svg',
+        src: './plugins/point/GOOGLE_ic_gps_fixed_24px.svg',
         alt: 'Point tool',
       },
       activate: this.activate.bind(this),
