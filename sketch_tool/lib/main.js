@@ -77,7 +77,7 @@ export default class SketchInput {
       id: 'undo',
       label: 'Undo',
       icon: {
-        src: 'http://google.github.io/material-design-icons/content/svg/design/ic_undo_24px.svg',
+        src: './lib/GOOGLE_ic_undo_24px.svg',
         alt: 'Undo',
       },
       action: () => this.messageBus.emit('undo'),
@@ -88,7 +88,7 @@ export default class SketchInput {
       type: 'button',
       label: 'Redo',
       icon: {
-        src: 'http://google.github.io/material-design-icons/content/svg/design/ic_redo_24px.svg',
+        src: './lib/GOOGLE_ic_redo_24px.svg',
         alt: 'Redo',
       },
       action: () => this.messageBus.emit('redo'),
