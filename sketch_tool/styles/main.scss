@@ -3,6 +3,10 @@ body {
     padding: 15px;
 }
 
+.ticLabel {
+  user-select: none;
+}
+
 // CSS reset bound to our container
 #si-container, #si-container * {
   margin: 0;

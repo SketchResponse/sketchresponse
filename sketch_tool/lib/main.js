@@ -8,6 +8,7 @@ import GradeableManager from './gradeable-manager';
 import StateManager from './state-manager';
 import Toolbar from './toolbar';
 
+import Axes from './plugins/axes';
 import Point from './plugins/point';
 import Freeform from './plugins/freeform';
 import VerticalLine from './plugins/vertical-line';
@@ -69,6 +70,9 @@ export default class SketchInput {
     this.app.height = height;
     this.app.left = left + window.pageXOffset;  // Translate to page coordinates
     this.app.top = top + window.pageYOffset;
+
+    new Axes({xrange: [-4.5, 4.5], yrange: [-2.5, 2.5], xscale: 'linear', yscale: 'linear'}, this.app);
+
 
     // TODO: factor into... something
     this.app.registerToolbarItem({type: 'separator'});
