@@ -85,7 +85,7 @@ export default class SketchInput {
       type: 'button',
       id: 'redo',
       type: 'button',
-      label: 'Undo',
+      label: 'Redo',
       icon: {
         src: 'http://google.github.io/material-design-icons/content/svg/design/ic_redo_24px.svg',
         alt: 'Redo',
