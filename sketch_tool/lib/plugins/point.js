@@ -74,6 +74,7 @@ export default class Point {
     window.removeEventListener('pointercancel', this.drawEnd);
     this.state.push(this.currentPosition);
     this.currentPosition = undefined;
+    this.app.addUndoPoint();
     this.render();
   }
 

@@ -118,6 +118,7 @@ export default class Freeform {
       this.state.push(splineData);
     }
     this.pointsBeingDrawn = [];
+    this.app.addUndoPoint();
     this.render();
   }
 

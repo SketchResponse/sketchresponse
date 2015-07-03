@@ -49,6 +49,7 @@ export default class SketchInput {
     this.app = {
       registerState: entry => this.messageBus.emit('registerState', entry),
       registerToolbarItem: entry => this.messageBus.emit('registerToolbarItem', entry),
+      addUndoPoint: () => this.messageBus.emit('addUndoPoint'),
       __messageBus: this.messageBus,
       svg: document.getElementById('si-canvas'),
     }
@@ -96,9 +97,6 @@ export default class SketchInput {
     this.messageBus.emit('activateItem', 'f');
 
     this.messageBus.emit('addUndoPoint');
-    this.app.svg.addEventListener('pointerup', event => {
-      window.setTimeout(() => this.messageBus.emit('addUndoPoint'), 0);
-    });
 
     window.si = this; // For debugging
   }

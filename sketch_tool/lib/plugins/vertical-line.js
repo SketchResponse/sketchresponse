@@ -71,6 +71,7 @@ export default class VerticalLine {
     window.removeEventListener('pointercancel', this.drawEnd);
     this.state.push(this.currentLocation);
     this.currentLocation = undefined;
+    this.app.addUndoPoint();
     this.render();
   }
 
