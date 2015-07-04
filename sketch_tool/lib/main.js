@@ -88,7 +88,6 @@ export default class SketchInput {
     this.app.registerToolbarItem({
       type: 'button',
       id: 'redo',
-      type: 'button',
       label: 'Redo',
       icon: {
         src: './lib/GOOGLE_ic_redo_24px.svg',
