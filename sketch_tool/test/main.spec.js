@@ -5,6 +5,11 @@ describe('The SketchInput class', () => {
 
   beforeEach(() => {
     el = document.createElement('div');
+    document.body.appendChild(el);
+  });
+
+  afterEach(() => {
+    el.parentNode.removeChild(el);
   });
 
   it('should be instantiated with a target element', () => {

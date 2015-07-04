@@ -1,6 +1,4 @@
-import events from 'events';
-let EventEmitter = events.EventEmitter; // TODO: remove after upgrading to SystemJS > 0.17
-
+import { EventEmitter } from 'events';
 import GradeableManager from 'sketch2/gradeable-manager';
 
 describe('The Gradeable Manager', () => {

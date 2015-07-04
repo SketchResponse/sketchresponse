@@ -1,7 +1,6 @@
 import './polyfills';
 
-import events from 'events';
-let EventEmitter = events.EventEmitter; // TODO: remove after upgrading to SystemJS > 0.17
+import { EventEmitter } from 'events';
 
 import NotificationManager from './notification-manager';
 import GradeableManager from './gradeable-manager';
@@ -89,7 +88,6 @@ export default class SketchInput {
     this.app.registerToolbarItem({
       type: 'button',
       id: 'redo',
-      type: 'button',
       label: 'Redo',
       icon: {
         src: './lib/GOOGLE_ic_redo_24px.svg',
