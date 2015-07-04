@@ -17,12 +17,12 @@ System.config({
   "map": {
     "babel": "npm:babel-core@5.6.15",
     "babel-runtime": "npm:babel-runtime@5.6.15",
-    "classnames": "npm:classnames@2.1.1",
+    "classnames": "npm:classnames@2.1.3",
     "core-js": "npm:core-js@0.9.18",
-    "d3": "github:mbostock/d3@3.5.5",
+    "d3": "github:mbostock/d3@3.5.6",
     "dom-shims": "npm:dom-shims@0.1.4",
     "events": "github:jspm/nodelibs-events@0.1.1",
-    "jquery": "github:components/jquery@2.1.3",
+    "jquery": "github:components/jquery@2.1.4",
     "pepjs": "github:jquery/pep@0.3.0",
     "simulant": "npm:simulant@0.1.5",
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -43,7 +43,7 @@ System.config({
     "npm:babel-runtime@5.6.15": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:classnames@2.1.1": {
+    "npm:classnames@2.1.3": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
