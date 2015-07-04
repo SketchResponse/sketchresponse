@@ -53,9 +53,10 @@ export default class VerticalLine {
   }
 
   drawStart(event) {
-    window.addEventListener('pointermove', this.drawMove);
-    window.addEventListener('pointerup', this.drawEnd);
-    window.addEventListener('pointercancel', this.drawEnd);
+    this.app.svg.setPointerCapture(event.pointerId);
+    this.app.svg.addEventListener('pointermove', this.drawMove);
+    this.app.svg.addEventListener('pointerup', this.drawEnd);
+    this.app.svg.addEventListener('pointercancel', this.drawEnd);
     this.drawMove(event);
   }
 
@@ -66,9 +67,10 @@ export default class VerticalLine {
 
   // TODO: this adds state event when pointer was cancelled. add a drawCancel method?
   drawEnd(event) {
-    window.removeEventListener('pointermove', this.drawMove);
-    window.removeEventListener('pointerup', this.drawEnd);
-    window.removeEventListener('pointercancel', this.drawEnd);
+    this.app.svg.releasePointerCapture(event.pointerId);
+    this.app.svg.removeEventListener('pointermove', this.drawMove);
+    this.app.svg.removeEventListener('pointerup', this.drawEnd);
+    this.app.svg.removeEventListener('pointercancel', this.drawEnd);
     this.state.push(this.currentLocation);
     this.currentLocation = undefined;
     this.app.addUndoPoint();
