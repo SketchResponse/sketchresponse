@@ -64,7 +64,7 @@ export default class HorizontalLine {
     this.render();
   }
 
-  // TODO: this adds state event when pointer was cancelled. add a drawCancel method?
+  // TODO: this adds state even when pointer was cancelled. add a drawCancel method?
   drawEnd(event) {
     window.removeEventListener('pointermove', this.drawMove);
     window.removeEventListener('pointerup', this.drawEnd);
