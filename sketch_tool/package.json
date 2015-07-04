@@ -17,7 +17,7 @@
     "karma": "^0.12.37",
     "karma-cli": "0.1.0",
     "karma-jasmine": "^0.3.6",
-    "karma-jspm": "^1.1.5",
+    "karma-jspm": "git://github.com/Workiva/karma-jspm.git#master",
     "karma-phantomjs-launcher": "~0.2.0",
     "karma-phantomjs-shim": "~1.0.0",
     "phantomjs": "^1.9.17"
