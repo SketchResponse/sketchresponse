@@ -21,9 +21,13 @@ export default class SketchInput {
 
     this.el = el;
 
+    // NOTE: transparent rectangle seems necessary for touch events to work on iOS Safari;
+    // this may be related to https://bugs.webkit.org/show_bug.cgi?id=135628. TODO: remove when fixed.
     this.el.innerHTML = `
       <menu id="si-toolbar"></menu>
-      <svg id="si-canvas" touch-action="none"></svg>
+      <svg id="si-canvas" touch-action="none">
+        <rect width="100%" height="100%" fill="transparent" />
+      </svg>
     `;
 
     // Temporarily hard-code this stuff for testing:
