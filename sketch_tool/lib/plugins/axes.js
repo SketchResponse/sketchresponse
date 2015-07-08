@@ -84,7 +84,7 @@ export default class Axes {
             'text-anchor': 'middle',
             x: this.x.pixelVal(xval) + 0,
             y: this.y.pixelVal(0) + 15,
-            style: `fill: #333; font-family: sans-serif; font-size: 14px;`,
+            style: `fill: #333; font-size: 14px;`,
           }, String(xval))
         )
       ),
@@ -101,7 +101,7 @@ export default class Axes {
             'text-anchor': 'end',
             x: this.x.pixelVal(0) - 4,
             y: this.y.pixelVal(yval) + 5,
-            style: `fill: #333; font-family: sans-serif; font-size: 14px;`,
+            style: `fill: #333; font-size: 14px;`,
           }, String(yval))
         )
       ),
@@ -109,7 +109,7 @@ export default class Axes {
         'text-anchor': 'end',
         x: this.x.pixelVal(0) - 4,
         y: this.y.pixelVal(0) + 15,
-        style: `fill: #333; font-family: sans-serif; font-size: 14px;`,
+        style: `fill: #333; font-size: 14px;`,
       }, String(0)),
       z('line.xaxis', {
         x1: this.x.pixelMin,

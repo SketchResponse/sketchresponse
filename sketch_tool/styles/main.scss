@@ -30,6 +30,11 @@ body {
 #si-canvas {
   width: 100%;
   flex: 1;
+
+  text {
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
+  }
 }
 
 /******** Toolbar code begins here ********/
@@ -105,7 +110,8 @@ body {
   .label {
     padding: 0 5px;
     height: 32px;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
   }
 
   menu {
