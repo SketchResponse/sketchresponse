@@ -28,6 +28,9 @@ export default class SketchInput {
       <svg id="si-canvas" touch-action="none">
         <rect width="100%" height="100%" fill="transparent" />
       </svg>
+      <div id="si-attribution">
+        Made with &hearts; at MIT | <a id="si-show-help-legal" href="#">Help & Legal</a>
+      </div>
     `;
 
     // Temporarily hard-code this stuff for testing:
