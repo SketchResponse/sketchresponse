@@ -12,6 +12,9 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  button {
+    font: inherit;
+  }
   button:-moz-focus-inner {
     border: none;
   }
@@ -25,16 +28,15 @@ body {
   border-bottom: 1px solid hsla(0,0,0%,0.2);
   display: flex;
   flex-direction: column;
+
+  // Default font
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
 }
 
 #si-canvas {
   width: 100%;
   flex: 1;
-
-  text {
-    font-family: "Roboto", sans-serif;
-    font-size: 13px;
-  }
 }
 
 /******** Toolbar code begins here ********/
@@ -110,8 +112,6 @@ body {
   .label {
     padding: 0 5px;
     height: 32px;
-    font-family: "Roboto", sans-serif;
-    font-size: 13px;
   }
 
   menu {
