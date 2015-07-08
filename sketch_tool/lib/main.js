@@ -29,7 +29,7 @@ export default class SketchInput {
         <rect width="100%" height="100%" fill="transparent" />
       </svg>
       <div id="si-attribution">
-        Made with &hearts; at MIT | <a id="si-show-help-legal" href="#">Help & Legal</a>
+        Made with <span aria-label="love">&hearts;</span> at MIT | <a id="si-show-help-legal" href="#">Help & Legal</a>
       </div>
     `;
 
