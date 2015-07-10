@@ -11,8 +11,8 @@
     <script src="<@systemjs_path@>"></script>
     <script src="<@configjs_path@>"></script>
     <script>
-      System.import('lib/main').then(function(SketchInput) {
-        new SketchInput(document.getElementById('si-container'));
+      System.import('lib/main').then(function(main) {
+        var si = new main.default(document.getElementById('si-container'));
       });
     </script>
   </body>

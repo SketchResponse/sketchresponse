@@ -10,7 +10,8 @@ module.exports = gobble([
 
   gobble('lib')
     .transform('babel', {
-      "optional": ["runtime"]
+      optional: ['runtime'],
+      modules: 'system'
     })
     .moveTo('lib'),
 

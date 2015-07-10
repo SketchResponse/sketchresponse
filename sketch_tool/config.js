@@ -4,7 +4,8 @@ System.config({
   "babelOptions": {
     "optional": [
       "runtime"
-    ]
+    ],
+    "modules": "system"
   },
   "paths": {
     "sketch2/*": "lib/*",
