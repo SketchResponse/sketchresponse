@@ -106,8 +106,6 @@ export default class SketchInput {
     this.messageBus.emit('activateItem', 'f');
 
     this.messageBus.emit('addUndoPoint');
-
-    window.si = this; // For debugging
   }
 
   setState(state) { return this.stateManager.setState(state); }
