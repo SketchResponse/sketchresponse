@@ -15,9 +15,25 @@
     <script src="<@systemjs_path@>"></script>
     <script src="<@configjs_path@>"></script>
     <script>
+      var config, si;
+
+      try {
+        config = (window.location.hash === '#debug') ? {} :
+          JSON.parse(atob(
+            window.location.hash
+              .slice(1)
+              .replace(/-/g, '+')
+              .replace(/_/g, '/')
+          ));
+      }
+      catch (error) {
+        document.getElementById('si-placeholder').textContent =
+          'Could not parse problem configuration data';
+        throw error;
+      }
+
       System.import('lib/main').then(function(main) {
-        var si = new main.default(document.getElementById('si-container'));
-        window.si = si; // For debugging
+        si = new main.default(document.getElementById('si-container'), config);
       });
     </script>
   </body>

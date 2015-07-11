@@ -14,7 +14,7 @@ import VerticalLine from './plugins/vertical-line';
 import HorizontalLine from './plugins/horizontal-line';
 
 export default class SketchInput {
-  constructor(el) {
+  constructor(el, config) {
     if (!(el instanceof HTMLElement)) throw new TypeError(
       'The first argument to the SketchInput constructor must be an HTMLElement'
     );
