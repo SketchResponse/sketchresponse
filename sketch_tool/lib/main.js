@@ -7,12 +7,6 @@ import GradeableManager from './gradeable-manager';
 import StateManager from './state-manager';
 import Toolbar from './toolbar';
 
-import Axes from './plugins/axes';
-import Point from './plugins/point';
-import Freeform from './plugins/freeform';
-import VerticalLine from './plugins/vertical-line';
-import HorizontalLine from './plugins/horizontal-line';
-
 function createInheritingObjectTree(oldObj, parent=Object.prototype) {
   const typeString = Object.prototype.toString.call(oldObj);
 
@@ -44,6 +38,14 @@ export default class SketchInput {
     this.config = config;
     this.params = createInheritingObjectTree(config);
 
+    Promise.all(
+      this.params.plugins.map(pluginParams =>
+        System.import(`plugins/${pluginParams.name}`).then(module => module.default)
+      )
+    ).then(plugins => this.init(plugins));
+  }
+
+  init(plugins) {
     // NOTE: transparent rectangle seems necessary for touch events to work on iOS Safari;
     // this may be related to https://bugs.webkit.org/show_bug.cgi?id=135628. TODO: remove when fixed.
     this.el.innerHTML = `
@@ -84,13 +86,6 @@ export default class SketchInput {
 
     this.toolbar = new Toolbar(this.config, this.app);
 
-    ////////////////////////////////////////
-    new Freeform({id: 'f', label: 'Function f(x)', color: 'blue'}, this.app);
-    new Freeform({id: 'g', label: 'Derivative g(x)', color: 'orange'}, this.app);
-    new VerticalLine({id: 'va', label: 'Vertical asymptote', color: 'gray', dashStyle: 'dashdotted'}, this.app);
-    new HorizontalLine({id: 'ha', label: 'Horizontal asymptote', color: 'gray', dashStyle: 'dashdotted'}, this.app);
-    new Point({id: 'cp', label: 'Critical point', color: 'black', size: 15}, this.app);
-
     // Helpers: TODO: move elsewhere...
     const {width, height, left, top} = this.app.svg.getBoundingClientRect();
     this.app.width = width;
@@ -98,8 +93,10 @@ export default class SketchInput {
     this.app.left = left + window.pageXOffset;  // Translate to page coordinates
     this.app.top = top + window.pageYOffset;
 
-    new Axes({xrange: [-4.5, 4.5], yrange: [-2.5, 2.5], xscale: 'linear', yscale: 'linear'}, this.app);
 
+    plugins.forEach((Plugin, idx) => {
+      new Plugin(this.params.plugins[idx], this.app);
+    });
 
     // TODO: factor into... something
     this.app.registerToolbarItem({type: 'separator'});
