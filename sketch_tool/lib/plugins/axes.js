@@ -16,6 +16,19 @@ const DEFAULT_PARAMS = {
 
 // TODO: add ability to set width/height/top/left for multiple axes
 
+function generateUniformTicks(spacing, extent) {
+  const ticks = [];
+  let currentTick = Math.ceil(extent[0] / spacing) * spacing;
+
+  while (currentTick <= extent[1]) {
+    ticks.push(currentTick);
+    currentTick += spacing;
+  }
+
+  return ticks;
+}
+
+
 export default class Axes {
   constructor(params, app) {
     if (params.xscale !== 'linear' || params.yscale !== 'linear') {
@@ -30,8 +43,62 @@ export default class Axes {
     this.x = new LinearScale([0, params.width], params.xrange);
     this.y = new LinearScale([params.height, 0], params.yrange);
 
-    this.xMajor = [-4, -3, -2, -1, 1, 2, 3, 4];
-    this.yMajor = [-2, -1, 1, 2];
+    this.zeroLabel = params.zerolabel;
+
+    // Note: can't use `||` since 0 and null are falsy
+    this.xMajor = (params.xmajor !== undefined) ? params.xmajor
+      : (params.major !== undefined) ? params.major
+      : DEFAULT_PARAMS.xmajor;
+
+    if (this.xMajor === null) this.xMajor = [];
+    else if (this.xMajor === 0) this.xMajor = [0];  // Avoids an infinite loop with spacing = 0
+    else if (typeof this.xMajor === 'number') {
+      // xMajor is a tick spacing
+      this.xMajor = generateUniformTicks(this.xMajor, params.xrange);
+    }
+
+
+    this.xLabels = (params.xlabels !== undefined) ? params.xlabels
+      : (params.labels !== undefined) ? params.labels
+      : this.xMajor;
+
+    if (this.xLabels === null) this.xLabels = this.xMajor.map(() => '');
+
+    if (this.zeroLabel === undefined) {
+      this.zeroLabel = this.xLabels[this.xMajor.indexOf(0)];
+    }
+
+    this.xLabels = this.xLabels.filter((_, idx) => this.xMajor[idx] !== 0);
+    this.xMajor = this.xMajor.filter(val => val !== 0);
+
+
+    // Note: can't use `||` since 0 and null are falsy
+    this.yMajor = (params.ymajor !== undefined) ? params.ymajor
+      : (params.major !== undefined) ? params.major
+      : DEFAULT_PARAMS.ymajor;
+
+    if (this.yMajor === null) this.yMajor = [];
+    else if (this.yMajor === 0) this.yMajor = [0];  // Avoids an infinite loop with spacing = 0
+    else if (typeof this.yMajor === 'number') {
+      // yMajor is a tick spacing
+      this.yMajor = generateUniformTicks(this.yMajor, params.yrange);
+    }
+
+
+    this.yLabels = (params.ylabels !== undefined) ? params.ylabels
+      : (params.labels !== undefined) ? params.labels
+      : this.yMajor;
+
+    if (this.yLabels === null) this.yLabels = this.yMajor.map(() => '');
+
+    if (this.zeroLabel === undefined) {
+      this.zeroLabel = this.yLabels[this.yMajor.indexOf(0)];
+    }
+
+    this.yLabels = this.yLabels.filter((_, idx) => this.yMajor[idx] !== 0);
+    this.yMajor = this.yMajor.filter(val => val !== 0);
+
+
 
     this.xMinor = []
     this.yMinor = []
@@ -71,7 +138,7 @@ export default class Axes {
           style: 'stroke: #f6f6f6; stroke-width: 1px; shape-rendering: crispEdges;',
         })
       ),
-      z.each(this.xMajor, xval =>
+      z.each(this.xMajor, (xval, idx) =>
         z('g',
           z('line.xmajor', {
             x1: this.x.pixelVal(xval),
@@ -85,10 +152,10 @@ export default class Axes {
             x: this.x.pixelVal(xval) + 0,
             y: this.y.pixelVal(0) + 15,
             style: `fill: #333; font-size: 14px;`,
-          }, String(xval))
+          }, String(this.xLabels[idx]))
         )
       ),
-      z.each(this.yMajor, yval =>
+      z.each(this.yMajor, (yval, idx) =>
         z('g',
           z('line.ymajor', {
             x1: this.x.pixelMin,
@@ -102,15 +169,17 @@ export default class Axes {
             x: this.x.pixelVal(0) - 4,
             y: this.y.pixelVal(yval) + 5,
             style: `fill: #333; font-size: 14px;`,
-          }, String(yval))
+          }, String(this.yLabels[idx]))
         )
       ),
-      z('text.ticLabel', {
-        'text-anchor': 'end',
-        x: this.x.pixelVal(0) - 4,
-        y: this.y.pixelVal(0) + 15,
-        style: `fill: #333; font-size: 14px;`,
-      }, String(0)),
+      z.if(this.zeroLabel !== undefined && this.zeroLabel !== null, () =>
+        z('text.ticLabel', {
+          'text-anchor': 'end',
+          x: this.x.pixelVal(0) - 4,
+          y: this.y.pixelVal(0) + 15,
+          style: `fill: #333; font-size: 14px;`,
+        }, String(this.zeroLabel))
+      ),
       z('line.xaxis', {
         x1: this.x.pixelMin,
         x2: this.x.pixelMax,
