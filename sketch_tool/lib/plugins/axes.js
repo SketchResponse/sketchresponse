@@ -38,7 +38,7 @@ export default class Axes {
     this.params = params;
 
     this.el = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    app.svg.insertBefore(this.el, app.svg.firstChild);
+    app.svg.appendChild(this.el);
 
     this.x = new LinearScale([0, params.width], params.xrange);
     this.y = new LinearScale([params.height, 0], params.yrange);
