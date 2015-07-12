@@ -6,12 +6,10 @@ export const VERSION = '0.1';
 const ROUNDING_PRESCALER = 100;  // e.g., Math.round(value * ROUNDING_PRESCALER) / ROUNDING_PRESCALER
 
 const DEFAULT_PARAMS = {
-  xrange: [-5, 5],
-  yrange: [-3, 3],
-  xscale: 'linear',
-  yscale: 'linear',
   xmajor: 1,
   ymajor: 1,
+  xminor: 0.25,
+  yminor: 0.25,
 };
 
 // TODO: add ability to set width/height/top/left for multiple axes
@@ -99,21 +97,35 @@ export default class Axes {
     this.yMajor = this.yMajor.filter(val => val !== 0);
 
 
+    // Note: can't use `||` since 0 and null are falsy
+    this.xMinor = (params.xminor !== undefined) ? params.xminor
+      : (params.minor !== undefined) ? params.minor
+      : DEFAULT_PARAMS.xminor;
 
-    this.xMinor = []
-    this.yMinor = []
-
-    let x = params.xrange[0];
-    while (x <= params.xrange[1]) {
-      this.xMinor.push(x);
-      x += 0.25;
+    if (this.xMinor === null) this.xMinor = [];
+    else if (this.xMinor === 0) this.xMinor = [0];  // Avoids an infinite loop with spacing = 0
+    else if (typeof this.xMinor === 'number') {
+      // xMinor is a tick spacing
+      this.xMinor = generateUniformTicks(this.xMinor, params.xrange);
     }
 
-    let y = params.yrange[0];
-    while (y <= params.yrange[1]) {
-      this.yMinor.push(y);
-      y += 0.25;
+    this.xMinor = this.xMinor.filter(val => !(this.xMajor.indexOf(val) >= 0));  // Exclude values in xMajor
+
+
+    // Note: can't use `||` since 0 and null are falsy
+    this.yMinor = (params.yminor !== undefined) ? params.yminor
+      : (params.minor !== undefined) ? params.minor
+      : DEFAULT_PARAMS.yminor;
+
+    if (this.yMinor === null) this.yMinor = [];
+    else if (this.yMinor === 0) this.yMinor = [0];  // Avoids an infinite loop with spacing = 0
+    else if (typeof this.yMinor === 'number') {
+      // yMinor is a tick spacing
+      this.yMinor = generateUniformTicks(this.yMinor, params.yrange);
     }
+
+    this.yMinor = this.yMinor.filter(val => !(this.yMajor.indexOf(val) >= 0));  // Exclude values in xMajor
+
 
     this.render();
   }
