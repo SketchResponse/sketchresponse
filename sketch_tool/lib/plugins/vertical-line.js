@@ -61,7 +61,7 @@ export default class VerticalLine {
   }
 
   drawMove(event) {
-    this.currentLocation = clamp(event.pageX - this.app.left, 0, this.app.width);
+    this.currentLocation = clamp(event.pageX - this.params.left, 0, this.params.width);
     this.render();
   }
 
@@ -84,7 +84,7 @@ export default class VerticalLine {
           x1: location,
           y1: 0,
           x2: location,
-          y2: this.app.height,
+          y2: this.params.height,
           style: `
             stroke: ${this.params.color};
             stroke-width: 2px;
@@ -98,7 +98,7 @@ export default class VerticalLine {
           x1: this.currentLocation,
           y1: 0,
           x2: this.currentLocation,
-          y2: this.app.height,
+          y2: this.params.height,
           style: `
             stroke: ${this.params.color};
             stroke-width: 2px;

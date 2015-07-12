@@ -61,7 +61,7 @@ export default class HorizontalLine {
   }
 
   drawMove(event) {
-    this.currentLocation = clamp(event.pageY - this.app.top, 0, this.app.height);
+    this.currentLocation = clamp(event.pageY - this.params.top, 0, this.params.height);
     this.render();
   }
 
@@ -83,7 +83,7 @@ export default class HorizontalLine {
         z('line', {
           x1: 0,
           y1: location,
-          x2: this.app.width,
+          x2: this.params.width,
           y2: location,
           style: `
             stroke: ${this.params.color};
@@ -97,7 +97,7 @@ export default class HorizontalLine {
         z('line', {
           x1: 0,
           y1: this.currentLocation,
-          x2: this.app.width,
+          x2: this.params.width,
           y2: this.currentLocation,
           style: `
             stroke: ${this.params.color};

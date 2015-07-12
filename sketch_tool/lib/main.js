@@ -84,15 +84,15 @@ export default class SketchInput {
       svg: document.getElementById('si-canvas'),
     }
 
-    this.toolbar = new Toolbar(this.config, this.app);
+    Object.defineProperty(this.params, 'left', {
+      get: () => { return this.app.svg.getBoundingClientRect().left + window.pageXOffset; }
+    });
 
-    // Helpers: TODO: move elsewhere...
-    const {width, height, left, top} = this.app.svg.getBoundingClientRect();
-    this.app.width = width;
-    this.app.height = height;
-    this.app.left = left + window.pageXOffset;  // Translate to page coordinates
-    this.app.top = top + window.pageYOffset;
+    Object.defineProperty(this.params, 'top', {
+      get: () => { return this.app.svg.getBoundingClientRect().top + window.pageYOffset; }
+    });
 
+    this.toolbar = new Toolbar(this.params, this.app);
 
     plugins.forEach((Plugin, idx) => {
       new Plugin(this.params.plugins[idx], this.app);

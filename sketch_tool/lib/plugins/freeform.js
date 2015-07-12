@@ -64,16 +64,16 @@ export default class Freeform {
     this.app.svg.addEventListener('pointerup', this.drawEnd);
     this.app.svg.addEventListener('pointercancel', this.drawEnd);
     this.lastPoint = this.pointerPosition = {
-      x: event.pageX - this.app.left,
-      y: event.pageY - this.app.top,
+      x: event.pageX - this.params.left,
+      y: event.pageY - this.params.top,
     };
     this.pointsBeingDrawn.push(this.lastPoint);
   }
 
   drawMove(event) {
     this.pointerPosition = {
-      x: event.pageX - this.app.left,
-      y: event.pageY - this.app.top,
+      x: event.pageX - this.params.left,
+      y: event.pageY - this.params.top,
     };
 
     let pointerDistance = Math.sqrt(
