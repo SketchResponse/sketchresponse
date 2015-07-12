@@ -13,6 +13,27 @@ import Freeform from './plugins/freeform';
 import VerticalLine from './plugins/vertical-line';
 import HorizontalLine from './plugins/horizontal-line';
 
+function createInheritingObjectTree(oldObj, parent=Object.prototype) {
+  const typeString = Object.prototype.toString.call(oldObj);
+
+  if (typeString === '[object Object]') {
+    // oldObj is a plain(ish) javascript object; make an inheriting variant and recurse
+    const newObj = Object.create(parent);
+    Object.keys(oldObj).forEach(key => {
+      newObj[key] = createInheritingObjectTree(oldObj[key], newObj);
+    });
+    return newObj;
+  }
+  else if (typeString === '[object Array]') {
+    // oldObj is an array; map it to an array with items inheriting from last known parent object
+    return oldObj.map(item => createInheritingObjectTree(item, parent));
+  }
+  else {
+    // oldObj is something else (primitive, Map, etc.); copy it without any inheritance
+    return oldObj;
+  }
+}
+
 export default class SketchInput {
   constructor(el, config) {
     if (!(el instanceof HTMLElement)) throw new TypeError(
@@ -21,6 +42,7 @@ export default class SketchInput {
 
     this.el = el;
     this.config = config;
+    this.params = createInheritingObjectTree(config);
 
     // NOTE: transparent rectangle seems necessary for touch events to work on iOS Safari;
     // this may be related to https://bugs.webkit.org/show_bug.cgi?id=135628. TODO: remove when fixed.
@@ -34,8 +56,6 @@ export default class SketchInput {
       </div>
     `;
 
-    // Temporarily hard-code this stuff for testing:
-    this.config = {};
     this.messageBus = new EventEmitter();
 
     const oldEmit = this.messageBus.emit;
