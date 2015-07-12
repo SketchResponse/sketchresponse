@@ -21,13 +21,11 @@ body {
 }
 
 #si-container {
-  width: 750px;
-  height: 500px;
   position: relative;
   background: white;
   box-shadow: 0px 4px 10px 0px rgba(0,0,0,0.2);
   border-bottom: 1px solid hsla(0,0,0%,0.2);
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
 
   // Default font
@@ -36,8 +34,6 @@ body {
 }
 
 #si-canvas {
-  width: 100%;
-  flex: 1;
 }
 
 #si-placeholder {
