@@ -8,16 +8,17 @@ module.exports = gobble([
     })
     .transform('autoprefixer'),
 
-  gobble('lib')
+  gobble([
+    gobble('lib').exclude('plugins/**/*').moveTo('lib'),
+    gobble('lib/plugins').moveTo('plugins'),
+  ])
     .transform('babel', {
       optional: ['runtime'],
       modules: 'system'
-    })
-    .moveTo('lib'),
+    }),
 
   gobble('config.js'),
   gobble('jspm_packages').moveTo('jspm_packages'),
-  gobble('lib/plugins').moveTo('plugins'),
   gobble('fonts').moveTo('fonts'),
 
   gobble('html')
