@@ -15,10 +15,28 @@
     <script src="<@systemjs_path@>"></script>
     <script src="<@configjs_path@>"></script>
     <script>
+      var debugConfig = {
+        width: 750,
+        height: 420,
+        xrange: [-4.5, 4.5],
+        yrange: [-2.5, 2.5],
+        xscale: 'linear',
+        yscale: 'linear',
+        plugins: [
+          {name: 'axes'},
+          {name: 'freeform', id: 'f', label: 'Function f(x)', color: 'blue'},
+          {name: 'freeform', id: 'g', label: 'Derivative g(x)', color: 'orange'},
+          {name: 'vertical-line', id: 'va', label: 'Vertical asymptote', color: 'gray', dashStyle: 'dashdotted'},
+          {name: 'horizontal-line', id: 'ha', label: 'Horizontal asymptote', color: 'gray', dashStyle: 'dashdotted'},
+          {name: 'point', id: 'cp', label: 'Critical point', color: 'black', size: 15},
+        ],
+      };
+    </script>
+    <script>
       var config, si;
 
       try {
-        config = (window.location.hash === '#debug') ? {} :
+        config = (window.location.hash === '#debug') ? debugConfig :
           JSON.parse(atob(
             window.location.hash
               .slice(1)
