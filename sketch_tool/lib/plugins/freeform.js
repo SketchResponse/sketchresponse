@@ -59,6 +59,9 @@ export default class Freeform {
   }
 
   drawStart(event) {
+    if (this.currentPointerId) return;
+
+    this.currentPointerId = event.pointerId;
     this.app.svg.setPointerCapture(event.pointerId);
     this.app.svg.addEventListener('pointermove', this.drawMove);
     this.app.svg.addEventListener('pointerup', this.drawEnd);
@@ -71,6 +74,8 @@ export default class Freeform {
   }
 
   drawMove(event) {
+    if (event.pointerId !== this.currentPointerId) return;
+
     this.pointerPosition = {
       x: event.pageX - this.params.left,
       y: event.pageY - this.params.top,
@@ -104,6 +109,9 @@ export default class Freeform {
   }
 
   drawEnd(event) {
+    if (event.pointerId !== this.currentPointerId) return;
+
+    this.currentPointerId = null;  // TODO: null, or delete?
     this.app.svg.removeEventListener('pointermove', this.drawMove);
     this.app.svg.removeEventListener('pointerup', this.drawEnd);
     this.app.svg.removeEventListener('pointercancel', this.drawEnd);
