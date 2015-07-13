@@ -60,18 +60,6 @@ export default class SketchInput {
 
     this.messageBus = new EventEmitter();
 
-    const oldEmit = this.messageBus.emit;
-    this.messageBus.emit = function(...args) {
-      console.log('emit: ', ...args);
-      oldEmit.apply(this.messageBus, args);
-    }
-
-    const oldOn = this.messageBus.on;
-    this.messageBus.on = function(...args) {
-      console.log('on: ', ...args);
-      oldOn.apply(this.messageBus, args);
-    }
-
     this.notificationManager = new NotificationManager(this.config, this.messageBus);
     this.gradeableManager = new GradeableManager(this.config, this.messageBus);
     this.stateManager = new StateManager(this.config, this.messageBus);
