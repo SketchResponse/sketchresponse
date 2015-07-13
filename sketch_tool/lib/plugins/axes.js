@@ -12,6 +12,11 @@ const DEFAULT_PARAMS = {
   yminor: 0.25,
 };
 
+const DEFAULTS = {
+  targetXMajorTicks: 7,
+  targetMinorMajorTickRatio: 4,
+};
+
 // TODO: add ability to set width/height/top/left for multiple axes
 
 function generateUniformTicks(spacing, extent) {
@@ -37,6 +42,26 @@ function generateUniformTicks(spacing, extent) {
 }
 
 
+// Rounds a number to the geometrically-nearest value in the 1-2-5 series (preserving sign)
+// Returns 0 if the input is 0.
+// The general idea for this alorithm was taken from d3.js's linear scales
+// TODO: is this close enough to require a license mention?
+function nearestNiceNumber(number) {
+  if (number === 0) return 0;
+
+  const nextLowestPowerOf10 = Math.sign(number) * Math.pow(10, Math.floor(
+    Math.log(Math.abs(number)) / Math.LN10
+  ));
+
+  const errorFactor = number / nextLowestPowerOf10;
+
+  if (errorFactor < 1.414) return nextLowestPowerOf10;
+  else if (errorFactor < 3.162) return 2 * nextLowestPowerOf10;
+  else if (errorFactor < 7.071) return 5 * nextLowestPowerOf10;
+  else return 10 * nextLowestPowerOf10;
+}
+
+
 export default class Axes {
   constructor(params, app) {
     if (params.xscale !== 'linear' || params.yscale !== 'linear') {
@@ -53,16 +78,36 @@ export default class Axes {
 
     this.zeroLabel = params.zerolabel;
 
+    const approxMajorPixelSpacing = params.width / DEFAULTS.targetXMajorTicks;
+
+    const defaultMajorXSpacing = nearestNiceNumber(Math.abs(
+      this.x.mathDelta / this.x.pixelDelta * approxMajorPixelSpacing));
+
+    let defaultMinorXSpacing = nearestNiceNumber(
+      defaultMajorXSpacing / DEFAULTS.targetMinorMajorTickRatio);
+
+    const defaultMajorYSpacing = nearestNiceNumber(Math.abs(
+      this.y.mathDelta / this.y.pixelDelta * approxMajorPixelSpacing));
+
+    let defaultMinorYSpacing = nearestNiceNumber(
+      defaultMajorYSpacing / DEFAULTS.targetMinorMajorTickRatio);
+
+
     // Note: can't use `||` since 0 and null are falsy
     this.xMajor = (params.xmajor !== undefined) ? params.xmajor
       : (params.major !== undefined) ? params.major
-      : DEFAULT_PARAMS.xmajor;
+      : defaultMajorXSpacing;
 
     if (this.xMajor === null) this.xMajor = [];
     else if (this.xMajor === 0) this.xMajor = [0];  // Avoids an infinite loop with spacing = 0
     else if (typeof this.xMajor === 'number') {
       // xMajor is a tick spacing
+      defaultMinorXSpacing = nearestNiceNumber(this.xMajor / DEFAULTS.targetMinorMajorTickRatio);
       this.xMajor = generateUniformTicks(this.xMajor, params.xrange);
+    }
+    else {
+      // Custom tick array; disable default minor ticks in this case
+      defaultMinorXSpacing = null;
     }
 
 
@@ -83,13 +128,18 @@ export default class Axes {
     // Note: can't use `||` since 0 and null are falsy
     this.yMajor = (params.ymajor !== undefined) ? params.ymajor
       : (params.major !== undefined) ? params.major
-      : DEFAULT_PARAMS.ymajor;
+      : defaultMajorYSpacing;
 
     if (this.yMajor === null) this.yMajor = [];
     else if (this.yMajor === 0) this.yMajor = [0];  // Avoids an infinite loop with spacing = 0
     else if (typeof this.yMajor === 'number') {
       // yMajor is a tick spacing
+      defaultMinorYSpacing = nearestNiceNumber(this.yMajor / DEFAULTS.targetMinorMajorTickRatio);
       this.yMajor = generateUniformTicks(this.yMajor, params.yrange);
+    }
+    else {
+      // Custom tick array; disable default minor ticks in this case
+      defaultMinorYSpacing = null;
     }
 
 
@@ -110,7 +160,7 @@ export default class Axes {
     // Note: can't use `||` since 0 and null are falsy
     this.xMinor = (params.xminor !== undefined) ? params.xminor
       : (params.minor !== undefined) ? params.minor
-      : DEFAULT_PARAMS.xminor;
+      : defaultMinorXSpacing;
 
     if (this.xMinor === null) this.xMinor = [];
     else if (this.xMinor === 0) this.xMinor = [0];  // Avoids an infinite loop with spacing = 0
@@ -125,7 +175,7 @@ export default class Axes {
     // Note: can't use `||` since 0 and null are falsy
     this.yMinor = (params.yminor !== undefined) ? params.yminor
       : (params.minor !== undefined) ? params.minor
-      : DEFAULT_PARAMS.yminor;
+      : defaultMinorYSpacing;
 
     if (this.yMinor === null) this.yMinor = [];
     else if (this.yMinor === 0) this.yMinor = [0];  // Avoids an infinite loop with spacing = 0
