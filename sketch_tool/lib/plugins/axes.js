@@ -15,12 +15,22 @@ const DEFAULT_PARAMS = {
 // TODO: add ability to set width/height/top/left for multiple axes
 
 function generateUniformTicks(spacing, extent) {
+  spacing = Math.abs(spacing);  // Being defensive
+
   const ticks = [];
   let currentTick = Math.ceil(extent[0] / spacing) * spacing;
 
-  while (currentTick <= extent[1]) {
-    ticks.push(currentTick);
-    currentTick += spacing;
+  if (extent[0] < extent[1]) {
+    while (currentTick <= extent[1]) {
+      ticks.push(currentTick);
+      currentTick += spacing;
+    }
+  }
+  else {
+    while (currentTick >= extent[1]) {
+      ticks.push(currentTick);
+      currentTick -= spacing;
+    }
   }
 
   return ticks;
