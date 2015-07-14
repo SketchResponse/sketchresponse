@@ -109,7 +109,10 @@ export default class SketchInput {
       action: () => this.messageBus.emit('redo'),
     });
 
-    this.messageBus.emit('activateItem', 'f');
+
+    this.messageBus.emit('activateItem',
+      this.params.plugins.find(pluginSpec => pluginSpec.id !== undefined).id
+    );
 
     this.messageBus.emit('addUndoPoint');
 
