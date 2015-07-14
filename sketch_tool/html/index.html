@@ -16,61 +16,79 @@
     <script src="<@configjs_path@>"></script>
     <script src="vendor/jschannel.js"></script>
     <script>
-      var debugConfig = {
-        width: 750,
-        height: 420,
-        xrange: [-4.5, 4.5],
-        yrange: [-2.5, 2.5],
-        xscale: 'linear',
-        yscale: 'linear',
-        plugins: [
-          {name: 'axes'},
-          {name: 'freeform', id: 'f', label: 'Function f(x)', color: 'blue'},
-          {name: 'freeform', id: 'g', label: 'Derivative g(x)', color: 'orange'},
-          {name: 'vertical-line', id: 'va', label: 'Vertical asymptote', color: 'gray', dashStyle: 'dashdotted'},
-          {name: 'horizontal-line', id: 'ha', label: 'Horizontal asymptote', color: 'gray', dashStyle: 'dashdotted'},
-          {name: 'point', id: 'cp', label: 'Critical point', color: 'black', size: 15},
-        ],
-      };
-    </script>
-    <script>
-      var config, si;
+      (function() {
+        // Globals: config, si, setState, getState, getGrade;
+        var channel, __state, debugConfig;
 
-      try {
-        config = (window.location.hash === '#debug') ? debugConfig :
-          JSON.parse(atob(
-            window.location.hash
-              .slice(1)
-              .replace(/-/g, '+')
-              .replace(/_/g, '/')
-          ));
-      }
-      catch (error) {
-        document.getElementById('si-placeholder').textContent =
-          'Could not parse problem configuration data';
-        throw error;
-      }
-
-      System.import('lib/main').then(function(main) {
-        si = new main.default(document.getElementById('si-container'), config);
-        window.setState = si.setState.bind(si);
-        window.getState = si.getState.bind(si);
-        window.getGrade = si.getGradeable.bind(si);
+        // A surrogate setState function that can be called before SketchInput has loaded
+        window.setState = function setState(state) {
+          if (window.si && typeof window.si.setState === 'function') si.setState(state);
+          else __state = state;
+        }
 
         if (window !== window.parent) {
           // We're inside a frame; initialize a new JSChannel
-          Channel.build({
+          channel = Channel.build({
             window: window.parent,
             origin: '*',
             scope: 'JSInput'
-          })
-            .bind('setState', function channelSetState(transaction, state) {
-              return window.setState(state);
-            })
-            .bind('getState', window.getState)
-            .bind('getGrade', window.getGrade);
+          });
+
+          // Bind the channel setState immediately so we don't keep the host window waiting
+          channel.bind('setState', function channelSetState(transaction, state) {
+            return window.setState(state);
+          });
         }
-      });
+
+        debugConfig = {
+          width: 750,
+          height: 420,
+          xrange: [-4.5, 4.5],
+          yrange: [-2.5, 2.5],
+          xscale: 'linear',
+          yscale: 'linear',
+          plugins: [
+            {name: 'axes'},
+            {name: 'freeform', id: 'f', label: 'Function f(x)', color: 'blue'},
+            {name: 'freeform', id: 'g', label: 'Derivative g(x)', color: 'orange'},
+            {name: 'vertical-line', id: 'va', label: 'Vertical asymptote', color: 'gray', dashStyle: 'dashdotted'},
+            {name: 'horizontal-line', id: 'ha', label: 'Horizontal asymptote', color: 'gray', dashStyle: 'dashdotted'},
+            {name: 'point', id: 'cp', label: 'Critical point', color: 'black', size: 15},
+          ],
+        };
+
+        try {
+          window.config = (window.location.hash === '#debug') ? debugConfig :
+            JSON.parse(atob(
+              window.location.hash
+                .slice(1)
+                .replace(/-/g, '+')
+                .replace(/_/g, '/')
+            ));
+        }
+        catch (error) {
+          document.getElementById('si-placeholder').textContent =
+            'Could not parse problem configuration data';
+          throw error;
+        }
+
+        System.import('lib/main').then(function(main) {
+          window.si = new main.default(document.getElementById('si-container'), config);
+
+          window.si.messageBus.on('ready', function() {
+            if (__state) window.si.setState(__state);
+          });
+
+          window.getState = si.getState.bind(si);
+          window.getGrade = si.getGradeable.bind(si);
+
+          if (channel) {
+            channel
+              .bind('getState', window.getState)
+              .bind('getGrade', window.getGrade);
+          }
+        });
+      }());
     </script>
   </body>
 </html>

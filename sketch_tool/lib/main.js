@@ -37,6 +37,7 @@ export default class SketchInput {
     this.el = el;
     this.config = config;
     this.params = createInheritingObjectTree(config);
+    this.messageBus = new EventEmitter();
 
     Promise.all(
       this.params.plugins.map(pluginParams =>
@@ -57,8 +58,6 @@ export default class SketchInput {
         Made with <span aria-label="love">&hearts;</span> at MIT | <a id="si-show-help-legal" href="#">Help & Legal</a>
       </div>
     `;
-
-    this.messageBus = new EventEmitter();
 
     this.notificationManager = new NotificationManager(this.config, this.messageBus);
     this.gradeableManager = new GradeableManager(this.config, this.messageBus);
