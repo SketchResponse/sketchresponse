@@ -12,7 +12,7 @@ export default class GradeableManager {
   getGradeable() {
     try {
       const response = {
-        apiVersion: VERSION,
+        apiVersion: VERSION,  // TODO: Important: better version handling
         meta: {
           config: this.config,
           dataVersions: {},
@@ -22,7 +22,7 @@ export default class GradeableManager {
 
       this.registry.forEach(entry => {
         response.data[entry.id] = entry.getGradeable();
-        response.meta.dataVersions[entry.id] = entry.dataVersion;
+        response.meta.dataVersions[entry.id] = entry.version;  // TODO: versioning
       });
 
       return JSON.stringify(response);

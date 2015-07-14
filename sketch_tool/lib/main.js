@@ -66,6 +66,7 @@ export default class SketchInput {
 
     this.app = {
       registerState: entry => this.messageBus.emit('registerState', entry),
+      registerGradeable: entry => this.messageBus.emit('registerGradeable', entry),
       registerToolbarItem: entry => this.messageBus.emit('registerToolbarItem', entry),
       addUndoPoint: () => this.messageBus.emit('addUndoPoint'),
       __messageBus: this.messageBus,

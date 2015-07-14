@@ -1,6 +1,7 @@
 import z from 'sketch2/zdom';
 
 export const VERSION = '0.1';
+export const GRADEABLE_VERSION = '0.1';
 
 // TODO: move some of these into 'params.defaults'?
 const ROUNDING_PRESCALER = 100;  // e.g., Math.round(value * ROUNDING_PRESCALER) / ROUNDING_PRESCALER
@@ -24,6 +25,12 @@ export default class VerticalLine {
       setState: state => { this.state = state; this.render(); },
     });
 
+    app.registerGradeable({
+      id: params.id,
+      version: GRADEABLE_VERSION,
+      getGradeable: () => this.getGradeable(),
+    });
+
     app.registerToolbarItem({
       type: 'button',
       id: params.id,
@@ -40,6 +47,21 @@ export default class VerticalLine {
   bindEventHandlers() {
     ['drawStart', 'drawMove', 'drawEnd']
       .forEach(name => this[name] = this[name].bind(this));
+  }
+
+  getGradeable() {
+    const yvals = [
+      0,
+      Math.round(this.params.height / 3),
+      Math.round(2 * this.params.height / 3),
+      this.params.height,
+    ];
+
+    return this.state.map(x => {
+      return {
+        spline: yvals.map(y => [x, y]),
+      };
+    });
   }
 
   activate() {

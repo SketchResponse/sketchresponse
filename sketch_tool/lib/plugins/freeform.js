@@ -2,6 +2,7 @@ import z from 'sketch2/zdom';
 import fitCurve from './freeform/fitcurve';
 
 export const VERSION = '0.1';
+export const GRADEABLE_VERSION = '0.1';
 
 // TODO: move some of these into 'params.defaults'?
 const FIT_TOLERANCE = 5;
@@ -30,6 +31,12 @@ export default class Freeform {
       setState: state => { this.state = state; this.render(); },
     });
 
+    app.registerGradeable({
+      id: params.id,
+      version: GRADEABLE_VERSION,
+      getGradeable: () => this.getGradeable(),
+    });
+
     app.registerToolbarItem({
       type: 'button',
       id: params.id,
@@ -46,6 +53,14 @@ export default class Freeform {
   bindEventHandlers() {
     ['drawStart', 'drawMove', 'drawEnd']
       .forEach(name => this[name] = this[name].bind(this));
+  }
+
+  getGradeable() {
+    return this.state.map(spline => {
+      return {
+        spline: spline.map(point => [point.x, point.y])
+      };
+    });
   }
 
   activate() {
