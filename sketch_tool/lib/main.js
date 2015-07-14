@@ -115,10 +115,10 @@ export default class SketchInput {
     );
 
     this.messageBus.emit('addUndoPoint');
-
-    // Bind external interface here since we know all plugins are now loaded
-    this.setState = this.stateManager.setState.bind(this.stateManager);
-    this.getState = this.stateManager.getState.bind(this.stateManager);
-    this.getGradeable = this.gradeableManager.getGradeable.bind(this.gradeableManager);
+    this.messageBus.emit('ready');
   }
+
+  setState(state) { return this.stateManager.setState(state); }
+  getState() { return this.stateManager.getState(); }
+  getGradeable() { return this.gradeableManager.getGradeable(); }
 }

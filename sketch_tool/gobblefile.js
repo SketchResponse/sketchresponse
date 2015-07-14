@@ -20,6 +20,7 @@ module.exports = gobble([
   gobble('config.js'),
   gobble('jspm_packages').moveTo('jspm_packages'),
   gobble('fonts').moveTo('fonts'),
+  gobble('lib/vendor').moveTo('vendor'),
 
   gobble('html')
     .transform('replace', {
