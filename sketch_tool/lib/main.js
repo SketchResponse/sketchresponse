@@ -122,6 +122,7 @@ export default class SketchInput {
     // Global keyboard shortcuts (TODO: move elsewhere?)
     Mousetrap.bind('mod+z', event => { this.messageBus.emit('undo'); return false; });
     Mousetrap.bind(['mod+y', 'mod+shift+z'], event => { this.messageBus.emit('redo'); return false; });
+    document.addEventListener('mouseenter', event => window.focus());  // So we get keyboard events. Rethink this?
 
     this.messageBus.emit('addUndoPoint');
     this.messageBus.emit('ready');
