@@ -1,6 +1,7 @@
 import './polyfills';
 
 import { EventEmitter } from 'events';
+import Mousetrap from 'mousetrap';
 
 import NotificationManager from './notification-manager';
 import GradeableManager from './gradeable-manager';
@@ -117,6 +118,10 @@ export default class SketchInput {
     this.messageBus.emit('activateItem',
       this.params.plugins.find(pluginSpec => pluginSpec.id !== undefined).id
     );
+
+    // Global keyboard shortcuts (TODO: move elsewhere?)
+    Mousetrap.bind('mod+z', event => { this.messageBus.emit('undo'); return false; });
+    Mousetrap.bind(['mod+y', 'mod+shift+z'], event => { this.messageBus.emit('redo'); return false; });
 
     this.messageBus.emit('addUndoPoint');
     this.messageBus.emit('ready');

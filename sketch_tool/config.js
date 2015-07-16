@@ -24,6 +24,7 @@ System.config({
     "dom-shims": "npm:dom-shims@0.1.4",
     "events": "github:jspm/nodelibs-events@0.1.1",
     "jquery": "github:components/jquery@2.1.4",
+    "mousetrap": "npm:mousetrap@1.5.3",
     "pepjs": "github:jquery/pep@0.3.0",
     "simulant": "npm:simulant@0.1.5",
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -56,6 +57,9 @@ System.config({
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:mousetrap@1.5.3": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:util@0.10.3": {
       "inherits": "npm:inherits@2.0.1",
