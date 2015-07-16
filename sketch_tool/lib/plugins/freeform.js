@@ -141,9 +141,9 @@ export default class Freeform {
         point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
       });
       this.state.push(splineData);
+      this.app.addUndoPoint();
     }
     this.pointsBeingDrawn = [];
-    this.app.addUndoPoint();
     this.render();
   }
 
