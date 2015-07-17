@@ -18,11 +18,11 @@
     <script>
       (function() {
         // Globals: config, si, setState, getState, getGrade;
-        var channel, __state, debugConfig;
+        var channel, __state, debugConfig, isLoaded;
 
         // A surrogate setState function that can be called before SketchInput has loaded
         window.setState = function setState(state) {
-          if (window.si && typeof window.si.setState === 'function') si.setState(state);
+          if (isLoaded) si.setState(state);
           else __state = state;
         }
 
@@ -76,6 +76,7 @@
           window.si = new main.default(document.getElementById('si-container'), config);
 
           window.si.messageBus.on('ready', function() {
+            isLoaded = true;
             if (__state) window.si.setState(__state);
           });
 
