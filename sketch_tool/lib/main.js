@@ -124,6 +124,15 @@ export default class SketchInput {
     Mousetrap.bind(['mod+y', 'mod+shift+z'], event => { this.messageBus.emit('redo'); return false; });
     document.addEventListener('mouseenter', event => window.focus());  // So we get keyboard events. Rethink this?
 
+    // Allow multitouch zoom on SVG element (TODO: move elsewhere?)
+    this.app.svg.addEventListener('touchstart', event => {
+      if (event.touches.length > 1) this.app.svg.setAttribute('touch-action', 'auto');
+    }, true);
+
+    this.app.svg.addEventListener('touchend', event => {
+      if (event.touches.length == 0) this.app.svg.setAttribute('touch-action', 'none');
+    }, true);
+
     this.messageBus.emit('addUndoPoint');
     this.messageBus.emit('ready');
   }
