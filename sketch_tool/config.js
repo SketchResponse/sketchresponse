@@ -16,8 +16,8 @@ System.config({
 
 System.config({
   "map": {
-    "babel": "npm:babel-core@5.6.15",
-    "babel-runtime": "npm:babel-runtime@5.6.15",
+    "babel": "npm:babel-core@5.8.3",
+    "babel-runtime": "npm:babel-runtime@5.8.3",
     "classnames": "npm:classnames@2.1.3",
     "core-js": "npm:core-js@0.9.18",
     "d3": "github:mbostock/d3@3.5.6",
@@ -42,7 +42,7 @@ System.config({
     "npm:assert@1.3.0": {
       "util": "npm:util@0.10.3"
     },
-    "npm:babel-runtime@5.6.15": {
+    "npm:babel-runtime@5.8.3": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:classnames@2.1.3": {
