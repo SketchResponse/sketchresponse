@@ -249,17 +249,27 @@ z.each = function z_each(items=[], callback) {
 };
 
 z.render = function z_render(targetEl, ...children) {
-  const zRoot = new ZNodeCollection(...children);
+  if (!targetEl.__zPending__) {
+    // Note: RAF is async, so __zPending__ is set below before renderCallback executes
+    window.requestAnimationFrame(renderCallback.bind(null, targetEl));
+  }
+
+  targetEl.__zPending__ = new ZNodeCollection(...children);
+};
+
+function renderCallback(targetEl) {
   if (!targetEl.__zRoot__) {
     // mount
-    zRoot.mount(targetEl);
-    targetEl.__zRoot__ = zRoot;
+    targetEl.__zRoot__ = targetEl.__zPending__;
+    targetEl.__zRoot__.mount(targetEl);
   }
   else {
     // update
-    targetEl.__zRoot__.update(zRoot);
+    targetEl.__zRoot__.update(targetEl.__zPending__);
   }
-};
+
+  targetEl.__zPending__ = null;
+}
 
 export default z;
 export { namespaces };  // allow external access (including modification)
