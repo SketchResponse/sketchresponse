@@ -35,6 +35,7 @@
       "dom-shims": "npm:dom-shims@^0.1.4",
       "events": "github:jspm/nodelibs-events@^0.1.1",
       "jquery": "github:components/jquery@^2.1.3",
+      "jsondiffpatch": "npm:jsondiffpatch@^0.1.33",
       "mousetrap": "npm:mousetrap@^1.5.3",
       "pepjs": "github:jquery/pep@^0.3.0",
       "simulant": "npm:simulant@^0.1.5"

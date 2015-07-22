@@ -63,6 +63,8 @@ export default class StateManager {
         // TODO: plugin version checking?
         if (state.data.hasOwnProperty(entry.id)) entry.setState(state.data[entry.id]);
       });
+
+      this.messageBus.emit('stateSet');
     }
     catch(error) {
       this.messageBus.emit('warnUser', 'setStateError', error);

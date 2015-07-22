@@ -136,7 +136,6 @@ export default class SketchInput {
       if (event.touches.length == 0) this.app.svg.setAttribute('touch-action', 'none');
     }, true);
 
-    this.messageBus.emit('addUndoPoint');
     this.messageBus.emit('ready');
   }
 
