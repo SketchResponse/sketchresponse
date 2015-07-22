@@ -6,6 +6,8 @@ import Mousetrap from 'mousetrap';
 import NotificationManager from './notification-manager';
 import GradeableManager from './gradeable-manager';
 import StateManager from './state-manager';
+import HistoryManager from './history-manager';
+
 import Toolbar from './toolbar';
 
 function createInheritingObjectTree(oldObj, parent=Object.prototype) {
@@ -63,6 +65,7 @@ export default class SketchInput {
     this.notificationManager = new NotificationManager(this.config, this.messageBus);
     this.gradeableManager = new GradeableManager(this.config, this.messageBus);
     this.stateManager = new StateManager(this.config, this.messageBus);
+    this.historyManager = new HistoryManager(this.config, this.messageBus, this.stateManager);
 
     this.app = {
       registerState: entry => this.messageBus.emit('registerState', entry),
