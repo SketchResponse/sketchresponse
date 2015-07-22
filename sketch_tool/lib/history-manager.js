@@ -21,12 +21,12 @@ export default class HistoryManager {
       id: '$__history',
       dataVersion: VERSION,
       getState: () => ({
-        undoStack: this.undoStack.slice(-5),  // Only keep the 5 most recent undos
-        redoStack: this.redoStack.slice(-3),  // Only keep the 3 most recent redos
+        undoStack: this.undoStack,
+        redoStack: this.redoStack,
       }),
       setState: state => {
-        this.undoStack = decoded.undoStack;
-        this.redoStack = decoded.redoStack;
+        this.undoStack = state.undoStack;
+        this.redoStack = state.redoStack;
       },
     });
   }
