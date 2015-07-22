@@ -20,15 +20,11 @@ export default class HistoryManager {
     messageBus.emit('registerState', {
       id: '$__history',
       dataVersion: VERSION,
-      getState: () => {
-        const state = {
-          undoStack: this.undoStack.slice(-5),  // Only keep the 5 most recent undos
-          redoStack: this.redoStack.slice(-3),  // Only keep the 3 most recent redos
-        };
-        return btoa(JSON.stringify(state));
-      },
+      getState: () => ({
+        undoStack: this.undoStack.slice(-5),  // Only keep the 5 most recent undos
+        redoStack: this.redoStack.slice(-3),  // Only keep the 3 most recent redos
+      }),
       setState: state => {
-        const decoded = JSON.parse(atob(state));
         this.undoStack = decoded.undoStack;
         this.redoStack = decoded.redoStack;
       },
