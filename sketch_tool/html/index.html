@@ -17,11 +17,20 @@
     <script src="vendor/jschannel.js"></script>
     <script>
       (function() {
-        // Globals: config, si, setState, getState, getGrade;
+        // Globals: config, si, setState, getState, getGrade, useBase64Encoding;
         var channel, __state, debugConfig, isLoaded;
+        var DATA_URI_PREAMBLE = 'data:application/json;base64,';
+
+        // Base64-encode the state to avoid multiple JSON escaping in edX
+        window.useBase64Encoding = true;
 
         // A surrogate setState function that can be called before SketchInput has loaded
         window.setState = function setState(state) {
+          if (state.indexOf(DATA_URI_PREAMBLE) === 0) {
+            // This is a base64-encoded data URI; decode it
+            state = atob(state.slice(DATA_URI_PREAMBLE.length));
+          }
+
           if (isLoaded) si.setState(state);
           else __state = state;
         }
@@ -80,7 +89,10 @@
             if (__state) window.si.setState(__state);
           });
 
-          window.getState = si.getState.bind(si);
+          window.getState = function() {
+            return window.useBase64Encoding ? DATA_URI_PREAMBLE + btoa(si.getState()) : si.getState();
+          };
+
           window.getGrade = si.getGradeable.bind(si);
 
           if (channel) {
