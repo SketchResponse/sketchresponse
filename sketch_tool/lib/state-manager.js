@@ -14,6 +14,24 @@ export default class StateManager {
     messageBus.on('addUndoPoint', this.addUndoPoint.bind(this));
     messageBus.on('undo', this.undo.bind(this));
     messageBus.on('redo', this.redo.bind(this));
+
+    // TODO: Refactor into history manager
+    messageBus.emit('registerState', {
+      id: '$__history',
+      dataVersion: VERSION,
+      getState: () => {
+        const state = {
+          undoStack: this.undoStack.slice(-5).map(JSON.parse),  // Only keep the 5 most recent undos
+          redoStack: this.redoStack.slice(-3).map(JSON.parse),  // Only keep the 3 most recent redos
+        };
+        return btoa(JSON.stringify(state));
+      },
+      setState: state => {
+        const decoded = JSON.parse(atob(state));
+        this.undoStack = decoded.undoStack.map(JSON.stringify);
+        this.redoStack = decoded.redoStack.map(JSON.stringify);
+      },
+    });
   }
 
   // TODO: Refactor into history manager
@@ -43,6 +61,7 @@ export default class StateManager {
       state[entry.id] = entry.getState();
     });
     delete state.$__toolbar;  // TODO: don't hard-code constants!
+    delete state.$__history;  // TODO: don't hard-code constants!
     return JSON.stringify(state);
   }
 
