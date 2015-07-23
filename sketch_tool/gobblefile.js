@@ -17,6 +17,9 @@ module.exports = gobble([
       modules: 'system'
     }),
 
+  gobble('LICENSE')
+    .transform('rename', {from: 'LICENSE', to: 'LICENSE.txt'}),
+
   gobble('config.js'),
   gobble('jspm_packages').moveTo('jspm_packages'),
   gobble('fonts').moveTo('fonts'),
