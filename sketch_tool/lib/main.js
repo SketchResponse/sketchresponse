@@ -60,7 +60,41 @@ export default class SketchInput {
       <div id="si-attribution">
         Made with <span aria-label="love">&hearts;</span> at MIT | <a id="si-show-help-legal" href="#">Help & Legal</a>
       </div>
+      <div id="si-help-legal" data-visible="false">
+        <div role="dialog" class="si-dialog">
+          <header>
+            <h1>SketchInput</h1>
+            <p class="si-copyright">
+              Copyright 2015 Massachusetts Institute of Technology. All rights Reserved.
+            </p>
+          </header>
+          <p>
+            SketchInput is an extensible graphical input and assessment tool for online learning platforms.
+            It is very much a work in progress; we welcome your feedback and ideas at
+            <a href="mailto:sketchinput-feedback@mit.edu">sketchinput-feedback@mit.edu</a>.
+            The source code for this project will likely be available under an open-source license in the near future.
+            If you are interested in updates, please let us know!
+          </p>
+          <p>
+            This software contains open-source, third-party code and creative-commons licensed content (for which
+            we are very thankful). These are distributed under the terms of their own licenses, which are included
+            in the <a href="LICENSE.txt" target="_blank">LICENSE file</a> provided with this project.
+          </p>
+        </div>
+      </div>
     `;
+
+    const showHelpLegal = document.getElementById('si-show-help-legal');
+    const helpLegal = document.getElementById('si-help-legal');
+    const helpLegalDialog = document.querySelector('#si-help-legal .si-dialog');  // TODO: fix ugly hack...
+
+    showHelpLegal.addEventListener('click', event => {
+      event.preventDefault();
+      helpLegal.setAttribute('data-visible', 'true');
+    });
+
+    helpLegal.addEventListener('click', event => helpLegal.setAttribute('data-visible', 'false'));
+    helpLegalDialog.addEventListener('click', event => event.stopPropagation());
 
     this.notificationManager = new NotificationManager(this.config, this.messageBus);
     this.gradeableManager = new GradeableManager(this.config, this.messageBus);
