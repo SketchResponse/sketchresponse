@@ -77,7 +77,7 @@ export default class SketchInput {
           </p>
           <p>
             This software contains open-source, third-party code and creative-commons licensed content (for which
-            we are very thankful). These are distributed under the terms of their own licenses, which are included
+            we are grateful). These are distributed under the terms of their own licenses, which are included
             in the <a href="LICENSE.txt" target="_blank">LICENSE file</a> provided with this project.
           </p>
         </div>
