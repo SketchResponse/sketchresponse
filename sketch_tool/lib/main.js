@@ -58,7 +58,7 @@ export default class SketchInput {
         <rect width="100%" height="100%" fill="transparent" />
       </svg>
       <div id="si-attribution">
-        Made with <span aria-label="love">&hearts;</span> at MIT | <a id="si-show-help-legal" href="#">Help & Legal</a>
+        Made with <span aria-label="love">&hearts;</span> at MIT | <a id="si-show-help-legal" href="#">Info & Legal</a>
       </div>
       <div id="si-help-legal" data-visible="false">
         <div role="dialog" class="si-dialog">
