@@ -110,9 +110,11 @@ export default class SketchInput {
       svg: document.getElementById('si-canvas'),
     }
 
-    // Prevent default on mousedown to keep Firefox from dragging the SVG
+    // Prevent default on dragstart to keep Firefox from dragging the SVG
     // setting capture to true to get the event as soon as possible
-    this.app.svg.addEventListener('mousedown', event => event.preventDefault(), true);
+    // NOTE: Cannot use mousedown here since that also prevents mouse move/up
+    // from being captured when the mouse leaves the window/iframe (in Chrome at least)
+    this.app.svg.addEventListener('dragstart', event => event.preventDefault(), true);
 
     Object.defineProperty(this.params, 'left', {
       get: () => { return this.app.svg.getBoundingClientRect().left + window.pageXOffset; }
