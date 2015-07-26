@@ -117,11 +117,11 @@ export default class SketchInput {
     this.app.svg.addEventListener('dragstart', event => event.preventDefault(), true);
 
     Object.defineProperty(this.params, 'left', {
-      get: () => { return this.app.svg.getBoundingClientRect().left + window.pageXOffset; }
+      get: () => { return this.app.svg.getBoundingClientRect().left; }
     });
 
     Object.defineProperty(this.params, 'top', {
-      get: () => { return this.app.svg.getBoundingClientRect().top + window.pageYOffset; }
+      get: () => { return this.app.svg.getBoundingClientRect().top; }
     });
 
     this.toolbar = new Toolbar(this.params, this.app);

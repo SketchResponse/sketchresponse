@@ -77,8 +77,8 @@ export default class Point {
 
   drawMove(event) {
     this.currentPosition = {
-      x: clamp(event.pageX - this.params.left, 0, this.params.width),
-      y: clamp(event.pageY - this.params.top, 0, this.params.height),
+      x: clamp(event.clientX - this.params.left, 0, this.params.width),
+      y: clamp(event.clientY - this.params.top, 0, this.params.height),
     };
     this.render();
   }

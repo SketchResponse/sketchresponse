@@ -83,7 +83,7 @@ export default class VerticalLine {
   }
 
   drawMove(event) {
-    this.currentLocation = clamp(event.pageX - this.params.left, 0, this.params.width);
+    this.currentLocation = clamp(event.clientX - this.params.left, 0, this.params.width);
     this.render();
   }
 

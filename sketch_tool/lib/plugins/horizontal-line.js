@@ -83,7 +83,7 @@ export default class HorizontalLine {
   }
 
   drawMove(event) {
-    this.currentLocation = clamp(event.pageY - this.params.top, 0, this.params.height);
+    this.currentLocation = clamp(event.clientY - this.params.top, 0, this.params.height);
     this.render();
   }
 
