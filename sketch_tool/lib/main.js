@@ -1,5 +1,6 @@
 import './util/polyfills';
 import { createInheritingObjectTree } from './util/inheriting-object-tree';
+import { disableDoubleTapZoom } from './util/workarounds';
 
 import { EventEmitter } from 'events';
 import Mousetrap from 'mousetrap';
@@ -64,6 +65,10 @@ export default class SketchInput {
         </div>
       </div>
     `;
+
+    // Workaround for iOS Safari and Chrome (the latter supports the touch-action CSS property, but let's
+    // keep everything the same for now). TODO: remove if implemented in PEP or WebKit.
+    disableDoubleTapZoom(this.el);
 
     const showHelpLegal = document.getElementById('si-show-help-legal');
     const helpLegal = document.getElementById('si-help-legal');
