@@ -1,4 +1,4 @@
-import z from './zdom';
+import z from './util/zdom';
 import classnames from 'classnames';
 
 export const VERSION = '0.1';

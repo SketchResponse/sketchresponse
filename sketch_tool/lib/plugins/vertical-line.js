@@ -1,4 +1,4 @@
-import z from 'sketch2/zdom';
+import z from 'sketch2/util/zdom';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';

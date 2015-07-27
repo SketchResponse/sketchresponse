@@ -1,4 +1,4 @@
-import z from 'sketch2/zdom';
+import z from 'sketch2/util/zdom';
 import fitCurve from './freeform/fitcurve';
 
 export const VERSION = '0.1';

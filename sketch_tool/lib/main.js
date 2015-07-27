@@ -1,4 +1,4 @@
-import './polyfills';
+import './util/polyfills';
 
 import { EventEmitter } from 'events';
 import Mousetrap from 'mousetrap';
