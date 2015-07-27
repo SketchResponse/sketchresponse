@@ -12,3 +12,6 @@ export function disableDoubleTapZoom(element) {
     lastTapTime = currentTime;
   }, false);
 }
+
+// Workaround for click delay
+export { default as preventClickDelay } from 'fastclick';
