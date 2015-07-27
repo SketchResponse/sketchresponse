@@ -14,4 +14,7 @@ export function disableDoubleTapZoom(element) {
 }
 
 // Workaround for click delay
-export { default as preventClickDelay } from 'fastclick';
+import attachFastClick from 'fastclick';
+export function preventClickDelay(element) {
+  attachFastClick(element, {tapDelay: 50});  // Cannot use tapDelay: 0 with current FastClick
+}
