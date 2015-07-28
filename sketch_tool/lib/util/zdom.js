@@ -149,6 +149,8 @@ class ZElement extends ZNode {
     this._syncDOMProps({}, this.props);
     this.childCollection.mount(this.el);
     super.mount(parentEl, refEl);
+
+    if (this.props.onmount) this.props.onmount(this.el);
   }
 
   unmount(cleanupDOM) {
@@ -171,6 +173,8 @@ class ZElement extends ZNode {
     Object.keys(newProps)
       .filter(propName => oldProps[propName] !== newProps[propName])
       .forEach(propName => {
+        if (['key', 'onmount'].indexOf(propName) >= 0) return;
+
         const {namespaceURI, localName} = qualify(propName);
         if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Handle event listeners since we can't set them with setAttribute
@@ -189,6 +193,8 @@ class ZElement extends ZNode {
     Object.keys(oldProps)
       .filter(propName => !newProps.hasOwnProperty(propName))
       .forEach(propName => {
+        if (['key', 'onmount'].indexOf(propName) >= 0) return;  // TODO: eliminate code duplication
+
         const {namespaceURI, localName} = qualify(propName);
         if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Remove an event listener
