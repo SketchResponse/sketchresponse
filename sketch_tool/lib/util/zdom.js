@@ -192,7 +192,8 @@ class ZElement extends ZNode {
         const {namespaceURI, localName} = qualify(propName);
         if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Remove an event listener
-          this.el[localName] = null;
+          const eventName = localName.slice(2);
+          this.el.removeEventListener(eventName, oldProps[localName], false);  // clean up
           return;
         }
         this.el.removeAttributeNS(namespaceURI, localName);
