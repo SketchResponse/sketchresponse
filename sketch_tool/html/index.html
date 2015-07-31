@@ -28,6 +28,11 @@
         var channel, __state, debugConfig, isLoaded;
         var DATA_URI_PREAMBLE = 'data:application/json;base64,';
 
+        var loadTimer = window.setTimeout(function() {
+          if (isLoaded) return;
+          Raven.captureMessage('Did not load within 10 seconds');
+        }, 10000);
+
         // Base64-encode the state to avoid multiple JSON escaping in edX
         window.useBase64Encoding = true;
 
@@ -86,6 +91,7 @@
           document.getElementById('si-placeholder').textContent =
             'Could not parse problem configuration data';
           Raven.captureException(error, {extra: {type: 'hashParseError'}});
+          window.clearTimeout(loadTimer);
           return;  // Abort the loading process
         }
 
