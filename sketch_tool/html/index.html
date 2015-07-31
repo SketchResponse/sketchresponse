@@ -30,7 +30,7 @@
 
         var loadTimer = window.setTimeout(function() {
           if (isLoaded) return;
-          Raven.captureMessage('Did not load within 10 seconds');
+          Raven.captureMessage('Did not load within 10 seconds', {tags: {shortname: 'loadTimeout'}});
         }, 10000);
 
         // Base64-encode the state to avoid multiple JSON escaping in edX
@@ -90,7 +90,7 @@
         catch (error) {
           document.getElementById('si-placeholder').textContent =
             'Could not parse problem configuration data';
-          Raven.captureException(error, {extra: {type: 'hashParseError'}});
+          Raven.captureException(error, {tags: {shortname: 'hashParseError'}});
           window.clearTimeout(loadTimer);
           return;  // Abort the loading process
         }
@@ -104,7 +104,7 @@
           });
 
           window.si.messageBus.on('warnUser', function(type, error) {
-            Raven.captureException(error, {extra: {type: type}});
+            Raven.captureException(error, {tags: {shortname: type}});
           });
 
           window.getState = function() {
@@ -119,7 +119,7 @@
               .bind('getGrade', window.getGrade);
           }
         }).catch(function(error) {
-          Raven.captureException(error, {extra: {type: 'importPromiseError'}});
+          Raven.captureException(error, {tags: {shortname: 'importPromiseError'}});
         });
       }());
     </script>
