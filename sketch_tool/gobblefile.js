@@ -27,6 +27,7 @@ module.exports = gobble([
 
   gobble('html')
     .transform('replace', {
+      system_polyfills_path: 'jspm_packages/system-polyfills.js',
       systemjs_path: 'jspm_packages/system.js',
       configjs_path: 'config.js',
       css_path: 'main.css'
