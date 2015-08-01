@@ -6,10 +6,12 @@
   "author": "Martin Segado",
   "license": "All rights reserved",
   "devDependencies": {
+    "glob": "^5.0.14",
     "gobble": "^0.10.2",
     "gobble-autoprefixer": "^0.1.1",
     "gobble-babel": "^5.5.8",
     "gobble-cli": "^0.4.2",
+    "gobble-concat": "^0.3.0",
     "gobble-rename": "^0.1.0",
     "gobble-replace": "^0.3.1",
     "gobble-sass": "^0.5.0",

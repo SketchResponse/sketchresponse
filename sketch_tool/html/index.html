@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>SketchInput</title>
     <link rel="stylesheet" href="<@css_path@>">
-    <link href='fonts/roboto.css' rel='stylesheet' type='text/css'>
+    <link href='<@font_css_path@>' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" href="about:blank">
   </head>
   <body>
@@ -19,10 +19,8 @@
         whitelistUrls: ['s3.amazonaws.com/1801-static-assets/si/']
       }).install();
     </script>
-    <script src="<@system_polyfills_path@>"></script>
-    <script src="<@systemjs_path@>"></script>
-    <script src="<@configjs_path@>"></script>
-    <script src="vendor/jschannel.js"></script>
+    <script src="<@vendor_bundle_path@>"></script>
+    <script src="<@config_or_app_bundle_path@>"></script>
     <script>
       (function() {
         // Globals: config, si, setState, getState, getGrade, useBase64Encoding;
