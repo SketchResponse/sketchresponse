@@ -114,6 +114,16 @@ export default class Freeform {
       );
 
       const nextPoint = add(this.lastPoint, scale(drawDirection, drawDistance));
+
+      // For now, finish the draw operation if the next point would be outside of the drawing area
+      // TODO: is this actually how we want to do things?
+      if (nextPoint.x < 0 || nextPoint.y < 0
+        || nextPoint.x > this.params.width || nextPoint.y > this.params.height) {
+
+        this.drawEnd(event);  // Just pass our pointermove event instead of a true pointerup
+        return;
+      }
+
       this.pointsBeingDrawn.push(nextPoint);
 
       this.lastPoint = nextPoint;
