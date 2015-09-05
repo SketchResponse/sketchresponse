@@ -16,7 +16,7 @@ export default class Image {
       0.5 * (1 - scale)
     )) / scale;
 
-    const y = (offset[1] / 100 + (
+    const y = (-offset[1] / 100 + (  // Sign is flipped so positive y offsets move image upward
       (align.match('top')) ? 0 :
       (align.match('bottom')) ? (1 - scale) :
       0.5 * (1 - scale)
