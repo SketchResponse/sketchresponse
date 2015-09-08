@@ -28,7 +28,7 @@ export default class Image {
     this.el.setAttributeNS(null, 'y', `${y * 100}%`);
     this.el.setAttributeNS(null, 'width', '100%');
     this.el.setAttributeNS(null, 'height', '100%');
-    this.el.setAttributeNS(null, 'style', `transform: scale(${scale});`);
+    this.el.setAttributeNS(null, 'transform', `scale(${scale})`);
     app.svg.appendChild(this.el);
   }
 }
