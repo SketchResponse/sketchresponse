@@ -3,6 +3,36 @@
   <head>
     <meta charset="utf-8">
     <title>SketchInput</title>
+    <!-- Set up jschannel + setState immediately so we don't keep edX waiting: -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jschannel/1.0.0-git-commit1-8c4f7eb/jschannel.min.js"></script>
+    <script>
+      window.DATA_URI_PREAMBLE = 'data:application/json;base64,';
+
+      // A surrogate setState function that can be called before SketchInput has loaded
+      window.setState = function setState(state) {
+        if (state.indexOf(DATA_URI_PREAMBLE) === 0) {
+          // This is a base64-encoded data URI; decode it
+          state = atob(state.slice(DATA_URI_PREAMBLE.length));
+        }
+
+        if (window.isLoaded) si.setState(state);
+        else window.__state = state;
+      }
+
+      if (window !== window.parent) {
+        // We're inside a frame; initialize a new JSChannel
+        window.channel = Channel.build({
+          window: window.parent,
+          origin: '*',
+          scope: 'JSInput'
+        });
+
+        // Bind the channel setState immediately so we don't keep the host window waiting
+        channel.bind('setState', function channelSetState(transaction, state) {
+          return window.setState(state);
+        });
+      }
+    </script>
     <link rel="stylesheet" href="<@css_path@>">
     <link href='<@font_css_path@>' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" href="about:blank">
@@ -23,44 +53,17 @@
     <script src="<@config_or_app_bundle_path@>"></script>
     <script>
       (function() {
-        // Globals: config, si, setState, getState, getGrade, useBase64Encoding;
-        var channel, __state, debugConfig, isLoaded;
-        var DATA_URI_PREAMBLE = 'data:application/json;base64,';
+        // Globals: channel, __state, isLoaded, config, si, setState, getState, getGrade, useBase64Encoding, DATA_URI_PREAMBLE;
 
         var loadTimer = window.setTimeout(function() {
-          if (isLoaded) return;
+          if (window.isLoaded) return;
           Raven.captureMessage('Did not load within 10 seconds', {tags: {shortname: 'loadTimeout'}});
         }, 10000);
 
         // Base64-encode the state to avoid multiple JSON escaping in edX
         window.useBase64Encoding = true;
 
-        // A surrogate setState function that can be called before SketchInput has loaded
-        window.setState = function setState(state) {
-          if (state.indexOf(DATA_URI_PREAMBLE) === 0) {
-            // This is a base64-encoded data URI; decode it
-            state = atob(state.slice(DATA_URI_PREAMBLE.length));
-          }
-
-          if (isLoaded) si.setState(state);
-          else __state = state;
-        }
-
-        if (window !== window.parent) {
-          // We're inside a frame; initialize a new JSChannel
-          channel = Channel.build({
-            window: window.parent,
-            origin: '*',
-            scope: 'JSInput'
-          });
-
-          // Bind the channel setState immediately so we don't keep the host window waiting
-          channel.bind('setState', function channelSetState(transaction, state) {
-            return window.setState(state);
-          });
-        }
-
-        debugConfig = {
+        var debugConfig = {
           width: 750,
           height: 420,
           xrange: [-4.5, 4.5],
@@ -98,8 +101,8 @@
           window.si = new main.default(document.getElementById('si-container'), config);
 
           window.si.messageBus.on('ready', function() {
-            isLoaded = true;
-            if (__state) window.si.setState(__state);
+            window.isLoaded = true;
+            if (window.__state) window.si.setState(window.__state);
           });
 
           window.si.messageBus.on('warnUser', function(type, error) {
@@ -112,8 +115,8 @@
 
           window.getGrade = si.getGradeable.bind(si);
 
-          if (channel) {
-            channel
+          if (window.channel) {
+            window.channel
               .bind('getState', window.getState)
               .bind('getGrade', window.getGrade);
           }
