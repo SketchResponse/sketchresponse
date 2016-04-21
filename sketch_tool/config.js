@@ -1,21 +1,19 @@
 System.config({
-  "defaultJSExtensions": true,
-  "transpiler": "babel",
-  "babelOptions": {
+  defaultJSExtensions: true,
+  transpiler: "babel",
+  babelOptions: {
     "optional": [
       "runtime"
     ],
     "modules": "system"
   },
-  "paths": {
+  paths: {
     "sketch2/*": "lib/*",
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*"
-  }
-});
+  },
 
-System.config({
-  "map": {
+  map: {
     "babel": "npm:babel-core@5.8.3",
     "babel-runtime": "npm:babel-runtime@5.8.3",
     "classnames": "npm:classnames@2.1.3",
@@ -111,4 +109,3 @@ System.config({
     }
   }
 });
-
