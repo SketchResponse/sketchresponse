@@ -4,14 +4,6 @@ var path = require('path');
 var jspm = require('jspm');
 
 
-var styles = gobble('styles')
-  .transform('sass', {
-    src: 'main.scss',
-    dest: 'main.css'
-  })
-  .transform('autoprefixer')
-
-
 var vendorBundle = gobble([
   gobble('lib/vendor').moveTo('vendor'),
   gobble('jspm_packages'),
@@ -94,7 +86,6 @@ var staticAssets = gobble([
 ]);
 
 module.exports = gobble([
-  styles,
   vendorBundle,
   appScripts,
   staticAssets,
