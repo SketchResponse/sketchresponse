@@ -6,6 +6,7 @@
   "author": "Martin Segado",
   "license": "All rights reserved",
   "devDependencies": {
+    "autoprefixer": "^6.3.6",
     "glob": "^5.0.14",
     "gobble": "^0.10.2",
     "gobble-autoprefixer": "^0.1.1",
@@ -22,7 +23,9 @@
     "karma-jspm": "git://github.com/Workiva/karma-jspm.git#master",
     "karma-phantomjs-launcher": "~0.2.0",
     "karma-phantomjs-shim": "~1.0.0",
-    "phantomjs": "^1.9.17"
+    "node-sass": "^3.5.1",
+    "phantomjs": "^1.9.17",
+    "postcss-cli": "^2.5.1"
   },
   "scripts": {
     "postinstall": "jspm install",
