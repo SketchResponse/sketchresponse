@@ -32,11 +32,13 @@
     "postinstall": "jspm install",
     "test": "karma start --single-run",
     "start": "gobble",
-    "build": "gobble build dist -f",
+    "build": "rm -rf ./tmp && npm run css && gobble build dist -f && npm run clean",
     "css": "rm -rf ./tmp && npm run sass && npm run autoprefixer",
     "sass": "node-sass --output-style compressed ./styles/ --output ./tmp",
     "autoprefixer": "postcss --use autoprefixer --map file --replace ./tmp/*",
-    "cleancss": "mv ./tmp/main.css ./dist/main.css && mv ./tmp/main.css.map ./dist/main.css.map && rm -rf ./tmp"
+    "cleancss": "mv ./tmp/main.css ./dist/main.css && mv ./tmp/main.css.map ./dist/main.css.map && rm -rf ./tmp",
+    "cleanjs": "mv vendorBundle.js dist/vendorBundle.js && mv vendorBundle.map dist/vendorBundle.js.map",
+    "clean": "npm run cleancss && npm run cleanjs"
   },
   "jspm": {
     "dependencies": {
