@@ -7,6 +7,7 @@
   "license": "All rights reserved",
   "devDependencies": {
     "autoprefixer": "^6.3.6",
+    "fast-sourcemap-concat": "^1.0.0",
     "glob": "^5.0.14",
     "gobble": "^0.10.2",
     "gobble-autoprefixer": "^0.1.1",
