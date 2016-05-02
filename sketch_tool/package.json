@@ -6,6 +6,8 @@
   "author": "Martin Segado",
   "license": "All rights reserved",
   "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "fast-sourcemap-concat": "^1.0.0",
     "glob": "^5.0.14",
     "gobble": "^0.10.2",
     "gobble-autoprefixer": "^0.1.1",
@@ -14,7 +16,6 @@
     "gobble-concat": "^0.3.0",
     "gobble-rename": "^0.1.0",
     "gobble-replace": "^0.3.1",
-    "gobble-sass": "^0.5.0",
     "jasmine-core": "^2.3.4",
     "jspm": "^0.16.0-beta.3",
     "karma": "^0.12.37",
@@ -23,13 +24,21 @@
     "karma-jspm": "git://github.com/Workiva/karma-jspm.git#master",
     "karma-phantomjs-launcher": "~0.2.0",
     "karma-phantomjs-shim": "~1.0.0",
-    "phantomjs": "^1.9.17"
+    "node-sass": "^3.5.1",
+    "phantomjs": "^1.9.17",
+    "postcss-cli": "^2.5.1"
   },
   "scripts": {
     "postinstall": "jspm install",
     "test": "karma start --single-run",
     "start": "gobble",
-    "build": "gobble build dist -f"
+    "build": "rm -rf ./tmp && npm run css && gobble build dist -f && npm run clean",
+    "css": "rm -rf ./tmp && npm run sass && npm run autoprefixer",
+    "sass": "node-sass --output-style compressed ./styles/ --output ./tmp",
+    "autoprefixer": "postcss --use autoprefixer --map file --replace ./tmp/*",
+    "cleancss": "mv ./tmp/main.css ./dist/main.css && mv ./tmp/main.css.map ./dist/main.css.map && rm -rf ./tmp",
+    "cleanjs": "mv vendorBundle.js dist/vendorBundle.js && mv vendorBundle.map dist/vendorBundle.js.map",
+    "clean": "npm run cleancss && npm run cleanjs"
   },
   "jspm": {
     "dependencies": {

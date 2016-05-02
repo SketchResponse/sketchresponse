@@ -2,25 +2,27 @@ var gobble = require( 'gobble' );
 var glob = require('glob');
 var path = require('path');
 var jspm = require('jspm');
-
-
-var styles = gobble('styles')
-  .transform('sass', {
-    src: 'main.scss',
-    dest: 'main.css'
-  })
-  .transform('autoprefixer')
+var smconcat = require('fast-sourcemap-concat');
 
 
 var vendorBundle = gobble([
   gobble('lib/vendor').moveTo('vendor'),
-  gobble('jspm_packages'),
+  gobble('jspm_packages').include([
+    'system.js', 'system.js.map', 'system-polyfills.js', 'system-polyfills.js.map', 'system-polyfills.src.js', 'system.src.js'
+  ]),
 ])
-  .transform('concat', {
-    dest: 'vendorBundle.js',
-    files: ['system-polyfills.js', 'system.js', 'vendor/*.js'],
+  .transform(function sourcemapConcat(inputdir, outputdir, options, callback) {
+    var entryPoints = glob.sync('*.js', {cwd: inputdir, ignore : ['*.map', '*.src.js']});
+    // For some reason, we get an error if we try to write vendorBundle.js to outputdir.
+    // For the time being, write it instead to current directory and move it subsequently to dist directory in npm script
+    // that will run after these gobble tasks.
+    var conc = new smconcat({outputFile: 'vendorBundle.js'});
+    for (var i = 0, len = entryPoints.length; i < len; i++) {
+      var file = inputdir + '/' + entryPoints[i];
+      conc.addFile(file);
+    }
+    conc.end().then(callback);
   });
-
 
 var libAndPlugins = gobble([
   gobble('lib')
@@ -50,7 +52,7 @@ if (gobble.env() === 'production') {
       jspm.bundle(
         entryPoints.join(' + '),
         path.join(outputdir, 'jspmBundle.js'),
-        {minify: true, sourceMaps: true}
+        {minify: true, sourceMaps: 'inline'}
       ).then(callback);
     });
 
@@ -94,7 +96,6 @@ var staticAssets = gobble([
 ]);
 
 module.exports = gobble([
-  styles,
   vendorBundle,
   appScripts,
   staticAssets,
