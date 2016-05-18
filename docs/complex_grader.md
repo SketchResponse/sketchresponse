@@ -102,7 +102,7 @@ def grader(f,cp,ip,va,ha):
     msg=''
 ```
 
-The first thing that the grader function needs to do is format the input data so that [Grader API](https://brian-french.github.io/) methods of interest can be used to check specific features of the input data.
+The first thing that the grader function needs to do is format the input data so that [Grader API](https://SketchResponse.github.io/) methods of interest can be used to check specific features of the input data.
 
 As explained in the [Simple Grader Tutorial](simple_grader.md) the data is passed to the grader function as a dictionary with keys equal to the 'id' values used in the pluginconfig above so the dictionary can be directly unpacked into argument variables with the same names.
 
