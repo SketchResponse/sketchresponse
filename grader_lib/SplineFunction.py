@@ -1,10 +1,9 @@
 import datalayer
 import MultiFunction
-# import sketchinput
 import CurveFunction
 import numpy as np
 import math
-# from numpy.polynomial.polynomial import polyval
+
 
 # Function composed of a series of Bezier curves
 class SplineFunction(MultiFunction.MultiFunction):
@@ -18,7 +17,7 @@ class SplineFunction(MultiFunction.MultiFunction):
         # self.tolerance['straight_line'] = 0.1 # threshold for straight lines
         if functions:
             self.functions = functions
-        
+
         self.domain = [self.functions[0].p0[0], self.functions[-1].p3[0]]
         # print 'd', self.domain
 
@@ -91,46 +90,16 @@ class SplineFunction(MultiFunction.MultiFunction):
 
         return curves, xminvals, xmaxvals
 
-    # def is_defined_at(self, xval):
-    #     if self.get_value_at(xval) is not False:
-    #         return True
-    #     else:
-    #         return False
-
 ## "get" methods ##
 
     def get_domain(self):
         return self.domain
-
-    # def get_value_at(self, xval):
-    #     # i = self.find_curve(xval)
-    #     # if i>=0:
-    #     #     return self.functions[i].get_value_at(xval)
-    #     # else:
-    #     #     return False
-
-    #     function = self.find_function(xval)
-    #     if function:
-    #         print function
-    #         return function.get_value_at(xval)
-    #     else:
-    #         return False
 
     def get_angle_at(self, xval):
         i = self.find_curve(xval)
         if i>=0:
             return self.functions[i].get_angle_at(xval)
         return False
-
-#    def get_slope_at(self, xval):
-#        i = self.find_curve(xval)
-#        if i>=0:
-#            return self.functions[i].get_slope_at(xval)
-
-    # def get_mean_value_between(self, xmin, xmax):
-        # abstractMethod(self)
-        # if we want, we can do this on the CurveFuntion level by using the integral of the y part (easily calculated)
-        # then do an average on the curves, weighted by the x delta
 
     def get_min_value_between(self, xmin, xmax):
         curves, xMinVals, xMaxVals = self.find_curves_between(xmin, xmax)
@@ -140,8 +109,6 @@ class SplineFunction(MultiFunction.MultiFunction):
             curve = curves[i]
             minVals.append(curve.get_min_value_between(xMinVals[i], xMaxVals[i]))
 
-        # print 'min', minVals, xmin, xmax
-
         return np.min(minVals)
 
     def get_max_value_between(self, xmin, xmax):
@@ -150,36 +117,12 @@ class SplineFunction(MultiFunction.MultiFunction):
 
         for i in range(len(curves)):
             curve = curves[i]
-            # print 'v', curve.get_max_value_between(xMinVals[i], xMaxVals[i])
             maxVals.append(curve.get_max_value_between(xMinVals[i], xMaxVals[i]))
 
         return np.max(maxVals)
 
     def get_mean_angle_between(self, xmin, xmax):
         abstractMethod(self)
-
-#    def get_min_angle_between(self, xmin, xmax):
-#        curves, xminvals, xmaxvals = self.find_curves_between(xmin, xmax)
-#
-#        for i in range(len(curves)):
-#            curve = curves[i]
-#            minvals.append(curve.get_min_angle_between(xminvals[i], xmvaxvals[i]))
-#
-#        return np.min(minvals)
-#
-#    def get_max_angle_between(self, xmin, xmax):
-#        curves, xminvals, xmaxvals = self.find_curves_between(xmin, xmax)
-#        maxvals = []
-#
-#        for i in range(len(curves)):
-#            curve = curves[i]
-#            maxvals.append(curve.get_max_angle_between(xminvals[i], xmvaxvals[i]))
-#
-#        return np.max(minvals)
-
-    # def get_vertical_line_crossing(self, xval):
-    #     return self.functions[self.find_curve(xval)].get_vertical_line_crossing(xval)
-
 
     ### Grader functions ###
 
@@ -191,20 +134,3 @@ class SplineFunction(MultiFunction.MultiFunction):
 
     def is_straight(self):
         return self.is_straight_between(self.functions[0].p0[0], self.functions[-1].p3[0])
-
-    
-    
-
-
-
-    # def is_always_increasing():
-    #     for curve in curves:
-    #         if not curve.is_always_increasing():
-    #             return False:
-    #     return True:
-
-    # def is_always_decreasing():
-    #     for curve in curves:
-    #         if not curve.is_always_decreasing():
-    #             return False:
-    #     return True:

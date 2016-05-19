@@ -40,8 +40,6 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
     def closest_point_to_point(self, point):
         """Return the square pixel distance to the closest point and a Point instance.
 
-        Note: IS THIS SUPPOSED TO BE PART OF THE PUBLIC API? ITS UNCLEAR.
-
         Args:
             point: a Point instance
         Returns:

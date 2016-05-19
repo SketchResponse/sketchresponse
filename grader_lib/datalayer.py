@@ -21,9 +21,6 @@ def abstractMethod(obj=None):
     raise Exception("Unimplemented abstract method: %s" % _functionId(obj, 1))
 
 
-
-
-
 # Function "interface"
 class Function():
     """Base class for Functions."""
@@ -40,8 +37,6 @@ class Function():
         self.yscale = 1.0 * self.height / (yaxis.domain[0] - yaxis.domain[1])
 
         self.tolerance = tolerance
-        # Gradeable.Gradeable.__init__(self, path_info, tolerance)
-        # datalayer.Function.__init__(self, xaxis, yaxis, path_info, tolerance)
         self.set_default_tolerance('pixel', 20)
         self.set_default_tolerance('comparison', 20)
 
@@ -131,7 +126,6 @@ class Function():
     def get_domain(self):
         abstractMethod(self)
 
-
 ### Grader functions ###
 
     def is_a_function(self):
@@ -171,33 +165,6 @@ class Function():
             return (ymax > y - yTolerance) and (ymin < y + yTolerance)
         else:
             return False
-
-
-        ## the old has_value_y_at_x. looked at a box around it
-        ## failed when the function was gappy and did not go through the box
-
-        # for potential_x in self.get_horizontal_line_crossings(y + yTolerance):
-        #     # print '1', potential_x
-        #     if abs(x-potential_x) < xTolerance:
-        #         return True
-        # for potential_x in self.get_horizontal_line_crossings(y - yTolerance):
-        #     # print '2', potential_x
-        #     if abs(x-potential_x) < xTolerance:
-        #         return True
-        
-        # for potential_y in self.get_vertical_line_crossings(x + xTolerance):
-        #     # print '3', potential_y
-        #     if abs(y-potential_y) < yTolerance:
-        #         return True
-        # for potential_y in self.get_vertical_line_crossings(x - xTolerance):
-        #     # print '4', potential_y
-        #     if abs(y-potential_y) < yTolerance:
-        #         return True
-
-        # # if it passes within the pixel tolerance value on the right/left/top/bottom, it will pass through a square centered on the point
-        # # each clause above tests a side length. if all fail, then it does not pass through the square, so we return false
-        # return False
-
 
     def is_zero_at_x_equals_zero(self, yTolerance = False, xTolerance = False):
         """Return whether the function is zero at x equals zero.

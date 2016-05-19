@@ -30,16 +30,12 @@ class MultiFunction(datalayer.Function):
 ## Function finders ##
 
     def find_function(self, xval):
-        # print 'xval', xval
+
         functionsList = []
         for function in self.functions:
             if function.is_defined_at(xval):
                 functionsList.append(function)
 
-        # if len(functionsList) == 1:
-        #     return functionsList[0]
-        # else:
-        #     return functionsList
         return functionsList
 
 
@@ -50,9 +46,6 @@ class MultiFunction(datalayer.Function):
                 betweenFunctions.append(function)
 
         return betweenFunctions
-
-    # def find_functions_between_extended(self, xmin, xmax):
-    #     pass
 
 ## "get" methods ##
 
@@ -71,14 +64,6 @@ class MultiFunction(datalayer.Function):
                 return v
 
         return False
-
-#    def get_slope_at(self, xval):
-#        for function in self.functions:
-#            v = function.get_slope_at(xval)
-#            if v is not False:
-#                return v
-#
-#        return False
 
     def get_domain(self):
         xvals = []
@@ -110,27 +95,6 @@ class MultiFunction(datalayer.Function):
             return np.max(maxVals)
         else:
             return False
-
-## TODO: these aren't correct
-
-#    def get_min_angle_between(self, xmin, xmax):
-#        curves, xminvals, xmaxvals = self.find_curves_between(xmin, xmax)
-#
-#        for i in range(len(curves)):
-#            curve = curves[i]
-#            minvals.append(curve.get_min_angle_between(xminvals[i], xmvaxvals[i]))
-#
-#        return np.min(minvals)
-#
-#    def get_max_angle_between(self, xmin, xmax):
-#        curves, xminvals, xmaxvals = self.find_curves_between(xmin, xmax)
-#        maxvals = []
-#
-#        for i in range(len(curves)):
-#            curve = curves[i]
-#            maxvals.append(curve.get_max_angle_between(xminvals[i], xmvaxvals[i]))
-#
-#        return np.max(minvals)
 
     def get_horizontal_line_crossings(self, yval):
         """Return a list of the values where the function crosses the horizontal line y=yval.
@@ -166,40 +130,6 @@ class MultiFunction(datalayer.Function):
 
         return yvals
 
-## methods for handling rotations ##
-## NOTE: rotations mostly exist within the framework of the **pixel** space, not the math space
-
-    # NOTE: this does not rotate the function itself, this returns a rotated version of the function
-#    def rotate(self, R, xaxis, yaxis):
-#        newFunctions = []
-#        for function in self.functions:
-#            newFunctions.append(function.rotate(R, xaxis, yaxis))
-#
-#        ## TODO(msegado): fix the hack I added here:
-#        constructor = self.__class__ if self.__class__ is not GradeableFunction.GradeableFunction else MultipleSplinesFunction.MultipleSplinesFunction
-#        return constructor(xaxis, yaxis, functions = newFunctions, tolerance = self.tolerance)
-#
-#    ## TODO: handle the case when xmin and/or xmax are outside the bounds for the spline
-#    def rotate_between(self, xaxis, yaxis, xmin, xmax):
-#        _, yleft = self.get_value_at_gap(xmin)
-#        _, yright = self.get_value_at_gap(xmax)
-#
-#        minpoint = [self.xval_to_px(xmin), self.yval_to_px(yleft)]
-#        maxpoint = [self.xval_to_px(xmax), self.yval_to_px(yright)]
-#
-#        # sintheta is negated: if a line is at 30degrees, we want to rotate it -30degrees
-#        sintheta = -(maxpoint[1] - minpoint[1])
-#        costheta = (maxpoint[0] - minpoint[0])
-#        scale = math.sqrt(sintheta*sintheta + costheta*costheta)
-#        sintheta = sintheta / scale
-#        costheta = costheta / scale
-#
-#        R = [[costheta, -sintheta], [sintheta, costheta]]
-#
-#        points = [[minpoint[0], maxpoint[0]], [minpoint[1], maxpoint[1]]]
-#        newpoints = (np.matrix(R)*np.matrix(points)).getA()
-#
-#        return self.rotate(R, xaxis, yaxis), newpoints
 
 ### Grader functions ###
 
@@ -213,32 +143,6 @@ class MultiFunction(datalayer.Function):
         """
         domain = self.get_domain()
         return self.is_straight_between(domain[0], domain[1])
-
-    # def is_straight_between(self, xmin, xmax):
-    #     # Apply tolerances (inward from xmin/xmax)
-    #     ## TODO(msegado): what if xmin and xmax are closer than 2*tolerance?
-    #     xmin = self.px_to_xval(self.xval_to_px(xmin) + self.tolerance['point_distance'])
-    #     xmax = self.px_to_xval(self.xval_to_px(xmax) - self.tolerance['point_distance'])
-
-    #     newFunction, newpoints = self.rotate_between(self.xaxis, self.yaxis, xmin, xmax)
-
-    #     newxmin = self.px_to_xval(newpoints[0][0])
-    #     newxmax = self.px_to_xval(newpoints[0][1])
-
-    #     maxval = newFunction.get_max_value_between(newxmin, newxmax)
-    #     minval = newFunction.get_min_value_between(newxmin, newxmax)
-
-    #     print ' ----- '
-    #     print newFunction.get_sample_points(100, newxmin, newxmax)
-
-    #     print ' ======= '
-    #     print newxmax, newxmin, maxval, minval
-
-    #     xdiff = newxmax - newxmin
-    #     ydiff = maxval - minval
-
-    #     print xdiff, ydiff
-    #     return bool(ydiff < self.tolerance['straight_line']*xdiff)
 
     def is_straight_between(self, xmin, xmax):
         """Return whether the function is straight within the range xmin to xmax. An alternate approximate implementation until we sort out some issues above
