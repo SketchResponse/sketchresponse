@@ -64,3 +64,6 @@ target/
 
 # emacs temp files
 *~
+
+# mac specific files
+*.DS_Store
