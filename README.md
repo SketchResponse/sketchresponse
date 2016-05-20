@@ -68,4 +68,5 @@ We have a mailing list located at: $project@google-groups.com
 License
 -------
 
-The project is released under the *TODO* license.
+Copyright (c) 2016 Massachusetts Institute of Technology
+All rights reserved.
