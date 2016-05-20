@@ -55,8 +55,8 @@ Usage Guides
 Contribute
 ----------
 
-- Issue Tracker: [](https://github.com/SketchResponse/sketchresponse/issues)
-- Source Code: [](https://github.com/SketchResponse/sketchresponse/)
+- Issue Tracker: [github.com/SketchResponse/sketchresponse/issues](https://github.com/SketchResponse/sketchresponse/issues)
+- Source Code: [github.com/SketchResponse/sketchresponse/](https://github.com/SketchResponse/sketchresponse/)
 
 Support
 -------
