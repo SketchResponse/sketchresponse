@@ -11,18 +11,18 @@ Each grader script at its base is composed of two components
 
 ## Imports
 
-There are two SketchResponse python modules that must be imported for this simple example. All grader scripts must import the `sketchinput` module. There are two other modules that provide different grading helper functions. In this case, we only need to input the `GradeableFunction` module from `draft_code`.
+There are two SketchResponse python modules that must be imported for this simple example. All grader scripts must import the `sketchresponse` module. There are two other modules that provide different grading helper functions. In this case, we only need to input the `GradeableFunction` module from `grader_lib`.
 
 ```python
-import sketchinput  
-from *draft_code* import GradeableFunction
+import sketchresponse
+from grader_lib import GradeableFunction
 ```
 
 ## Problem configuration
 
 The problem configuration is passed to the javascript front end to define the
 size and scale of the drawing space and to define which drawing tools are
-available for the problem. The `sketchinput.config()` function takes a dict of
+available for the problem. The `sketchresponse.config()` function takes a dict of
 configuration options.
 
 In the example configuration below, the first six key/value pairs are required:
@@ -47,7 +47,7 @@ The 'freeform' plugin entry enables the freeform drawing tool. It has three conf
 A listing of all the built-in plugins can be found at [SketchResponse Plugins](probconfig_plugins.md). A tutorial on how to build your own plugins can be found at [Create a Plugin](create_plugin.md).
 
 ```python
-problemconfig = sketchinput.config({
+problemconfig = sketchresponse.config({
     'width': 750,
     'height': 420,
     'xrange': [-2.35, 2.35],
@@ -69,7 +69,7 @@ The above problem configuration settings will create a javascript tool that look
 <div id=grader></div>
 
 ```python
-@sketchinput.grader
+@sketchresponse.grader
 def grader(f):
     gf = GradeableFunction.GradeableFunction(f)
 
@@ -99,3 +99,21 @@ grader helper functions can be found at [SketchResponse API](https://SketchRespo
 And that's it! Those two simple blocks of code complete our first grader script.
 Admittedly this particular script doesn't do much. Check out the [Complex Grader](complex_grader.md) example for a more realistic grader tutorial on an
 example math problem.
+
+## Testing the script
+
+Once the script is written, you can run the script in the local testing server. See the [Test a Grading Script on a Local Server](docs/local_testing.md) tutorial for details on installing and running the testing server.
+
+There is already a copy of this grader script in the `grader_scripts` directory so all you need to do is run the following command from the root of the SketchResponse project:
+
+```
+python local_server.py
+```
+
+Now open your browser of choice and enter the following url:
+
+```
+http://localhost:5000/simple_grader
+```
+
+You should see the configured Sketch Tool. If you draw a straight(ish) line and press the check button you will get accept message. If the line is not straight enough, you will get a reject message.

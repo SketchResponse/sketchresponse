@@ -13,19 +13,19 @@ evaluate these new sources of data.
 
 ## Imports
 
-There are three SketchResponse python modules that must be imported for this simple example. As you saw in the [Simple Grader Tutorial](simple_grader.md) all grader scripts must import the `sketchinput` module. We again need to input the `GradeableFunction` module from `draft_code`, but also need to import the `Asymptote` module
+There are three SketchResponse python modules that must be imported for this simple example. As you saw in the [Simple Grader Tutorial](simple_grader.md) all grader scripts must import the `sketchresponse` module. We again need to input the `GradeableFunction` module from `grader_lib`, but also need to import the `Asymptote` module
 to support the asymptote labeling task.
 
 ```python
-import sketchinput  
-from *draft_code* import GradeableFunction, Asymptote
+import sketchresponse
+from grader_lib import GradeableFunction, Asymptote
 ```
 
 ## Problem configuration
 
 The problem configuration is passed to the javascript front end to define the
 size and scale of the drawing space and to define which drawing tools are
-available for the problem. The `sketchinput.config()` function takes a dict of
+available for the problem. The `sketchresponse.config()` function takes a dict of
 configuration options.
 
 In the example configuration below, the first six key/value pairs are required. In this configuration we increase the ranges of the X and Y axes compared to the [Simple Grader Tutorial](simple_grader.md):
@@ -62,7 +62,7 @@ In this problem, we want students to label both extrema points and the inflectio
 A listing of all the built-in plugins can be found at [SketchResponse Plugins](probconfig_plugins.md). A tutorial on how to build your own plugins can be found at [Create a Plugin](create_plugin.md).
 
 ```python
-problemconfig = sketchinput.config({
+problemconfig = sketchresponse.config({
     'width': 750,
     'height': 420,
     'xrange': [-3.5, 3.5],
@@ -90,7 +90,7 @@ The above problem configuration settings will create a javascript tool that look
 ### Handling the input data
 
 ```python
-@sketchinput.grader
+@sketchresponse.grader
 def grader(f,cp,ip,va,ha):
     
     f = GradeableFunction.GradeableFunction(f)
@@ -221,9 +221,29 @@ The final checks we will perform make sure that the freeform line has the expect
 Combining all the code above into a single function gives us the following. You will notice that the error message variable `msg` is tested at multiple points during the evaluation and used as an early failure condition. If the numbers of expected labels are not correct, then future checks are likely to not be able to run on the data so returning early ensures the student gets good feedback.
 
 ```python
-@sketchinput.grader
+import sketchresponse
+from grader_lib import GradeableFunction, Asymptote
+
+problemconfig = sketchresponse.config({
+    'width': 750,
+    'height': 420,
+    'xrange': [-3.5, 3.5],
+    'yrange': [-4.5, 4.5],
+    'xscale': 'linear',
+    'yscale': 'linear',
+    'plugins': [
+        {'name': 'axes'},
+        {'name': 'freeform', 'id': 'f', 'label': 'Function f(x)', 'color':'blue'},
+        {'name': 'vertical-line', 'id': 'va', 'label': 'Vertical asymptote', 'color': 'gray', 'dashStyle': 'dashdotted'},
+        {'name': 'horizontal-line', 'id': 'ha', 'label': 'Horizontal asymptote', 'color': 'gray', 'dashStyle': 'dashdotted'},
+        {'name': 'point', 'id': 'cp', 'label': 'Extremum', 'color': 'black', 'size': 15},
+        {'name': 'point', 'id': 'ip', 'label': 'Inflection point', 'color':'orange','size': 15}
+    ]
+})
+
+@sketchresponse.grader
 def grader(f,cp,ip,va,ha):
-    
+
     f = GradeableFunction.GradeableFunction(f)
     cp = GradeableFunction.GradeableFunction(cp)
     va = Asymptote.VerticalAsymptotes(va)
@@ -295,3 +315,21 @@ def grader(f,cp,ip,va,ha):
     else:
         return False, msg
 ```
+
+## Testing the script
+
+Once the script is written, you can run the script in the local testing server. See the [Test a Grading Script on a Local Server](docs/local_testing.md) tutorial for details on installing and running the testing server.
+
+There is already a copy of this grader script in the `grader_scripts` directory so all you need to do is run the following command from the root of the SketchResponse project:
+
+```
+python local_server.py
+```
+
+Now open your browser of choice and enter the following url:
+
+```
+http://localhost:5000/complex_grader
+```
+
+You should see the configured Sketch Tool. If you sketch the function shown at the beginning of this tutorial, you should see an accept message. Any other sketches should return a reject message.
