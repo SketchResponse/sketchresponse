@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SketchInput</title>
+    <!-- Set up jschannel + setState immediately so we don't keep edX waiting: -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jschannel/1.0.0-git-commit1-8c4f7eb/jschannel.min.js"></script>
+    <script>
+      window.DATA_URI_PREAMBLE = 'data:application/json;base64,';
+
+      // A surrogate setState function that can be called before SketchInput has loaded
+      window.setState = function setState(state) {
+        if (state.indexOf(DATA_URI_PREAMBLE) === 0) {
+          // This is a base64-encoded data URI; decode it
+          state = atob(state.slice(DATA_URI_PREAMBLE.length));
+        }
+
+        if (window.isLoaded) si.setState(state);
+        else window.__state = state;
+      }
+
+      if (window !== window.parent) {
+        // We're inside a frame; initialize a new JSChannel
+        window.channel = Channel.build({
+          window: window.parent,
+          origin: '*',
+          scope: 'JSInput'
+        });
+
+        // Bind the channel setState immediately so we don't keep the host window waiting
+        channel.bind('setState', function channelSetState(transaction, state) {
+          return window.setState(state);
+        });
+      }
+    </script>
+    <link rel="stylesheet" href="<@css_path@>">
+    <link href='<@font_css_path@>' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="about:blank">
+  </head>
+  <body>
+    <div id="si-container">
+      <div id="si-placeholder">
+        Loading SketchInput...
+      </div>
+    </div>
+    <script src="//cdn.ravenjs.com/1.1.19/native/raven.min.js"></script>
+    <script>
+      Raven.config('https://ba0147f0571642aea6c8228de3c3f1e1@app.getsentry.com/49449', {
+        whitelistUrls: ['s3.amazonaws.com/1801-static-assets/']
+      }).install();
+    </script>
+    <script src="<@vendor_bundle_path@>"></script>
+    <script src="<@config_or_app_bundle_path@>"></script>
+    <script>
+      (function() {
+        // Globals: channel, __state, isLoaded, config, si, setState, getState, getGrade, useBase64Encoding, DATA_URI_PREAMBLE;
+
+        var loadTimer = window.setTimeout(function() {
+          if (window.isLoaded) return;
+          Raven.captureMessage('Did not load within 10 seconds', {tags: {shortname: 'loadTimeout'}});
+        }, 10000);
+
+        // Base64-encode the state to avoid multiple JSON escaping in edX
+        window.useBase64Encoding = true;
+
+        // Slightly modified version of:
+        // https://www.nczonline.net/blog/2009/07/28/the-best-way-to-load-external-javascript/
+        function loadScript(url, callback) {
+          var script = document.createElement('script')
+          script.type = 'text/javascript';
+          script.src = url;
+
+          if (script.readyState) {  // IE
+            script.onreadystatechange = function() {
+              if (script.readyState == 'loaded' || script.readyState == 'complete') {
+                  script.onreadystatechange = null;
+                  callback();
+              }
+            };
+          }
+          else {  // Others
+            script.onload = function(){
+              callback();
+            };
+          }
+          document.getElementsByTagName('body')[0].appendChild(script);
+        }
+
+        try {
+          if (window.location.hash.substring(0, 6) === '#debug') {
+            var configId = window.location.hash.split(':')[1];
+            // Load a config from debugConfigs.js
+            loadScript('debugConfigs.js', function() {
+              window.config = loadConfig(configId);
+              if (window.config === null) {
+                console.log(configId + ' was not found in debugConfig.js');
+                document.getElementById('si-placeholder').textContent =
+                'Could not parse problem configuration data';
+                window.clearTimeout(loadTimer);
+                return;  // Abort the loading process
+              }
+              else {
+                console.info(configId + ' has been loaded : ', window.config);
+              }
+            });
+          }
+          else {
+            window.config = JSON.parse(atob(
+              window.location.hash
+                .slice(1)
+                .replace(/-/g, '+')
+                .replace(/_/g, '/')
+            ));
+          }
+        }
+        catch (error) {
+          document.getElementById('si-placeholder').textContent =
+            'Could not parse problem configuration data';
+          Raven.captureException(error, {tags: {shortname: 'hashParseError'}});
+          window.clearTimeout(loadTimer);
+          return;  // Abort the loading process
+        }
+
+        System.import('lib/main').then(function(main) {
+          window.si = new main.default(document.getElementById('si-container'), config);
+
+          window.si.messageBus.on('ready', function() {
+            window.isLoaded = true;
+            if (window.__state) window.si.setState(window.__state);
+          });
+
+          window.si.messageBus.on('warnUser', function(type, error) {
+            Raven.captureException(error, {tags: {shortname: type}});
+          });
+
+          window.getState = function() {
+            return window.useBase64Encoding ? DATA_URI_PREAMBLE + btoa(si.getState()) : si.getState();
+          };
+
+          window.getGrade = si.getGradeable.bind(si);
+
+          if (window.channel) {
+            window.channel
+              .bind('getState', window.getState)
+              .bind('getGrade', window.getGrade);
+          }
+        }).catch(function(error) {
+          Raven.captureException(error, {tags: {shortname: 'importPromiseError'}});
+        });
+      }());
+    </script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+.gobble
+.gobble-build
+node_modules
+jspm_packages
+dist
+npm-debug.log
