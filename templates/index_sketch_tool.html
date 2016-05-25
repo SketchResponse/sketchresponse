@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SketchInput Development Server</title>
+  <style type="text/css">
+    #container {
+      width: 800px;
+    }
+    #app-frame {
+      display: block;
+      width: 100%;
+      height: 550px;
+      border: none;
+    }
+    button {
+      width: 120px;
+      height: 25px;
+    }
+    input {
+      height: 19px;
+      width : 250px;
+    }
+    #save-state-button {
+      margin-left: 40px;
+    }
+    #correctness-image {
+      vertical-align: middle;
+    }
+    #message-area {
+      display: block;
+      width: 800px;
+      margin-top: 10px;
+      font-family: Sans-Serif;
+      font-size: 0.9em;
+    }
+  </style>
+  <script type="text/javascript" src="/static/jschannel.js"></script>
+</head>
+<body>
+  <div id="container">
+    <iframe id="app-frame" src="http://localhost:4567/#{{hash}}"></iframe>
+    <button id="check-button" onclick="check()">Check</button>
+    <img id="correctness-image" src="/static/unanswered-icon.png">
+    <button id="save-state-button" onclick="saveState()">Save State ></button>
+    <input id="state-text-input" type="text" placeholder="(Paste state here)">
+    <button id="load-state-button" onclick="loadState()" disabled>> Load State</button>
+    <div id="message-area"></div>
+  </div>
+  <script type="text/javascript">
+    var appFrame = document.getElementById('app-frame');
+    var checkButton = document.getElementById('check-button');
+    var correctnessImage = document.getElementById('correctness-image');
+    var messageArea = document.getElementById('message-area');
+    var stateTextInput = document.getElementById('state-text-input');
+    var loadStateButton = document.getElementById('load-state-button');
+
+    var channel = Channel.build({
+      window: appFrame.contentWindow,
+      origin: '*',
+      scope: 'JSInput'
+    });
+
+    stateTextInput.addEventListener('input', function(event) {
+      loadStateButton.disabled = (stateTextInput.value === '');
+    });
+
+    function setUI(info) {
+      if (info.checking === true) checkButton.textContent = 'Checking...';
+      else if (info.checking === false) checkButton.textContent = 'Check';
+
+      if (info.correct === true) correctnessImage.src = '/static/correct-icon.png';
+      else if (info.correct === false) correctnessImage.src = '/static/incorrect-icon.png';
+      else if (info.correct === null) correctnessImage.src = '/static/unanswered-icon.png';
+
+      if (info.message !== undefined) {
+        messageArea.textContent = info.message;
+      }
+    }
+
+    function check() {
+      setUI({checking: true, correct: null, message: ''});
+      var data, req, response;
+
+      req = new XMLHttpRequest();
+      req.open('POST', window.location.pathname + '/check', true);
+      req.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+      req.onload = function () {
+        if (req.status == 200) {
+          response = JSON.parse(req.responseText);
+          setUI({checking: false, correct: response.ok, message: response.msg});
+          console.log('Server responded with data: ', response);
+        }
+        else {
+          setUI({checking: false, correct: null, message: ''});
+          console.log('Server responded with status ' + req.status);
+        }
+      }
+
+      console.log('Getting grade function data');
+      channel.call({
+        method: 'getGrade',
+        params: '',
+        success: function(gradeableData) {
+          console.log('Sending data to server');
+          req.send(JSON.stringify({
+            answer: gradeableData
+          }));
+        }
+      });
+    }
+
+    function saveState() {
+      channel.call({
+        method: 'getState',
+        params: '',
+        success: function(state) {
+          stateTextInput.value = state;
+          loadStateButton.disabled = false;
+          messageArea.textContent = 'Saved current state'
+        }
+      })
+    }
+
+    function loadState() {
+      channel.call({
+        method: 'setState',
+        params: stateTextInput.value,
+        success: function() {
+          messageArea.textContent = 'Loaded new state'
+        }
+      })
+    }
+  </script>
+</body>
+</html>

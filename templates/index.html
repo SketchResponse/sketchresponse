@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SketchInput Development Server</title>
+  <style type="text/css">
+    #container {
+      width: 800px;
+    }
+    #app-frame {
+      display: block;
+      width: 100%;
+      height: 525px;
+      border: none;
+    }
+    #check-button {
+      width: 100px;
+      height: 25px;
+    }
+    #correctness-image {
+      vertical-align: middle;
+    }
+    #message-area {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      font-family: Sans-Serif;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <iframe id="app-frame" src="/static/app/index.html"></iframe>
+    <button id="check-button" onclick="check()">Check</button>
+    <img id="correctness-image" src="//:0">
+    <div id="message-area"></div>
+  </div>
+  <script type="text/javascript">
+    var appFrame = document.getElementById('app-frame');
+    var checkButton = document.getElementById('check-button');
+    var correctnessImage = document.getElementById('correctness-image');
+    var messageArea = document.getElementById('message-area');
+
+    function setUI(info) {
+      if (info.checking === true) checkButton.textContent = 'Checking...';
+      else if (info.checking === false) checkButton.textContent = 'Check';
+
+      if (info.correct === true) correctnessImage.src = '/static/correct-icon.png';
+      else if (info.correct === false) correctnessImage.src = '/static/incorrect-icon.png';
+      else if (info.correct === null) correctnessImage.src = '//:0';
+
+      if (info.message !== undefined) {
+        messageArea.textContent = info.message;
+      }
+    }
+
+    function check() {
+      setUI({checking: true, correct: null, message: ''});
+      var data, req, response;
+
+      console.log('Getting grade/state function data');
+      data = {};
+      data.answer = appFrame.contentWindow.sketchinput.gradefn();
+      data.state = appFrame.contentWindow.sketchinput.get_statefn();
+
+      var req = new XMLHttpRequest();
+      req.open('POST', '/check', true);
+      req.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+      req.onload = function () {
+        if (req.status == 200) {
+          response = JSON.parse(req.responseText);
+          setUI({checking: false, correct: response.ok, message: response.msg});
+          console.log('Server responded with data: ', response);
+        }
+        else {
+          setUI({checking: false, correct: null, message: ''});
+          console.log('Server responded with status ' + req.status);
+        }
+      }
+
+      console.log('Sending data to server');
+      req.send(JSON.stringify(data));
+    }
+  </script>
+</body>
+</html>
