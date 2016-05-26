@@ -33,7 +33,7 @@
     "postinstall": "jspm install",
     "test": "karma start --single-run",
     "start": "gobble",
-    "build": "rm -rf ./tmp && npm run css && gobble build dist -f && npm run clean",
+    "build": "rm -rf ./tmp && npm run css && gobble build dist -f && npm run clean && mv ./dist/ ../static/sketch_tool_dist",
     "css": "rm -rf ./tmp && npm run sass && npm run autoprefixer",
     "sass": "node-sass --output-style compressed ./styles/ --output ./tmp",
     "autoprefixer": "postcss --use autoprefixer --map file --replace ./tmp/*",
