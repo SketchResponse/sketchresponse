@@ -67,3 +67,6 @@ target/
 
 # mac specific files
 *.DS_Store
+
+# front-end build
+static/sketch_tool_dist/
