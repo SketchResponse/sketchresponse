@@ -64,7 +64,7 @@ The SketchResponse grader backend has only two third party package requirements:
 Install them by running the following command in the root directory:
 
 ```sh
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 Flask is only required if you want to run a local server for convenience when implementing and testing new grading scripts. See the Tutorial [Test a Grading Script on a Local Server](docs/local_test.md) for details.
@@ -73,12 +73,11 @@ Usage Guides
 -----------
 
 ### Examples and Tutorials
-- [Grading Script Template](docs/grader_template.py)
+- [Grading Script Template](grader_scripts/grader_template.py)
 - [Running & Building the Sketch Tool Front-end](docs/sketch_tool_usage.md)
+- [Testing a Grading Script on a Local Server](docs/local_testing.md)
 - Tutorial - [Create a Simple Grading Script](docs/simple_grader.md)
 - Tutorial - [Create a Complex Grading Script](docs/complex_grader.md)
-- Tutorial - [Test a Grading Script on a Local Server](docs/local_testing.md)
-- Tutorial - [Create a Sketch-Tool Plugin](docs/create_plugin.md)
 
 ### Reference Information
 - [Sketch-Tool Plugin Configuration](docs/probconfig_plugins.md)
