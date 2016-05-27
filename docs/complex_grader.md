@@ -59,7 +59,7 @@ In this problem, we want students to label both extrema points and the inflectio
 * `'color'` is the color used to render the drawn function.
 * `'size'` is the pixel width of the point drawn by the plugin.
 
-A listing of all the built-in plugins can be found at [SketchResponse Plugins](probconfig_plugins.md). A tutorial on how to build your own plugins can be found at [Create a Plugin](create_plugin.md).
+A listing of all the built-in plugins can be found at [SketchResponse Plugins](probconfig_plugins.md).
 
 ```python
 problemconfig = sketchresponse.config({
@@ -318,15 +318,9 @@ def grader(f,cp,ip,va,ha):
 
 ## Testing the script
 
-Once the script is written, you can run the script in the local testing server. See the [Test a Grading Script on a Local Server](docs/local_testing.md) tutorial for details on installing and running the testing server.
+Once the script is written, you can run the script in the local testing server. See the [Test a Grading Script on a Local Server](docs/local_test.md) tutorial for details on installing and running the testing server.
 
-There is already a copy of this grader script in the `grader_scripts` directory so all you need to do is run the following command from the root of the SketchResponse project:
-
-```
-python local_server.py
-```
-
-Now open your browser of choice and enter the following url:
+There is already a copy of this grader script in the `grader_scripts` directory so all you need to do is start the server and point your browser of choice to the url:
 
 ```
 http://localhost:5000/complex_grader

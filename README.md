@@ -75,7 +75,7 @@ Usage Guides
 ### Examples and Tutorials
 - [Grading Script Template](grader_scripts/grader_template.py)
 - [Running & Building the Sketch Tool Front-end](docs/sketch_tool_usage.md)
-- [Testing a Grading Script on a Local Server](docs/local_testing.md)
+- [Testing a Grading Script on a Local Server](docs/local_test.md)
 - Tutorial - [Create a Simple Grading Script](docs/simple_grader.md)
 - Tutorial - [Create a Complex Grading Script](docs/complex_grader.md)
 

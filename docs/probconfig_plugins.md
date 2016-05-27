@@ -6,7 +6,7 @@ enables the selection of that plugin in the javascript front-end tool.
 
 Any of these plugins can be declared multiple times causing
 multiple instances of the plugin to be enabled in the javascript tool. See
-the [Complex Grader Example](/complex_grader.md) for an example where this
+the [Complex Grader Example](docs/complex_grader.md) for an example where this
 is used.
 
 ## Table of Contents
@@ -19,8 +19,8 @@ is used.
 * [Horizontal Asymptote](#horiz-line)
 * [Image](#image)
 
-## Axes
 <div id=axes></div>
+## Axes
 
 Adds horizontal and vertical axes with major and minor ticks and their associated gridlines.
 
@@ -36,8 +36,8 @@ E.g.
 {'name': 'axes'}
 ```
 
-## Background
 <div id=background></div>
+## Background
 
 Sets the background image for the drawing canvas. The default is an grid.
 
@@ -47,8 +47,8 @@ E.g.
 {'background': '/static/app/axes.png'}
 ```
 
-## Freeform
 <div id=freeform></div>
+## Freeform
 
 The Freeform plugin adds a button to  the tool to draw freeform lines on the axes. It has
 four parameters that must be defined:
@@ -68,8 +68,8 @@ E.g.
 {'name': 'freeform', 'id': 'f', 'label': 'Function f(x)', 'color':'blue'}
 ```
 
-## Point
 <div id=point></div>
+## Point
 
 The Point plugin adds a button to the tool to draw points on the axes. It has five
 parameters that must be defined:
@@ -91,8 +91,8 @@ E.g.
 {'name': 'point', 'id': 'cp', 'label': 'Extremum', 'color': 'black', 'size': 15}
 ```
 
-## Vertical Asymptote
 <div id=vert-line></div>
+## Vertical Asymptote
 
 The Vertical Asymptote plugin adds a button to  the tool to draw vertical lines on the
 axes. It has five parameters that must be defined:
@@ -112,8 +112,8 @@ description of the dash style to used for drawing the line. Possible values: 'da
 {'name': 'vertical-line', 'id': 'va', 'label': 'Vertical asymptote', 'color': 'gray', 'dashStyle': 'dashdotted'}
 ```
 
-## Horizontal Asymptote
 <div id=horiz-line></div>
+## Horizontal Asymptote
 
 The Horizontal Asymptote plugin adds a button to  the tool to draw horizontal lines on the
 axes. It has five parameters that must be defined:
@@ -134,8 +134,8 @@ description of the dash style to used for drawing the line. Possible values: 'da
 {'name': 'horizontal-line', 'id': 'ha', 'label': 'Horizontal asymptote', 'color': 'gray', 'dashStyle': 'dashdotted'}
 ```
 
-## Image
 <div id=image></div>
+## Image
 
 Adds an image to the drawing canvas.
 
