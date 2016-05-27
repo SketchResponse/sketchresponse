@@ -12,18 +12,23 @@ is used.
 ## Table of Contents
 
 * [Axes](#axes)
+* [Background](#background)
 * [Freeform](#freeform)
 * [Point](#point)
 * [Vertical Asymptote](#vert-line)
 * [Horizontal Asymptote](#horiz-line)
+* [Image](#image)
 
 ## Axes
 <div id=axes></div>
 
-*The Axes plugin must be declared.* It enables the axes on which the other
-plugins can interact. It has one parameter that must be defined:
+Adds horizontal and vertical axes with major and minor ticks and their associated gridlines.
 
 * `'name': 'axes'` - the name key *must* have the value 'axes'
+* `'xmajor': <number>(default: 1)` - the major tick spacing for the x axis
+* `'ymajor': <number>(default: 1)` - the major tick spacing for the y axis
+* `'xminor': <number>(default: 0.25)` - the minor tick spacing for the x axis
+* `'yminor': <number>(default: 0.25)` - the minor tick spacing for the y axis
 
 E.g.
 
@@ -31,10 +36,21 @@ E.g.
 {'name': 'axes'}
 ```
 
+## Background
+<div id=background></div>
+
+Sets the background image for the drawing canvas. The default is an grid.
+
+E.g.
+
+```python
+{'background': '/static/app/axes.png'}
+```
+
 ## Freeform
 <div id=freeform></div>
 
-The Freeform plugin enables the tool to draw freeform lines on the axes. It has
+The Freeform plugin adds a button to  the tool to draw freeform lines on the axes. It has
 four parameters that must be defined:
 
 * `'name': 'freeform'` - the name key *must* have the value 'freeform'
@@ -55,7 +71,7 @@ E.g.
 ## Point
 <div id=point></div>
 
-The Point plugin enables the tool to draw points on the axes. It has five
+The Point plugin adds a button to the tool to draw points on the axes. It has five
 parameters that must be defined:
 
 * `'name': 'point'` - the name key *must* have the string value 'point'
@@ -78,7 +94,7 @@ E.g.
 ## Vertical Asymptote
 <div id=vert-line></div>
 
-The Vertical Asymptote plugin enables the tool to draw vertical lines on the
+The Vertical Asymptote plugin adds a button to  the tool to draw vertical lines on the
 axes. It has five parameters that must be defined:
 
 * `'name': 'vertical-line'` - the name key *must* have the value 'vertical-line'
@@ -90,8 +106,7 @@ front-end tool.
 * `'color': <a color string>` - the color key should be give a color string that
 javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
 * `'dashStyle': <line dash string>` - the dashStyle key should have a string
-description of the dash style to used for drawing the line. A list of acceptable
-dash strings can be found [here]().
+description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid' (default: 'dashdotted').
 
 ```python
 {'name': 'vertical-line', 'id': 'va', 'label': 'Vertical asymptote', 'color': 'gray', 'dashStyle': 'dashdotted'}
@@ -100,7 +115,7 @@ dash strings can be found [here]().
 ## Horizontal Asymptote
 <div id=horiz-line></div>
 
-The Horizontal Asymptote plugin enables the tool to draw horizontal lines on the
+The Horizontal Asymptote plugin adds a button to  the tool to draw horizontal lines on the
 axes. It has five parameters that must be defined:
 
 * `'name': 'horizontal-line'` - the name key *must* have the value
@@ -113,9 +128,19 @@ front-end tool.
 * `'color': <a color string>` - the color key should be give a color string that
 javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
 * `'dashStyle': <line dash string>` - the dashStyle key should have a string
-description of the dash style to used for drawing the line. A list of acceptable
-dash strings can be found [here]().
+description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid' (default: 'dashdotted').
 
 ```python
 {'name': 'horizontal-line', 'id': 'ha', 'label': 'Horizontal asymptote', 'color': 'gray', 'dashStyle': 'dashdotted'}
 ```
+
+## Image
+<div id=image></div>
+
+Adds an image to the drawing canvas.
+
+* `'name': 'image'` - the name key *must* have the value 'image'
+* `'scale': <number>(default: 1)` - multiplier to scale the size of the image.
+* `'align': <alignment string>` - possible values, 'top', 'left', 'bottom', 'right', '' (default value))
+* `'offset': [<number>,<number>]` - array of x, y offsets (default value[0, 0]).
+

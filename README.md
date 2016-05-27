@@ -9,39 +9,72 @@ integrated into other web platforms.
 Features
 --------
 
-- Configurable Javascript front-end with plugin components to provide different
+- Sketch Tool - configurable Javascript front-end with plugin components to provide different
 function drawing and annotation capabilities. See
 [Sketch-Tool Plugin Configuration](docs/probconfig_plugins.md) for a description of the available
 plugins.
-- Python Grader-Library that provides an API of function grading methods that can be
-composed to construct custom grading scripts. See
+- Grader Library - python back-end that provides an API of function grading methods that
+can be composed to construct custom grading scripts. See
 [Create a Simple Grading Script](docs/simple_grader.md) for a tutorial on building
 a simple grading script.
 
 Installation
 ------------
 
-TODO: this is somewhat complicated and beyond my knowledge so far. The
-javascript has to be hosted somewhere (the flask dev server seems to be
-pulling from aws.) The python backend would have to be integrated into
-whatever server infrastructure they were using as well. Exactly how you
-handle the url redirections to the python graders would be dependent on
-what hosting solution you are using?
+* Clone this repository to the directory of your choice:
+  * By using HTTPS:
 
-### Python Dependencies
+    ```sh
+    $ git clone https://github.com/SketchResponse/sketchresponse.git
+    ```
+  * By using SSH:
+
+    ```sh
+    $ git clone git@github.com:SketchResponse/sketchresponse.git
+    ```
+
+## Sketch Tool Front-End
+
+### Prerequisites
+
+You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged with Node) to be installed on your system.
+
+### Installation
+
+* Change to the *sketch_tool* directory:
+
+  ```sh
+  $ cd sketch_tool
+  ```
+
+* Install dependencies listed in *package.json*:
+
+  ```sh
+  $ npm install
+  ```
+  [JSPM](http://jspm.io) will pull in additional dependencies automatically on a post-install script.
+
+## Grader Back-End
 
 The SketchResponse grader backend has only two third party package requirements:
 
 * [flask](http://flask.pocoo.org/)
 * [numpy](http://www.numpy.org/)
 
-And Flask is only required if you want to run a local server for convinience when implementing and testing new grading scripts. See the Tutorial [Test a Grading Script on a Local Server](docs/local_test.md) for details.
+Install them by running the following command in the root directory:
+
+```sh
+pip install -r requirements.txt
+```
+
+Flask is only required if you want to run a local server for convenience when implementing and testing new grading scripts. See the Tutorial [Test a Grading Script on a Local Server](docs/local_test.md) for details.
 
 Usage Guides
 -----------
 
 ### Examples and Tutorials
 - [Grading Script Template](docs/grader_template.py)
+- [Running & Building the Sketch Tool Front-end](docs/sketch_tool_usage.md)
 - Tutorial - [Create a Simple Grading Script](docs/simple_grader.md)
 - Tutorial - [Create a Complex Grading Script](docs/complex_grader.md)
 - Tutorial - [Test a Grading Script on a Local Server](docs/local_testing.md)
@@ -57,6 +90,23 @@ Contribute
 
 - Issue Tracker: [github.com/SketchResponse/sketchresponse/issues](https://github.com/SketchResponse/sketchresponse/issues)
 - Source Code: [github.com/SketchResponse/sketchresponse/](https://github.com/SketchResponse/sketchresponse/)
+
+## Main sketch tool dev dependencies
+
+NPM modules (see [`package.json`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/package.json))
+* [`autoprefixer`](https://www.npmjs.com/package/autoprefixer)
+* [`fast-sourcemap-concat`](https://www.npmjs.com/package/fast-sourcemap-concat)
+* [`glob`](https://www.npmjs.com/package/glob)
+* [`gobble`](https://www.npmjs.com/package/gobble)
+* [`jasmine-core`](https://www.npmjs.com/package/jasmine-core)
+* [`jspm`](https://www.npmjs.com/package/jspm)
+* [`karma`](https://www.npmjs.com/package/karma)
+* [`node-sass`](https://www.npmjs.com/package/node-sass)
+* [`phantomjs`](https://www.npmjs.com/package/phantomjs)
+* [`postcss-cli`](https://www.npmjs.com/package/postcss-cli)
+
+JSPM fetched modules (see [`config.js`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/config.js))
+
 
 Support
 -------
