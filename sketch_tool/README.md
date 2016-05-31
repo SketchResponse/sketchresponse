@@ -1,5 +1,5 @@
-# Sketch 2
-#### A graphical input tool for the edX platform.
+# Sketch Tool
+#### A configurable Javascript front-end drawing tool with plugin components.
 
 
 ### Prerequisites
@@ -9,22 +9,10 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
 
 ### Installation
 
-* Clone this repository to the directory of your choice:
-  * By using HTTPS:
-
-    ```sh
-    $ git clone https://github.mit.edu/msegado/sketch2.git
-    ```
-  * By using SSH:
-
-    ```sh
-    $ git clone git@github.mit.edu:msegado/sketch2.git
-    ```
-
-* Change to the *sketch2* directory:
+* Change to the *sketch_tool* directory:
 
   ```sh
-  $ cd sketch2
+  $ cd sketchresponse/sketch_tool
   ```
 
 * Install dependencies listed in *package.json*:
@@ -37,10 +25,10 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
 
 ### Usage
 
-* Change to the *sketch2* directory:
+* Change to the *sketch_tool* directory:
 
   ```sh
-  $ cd sketch2
+  $ cd sketchresponse/sketch_tool
   ```
 
 * To start the development server:
@@ -50,7 +38,7 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
   ```
   Then point your browser to the following address: http://localhost:4567/#debug:config1
 
-  This will load the tool with options listed in the config1 object in the following [`file`](https://github.mit.edu/msegado/sketch2/blob/master/html/debugConfigs.js).
+  This will load the tool with options listed in the config1 object in the following [`file`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/html/debugConfigs.js).
 
   Options are:
   * width, height: dimensions of the tool.
@@ -59,7 +47,7 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
   * plugins: modules that extend drawing functionality either automatically (for example axes, background and image) or are placed in the top toolbar (freeform, horizontal and vertical lines) and let the user draw the corresponding shape on the canvas.
 
 
-* To build the *dist* directory:
+* To build the *sketchresponse/static/sketch_tool_dist* directory:
 
   ```sh
   $ npm run build
@@ -72,7 +60,7 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
   ```
 
 ### Plugins
-They are located in the following [`directory`](https://github.mit.edu/msegado/sketch2/blob/master/lib/plugins/).
+They are located in the following [`directory`](https://github.com/SketchResponse/sketchresponse/tree/master/sketch_tool/lib/plugins/).
 * **axes:**
   Adds horizontal and vertical axes with major and minor ticks and their associated gridlines. *Params:* xmajor (major x tick spacing, default value: 1), ymajor (major x tick spacing, default value: 1), xminor (minor x tick spacing, default value: 0.25), yminor (minor y tick spacing, default value: 0.25).
 
@@ -94,7 +82,7 @@ They are located in the following [`directory`](https://github.mit.edu/msegado/s
 
 ### Main dev dependencies
 
-NPM modules (see [`package.json`](https://github.mit.edu/msegado/sketch2/blob/master/package.json))
+NPM modules (see [`package.json`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/package.json))
 * [`autoprefixer`](https://www.npmjs.com/package/autoprefixer)
 * [`fast-sourcemap-concat`](https://www.npmjs.com/package/fast-sourcemap-concat)
 * [`glob`](https://www.npmjs.com/package/glob)
@@ -106,7 +94,7 @@ NPM modules (see [`package.json`](https://github.mit.edu/msegado/sketch2/blob/ma
 * [`phantomjs`](https://www.npmjs.com/package/phantomjs)
 * [`postcss-cli`](https://www.npmjs.com/package/postcss-cli)
 
-JSPM fetched modules (see [`config.js`](https://github.mit.edu/msegado/sketch2/blob/master/config.js))
+JSPM fetched modules (see [`config.js`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/config.js))
 
 ### License
-The code in this repository is under copyright from the *Massachusetts Institute of Technology, 2015, All Rights Reserved* unless otherwise noted. Please see the [`LICENSE`](https://github.mit.edu/msegado/sketch2/blob/master/LICENSE) file for details.
+The code in this repository is under copyright from the *Massachusetts Institute of Technology, 2015, All Rights Reserved* unless otherwise noted. Please see the [`LICENSE`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/LICENSE) file for details.
