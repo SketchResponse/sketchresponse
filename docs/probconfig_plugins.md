@@ -105,8 +105,8 @@ string returned to the grader function.
 front-end tool.
 * `'color': <a color string>` - the color key should be give a color string that
 javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
-* `'dashStyle': <line dash string>` - the dashStyle key should have a string
-description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid' (default: 'dashdotted').
+* `'dashStyle': <line dash string>(default: 'solid')` - the dashStyle key should have a string
+description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'.
 
 ```python
 {'name': 'vertical-line', 'id': 'va', 'label': 'Vertical asymptote', 'color': 'gray', 'dashStyle': 'dashdotted'}
@@ -127,8 +127,8 @@ string returned to the grader function.
 front-end tool.
 * `'color': <a color string>` - the color key should be give a color string that
 javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
-* `'dashStyle': <line dash string>` - the dashStyle key should have a string
-description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid' (default: 'dashdotted').
+* `'dashStyle': <line dash string>(default: 'solid')` - the dashStyle key should have a string
+description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'.
 
 ```python
 {'name': 'horizontal-line', 'id': 'ha', 'label': 'Horizontal asymptote', 'color': 'gray', 'dashStyle': 'dashdotted'}
@@ -141,6 +141,10 @@ Adds an image to the drawing canvas.
 
 * `'name': 'image'` - the name key *must* have the value 'image'
 * `'scale': <number>(default: 1)` - multiplier to scale the size of the image.
-* `'align': <alignment string>` - possible values, 'top', 'left', 'bottom', 'right', '' (default value))
+* `'align': <alignment string>(default: '')` - possible values, 'top', 'left', 'bottom', 'right', ''.
 * `'offset': [<number>,<number>]` - array of x, y offsets (default value[0, 0]).
+* `'src': <path to image file>` - the path to the image file to insert.
 
+```python
+{'name': 'image', 'align': 'bottom', 'src': '/static/image.png'}
+```
