@@ -68,11 +68,24 @@ export default class Point {
   }
 
   drawStart(event) {
-    this.app.svg.setPointerCapture(event.pointerId);
-    this.app.svg.addEventListener('pointermove', this.drawMove);
+    // this.app.svg.setPointerCapture(event.pointerId);
+    // this.app.svg.addEventListener('pointermove', this.drawMove);
     this.app.svg.addEventListener('pointerup', this.drawEnd);
     this.app.svg.addEventListener('pointercancel', this.drawEnd);
-    this.drawMove(event);
+    // this.drawMove(event);
+
+    this.currentPosition = {
+      x: clamp(event.clientX - this.params.left, 0, this.params.width),
+      y: clamp(event.clientY - this.params.top, 0, this.params.height),
+    };
+    this.state.push(this.currentPosition);
+
+    this.render();  //.then(refs => {
+    //   app.registerElement({
+    //     element: refs['tentative'],
+    //     initialBehavior: 'drag',
+    //   })
+    // })
   }
 
   drawMove(event) {
@@ -85,13 +98,13 @@ export default class Point {
 
   // TODO: this adds state event when pointer was cancelled. add a drawCancel method?
   drawEnd(event) {
-    this.app.svg.releasePointerCapture(event.pointerId);
-    this.app.svg.removeEventListener('pointermove', this.drawMove);
+    // this.app.svg.releasePointerCapture(event.pointerId);
+    // this.app.svg.removeEventListener('pointermove', this.drawMove);
     this.app.svg.removeEventListener('pointerup', this.drawEnd);
     this.app.svg.removeEventListener('pointercancel', this.drawEnd);
-    this.state.push(this.currentPosition);
+    // this.state.push(this.currentPosition);
     this.currentPosition = undefined;
-    this.app.addUndoPoint();
+    // this.app.addUndoPoint();
     this.render();
   }
 
@@ -106,21 +119,33 @@ export default class Point {
             fill: ${this.params.color};
             stroke-width: 0;
           `,
-        })
-      ),
-      // TODO: eliminate code duplication
-      z.if(this.currentPosition !== undefined, () =>
-        z('circle', {
-          cx: this.currentPosition.x,
-          cy: this.currentPosition.y,
-          r: this.params.size / 2,
-          style: `
-            fill: ${this.params.color};
-            stroke-width: 0;
-            opacity: 0.7;
-          `,
+          onmount: el => {
+            this.app.registerElement({
+              ownerID: this.params.id,
+              element: el,
+              initialBehavior: 'drag',
+              onDrag: ({dx, dy}) => {
+                position.x += dx;   /// BUG: TODO!!!!: the position object changes when we undo/redo...
+                position.y += dy;
+                this.render();
+              },
+            });
+          }
         })
       )
+      // // TODO: eliminate code duplication
+      // z.if(this.currentPosition !== undefined, () =>
+      //   z('circle', {
+      //     cx: this.currentPosition.x,
+      //     cy: this.currentPosition.y,
+      //     r: this.params.size / 2,
+      //     style: `
+      //       fill: ${this.params.color};
+      //       stroke-width: 0;
+      //       opacity: 0.7;
+      //     `,
+      //   })
+      // )
     );
   }
 }

@@ -9,8 +9,12 @@ import NotificationManager from './notification-manager';
 import GradeableManager from './gradeable-manager';
 import StateManager from './state-manager';
 import HistoryManager from './history-manager';
+import ElementManager from './element-manager';
 
 import Toolbar from './toolbar';
+
+
+import * as attrCache from './util/dom-attr-cache';
 
 
 export default class SketchInput {
@@ -114,6 +118,8 @@ export default class SketchInput {
     });
 
     this.toolbar = new Toolbar(this.params, this.app);
+    this.elementManager = new ElementManager(this.app);
+    this.app.registerElement = this.elementManager.registerElement.bind(this.elementManager);
 
     plugins.forEach((Plugin, idx) => {
       new Plugin(this.params.plugins[idx], this.app);
@@ -160,6 +166,33 @@ export default class SketchInput {
     this.app.svg.addEventListener('touchend', event => {
       if (event.touches.length == 0) this.app.svg.setAttribute('touch-action', 'none');
     }, true);
+
+
+    //////////// TEMPORARY TEST CODE FOR ELEMENT MANAGER //////////////
+
+    // {
+    //   const svg = document.getElementById('si-canvas')
+    //   const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    //   attrCache.setAttributeNS(circle, null, 'cx', 150);
+    //   attrCache.setAttributeNS(circle, null, 'cy', 150);
+    //   attrCache.setAttributeNS(circle, null, 'r', 9);
+    //   attrCache.setAttributeNS(circle, null, 'style', 'fill: orange;');
+    //   svg.appendChild(circle);
+
+    //   this.elementManager.registerElement({
+    //     ownerID: 'f',
+    //     element: circle,
+    //     onDrag: ({dx, dy}) => {
+    //       const x = Number(attrCache.getAttributeNS(circle, null, 'cx'));
+    //       const y = Number(attrCache.getAttributeNS(circle, null, 'cy'));
+    //       attrCache.setAttributeNS(circle, null, 'cx', x + dx);
+    //       attrCache.setAttributeNS(circle, null, 'cy', y + dy);
+    //     },
+    //   });
+    // }
+
+    //////////// END TEMPORARY TEST CODE FOR ELEMENT MANAGER //////////////
+
 
     this.messageBus.emit('ready');
   }
