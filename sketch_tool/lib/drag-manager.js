@@ -34,6 +34,32 @@ export default class DragManager {
       .map(element => this.registry.get(element).onDrag)
       .filter(onDrag => onDrag !== undefined);
 
+    // First find out if any element is pushed out of bounds. In that case, we will
+    // freeze the movement in that direction to keep the selection's overall shape.
+    const inBoundsXHandlers = this.elementsToDrag
+      .map(element => this.registry.get(element).inBoundsX)
+      .filter(inBoundsX => inBoundsX !== undefined);
+
+    const inBoundsYHandlers = this.elementsToDrag
+      .map(element => this.registry.get(element).inBoundsY)
+      .filter(inBoundsY => inBoundsY !== undefined);
+
+    let insideX = true, insideY = true;
+    for (let inBoundsX of inBoundsXHandlers) {
+      if (!inBoundsX(dx)) {
+        insideX = false;
+        break;
+      }
+    }
+    for (let inBoundsY of inBoundsYHandlers) {
+      if (!inBoundsY(dy)) {
+        insideY = false;
+        break;
+      }
+    }
+    dx = insideX ? dx : 0;
+    dy = insideY ? dy : 0;
+
     dragHandlers.forEach(onDrag => onDrag({dx, dy}));
     // TODO:
     // 1) monitor return value of drag callbacks + revert drags as needed
