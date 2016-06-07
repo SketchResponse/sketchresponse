@@ -16,11 +16,11 @@ This document is a brief guide on how to use SketchResponse with edX. There are 
    This will create a zip archive called `python_lib.zip` in the root directory of the repository.
 
 2. In edX Studio, from the "Content" menu at the top of the page, select "Files & Uploads".
-3. Click the green "+ Upload New File" button and upload the python_lib.zip file.
+3. Click the green "+ Upload New File" button and upload the `python_lib.zip` file.
 
 ### Notes
 
-If your workflow involves importing an XML course, you may still need to follow these steps in Studio; python_lib.zip may not be detected automatically in the static/ folder of your course. The steps are not required every time you upload your course, though; python_lib.zip won't be deleted by course uploads.
+If your workflow involves importing an XML course, you may still need to follow these steps in Studio; `python_lib.zip` may not be detected automatically in the static/ folder of your course. The steps are not required every time you upload your course, though; `python_lib.zip` won't be deleted by course uploads.
 
 ## Creating SketchResponse problems
 
