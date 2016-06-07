@@ -1,6 +1,9 @@
 # edX Quick Start Guide to Deploying SketchResponse Problems
 
-This document is a brief guide on how to use SketchResponse with edX. There are two sets of information that you need to deploy: 1) the python libraries that support your grading scripts, and 2) the problem XML (which will include your grading scripts).
+This document is a brief guide on how to use SketchResponse with edX. There are two sets of information that you need to deploy:
+
+1. the python grader library that support your grading scripts
+2. the problem XML (which will include your grading scripts).
 
 ## Uploading the Grader Library
 
@@ -11,7 +14,8 @@ $ python edxzip.py
 ```
 
 This will create a zip archive called `python_lib.zip` in the root directory of the repository.
-2. In edX Studio, from the "Content" menu at the top of the page, select "Files & Uploads"
+
+2. In edX Studio, from the "Content" menu at the top of the page, select "Files & Uploads".
 3. Click the green "+ Upload New File" button and upload the python_lib.zip file.
 
 ### Notes
