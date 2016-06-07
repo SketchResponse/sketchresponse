@@ -9,11 +9,11 @@ This document is a brief guide on how to use SketchResponse with edX. There are 
 
 1. Run the following command from the root of the SketchResponse repository:
 
-```sh
-$ python edxzip.py
-```
+   ```sh
+   $ python edxzip.py
+   ```
 
-This will create a zip archive called `python_lib.zip` in the root directory of the repository.
+   This will create a zip archive called `python_lib.zip` in the root directory of the repository.
 
 2. In edX Studio, from the "Content" menu at the top of the page, select "Files & Uploads".
 3. Click the green "+ Upload New File" button and upload the python_lib.zip file.
