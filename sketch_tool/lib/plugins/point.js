@@ -30,12 +30,13 @@ export default class Point extends BasePlugin {
       y: event.clientY - this.params.top,
     };
     this.state.push(this.currentPosition);
+    this.app.addUndoPoint();
     this.render();
   }
 
   render() {
     z.render(this.el,
-      z.each(this.state, position =>
+      z.each(this.state, (position, positionIndex) =>
         z('circle', {
           cx: position.x,
           cy: position.y,
@@ -50,9 +51,8 @@ export default class Point extends BasePlugin {
               element: el,
               initialBehavior: 'drag',
               onDrag: ({dx, dy}) => {
-                /// BUG: TODO!!!!: the position object changes when we undo/redo...
-                position.x += dx;
-                position.y += dy;
+                this.state[positionIndex].x += dx;
+                this.state[positionIndex].y += dy;
                 this.render();
               },
               inBoundsX: (dx) => {
