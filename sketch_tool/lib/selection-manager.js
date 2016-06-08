@@ -7,19 +7,20 @@ import { injectStyleSheet, injectSVGDefs } from './util/dom-style-helpers';
 export const SELECTED_ATTR = 'data-si-selected';
 
 // Inject stylesheet and filter on module load since we only need one each per window
-injectStyleSheet(`[${ SELECTED_ATTR }] { filter: url(#si-selected-filter); }`);
-injectSVGDefs(`
-  <filter id="si-selected-filter" x="-2" y="-2" width="5" height="5">
-    <feMorphology in="SourceAlpha" operator="dilate" radius="5"/>
-    <feColorMatrix type="matrix" values="
-      0 0 0 0 0
-      0 0 0 0 0
-      0 0 0 0 0
-      0 0 0 0.15 0
-    " />
-    <feComposite in="SourceGraphic" />
-  </filter>
-`);
+// injectStyleSheet(`[${ SELECTED_ATTR }] { filter: url(#si-selected-filter); }`);
+// injectSVGDefs(`
+//   <filter id="si-selected-filter" x="-2" y="-2" width="5" height="5">
+//     <feMorphology in="SourceAlpha" operator="dilate" radius="5"/>
+//     <feColorMatrix type="matrix" values="
+//       0 0 0 0 0
+//       0 0 0 0 0
+//       0 0 0 0 0
+//       0 0 0 0.15 0
+//     " />
+//     <feComposite in="SourceGraphic" />
+//   </filter>
+// `);
+injectStyleSheet(`[${ SELECTED_ATTR }] { opacity: 0.5;}`);
 
 export default class SelectionManager {
   constructor(rootElement) {
