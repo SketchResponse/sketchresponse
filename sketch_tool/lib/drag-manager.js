@@ -65,7 +65,7 @@ export default class DragManager {
     // 1) monitor return value of drag callbacks + revert drags as needed
     // 2) update order of cache to optimize future attempts (and recompute dragHandlers...?)
 
-    this.previousPosition = event;
+    this.previousPosition = position;
   }
 
   dragEnd() {
