@@ -1,0 +1,16 @@
+# Table of Contents
+
+* [Introduction](README.md)
+* [Getting Started](getting_started.md)
+* [Using SketchResponse](using_sr.md)
+  * [A grading script template](template.md)
+  * [A simple grading script](simple_grader.md)
+  * [A complex grading script](complex_grader.md)
+  * [Testing your script](local_test.md)
+* [Deployment](deployment.md)
+  * [edX](edx_quickstart.md)
+* [Sketch Tool Configuration Reference](probconfig_plugins.md)
+* [API Reference](api/README.md)
+  * [Asymptotes](api/graderlib_asymptote_module.md)
+  * [GradeableFunction](api/graderlib_gradeablefunction_module.md)
+  * [Point](api/graderlib_point_module.md)

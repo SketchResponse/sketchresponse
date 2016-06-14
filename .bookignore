@@ -1,0 +1,7 @@
+# This is the ignore file for the gitbook build process.
+
+# Ignore the sphinx apidocs directory, this is processed into markdown in the api directory
+docs/apidocs/*
+docs/sketch_tool_usage.md
+docs/create_plugin.md
+
