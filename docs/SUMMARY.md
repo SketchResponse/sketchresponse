@@ -10,7 +10,7 @@
 * [Deployment](deployment.md)
   * [edX](edx_quickstart.md)
 * [Sketch Tool Configuration Reference](probconfig_plugins.md)
-* [API Reference](api/README.md)
+* [Grader Library API Reference](api/README.md)
   * [Asymptotes](api/graderlib_asymptote_module.md)
   * [GradeableFunction](api/graderlib_gradeablefunction_module.md)
   * [Point](api/graderlib_point_module.md)
