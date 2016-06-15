@@ -82,7 +82,7 @@ Usage Guides
 
 ### Reference Information
 - [Sketch-Tool Plugin Configuration](docs/probconfig_plugins.md)
-- [Grader-Library API](https://SketchResponse.github.io/)
+- [Grader-Library API](https://SketchResponse.github.io/sketchresponse)
 
 
 Contribute

@@ -94,7 +94,7 @@ In this simple example all we are checking is that the submitted function
 defines a straight line over its entire domain. We are not checking for slope
 of the line. To do this we call the grader helper function `gf.is_straight()`.
 `is_straight()` returns a boolean value. The full API documentation for the
-grader helper functions can be found at [SketchResponse API](https://SketchResponse.github.io/).
+grader helper functions can be found at [SketchResponse API](https://SketchResponse.github.io/sketchresponse).
 
 And that's it! Those two simple blocks of code complete our first grader script.
 Admittedly this particular script doesn't do much. Check out the [Complex Grader](complex_grader.md) example for a more realistic grader tutorial on an
