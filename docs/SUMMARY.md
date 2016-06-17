@@ -11,6 +11,4 @@
   * [edX](edx_quickstart.md)
 * [Sketch Tool Configuration Reference](probconfig_plugins.md)
 * [Grader Library API Reference](api/README.md)
-  * [Asymptotes](api/grader_lib.html#module-grader_lib.Asymptote)
-  * [GradeableFunction](api/grader_lib.html#module-grader_lib.GradeableFunction)
-  * [Point](api/grader_lib.html#module-grader_lib.Point)
+* [Offline Documentation](offline_docs.md)
