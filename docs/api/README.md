@@ -6,8 +6,8 @@ As you explore the API, you will find that almost all of the functionality provi
 
 There are three modules that you may interact with in the Grader Library API. The majority of the grading functions are accessed through the GradeableFunction module. Functionality to do with evaluating asymptotes is found in the Asymptote module. A handful of grading functions either take Point objects as arguments, or return them as results so a brief description of it is included here as well.
 
-* [Asymptote](api/graderlib_asymptote_module.md)
-* [GradeableFunction](api/graderlib_gradeablefunction_module.md)
-* [Point](api/graderlib_point_module.md)
+* [Asymptote](grader_lib.html#module-grader_lib.Asymptote)
+* [GradeableFunction](grader_lib.html#module-grader_lib.GradeableFunction)
+* [Point](api/grader_lib.html#module-grader_lib.Point)
 
-The Grader Library API is also hosted with a searchable index [here](http://sketchresponse.github.io/sketchresponse)
+The Grader Library API is also hosted separately with a searchable index [here](http://sketchresponse.github.io/sketchresponse)
