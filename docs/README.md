@@ -6,9 +6,9 @@ mathematical functions. It was designed for use with the edX online
 courseware platform. However, it is a self-contained application that can be
 integrated into other web platforms.
 
-# Demo
+## Demo
 
-Try out a [SketchResponse Demo](http://web.mit.edu/~jfrench/www/#demo)
+Before we get into the technical details, try out a [SketchResponse Demo](http://web.mit.edu/~jfrench/www/#demo) to get a sense of what SketchResponse can do.
 
 Motivation
 ----------
