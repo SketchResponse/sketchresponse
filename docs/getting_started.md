@@ -4,7 +4,7 @@
 
 To work with the SketchResponse codebase, there are a few technology prerequisites that you will need installed on your machine.
 
-* In order to clone the repository you will need to install [Git](https://git-scm.com/downloads) on your computer. You may also want to create a [Github](http://github.com) account, though you should not need one to simply clone the SketchResponse repository. You will need a Github account if you want to contribute changes back to the project.
+* In order to clone the repository you will need to install [Git](https://git-scm.com/downloads) on your computer. You may also want to create a [Github](http://github.com) account, though you should not need one to simply clone the SketchResponse repository from the command line. You will need to be logged into a Github account if you want to clone the repository through your browser. You will also need a Github account if you want to contribute changes back to the project.
 
 * The Sketch Tool front-end is built using [Node.js](https://nodejs.org/en/download/) and npm (which is now packaged with Node). You will need to have both of these installed on your computer.
 
