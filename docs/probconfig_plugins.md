@@ -6,7 +6,7 @@ enables the selection of that plugin in the javascript front-end tool.
 
 Any of these plugins can be declared multiple times causing
 multiple instances of the plugin to be enabled in the javascript tool. See
-the [Complex Grader Example](docs/complex_grader.md) for an example where this
+the [Complex Grader Example](complex_grader.md) for an example where this
 is used.
 
 ## Table of Contents

@@ -102,7 +102,7 @@ example math problem.
 
 ## Testing the script
 
-Once the script is written, you can run the script in the local testing server. See the [Test a Grading Script on a Local Server](docs/local_test.md) tutorial for details on installing and running the testing server.
+Once the script is written, you can run the script in the local testing server. See the [Test a Grading Script on a Local Server](local_test.md) tutorial for details on installing and running the testing server.
 
 There is already a copy of this grader script in the `grader_scripts` directory so all you need to do is start the server and point your browser of choice at the url:
 

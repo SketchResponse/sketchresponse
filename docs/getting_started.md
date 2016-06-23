@@ -8,7 +8,7 @@ To work with the SketchResponse codebase, there are two major technology prerequ
 
 * The Grader Library back-end is built using [Python](https://www.python.org/) and relies on a couple python packages that you will need to install. We recommend you use the [pip](https://pypi.python.org/pypi/pip) python package installer. If you are using an up-to-date python installation you probably already have it [installed](https://pip.pypa.io/en/stable/installing/). If you already have another python package manager, we only use commonly available packages so it should not be a problem.
 
-* You will also need to be comfortable using the command-line to execute commands.
+* You will also need to be comfortable using the command-line to execute commands. If you are using Windows, you should use the Git Bash Shell to execute all commands in this document.
 
 If you have statisfied all of the above prerequisites, then we can start working on the codebase.
 
@@ -65,7 +65,7 @@ $ pip install -r requirements.txt
 
 Numpy is used to support the mathematical computations of the grader library.
 
-Flask is required to run a local server for convenience when implementing and testing new grading scripts. This lets you test your scripts without having to deploy them to another server, giving you more immediate feedback and simplifying the debugging process. See the Tutorial [Test a Grading Script on a Local Server](docs/local_test.md) for details.
+Flask is required to run a local server for convenience when implementing and testing new grading scripts. This lets you test your scripts without having to deploy them to another server, giving you more immediate feedback and simplifying the debugging process. See the Tutorial [Test a Grading Script on a Local Server](local_test.md) for details.
 
 # What's next
 

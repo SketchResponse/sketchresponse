@@ -6,6 +6,10 @@ mathematical functions. It was designed for use with the edX online
 courseware platform. However, it is a self-contained application that can be
 integrated into other web platforms.
 
+# Demo
+
+Try out a [SketchResponse Demo](http://web.mit.edu/~jfrench/www/#demo)
+
 Motivation
 ----------
 
@@ -16,11 +20,11 @@ Features
 
 - Sketch Tool - configurable Javascript front-end with plugin components to provide different
 function drawing and annotation capabilities. See
-[Sketch-Tool Plugin Configuration](docs/probconfig_plugins.md) for a description of the available
+[Sketch-Tool Plugin Configuration](probconfig_plugins.md) for a description of the available
 plugins.
 - Grader Library - python back-end that provides an API of function grading methods that
 can be composed to construct custom grading scripts. See
-[Create a Simple Grading Script](docs/simple_grader.md) for a tutorial on building
+[Create a Simple Grading Script](simple_grader.md) for a tutorial on building
 a simple grading script.
 
 Read More
