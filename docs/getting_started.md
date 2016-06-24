@@ -10,7 +10,11 @@ To work with the SketchResponse codebase, there are a few technology prerequisit
 
 * The Grader Library back-end is built using [Python](https://www.python.org/) and relies on a couple python packages that you will need to install. We recommend you use the [pip](https://pypi.python.org/pypi/pip) python package installer. If you are using an up-to-date python installation you probably already have it [installed](https://pip.pypa.io/en/stable/installing/). If you already have another python package manager, we only use commonly available packages so it should not be a problem.
 
-* You will also need to be comfortable using the command-line to execute commands. If you are using Windows, you should use the Git Bash Shell to execute all commands in this document.
+..* Note for Windows Users: When installing Python make sure to enable the option to add Python to the path. This is disabled by default for some reason.
+
+* You will also need to be comfortable using the command-line to execute commands.
+
+..* Note for Windows Users: You should use the Git Bash shell to execute all commands in this document. You will need to run it as Administrator to execute the *npm* and *pip* installation commands below. To do this, right-click Git Bash from the Start Menu and select Run as Administrator.
 
 If you have statisfied all of the above prerequisites, then we can start working on the codebase.
 
