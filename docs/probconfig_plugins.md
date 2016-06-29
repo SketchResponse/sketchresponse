@@ -38,13 +38,18 @@ E.g.
 
 <div id=background></div>
 ## Background
+### [Deprecated] - Use the image plugin instead.
 
 Sets the background image for the drawing canvas. The default is an grid.
+
+* `'name': 'background'` - the name key *must* have the value 'background'
+* `'src': <path to file>` - a path string to the image file to use
 
 E.g.
 
 ```python
-{'background': '/static/app/axes.png'}
+{'name': 'background'
+ 'src': '/static/app/axes.png'}
 ```
 
 <div id=freeform></div>
