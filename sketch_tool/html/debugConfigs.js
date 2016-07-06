@@ -37,13 +37,70 @@ function loadConfig(configId) {
       xscale: 'linear',
       yscale: 'linear',
       plugins: [
-        {name: 'axes'},
-        {name: 'point', id: 'cp', label: 'Point', color: 'dimgray', size: 15},
-        {name: 'horizontal-line', id: 'ha', label: 'Horizontal line', color: 'dimgray', dashStyle: 'dashdotted'},
-        {name: 'vertical-line', id: 'va', label: 'Vertical line', color: 'dimgray', dashStyle: 'dashdotted'},
-        {name: 'line-segment', id: 'ls', label: 'Line segment', color: 'dimgray', dashStyle: 'solid'},
+        {
+          name: 'axes'
+        },
+        {
+          name: 'point',
+          id: 'cp',
+          label: 'Point',
+          color: 'dimgray',
+          size: 15
+        },
+        {
+          name: 'horizontal-line',
+          id: 'ha',
+          label: 'Horizontal line',
+          color: 'dimgray',
+          dashStyle: 'dashdotted'
+        },
+        {
+          name: 'vertical-line',
+          id: 'va',
+          label: 'Vertical line',
+          color: 'dimgray',
+          dashStyle: 'dashdotted'
+        },
+        {
+          name: 'line-segment',
+          id: 'ls',
+          label: 'Segment',
+          color: 'dimgray',
+          dashStyle: 'solid'
+        },
+        {
+          name: 'line-segment',
+          id: 'vls',
+          label: 'Vertical segment',
+          color: 'dimgray',
+          dashStyle: 'solid',
+          directionConstraint: 'vertical'
+        },
+        {
+          name: 'line-segment',
+          id: 'ar',
+          label: 'Arrow',
+          color: 'dimgray',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          }
+        },
+        {
+          name: 'line-segment',
+          id: 'har',
+          label: 'Horizontal arrow',
+          color: 'dimgray',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
+          directionConstraint: 'horizontal'
+        }
       ]
-    },
+    }
   };
   if (configs.hasOwnProperty(configId)) {
     return configs[configId];
