@@ -64,12 +64,12 @@ export default class HorizontalLine extends BasePlugin {
                 return true;
               },
               inBoundsY: (dy) => {
-                return this.inBoundsY(position + dy)
+                return this.inBoundsY(this.state[positionIndex] + dy)
               },
             });
           }
         })
-      ),
+      )
     );
   }
 
