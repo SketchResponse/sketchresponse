@@ -61,7 +61,7 @@ export default class VerticalLine extends BasePlugin {
                 this.render();
               },
               inBoundsX: (dx) => {
-                return this.inBoundsX(position + dx)
+                return this.inBoundsX(this.state[positionIndex] + dx)
               },
               inBoundsY: (dy) => {
                 return true;
@@ -69,7 +69,7 @@ export default class VerticalLine extends BasePlugin {
             });
           }
         })
-      ),
+      )
     );
   }
 

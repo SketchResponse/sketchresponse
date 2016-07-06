@@ -56,10 +56,10 @@ export default class Point extends BasePlugin {
                 this.render();
               },
               inBoundsX: (dx) => {
-                return this.inBoundsX(position.x + dx);
+                return this.inBoundsX(this.state[positionIndex].x + dx);
               },
               inBoundsY: (dy) => {
-                return this.inBoundsY(position.y + dy)
+                return this.inBoundsY(this.state[positionIndex].y + dy)
               },
             });
           }
