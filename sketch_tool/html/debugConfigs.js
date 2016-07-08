@@ -98,6 +98,18 @@ function loadConfig(configId) {
             base: 7
           },
           directionConstraint: 'horizontal'
+        },
+        {
+          name: 'line-segment',
+          id: 'cls',
+          label: 'Constrained segment',
+          color: 'dimgray',
+          dashStyle: 'solid',
+          lengthConstraint: 100,
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
         }
       ]
     }
