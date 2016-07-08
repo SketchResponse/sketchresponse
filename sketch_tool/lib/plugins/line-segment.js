@@ -81,7 +81,8 @@ export default class LineSegment extends BasePlugin {
     x = this.clampX(x);
     y = this.clampY(y);
 
-    if (!this.isDragging) {
+    // On a click & drag, only push a new point if we are dragging from the first endpoint
+    if (!this.isDragging && this.state.length % 2 != 0) {
       this.state.push({
         x: this.vConstrained(x),
         y: this.hConstrained(y)
