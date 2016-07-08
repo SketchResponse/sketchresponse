@@ -34,10 +34,15 @@ export default class LineSegment extends BasePlugin {
 
     this.hConstraint = false;
     this.vConstraint = false;
+    this.rConstraint = false;
 
     if (params.directionConstraint) {
       this.hConstraint = params.directionConstraint == 'horizontal' ? true : false;
       this.vConstraint = params.directionConstraint == 'vertical' ? true : false;
+    }
+    if (params.lengthConstraint) {
+      this.rConstraint = true;
+      this.rConstraintValue = params.lengthConstraint;
     }
   }
 
@@ -60,8 +65,9 @@ export default class LineSegment extends BasePlugin {
     this.app.svg.addEventListener('pointerup', this.drawEnd.bind(this));
     this.app.svg.addEventListener('pointercancel', this.drawEnd.bind(this));
     // Push current position
-    let xConstrained = this.vConstrained(event.clientX - this.params.left),
-        yConstrained = this.hConstrained(event.clientY - this.params.top);
+    let point = this.rConstrained(event.clientX - this.params.left, event.clientY - this.params.top),
+        xConstrained = this.vConstrained(point.x),
+        yConstrained = this.hConstrained(point.y);
     this.state.push({
       x: xConstrained,
       y: yConstrained
@@ -90,9 +96,12 @@ export default class LineSegment extends BasePlugin {
       this.isDragging = true;
     }
     else {
-      let lastPosition = this.state[this.state.length-1];
-      lastPosition.x = this.vConstrained1(x);
-      lastPosition.y = this.hConstrained1(y);
+      let lastPosition = this.state[this.state.length-1],
+          point = this.rConstrained1(x, y),
+          xConstrained = this.vConstrained1(point.x),
+          yConstrained = this.hConstrained1(point.y);
+      lastPosition.x = xConstrained;
+      lastPosition.y = yConstrained;
     }
     this.render();
   }
@@ -125,6 +134,25 @@ export default class LineSegment extends BasePlugin {
     return this.vConstraint && (len != 0) && (len % 2 != 0) ? this.state[len-1].x : x;
   }
 
+  rConstrained(x2, y2) {
+    let len = this.state.length,
+        result = {
+          x: x2,
+          y: y2
+        };
+    if (this.rConstraint && (len != 0) && (len % 2 != 0)) {
+      let x1 = this.state[len-1].x, y1 = this.state[len-1].y,
+          vx = x2 - x1, vy = y2 - y1,
+          dist = Math.sqrt(vx**2 + vy**2);
+      if (dist > this.rConstraintValue) {
+        let theta = Math.atan2(vy, vx);
+        result.x = x1 + this.rConstraintValue*Math.cos(theta);
+        result.y = y1 + this.rConstraintValue*Math.sin(theta);
+      }
+    }
+    return result;
+  }
+
   hConstrained1(y) {
     let len = this.state.length;
     return this.hConstraint && (len != 0) && (len % 2 == 0) ? this.state[len-1].y : y;
@@ -133,6 +161,64 @@ export default class LineSegment extends BasePlugin {
   vConstrained1(x) {
     let len = this.state.length;
     return this.vConstraint && (len != 0) && (len % 2 == 0) ? this.state[len-1].x : x;
+  }
+
+  rConstrained1(x2, y2) {
+    let len = this.state.length,
+        result = {
+          x: x2,
+          y: y2
+        };
+    if (this.rConstraint && (len != 0) && (len % 2 == 0)) {
+      let x1 = this.state[len-2].x, y1 = this.state[len-2].y,
+          vx = x2 - x1, vy = y2 - y1,
+          dist = Math.sqrt(vx**2 + vy**2);
+      if (dist > this.rConstraintValue) {
+        let theta = Math.atan2(vy, vx);
+        result.x = x1 + this.rConstraintValue*Math.cos(theta);
+        result.y = y1 + this.rConstraintValue*Math.sin(theta);
+      }
+    }
+    return result;
+  }
+
+  hConstrained2(y, index) {
+    let len = this.state.length;
+    return this.hConstraint && (len != 0) && (len % 2 == 0) ? this.state[index].y : y;
+  }
+
+  vConstrained2(x, index) {
+    let len = this.state.length;
+    return this.vConstraint && (len != 0) && (len % 2 == 0) ? this.state[index].x : x;
+  }
+
+  rConstrained2(x, y, index) {
+    let len = this.state.length,
+        result = {
+          x: x,
+          y: y
+        };
+    if (this.rConstraint && (len != 0) && (len % 2 == 0)) {
+      let xf, yf, xm, ym, vx, vy, dist;
+      // First end point
+      if (index % 2 == 0) {
+        xm = x; ym = y;
+        xf = this.state[index+1].x; yf = this.state[index+1].y;
+      }
+      // Second endpoint
+      else {
+        xf = this.state[index-1].x; yf = this.state[index-1].y;
+        xm = x; ym = y;
+      }
+      vx = xm - xf, vy = ym - yf;
+      dist = Math.sqrt(vx**2 + vy**2);
+      if (dist > this.rConstraintValue) {
+        let theta = Math.atan2(vy, vx);
+        result.x = xf + this.rConstraintValue*Math.cos(theta);
+        result.y = yf + this.rConstraintValue*Math.sin(theta);
+      }
+    }
+    return result;
   }
   // END TODO
 
@@ -180,7 +266,7 @@ export default class LineSegment extends BasePlugin {
             style: `
               stroke: ${this.params.color};
               opacity: 0;
-              stroke-width: 6px;
+              stroke-width: 10px;
               stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
             `,
             onmount: el => {
@@ -225,12 +311,14 @@ export default class LineSegment extends BasePlugin {
               element: el,
               initialBehavior: 'none',
               onDrag: ({dx, dy}) => {
-                if (!this.vConstraint) {
-                  this.state[ptIndex].x += dx;
-                }
-                if (!this.hConstraint) {
-                  this.state[ptIndex].y += dy;
-                }
+                let x = this.state[ptIndex].x + dx,
+                    y = this.state[ptIndex].y + dy,
+                    point = this.rConstrained2(x, y, ptIndex),
+                    xConstrained = this.vConstrained2(point.x, ptIndex),
+                    yConstrained = this.hConstrained2(point.y, ptIndex);
+
+                this.state[ptIndex].x = xConstrained;
+                this.state[ptIndex].y = yConstrained;
                 this.render();
               },
               inBoundsX: (dx) => {
