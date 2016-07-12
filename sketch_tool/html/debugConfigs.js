@@ -101,8 +101,8 @@ function loadConfig(configId) {
         },
         {
           name: 'line-segment',
-          id: 'cls',
-          label: 'Constrained segment',
+          id: 'car',
+          label: 'Constrained arrow',
           color: 'dimgray',
           dashStyle: 'solid',
           lengthConstraint: 100,

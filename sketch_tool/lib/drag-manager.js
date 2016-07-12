@@ -7,6 +7,8 @@ export default class DragManager {
 
     // Finding all selected elements is slow, so we'll cache them at the beginning of each drag
     this.elementsToDrag = null;
+    this.initialDrag = false;
+    this.visibleElement = null;
   }
 
   dragStart(element, position) {
@@ -19,14 +21,48 @@ export default class DragManager {
     else {
       this.selectionManager.deselectAll();  // possibly a no-op, but finding out is almost as expensive
       this.selectionManager.select(element);
+      let className = element.getAttribute('class');
+      if (className && className.substring(0, 9) == 'invisible') {
+        let classNamePrefix = className.substring(9);
+        this.visibleElement = element.parentNode.getElementsByClassName('visible'+classNamePrefix)[0];
+        if (this.visibleElement) {
+          this.selectionManager.select(this.visibleElement);
+        }
+      }
       this.elementsToDrag = [element];
+      this.initialDrag = true;
     }
+    this.elementsToDrag = this.elementsToDrag.filter(element => {
+      let className = element.getAttribute('class');
+      return !(className && className.substring(0, 7) == 'visible')
+    });
     this.previousPosition = position;
   }
 
   dragMove(position) {
+    let x = position.clientX,
+        y = position.clientY;
     let dx = position.clientX - this.previousPosition.clientX;
     let dy = position.clientY - this.previousPosition.clientY;
+    const elToDrag = this.registry.get(this.elementsToDrag[0]);
+
+    if (this.initialDrag && elToDrag.onInitialDrag && elToDrag.isLastPoint) {
+      if (elToDrag.isLastPoint()) {
+        elToDrag.onInitialDrag(x, y);
+        if (this.visibleElement == null) {
+          let element = elToDrag.element;
+          let className = element.getAttribute('class');
+          if (className && className.substring(0, 9) == 'invisible') {
+            let classNamePrefix = className.substring(9);
+            this.visibleElement = element.parentNode.getElementsByClassName('visible'+classNamePrefix)[0];
+            if (this.visibleElement) {
+              this.selectionManager.select(this.visibleElement);
+            }
+          }
+        }
+        return;
+      }
+    }
 
     // Note: we filter out selected elements with no onDrag callback and only drag those that have one
     // TODO: An alternative would be to prevent the entire drag altogether; is that better?
@@ -69,6 +105,8 @@ export default class DragManager {
   }
 
   dragEnd() {
+    this.initialDrag = false;
+    this.visibleElement = null;
     this.previousPosition = null;
     this.elementsToDrag = null;  // Important: allows these elements to be garbage collected if removed
   }

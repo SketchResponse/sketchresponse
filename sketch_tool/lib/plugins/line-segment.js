@@ -57,13 +57,6 @@ export default class LineSegment extends BasePlugin {
   // This will be called when clicking on the SVG canvas after having
   // selected the line segment shape
   initDraw(event) {
-    if (this.currentPointerId) return;
-
-    this.currentPointerId = event.pointerId;
-    this.app.svg.setPointerCapture(event.pointerId);
-    this.app.svg.addEventListener('pointermove', this.drawMove.bind(this));
-    this.app.svg.addEventListener('pointerup', this.drawEnd.bind(this));
-    this.app.svg.addEventListener('pointercancel', this.drawEnd.bind(this));
     // Push current position
     let point = this.rConstrained(event.clientX - this.params.left, event.clientY - this.params.top),
         xConstrained = this.vConstrained(point.x),
@@ -72,55 +65,9 @@ export default class LineSegment extends BasePlugin {
       x: xConstrained,
       y: yConstrained
     });
-    this.isDragging = false;
-    this.drawingFinished = false;
     this.app.addUndoPoint();
+    this.initialDragPointIndex = this.state.length - 1;
     this.render();
-  }
-
-  drawMove(event) {
-    if (event.pointerId !== this.currentPointerId) return;
-
-    let x = event.clientX - this.params.left,
-        y = event.clientY - this.params.top;
-
-    x = this.clampX(x);
-    y = this.clampY(y);
-
-    // On a click & drag, only push a new point if we are dragging from the first endpoint
-    if (!this.isDragging && this.state.length % 2 != 0) {
-      this.state.push({
-        x: this.vConstrained(x),
-        y: this.hConstrained(y)
-      });
-      this.isDragging = true;
-    }
-    else {
-      let lastPosition = this.state[this.state.length-1],
-          point = this.rConstrained1(x, y),
-          xConstrained = this.vConstrained1(point.x),
-          yConstrained = this.hConstrained1(point.y);
-      lastPosition.x = xConstrained;
-      lastPosition.y = yConstrained;
-    }
-    this.render();
-  }
-
-  drawEnd(event) {
-    if (!this.drawingFinished) {
-      this.currentPointerId = null;
-      this.app.svg.removeEventListener('pointermove', this.drawMove);
-      this.app.svg.removeEventListener('pointerup', this.drawEnd);
-      this.app.svg.removeEventListener('pointercancel', this.drawEnd);
-      this.app.svg.releasePointerCapture(event.pointerId);
-      if (this.isDragging) {
-        this.app.addUndoPoint();
-      }
-      this.isDragging = false;
-      this.render();
-      this.drawingFinished = true;
-      event.stopPropagation();
-    }
   }
 
   // TODO: refactor
@@ -223,7 +170,7 @@ export default class LineSegment extends BasePlugin {
   // END TODO
 
   pointOpacity(ptIndex) {
-    return (ptIndex == this.state.length - 1) && (ptIndex % 2 == 0) ? 0.5 : 0;
+    return (ptIndex == this.state.length - 1) && (ptIndex % 2 == 0) ? '' : 'opacity: 0';
   }
 
   pointRadius(ptIndex) {
@@ -235,13 +182,11 @@ export default class LineSegment extends BasePlugin {
   }
 
   render() {
-    let lastPtIndex = this.state.length - 1;
-
     z.render(this.el,
       // Draw visible line, under invisible line and endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z.if(ptIndex % 2 == 0 && ptIndex < lastPtIndex, () =>
-          z('line', {
+        z.if(ptIndex % 2 == 0 && ptIndex < this.state.length - 1, () =>
+          z('line.visible-' + ptIndex, {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
             x2: this.state[ptIndex+1].x,
@@ -257,8 +202,8 @@ export default class LineSegment extends BasePlugin {
       ),
       // Draw invisible and selectable line, under invisible endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z.if(ptIndex % 2 == 0 && ptIndex < lastPtIndex, () =>
-          z('line', {
+        z.if(ptIndex % 2 == 0 && ptIndex < this.state.length - 1, () =>
+          z('line.invisible-' + ptIndex, {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
             x2: this.state[ptIndex+1].x,
@@ -296,20 +241,42 @@ export default class LineSegment extends BasePlugin {
       ),
       // Draw invisible and selectable line endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z('circle', {
+        z('circle.invisible-' + (ptIndex % 2 == 0 ? ptIndex : (ptIndex - 1).toString()), {
           cx: this.state[ptIndex].x,
           cy: this.state[ptIndex].y,
           r: this.pointRadius(ptIndex),
           style: `
             fill: ${this.params.color};
-            opacity: ${this.pointOpacity(ptIndex)};
             stroke-width: 0;
-          `,
+          ` + this.pointOpacity(ptIndex),
           onmount: el => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
-              initialBehavior: 'none',
+              initialBehavior: 'drag',
+              onInitialDrag: (clientX, clientY) => {
+                let x = clientX - this.params.left,
+                    y = clientY - this.params.top;
+
+                x = this.clampX(x);
+                y = this.clampY(y);
+                // On a click & drag, only push a new point if we are dragging from the first endpoint
+                if (this.state.length % 2 != 0) {
+                  this.state.push({
+                    x: this.vConstrained(x),
+                    y: this.hConstrained(y)
+                  });
+                }
+                else {
+                  let lastPosition = this.state[this.state.length-1],
+                      point = this.rConstrained1(x, y),
+                      xConstrained = this.vConstrained1(point.x),
+                      yConstrained = this.hConstrained1(point.y);
+                  lastPosition.x = xConstrained;
+                  lastPosition.y = yConstrained;
+                }
+                this.render();
+              },
               onDrag: ({dx, dy}) => {
                 let x = this.state[ptIndex].x + dx,
                     y = this.state[ptIndex].y + dy,
@@ -320,6 +287,9 @@ export default class LineSegment extends BasePlugin {
                 this.state[ptIndex].x = xConstrained;
                 this.state[ptIndex].y = yConstrained;
                 this.render();
+              },
+              isLastPoint: () => {
+                return ptIndex == this.initialDragPointIndex;
               },
               inBoundsX: (dx) => {
                 return this.inBoundsX(this.state[ptIndex].x + dx);

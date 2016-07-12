@@ -88,6 +88,11 @@ export default class ElementManager {
     event.stopPropagation();
 
     const element = event.currentTarget;
+    let className = element.getAttribute('class'), visibleElement;
+    if (className && className.substring(0, 9) == 'invisible') {
+      let classNamePrefix = className.substring(9);
+      visibleElement = element.parentNode.getElementsByClassName('visible'+classNamePrefix)[0];
+    }
     if (this.isDragging) {
       this.dragManager.dragEnd();
       this.app.addUndoPoint();
@@ -95,10 +100,16 @@ export default class ElementManager {
     }
     else if (event.shiftKey || event.pointerType === 'touch') {
       this.selectionManager.toggleSelected(element);
+      if (visibleElement) {
+        this.selectionManager.toggleSelected(visibleElement);
+      }
     }
     else {
       this.selectionManager.deselectAll();
       this.selectionManager.select(element);
+      if (visibleElement) {
+        this.selectionManager.select(visibleElement);
+      }
     }
 
     this.removeCaptureAndListeners(event);
