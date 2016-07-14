@@ -81,6 +81,7 @@ export default class ElementManager {
       this.isDragging = true;
     }
     this.dragManager.dragMove(event);
+    event.preventDefault();
   }
 
   onPointerUp(event) {
