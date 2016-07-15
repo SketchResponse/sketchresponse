@@ -105,6 +105,10 @@ export default class DragManager {
   }
 
   dragEnd() {
+    const elToDrag = this.registry.get(this.elementsToDrag[0]);
+    if (elToDrag.onInitialDragEnd) {
+      elToDrag.onInitialDragEnd();
+    }
     this.initialDrag = false;
     this.visibleElement = null;
     this.previousPosition = null;
