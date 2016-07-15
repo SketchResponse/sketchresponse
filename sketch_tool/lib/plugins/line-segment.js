@@ -277,6 +277,9 @@ export default class LineSegment extends BasePlugin {
                 }
                 this.render();
               },
+              onInitialDragEnd: () => {
+                this.initialDragPointIndex = -1;
+              },
               onDrag: ({dx, dy}) => {
                 let x = this.state[ptIndex].x + dx,
                     y = this.state[ptIndex].y + dy,
