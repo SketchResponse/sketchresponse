@@ -63,7 +63,7 @@
      transform="translate(0,-1028.3622)"
      id="layer1">
     <rect
-       style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.63368362px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill-rule:evenodd;stroke-width:0.63368362px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        id="rect3362"
        width="3.1358583"
        height="15.366317"
@@ -71,7 +71,6 @@
        y="1035.5902" />
     <path
        sodipodi:type="star"
-       style="fill:#000000"
        id="path3364"
        sodipodi:sides="3"
        sodipodi:cx="11.341117"

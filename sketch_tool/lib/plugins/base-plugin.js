@@ -39,6 +39,7 @@ export default class BasePlugin {
       icon: {
         src: params.icon.src,
         alt: params.icon.alt,
+        color: params.color
       },
       activate: this.activate.bind(this),
       deactivate: this.deactivate.bind(this),
