@@ -44,7 +44,7 @@ function loadConfig(configId) {
           name: 'point',
           id: 'cp',
           label: 'Point',
-          color: 'dimgray',
+          color: 'red',
           size: 15
         },
         {
@@ -80,7 +80,7 @@ function loadConfig(configId) {
           name: 'line-segment',
           id: 'ar',
           label: 'Arrow',
-          color: 'dimgray',
+          color: 'green',
           dashStyle: 'solid',
           arrowHead: {
             length: 10,

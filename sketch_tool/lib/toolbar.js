@@ -15,6 +15,24 @@ function renderIcon(id, src, alt) {
   });
 }
 
+function getBlobUrl(src, color) {
+  let ajax = new XMLHttpRequest(), div, svg, svgData, blob;
+  ajax.open('GET', src, false); // For the time being, use a deprecated synchronous request
+  ajax.send(null);
+  div = document.createElement('div');
+  div.innerHTML = ajax.responseText;
+  svg = div.children[0];
+  svg.setAttribute('width', 35);
+  svg.setAttribute('height', 35);
+  svg.setAttribute('fill', color);
+  // Convert colored svg to an image
+  // http://www.timvasil.com/blog14/post/2014/02/06/How-to-convert-an-SVG-image-into-a-static-image-with-only-JavaScript.aspx
+  svgData = new XMLSerializer().serializeToString(svg);
+  blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+  // Return the blob's URL
+  return (self.URL || self.webkitURL || self).createObjectURL(blob);
+}
+
 function renderLabel(id, text, hasDropdown) {
   return z('div.label',
     z('span', {id: id}, text),
@@ -102,7 +120,9 @@ export default class Toolbar {
       }
       this.selectedDropdownItemMap[item.id] = item.items[0].id;
     }
-
+    if (item.type == 'button') {
+      item.icon.src = getBlobUrl(item.icon.src, item.icon.color);
+    }
     this.items.push(item);
     this.render();
   }

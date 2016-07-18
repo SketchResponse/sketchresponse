@@ -18,7 +18,7 @@ export default class LineSegment extends BasePlugin {
         alt: 'Line segment tool'
       };
       injectSVGDefs(`
-        <marker id="arrowhead" markerWidth="${length}" markerHeight="${base}" refX="${length}" refY="${refY}" orient="auto">
+        <marker id="arrowhead-${params.id}" markerWidth="${length}" markerHeight="${base}" refX="${length}" refY="${refY}" orient="auto">
           <polygon points="0 0, ${length} ${refY}, 0 ${base}" style="fill: ${params.color}; stroke: ${params.color}; stroke-width: 1;"/>
         </marker>`
       );
@@ -178,7 +178,7 @@ export default class LineSegment extends BasePlugin {
   }
 
   arrowHead() {
-    return this.params.arrowHead ? 'url(#arrowhead)' : ''
+    return this.params.arrowHead ? `url(#arrowhead-${this.params.id})` : ''
   }
 
   render() {
