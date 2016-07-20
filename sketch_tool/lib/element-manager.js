@@ -10,7 +10,7 @@ export default class ElementManager {
     this.registry = new WeakMap();
 
     this.pointerDownCache = new PointerDownCache(app.svg);
-    this.selectionManager = new SelectionManager(app.svg);
+    this.selectionManager = new SelectionManager(app.svg, app.__messageBus);
     this.dragManager = new DragManager(this.registry, this.selectionManager);
 
     // Only dealing with global (not per-pointer) dragging for now
@@ -56,7 +56,8 @@ export default class ElementManager {
     // This can only trigger when the element is active, so no need to check that again
     // We do check that (1) there isn't already an active pointer, and (2) this is a left click
     // or touch/pen equivalent (see http://www.w3.org/TR/pointerevents/#button-states)
-    if (this.activePointerId !== null || event.buttons !== 1) return;
+    if (this.activePointerId !== null || event.buttons !== 1 ||
+        !this.selectionManager.selectMode) return;
     event.stopPropagation();
 
     this.addCaptureAndListeners(event);

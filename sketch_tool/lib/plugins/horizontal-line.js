@@ -55,7 +55,7 @@ export default class HorizontalLine extends BasePlugin {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
-              initialBehavior: 'drag',
+              initialBehavior: 'none',
               onDrag: ({dx, dy}) => {
                 this.state[positionIndex] += dy;
                 this.render();

@@ -49,7 +49,7 @@ export default class Point extends BasePlugin {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
-              initialBehavior: 'drag',
+              initialBehavior: 'none',
               onDrag: ({dx, dy}) => {
                 this.state[positionIndex].x += dx;
                 this.state[positionIndex].y += dy;
