@@ -23,10 +23,20 @@ export const SELECTED_ATTR = 'data-si-selected';
 injectStyleSheet(`[${ SELECTED_ATTR }] { opacity: 0.5;}`);
 
 export default class SelectionManager {
-  constructor(rootElement) {
+  constructor(rootElement, messageBus) {
     this.rootElement = rootElement;
+    this.selectMode = false;
+    messageBus.on('enableSelectMode', () => {this.setSelectMode(true);});
+    messageBus.on('disableSelectMode', () => {this.setSelectMode(false);});
+    messageBus.on('deselectAll', () => {this.deselectAll()});
   }
 
+  setSelectMode(selectMode) {
+    this.selectMode = selectMode;
+    if (!this.selectMode) {
+      this.deselectAll();
+    }
+  }
   select(element) { attrCache.setAttributeNS(element, null, SELECTED_ATTR, ''); }
   deselect(element) { attrCache.removeAttributeNS(element, null, SELECTED_ATTR); }
   isSelected(element) {return attrCache.getAttributeNS(element, null, SELECTED_ATTR) !== null; }

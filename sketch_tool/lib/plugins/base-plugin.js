@@ -68,6 +68,7 @@ export default class BasePlugin {
   }
 
   activate() {
+    this.app.__messageBus.emit('disableSelectMode');
     this.app.svg.addEventListener('pointerdown', this.initDraw);
     this.app.svg.style.cursor = 'crosshair';
   }

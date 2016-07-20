@@ -129,6 +129,32 @@ export default class SketchInput {
     this.app.registerToolbarItem({type: 'separator'});
     this.app.registerToolbarItem({
       type: 'button',
+      id: 'select',
+      label: 'Select',
+      icon: {
+        src: './lib/select.svg',
+        alt: 'Select',
+      },
+      activate: () => {
+        // Temporarily hold a reference for ulterior removal
+        this.handlePointerDown = () => {
+          this.messageBus.emit('deselectAll');
+        }
+        this.app.svg.addEventListener('pointerdown', this.handlePointerDown);
+        this.app.svg.style.cursor = null;
+      },
+      deactivate: () => {
+        this.app.svg.removeEventListener('pointerdown', this.handlePointerDown);
+        // Remove the temporary reference
+        delete this['handlePointerDown'];
+      },
+      action: () => {
+        this.messageBus.emit('enableSelectMode');
+        this.messageBus.emit('activateItem', 'select');
+      }
+    });
+    this.app.registerToolbarItem({
+      type: 'button',
       id: 'undo',
       label: 'Undo',
       icon: {
@@ -147,7 +173,6 @@ export default class SketchInput {
       },
       action: () => this.messageBus.emit('redo'),
     });
-
 
     this.messageBus.emit('activateItem',
       this.params.plugins.find(pluginSpec => pluginSpec.id !== undefined).id

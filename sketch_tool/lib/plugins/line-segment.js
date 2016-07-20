@@ -253,7 +253,7 @@ export default class LineSegment extends BasePlugin {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
-              initialBehavior: 'drag',
+              initialBehavior: 'none',
               onInitialDrag: (clientX, clientY) => {
                 let x = clientX - this.params.left,
                     y = clientY - this.params.top;
