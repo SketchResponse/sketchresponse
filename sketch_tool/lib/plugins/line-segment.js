@@ -44,6 +44,9 @@ export default class LineSegment extends BasePlugin {
       this.rConstraint = true;
       this.rConstraintValue = params.lengthConstraint;
     }
+    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
+    this.wasDragged = false;
+    this.firstPoint = true;
   }
 
   getGradeable() {
@@ -57,6 +60,12 @@ export default class LineSegment extends BasePlugin {
   // This will be called when clicking on the SVG canvas after having
   // selected the line segment shape
   initDraw(event) {
+    this.app.svg.setPointerCapture(event.pointerId);
+    // Add event listeners in capture phase
+    this.app.svg.addEventListener('pointermove', this.drawMove, true);
+    this.app.svg.addEventListener('pointerup', this.drawEnd, true);
+    this.app.svg.addEventListener('pointercancel', this.drawEnd, true);
+    this.firstPoint = (this.state.length % 2 == 0);
     // Push current position
     let point = this.rConstrained(event.clientX - this.params.left, event.clientY - this.params.top),
         xConstrained = this.vConstrained(point.x),
@@ -65,9 +74,58 @@ export default class LineSegment extends BasePlugin {
       x: xConstrained,
       y: yConstrained
     });
-    this.app.addUndoPoint();
-    this.initialDragPointIndex = this.state.length - 1;
+    // If first endpoint, add immediately an undo point.
+    // Otherwise, wait until drawEnd has been called to take in account eventual movemements
+    // in drawMove.
+    if (this.firstPoint) {
+      this.app.addUndoPoint();
+    }
     this.render();
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  drawMove(event) {
+    let x = event.clientX - this.params.left,
+        y = event.clientY - this.params.top;
+
+    x = this.clampX(x);
+    y = this.clampY(y);
+    // On a click & drag, only push a new point if we are dragging from the first endpoint
+    // and the second endpoint has not been already added.
+    if (this.firstPoint && this.state.length % 2 != 0) {
+      this.state.push({
+        x: this.vConstrained(x),
+        y: this.hConstrained(y)
+      });
+    }
+    else {
+      let lastPosition = this.state[this.state.length-1],
+          point = this.rConstrained1(x, y),
+          xConstrained = this.vConstrained1(point.x),
+          yConstrained = this.hConstrained1(point.y);
+      lastPosition.x = xConstrained;
+      lastPosition.y = yConstrained;
+    }
+    this.render();
+    this.wasDragged = true;
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  drawEnd(event) {
+    this.app.svg.releasePointerCapture(event.pointerId);
+    this.app.svg.removeEventListener('pointermove', this.drawMove, true);
+    this.app.svg.removeEventListener('pointerup', this.drawEnd, true);
+    this.app.svg.removeEventListener('pointercancel', this.drawEnd, true);
+    // Only add an undo point for first endpoint if there was a drag.
+    // Always add an undo point for second end point.
+    if (!this.firstPoint || (this.firstPoint && this.wasDragged)) {
+      this.app.addUndoPoint();
+    }
+    this.wasDragged = false;
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   // TODO: refactor
@@ -254,32 +312,6 @@ export default class LineSegment extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onInitialDrag: (clientX, clientY) => {
-                let x = clientX - this.params.left,
-                    y = clientY - this.params.top;
-
-                x = this.clampX(x);
-                y = this.clampY(y);
-                // On a click & drag, only push a new point if we are dragging from the first endpoint
-                if (this.state.length % 2 != 0) {
-                  this.state.push({
-                    x: this.vConstrained(x),
-                    y: this.hConstrained(y)
-                  });
-                }
-                else {
-                  let lastPosition = this.state[this.state.length-1],
-                      point = this.rConstrained1(x, y),
-                      xConstrained = this.vConstrained1(point.x),
-                      yConstrained = this.hConstrained1(point.y);
-                  lastPosition.x = xConstrained;
-                  lastPosition.y = yConstrained;
-                }
-                this.render();
-              },
-              onInitialDragEnd: () => {
-                this.initialDragPointIndex = -1;
-              },
               onDrag: ({dx, dy}) => {
                 let x = this.state[ptIndex].x + dx,
                     y = this.state[ptIndex].y + dy,
@@ -290,9 +322,6 @@ export default class LineSegment extends BasePlugin {
                 this.state[ptIndex].x = xConstrained;
                 this.state[ptIndex].y = yConstrained;
                 this.render();
-              },
-              isLastPoint: () => {
-                return ptIndex == this.initialDragPointIndex;
               },
               inBoundsX: (dx) => {
                 return this.inBoundsX(this.state[ptIndex].x + dx);
