@@ -100,6 +100,8 @@
                 return;  // Abort the loading process
               }
               else {
+                // We have a config, load the app
+                loadApp();
                 console.info(configId + ' has been loaded : ', window.config);
               }
             });
@@ -111,6 +113,8 @@
                 .replace(/-/g, '+')
                 .replace(/_/g, '/')
             ));
+            // We have a config, load the app
+            loadApp();
           }
         }
         catch (error) {
@@ -121,32 +125,34 @@
           return;  // Abort the loading process
         }
 
-        System.import('lib/main').then(function(main) {
-          window.si = new main.default(document.getElementById('si-container'), config);
+        function loadApp() {
+          System.import('lib/main').then(function(main) {
+            window.si = new main.default(document.getElementById('si-container'), config);
 
-          window.si.messageBus.on('ready', function() {
-            window.isLoaded = true;
-            if (window.__state) window.si.setState(window.__state);
+            window.si.messageBus.on('ready', function() {
+              window.isLoaded = true;
+              if (window.__state) window.si.setState(window.__state);
+            });
+
+            window.si.messageBus.on('warnUser', function(type, error) {
+              Raven.captureException(error, {tags: {shortname: type}});
+            });
+
+            window.getState = function() {
+              return window.useBase64Encoding ? DATA_URI_PREAMBLE + btoa(si.getState()) : si.getState();
+            };
+
+            window.getGrade = si.getGradeable.bind(si);
+
+            if (window.channel) {
+              window.channel
+                .bind('getState', window.getState)
+                .bind('getGrade', window.getGrade);
+            }
+          }).catch(function(error) {
+            Raven.captureException(error, {tags: {shortname: 'importPromiseError'}});
           });
-
-          window.si.messageBus.on('warnUser', function(type, error) {
-            Raven.captureException(error, {tags: {shortname: type}});
-          });
-
-          window.getState = function() {
-            return window.useBase64Encoding ? DATA_URI_PREAMBLE + btoa(si.getState()) : si.getState();
-          };
-
-          window.getGrade = si.getGradeable.bind(si);
-
-          if (window.channel) {
-            window.channel
-              .bind('getState', window.getState)
-              .bind('getGrade', window.getGrade);
-          }
-        }).catch(function(error) {
-          Raven.captureException(error, {tags: {shortname: 'importPromiseError'}});
-        });
+        }
       }());
     </script>
   </body>
