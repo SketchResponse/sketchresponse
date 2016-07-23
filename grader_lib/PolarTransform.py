@@ -16,7 +16,7 @@ class PolarTransform():
 #        print gradeable.params
 
         # compute new axes for the [r, theta] space transform
-        self.f = function
+        self.f = functionData
         self.g = gradeableFunction
         absx = map(abs, self.f.params['xrange'])
         absy = map(abs, self.f.params['yrange'])
@@ -32,7 +32,9 @@ class PolarTransform():
 
         # filter the raw spline data, points near origin and nearly vertical
         # lines need to be removed
-        transSplines = self.filterSplines(transSplines)
+        transSplines = self.filterSplines(transSplines, rmax)
+
+        self.transformedPoints = transSplines
 
         # refit spline datapoints to a spline curve
         # TODO: actually refit instead of just fitting piecewise linear splines
@@ -68,7 +70,7 @@ class PolarTransform():
     def transformSplines(self):
         # sample the spline functions
         spline_samples = []
-        for f in self.functions:
+        for f in self.g.functions:
             curve_samples = []
             # these are the spline function objects
             for curve in f.functions:
@@ -84,19 +86,67 @@ class PolarTransform():
         for spline in spline_samples:
             transformed_samples.append(list(map(self.polar_transform, spline)))
 
-#        print transformed_samples
-# SEEMS TO WORK TO HERE SO FAR
-
-        self.transformedPoints = transformed_samples
-
         return transformed_samples
 
-    def filterSplines(self, transformed_samples):
-        #TODO
+    def filterSplines(self, transformed_samples, rmax):
+
         # 1. remove all sample points near the origin (define: near)
+        transformed_samples = self.filterNearOrigin(transformed_samples, rmax)
+        
         # 2. remove all sample points for nearly vertical lines
+        transformed_samples = self.filterVerticalRegions(transformed_samples)
 
         return transformed_samples
+
+    def filterNearOrigin(self, points, max_value):
+        print max_value
+        filtered = []
+        for ps in points:
+            subfiltered = []
+            for theta, r in ps:
+                #print r
+                #print self.raxis.pixel_to_coord(r)
+                if not self.raxis.pixel_to_coord(r) < (max_value * 0.05):
+                    subfiltered.append([theta, r])
+
+            filtered.append(subfiltered)
+
+        return filtered
+
+    def filterVerticalRegions(self, points):
+        filtered = []
+        for ps in points:
+            subfiltered = []
+            for i, (theta, r) in enumerate(ps):
+                if i < len(ps) - 1:
+                    theta_n, r_n = ps[i + 1]
+                    rdiff = r - r_n
+                    tdiff = theta - theta_n
+                    print rdiff / tdiff
+                    if not abs(rdiff / tdiff) > 40:
+                        subfiltered.append([theta, r])
+#                    else:
+#                        print 't = ' + str(theta) + " tn = " + str(theta_n)
+
+            filtered.append(subfiltered)
+
+        return filtered
+
+    def filterUnderCutRegions(self, points):
+        filtered = []
+        for ps in points:
+            subfiltered = []
+
+            # check whether the curve was drawn left to right or right to left
+            if ps[0][0] > ps[-1][0]:
+                ps.reverse()
+
+            for i, (theta, r) in enumerate(ps):
+                pass
+
+            filtered.append(subfiltered)
+
+        return filtered
 
     def refitSplines(self, transformed_samples):
         # refit cubic splines to transformed sample points
@@ -130,8 +180,8 @@ class PolarTransform():
                 
         self.f.params['yrange'] = [0, rmax]
         self.f.params['xrange'] = [0, 2 * math.pi]
-        self.f.params['xscale'] = 'linear'
-        self.f.params['yscale'] = 'linear'
+#        self.f.params['xscale'] = 'linear'
+#        self.f.params['yscale'] = 'linear'
         
         #json_format_samples = []
         for s in splines:
