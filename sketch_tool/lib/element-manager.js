@@ -68,6 +68,7 @@ export default class ElementManager {
   onPointerMove(event) {
     if (event.pointerId !== this.activePointerId) return;
     event.stopPropagation();
+    event.preventDefault();
 
     if (!this.isDragging) {
       const dx = event.clientX - this.initialEvent.clientX;
