@@ -60,11 +60,10 @@ export default class LineSegment extends BasePlugin {
   // This will be called when clicking on the SVG canvas after having
   // selected the line segment shape
   initDraw(event) {
-    this.app.svg.setPointerCapture(event.pointerId);
     // Add event listeners in capture phase
-    this.app.svg.addEventListener('pointermove', this.drawMove, true);
-    this.app.svg.addEventListener('pointerup', this.drawEnd, true);
-    this.app.svg.addEventListener('pointercancel', this.drawEnd, true);
+    document.addEventListener('pointermove', this.drawMove, true);
+    document.addEventListener('pointerup', this.drawEnd, true);
+    document.addEventListener('pointercancel', this.drawEnd, true);
     this.firstPoint = (this.state.length % 2 == 0);
     // Push current position
     let point = this.rConstrained(event.clientX - this.params.left, event.clientY - this.params.top),
@@ -114,10 +113,9 @@ export default class LineSegment extends BasePlugin {
   }
 
   drawEnd(event) {
-    this.app.svg.releasePointerCapture(event.pointerId);
-    this.app.svg.removeEventListener('pointermove', this.drawMove, true);
-    this.app.svg.removeEventListener('pointerup', this.drawEnd, true);
-    this.app.svg.removeEventListener('pointercancel', this.drawEnd, true);
+    document.removeEventListener('pointermove', this.drawMove, true);
+    document.removeEventListener('pointerup', this.drawEnd, true);
+    document.removeEventListener('pointercancel', this.drawEnd, true);
     // Only add an undo point for first endpoint if there was a drag.
     // Always add an undo point for second end point.
     if (!this.firstPoint || (this.firstPoint && this.wasDragged)) {
