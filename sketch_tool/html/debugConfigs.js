@@ -89,18 +89,6 @@ function loadConfig(configId) {
         },
         {
           name: 'line-segment',
-          id: 'har',
-          label: 'Horizontal arrow',
-          color: 'dimgray',
-          dashStyle: 'solid',
-          arrowHead: {
-            length: 10,
-            base: 7
-          },
-          directionConstraint: 'horizontal'
-        },
-        {
-          name: 'line-segment',
           id: 'car',
           label: 'Constrained arrow',
           color: 'dimgray',
@@ -110,6 +98,12 @@ function loadConfig(configId) {
             length: 10,
             base: 7
           },
+        },
+        {
+          name: 'freeform',
+          id: 'f',
+          label: 'Function f(x)',
+          color: 'orange'
         }
       ]
     }
