@@ -32,7 +32,15 @@ class PolarTransform():
 
         # segment the curves with multiple humps and reorder them so theta is
         # always increasing
-        transSplines = self.segmentAndReorder(transSplines)
+        transSplines = self.segmentSplines(transSplines)
+
+        # need to filter near origin before reordering splines because samples
+        # can cross near the origin
+        transSplines = self.filterNearOrigin(transSplines, rmax)
+
+        # now reorder the splines so the data is all in the right order for
+        # the remainder of the filtering tasks
+        transSplines = self.reorderSplines(transSplines)
 
         # filter the raw spline data, points near origin and nearly vertical
         # lines need to be removed
@@ -92,32 +100,44 @@ class PolarTransform():
 
         return transformed_samples
 
-    def segmentAndReorder(self, transformed_samples):
+    def segmentSplines(self, transformed_samples):
         segmented_samples = []
         for ts in transformed_samples:
             minima = self.findMinima(ts)
-
+            print minima
             segments = []
             left = 0
             for m in minima:
                 segment = ts[left:m]
-                if segment[0][0] > segment[-1][0]:
-                    segment.reverse()
+#                if len(segment) > 10:
+#                    if segment[10][0] > segment[-10][0]:
+#                        segment.reverse()
                 segments.append(segment)
                 left = m
             segment = ts[left:]
-            if segment[0][0] > segment[-1][0]:
-                segment.reverse()
+#            if len(segment) > 10:
+#                if segment[10][0] > segment[-10][0]:
+#                    segment.reverse()
             segments.append(segment)
 
             segmented_samples.extend(segments)
 
+        # remove any empty arrays, which may have been created
+        segmented_samples = [ts for ts in segmented_samples if not len(ts) <= 10]
+
         return segmented_samples
+
+    def reorderSplines(self, transformed_samples):
+        for ts in transformed_samples:
+            if ts[0][0] > ts[-1][0]:
+                ts.reverse()
+
+        return transformed_samples
 
     def filterSplines(self, transformed_samples, rmax):
 
         # 1. remove all sample points near the origin (define: near)
-        transformed_samples = self.filterNearOrigin(transformed_samples, rmax)
+        #transformed_samples = self.filterNearOrigin(transformed_samples, rmax)
         
         # 3. remove regions that are wrong directions
         transformed_samples = self.filterUnderCutRegions(transformed_samples)
@@ -128,7 +148,7 @@ class PolarTransform():
         return transformed_samples
 
     def filterNearOrigin(self, points, max_value):
-        print max_value
+        #print max_value
         filtered = []
         for ps in points:
             #print self.findMinima(ps)
@@ -152,7 +172,7 @@ class PolarTransform():
                     theta_n, r_n = ps[i + 1]
                     rdiff = r - r_n
                     tdiff = theta - theta_n
-                    print rdiff / tdiff
+                    #print rdiff / tdiff
                     if not abs(rdiff / tdiff) > 40:
                         subfiltered.append([theta, r])
 #                    else:
@@ -168,8 +188,8 @@ class PolarTransform():
             subfiltered = []
 
             # check whether the curve was drawn left to right or right to left
-            if ps[0][0] > ps[-1][0]:
-                ps.reverse()
+            #if ps[0][0] > ps[-1][0]:
+            #    ps.reverse()
 
             for i, (theta, r) in enumerate(ps):
                 if i < len(ps) - 1:
