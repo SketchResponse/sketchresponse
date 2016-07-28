@@ -23,6 +23,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             xaxis = Axis.Axis(f.params['xrange'], f.params['width'])
             yaxis = Axis.Axis(f.params['yrange'][::-1], f.params['height'])
             MultipleSplinesFunction.MultipleSplinesFunction.__init__(self, xaxis, yaxis, path_info = f, tolerance = tolerance)
+            self.pt.resampleNewSplines()
 
     def create_from_path_info(self, path_info):
         dtol = 100 # work into tolerances later

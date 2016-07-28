@@ -5,10 +5,12 @@ import Point
 import Axis
 import numpy as np
 import math
+from fitCurves import fitCurves
 
 
 class PolarTransform():
 
+    FIT_TOLERANCE = 5
     STEP = 0.02
 
     def __init__(self, functionData, gradeableFunction):
@@ -99,6 +101,32 @@ class PolarTransform():
             transformed_samples.append(list(map(self.polar_transform, spline)))
 
         return transformed_samples
+
+    def resampleNewSplines(self):
+        spline_samples = []
+        for f in self.g.functions:
+            curve_samples = []
+            # these are the spline function objects
+            for curve in f.functions:
+                # these are the curve function objects
+                samples = self.sample_x_and_y(curve, self.STEP)
+                px_samples = []
+                for s in samples:
+                    x = self.thetaaxis.coord_to_pixel(s[0])
+                    y = self.raxis.coord_to_pixel(s[1])
+                    px_samples.append([x, y])
+                curve_samples.extend(px_samples)
+
+            x, y = self.sample_last_t_1(f.functions[-1])
+            x = self.thetaaxis.coord_to_pixel(x)
+            y = self.raxis.coord_to_pixel(y)
+
+            curve_samples.append([x, y])
+
+            spline_samples.append(curve_samples)
+
+        self.transformedSplines = spline_samples
+
 
     def segmentSplines(self, transformed_samples):
         segmented_samples = []
@@ -260,21 +288,40 @@ class PolarTransform():
         # refit cubic splines to transformed sample points
         expanded_samples = []
         for t in transformed_samples:
-            exp_curve_samples = []
-            for i, v in enumerate(t):
-                if i < len(t) - 1:
-                    exp_curve_samples.append(v)
-                    x_delta = (t[i + 1][0] - v[0]) / 3
-                    y_delta = (t[i + 1][1] - v[1]) / 3
-                    x_1_3 = [v[0] + x_delta, v[1] + y_delta]
-                    x_2_3 = [v[0] + 2 * x_delta, v[1] + 2 * y_delta]
-                    exp_curve_samples.append(x_1_3)
-                    exp_curve_samples.append(x_2_3)
-                else:
-                    exp_curve_samples.append(v)
+            # need to transform into numpy arrays so the fitCurve lib
+            # doesn't choke
+            # fitCurve lib from https://github.com/volkerp/fitCurves
+            # it implements the same textbook algorithm as is used in
+            # the sketchtool to fit curves to the original drawing input
+            t_ = [np.array(v) for v in t]
+            fit_ = fitCurves.fitCurve(t_, self.FIT_TOLERANCE)
 
-            expanded_samples.append(exp_curve_samples)
+            refit_samples = []
+            for points in fit_:
+                if len(refit_samples) == 0:
+                    refit_samples.append([points[0][0], points[0][1]])
+                refit_samples.append([points[1][0], points[1][1]])
+                refit_samples.append([points[2][0], points[2][1]])
+                refit_samples.append([points[3][0], points[3][1]])
+#            print refit_samples
+            #exp_curve_samples = []
+            #for i, v in enumerate(t):
+            #    if i < len(t) - 1:
+            #        exp_curve_samples.append(v)
+            #        x_delta = (t[i + 1][0] - v[0]) / 3
+            #        y_delta = (t[i + 1][1] - v[1]) / 3
+            #        x_1_3 = [v[0] + x_delta, v[1] + y_delta]
+            #        x_2_3 = [v[0] + 2 * x_delta, v[1] + 2 * y_delta]
+            #        exp_curve_samples.append(x_1_3)
+            #        exp_curve_samples.append(x_2_3)
+            #    else:
+            #        exp_curve_samples.append(v)
 
+            expanded_samples.append(refit_samples)  # exp_curve_samples)  #
+
+        import copy
+        self.transformedSplines = copy.deepcopy(expanded_samples)
+#        print self.transformedSplines
         return expanded_samples
 
     def updateFunctionData(self, rmax, points, splines):
