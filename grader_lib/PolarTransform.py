@@ -140,7 +140,7 @@ class PolarTransform():
         #transformed_samples = self.filterNearOrigin(transformed_samples, rmax)
         
         # 3. remove regions that are wrong directions
-        transformed_samples = self.filterUnderCutRegions(transformed_samples)
+        transformed_samples = self.filterUnderCutRegions_projection(transformed_samples)
 
         # 2. remove all sample points for nearly vertical lines
         transformed_samples = self.filterVerticalRegions(transformed_samples)
@@ -198,6 +198,61 @@ class PolarTransform():
                         subfiltered.append([theta, r])
 
             filtered.append(subfiltered)
+
+        return filtered
+
+    def filterUnderCutRegions_projection(self, points):
+        filtered = []
+        for ps in points:
+            subfiltered = []
+
+            maxima = self.findMaxima(ps)
+            if len(maxima) == 0:
+                # only increasing or decreasing
+                if ps[0][1] > ps[-1][1]:
+                    maxima = 0
+                else:
+                    maxima = len(ps) - 1
+            else:
+                maxima = maxima[0]
+
+            left = ps[0:maxima]
+            right = ps[maxima:]
+
+            subfiltered.extend(self.filterUnderCutRegions_left(left))
+            subfiltered.extend(self.filterUnderCutRegions_right(right))
+            
+            filtered.append(subfiltered)
+
+        return filtered
+
+    def filterUnderCutRegions_left(self, left):
+        if len(left) == 0:
+            return left
+
+        filtered = []
+        left.reverse()
+        minTheta = left[0][0]
+
+        for theta, r in left:
+            if theta <= minTheta:
+                minTheta = theta
+                filtered.append([theta, r])
+
+        filtered.reverse()
+        return filtered
+
+    def filterUnderCutRegions_right(self, right):
+        if len(right) == 0:
+            return right
+
+        filtered = []
+        maxTheta = right[0][0]
+
+        for theta, r in right:
+            if theta >= maxTheta:
+                maxTheta = theta
+                filtered.append([theta, r])
 
         return filtered
 
@@ -290,3 +345,12 @@ class PolarTransform():
                     minima.append(i)
 
         return minima
+
+    def findMaxima(self, curve):
+        maxima = []
+        for i, v in enumerate(curve):
+            if i > 0 and i < len(curve) - 1:
+                if curve[i - 1][1] < v[1] and curve[i + 1][1] < v[1]:
+                    maxima.append(i)
+
+        return maxima
