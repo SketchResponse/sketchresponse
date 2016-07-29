@@ -23,8 +23,8 @@ class PolarTransform():
         absx = map(abs, self.f.params['xrange'])
         absy = map(abs, self.f.params['yrange'])
         rmax = math.sqrt(max(absx) ** 2 + max(absy) ** 2)
-        self.raxis = Axis.Axis([0, rmax], self.f.params['width'])
-        self.thetaaxis = Axis.Axis([0, 2 * math.pi], self.f.params['height'])
+        self.raxis = Axis.Axis([0, rmax], self.f.params['height'])
+        self.thetaaxis = Axis.Axis([0, 2 * math.pi], self.f.params['width'])
 
         # transform any point objects into r, theta space
         transPoints = self.transformPoints()
@@ -54,6 +54,10 @@ class PolarTransform():
         # TODO: actually refit instead of just fitting piecewise linear splines
         transSplines = self.refitSplines(transSplines)
 
+        # flip the y axis so the data looks like its coming from the sketch
+        # tool canvas again
+        transSplines = self.flipYAxis(transSplines, self.f.params['height'])
+
         self.updateFunctionData(rmax, transPoints, transSplines)
         #        print gradeable
         #        #print gradeable.params
@@ -71,6 +75,17 @@ class PolarTransform():
         axes = self.raxis.domain
         axes.extend(self.thetaaxis.domain)
         return axes
+
+    def flipYAxis(self, splines, axis_max):
+        flipped_splines = []
+        for spline in splines:
+            flipped = []
+            for theta, r in spline:
+                r = axis_max - r
+                flipped.append([theta, r])
+            flipped_splines.append(flipped)
+
+        return flipped_splines
 
     def transformPoints(self):
         points = self.g.points
