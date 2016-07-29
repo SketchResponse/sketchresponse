@@ -54,16 +54,7 @@ class PolarTransform():
         # TODO: actually refit instead of just fitting piecewise linear splines
         transSplines = self.refitSplines(transSplines)
 
-        # flip the y axis so the data looks like its coming from the sketch
-        # tool canvas again
-        transSplines = self.flipYAxis(transSplines, self.f.params['height'])
-
         self.updateFunctionData(rmax, transPoints, transSplines)
-        #        print gradeable
-        #        #print gradeable.params
-        #        # rerun the constructor with the transformed data
-        #        GradeableFunction.GradeableFunction.__init__(self, gradeable,
-        #                                                     tolerance)
 
     def getTransformedFunctionData(self):
         return self.f
@@ -75,17 +66,6 @@ class PolarTransform():
         axes = self.raxis.domain
         axes.extend(self.thetaaxis.domain)
         return axes
-
-    def flipYAxis(self, splines, axis_max):
-        flipped_splines = []
-        for spline in splines:
-            flipped = []
-            for theta, r in spline:
-                r = axis_max - r
-                flipped.append([theta, r])
-            flipped_splines.append(flipped)
-
-        return flipped_splines
 
     def transformPoints(self):
         points = self.g.points
@@ -347,8 +327,10 @@ class PolarTransform():
 #            print i
 #            if 'spline' in gradeable[i]:
 #                del(gradeable[i])
-                
-        self.f.params['yrange'] = [0, rmax]
+
+        # reverse the yrange because expecting data from canvas with inverted
+        # y axis
+        self.f.params['yrange'] = [rmax, 0] 
         self.f.params['xrange'] = [0, 2 * math.pi]
 #        self.f.params['xscale'] = 'linear'
 #        self.f.params['yscale'] = 'linear'
