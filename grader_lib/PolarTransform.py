@@ -51,10 +51,10 @@ class PolarTransform():
 #        self.transformedSplines = copy.deepcopy(transSplines)
         # filter the raw spline data, points near origin and nearly vertical
         # lines need to be removed
-        #transSplines = self.filterSplines(transSplines, rmax)
+        transSplines = self.filterSplines(transSplines, rmax)
 
         # sometimes it ends up with empty arrays after filtering, remove them
-        #transSplines = self.filterEmptySplines(transSplines)
+        transSplines = self.filterEmptySplines(transSplines)
         #        print transSplines
         #        self.transformedSplines = transSplines
 
@@ -139,7 +139,6 @@ class PolarTransform():
 
 #        self.transformedSplines = spline_samples
 
-
     def segmentSplines(self, transformed_samples):
         segmented_samples = []
         for ts in transformed_samples:
@@ -163,25 +162,46 @@ class PolarTransform():
             segmented_samples.extend(segments)
 
         # remove any empty arrays, which may have been created
-        segmented_samples = [ts for ts in segmented_samples if not len(ts) <= 10]
+#        segmented_samples = [ts for ts in segmented_samples if not len(ts) <= 10]
 
         return segmented_samples
 
     def reorderSplines(self, transformed_samples):
+        reordered = []
         for ts in transformed_samples:
-            print ts
-            if ts[0][0] > ts[-1][0]:
-                ts.reverse()
+            #print ts
+            maxima = self.findMaxima(ts)
+            if len(maxima) > 0:
+                for m in maxima:
+                    if m > 0 and m < len(ts) - 1:
+                        if ts[m - 1][0] > ts[m][0] and ts[m + 1][0] < ts[m][0]:
+                            ts.reverse()
+                reordered.append(ts)
+            else:
+                inc = 0
+                dec = 0
+                for i, (theta, r) in enumerate(ts):
+                    if i < len(ts) - 1:
+                        theta_n, r_n = ts[i + 1]
+                        if theta_n >= theta:
+                            inc += 1
+                        else:
+                            dec += 1
+                print 'reorder: ' + str(inc - dec)
+                if dec > inc:
+                    ts.reverse()
+                reordered.append(ts)
 
-        return transformed_samples
+        return reordered
 
     def filterEmptySplines(self, transformed_samples):
-        filtered = []
-        for ts in transformed_samples:
-            if len(ts) > 2:
-                filtered.append(ts)
-
-        return filtered
+        return [ts for ts in transformed_samples if not len(ts) <= 10]
+#        filtered = []
+#        for ts in transformed_samples:
+#            if len(ts) > 2:
+#                filtered.append(ts)
+#
+#        return filtered
 
     def filterSplines(self, transformed_samples, rmax):
 
@@ -189,10 +209,10 @@ class PolarTransform():
         #transformed_samples = self.filterNearOrigin(transformed_samples, rmax)
         
         # 3. remove regions that are wrong directions
-        transformed_samples = self.filterUnderCutRegions_projection(transformed_samples)
+        #transformed_samples = self.filterUnderCutRegions_projection(transformed_samples)
 
         # 2. remove all sample points for nearly vertical lines
-        transformed_samples = self.filterVerticalRegions(transformed_samples)
+        #transformed_samples = self.filterVerticalRegions(transformed_samples, rmax)
 
         return transformed_samples
 
@@ -212,17 +232,18 @@ class PolarTransform():
 
         return filtered
 
-    def filterVerticalRegions(self, points):
+    def filterVerticalRegions(self, points, rmax):
         filtered = []
         for ps in points:
             subfiltered = []
             for i, (theta, r) in enumerate(ps):
                 if i < len(ps) - 1:
                     theta_n, r_n = ps[i + 1]
+                    rmean = (r + r_n) / 2
                     rdiff = r - r_n
                     tdiff = theta - theta_n
                     #print rdiff / tdiff
-                    if not abs(rdiff / tdiff) > 40:
+                    if not abs(rdiff / tdiff) > 60 * (1 + rmean / rmax):
                         subfiltered.append([theta, r])
 #                    else:
 #                        print 't = ' + str(theta) + " tn = " + str(theta_n)
