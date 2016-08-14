@@ -40,15 +40,26 @@ class PolarTransform():
         # can cross near the origin
         transSplines = self.filterNearOrigin(transSplines, rmax)
 
+        # sometimes it ends up with empty arrays after filtering, remove them
+        transSplines = self.filterEmptySplines(transSplines)
+
         # now reorder the splines so the data is all in the right order for
         # the remainder of the filtering tasks
         transSplines = self.reorderSplines(transSplines)
 
+#        import copy
+#        self.transformedSplines = copy.deepcopy(transSplines)
         # filter the raw spline data, points near origin and nearly vertical
         # lines need to be removed
-        transSplines = self.filterSplines(transSplines, rmax)
+        #transSplines = self.filterSplines(transSplines, rmax)
 
-        self.transformedSplines = transSplines
+        # sometimes it ends up with empty arrays after filtering, remove them
+        #transSplines = self.filterEmptySplines(transSplines)
+        #        print transSplines
+        #        self.transformedSplines = transSplines
+
+        import copy
+        self.transformedSplines = copy.deepcopy(transSplines)
 
         # refit spline datapoints to a spline curve
         # TODO: actually refit instead of just fitting piecewise linear splines
@@ -63,9 +74,11 @@ class PolarTransform():
         return self.transformedSplines
 
     def getTransformedAxes(self):
-        axes = self.raxis.domain
-        axes.extend(self.thetaaxis.domain)
-        return axes
+        axes1 = self.raxis.domain
+        axes1.extend(self.thetaaxis.domain)
+        axes2 = [0, self.raxis.pixels]
+        axes2.extend([0, self.thetaaxis.pixels])
+        return [axes1, axes2]
 
     def transformPoints(self):
         points = self.g.points
@@ -89,6 +102,10 @@ class PolarTransform():
             curve_samples.append(self.sample_last_t_1(f.functions[-1]))
 
             spline_samples.append(curve_samples)
+
+        import copy
+        self.transformedSplines = copy.deepcopy(spline_samples)
+
 
         # transform sample points into (r,theta)
         transformed_samples = []
@@ -120,14 +137,14 @@ class PolarTransform():
 
             spline_samples.append(curve_samples)
 
-        self.transformedSplines = spline_samples
+#        self.transformedSplines = spline_samples
 
 
     def segmentSplines(self, transformed_samples):
         segmented_samples = []
         for ts in transformed_samples:
             minima = self.findMinima(ts)
-            print minima
+            #print minima
             segments = []
             left = 0
             for m in minima:
@@ -152,10 +169,19 @@ class PolarTransform():
 
     def reorderSplines(self, transformed_samples):
         for ts in transformed_samples:
+            print ts
             if ts[0][0] > ts[-1][0]:
                 ts.reverse()
 
         return transformed_samples
+
+    def filterEmptySplines(self, transformed_samples):
+        filtered = []
+        for ts in transformed_samples:
+            if len(ts) > 2:
+                filtered.append(ts)
+
+        return filtered
 
     def filterSplines(self, transformed_samples, rmax):
 
@@ -179,7 +205,7 @@ class PolarTransform():
             for theta, r in ps:
                 #print r
                 #print self.raxis.pixel_to_coord(r)
-                if not self.raxis.pixel_to_coord(r) < (max_value * 0.05):
+                if not self.raxis.pixel_to_coord(r) < (max_value * 0.15):
                     subfiltered.append([theta, r])
 
             filtered.append(subfiltered)
@@ -314,8 +340,6 @@ class PolarTransform():
 
             expanded_samples.append(refit_samples)  # exp_curve_samples)  #
 
-        import copy
-        self.transformedSplines = copy.deepcopy(expanded_samples)
 #        print self.transformedSplines
         return expanded_samples
 
