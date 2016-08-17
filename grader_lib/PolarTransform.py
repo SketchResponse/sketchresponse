@@ -6,6 +6,7 @@ import Axis
 import numpy as np
 import math
 from fitCurves import fitCurves
+import copy
 
 
 class PolarTransform():
@@ -53,12 +54,14 @@ class PolarTransform():
         # lines need to be removed
         transSplines = self.filterSplines(transSplines, rmax)
 
+        # remove curve overlapping regions
+        transSplines = self.removeCurveOverlaps(transSplines)
+
         # sometimes it ends up with empty arrays after filtering, remove them
         transSplines = self.filterEmptySplines(transSplines)
         #        print transSplines
         #        self.transformedSplines = transSplines
 
-        import copy
         self.transformedSplines = copy.deepcopy(transSplines)
 
         # refit spline datapoints to a spline curve
@@ -103,9 +106,7 @@ class PolarTransform():
 
             spline_samples.append(curve_samples)
 
-        import copy
         self.transformedSplines = copy.deepcopy(spline_samples)
-
 
         # transform sample points into (r,theta)
         transformed_samples = []
@@ -137,7 +138,7 @@ class PolarTransform():
 
             spline_samples.append(curve_samples)
 
-#        self.transformedSplines = spline_samples
+        self.transformedSplines = spline_samples
 
     def segmentSplines(self, transformed_samples):
         segmented_samples = []
@@ -196,12 +197,50 @@ class PolarTransform():
 
     def filterEmptySplines(self, transformed_samples):
         return [ts for ts in transformed_samples if not len(ts) <= 10]
-#        filtered = []
-#        for ts in transformed_samples:
-#            if len(ts) > 2:
-#                filtered.append(ts)
-#
-#        return filtered
+
+    def removeCurveOverlaps(self, curves):
+        filtered = []
+        for curve in curves:
+            #curve = copy.deepcopy(curve)
+
+            for otherCurve in curves:
+                if curve == otherCurve:
+                    continue
+
+                #if not self.curvesOverlap(curve, otherCurve):
+                #    continue
+
+                curve = self.removeOverlap(curve, otherCurve)
+
+            filtered.append(curve)
+
+        return filtered
+
+#    def curvesOverlap(self, curve1, curve2):
+#        pass
+
+    def removeOverlap(self, curve1, curve2):
+        # remove overlapping region from curve1
+        # DOES NOT WORK AT ALL
+        minTheta, maxTheta = self.getThetaRange(curve2)
+        filtered = []
+        for theta, r in curve1:
+            if not (theta > minTheta and theta < maxTheta):
+                filtered.append([theta, r])
+
+        return filtered
+
+    def getThetaRange(self, curve):
+        minTheta = float('inf')
+        maxTheta = float('-inf')
+
+        for theta, r in curve:
+            if theta < minTheta:
+                minTheta = theta
+            if theta > maxTheta:
+                maxTheta = theta
+
+        return [minTheta, maxTheta]
 
     def filterSplines(self, transformed_samples, rmax):
 
@@ -209,10 +248,10 @@ class PolarTransform():
         #transformed_samples = self.filterNearOrigin(transformed_samples, rmax)
         
         # 3. remove regions that are wrong directions
-        #transformed_samples = self.filterUnderCutRegions_projection(transformed_samples)
+        transformed_samples = self.filterUnderCutRegions_projection(transformed_samples)
 
         # 2. remove all sample points for nearly vertical lines
-        #transformed_samples = self.filterVerticalRegions(transformed_samples, rmax)
+        transformed_samples = self.filterVerticalRegions(transformed_samples, rmax)
 
         return transformed_samples
 
