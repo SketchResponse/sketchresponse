@@ -54,14 +54,22 @@ class PolarTransform():
         # lines need to be removed
         transSplines = self.filterSplines(transSplines, rmax)
 
+        # split curves that wrap the 0/2pi theta boundary
+        transSplines = self.splitWrappingCurves(transSplines)
+
         # remove curve overlapping regions
-        transSplines = self.removeCurveOverlaps(transSplines)
+#        transSplines = self.removeCurveOverlaps(transSplines)
 
         # sometimes it ends up with empty arrays after filtering, remove them
         transSplines = self.filterEmptySplines(transSplines)
         #        print transSplines
         #        self.transformedSplines = transSplines
 
+        # copy the curves so the full range of curve data spans [-2pi, 2pi]
+        print len(transSplines)
+        transSplines = self.duplicateCurvesToNeg2PI(transSplines)
+        print len(transSplines)
+        
         self.transformedSplines = copy.deepcopy(transSplines)
 
         # refit spline datapoints to a spline curve
@@ -77,10 +85,10 @@ class PolarTransform():
         return self.transformedSplines
 
     def getTransformedAxes(self):
-        axes1 = self.raxis.domain
-        axes1.extend(self.thetaaxis.domain)
-        axes2 = [0, self.raxis.pixels]
-        axes2.extend([0, self.thetaaxis.pixels])
+        axes1 = self.f.params['xrange']
+        axes1.extend(self.f.params['yrange'])
+        axes2 = [0, self.f.params['width']]
+        axes2.extend([0, self.f.params['height']])
         return [axes1, axes2]
 
     def transformPoints(self):
@@ -138,7 +146,7 @@ class PolarTransform():
 
             spline_samples.append(curve_samples)
 
-        self.transformedSplines = spline_samples
+        #self.transformedSplines = spline_samples
 
     def segmentSplines(self, transformed_samples):
         segmented_samples = []
@@ -161,9 +169,6 @@ class PolarTransform():
             segments.append(segment)
 
             segmented_samples.extend(segments)
-
-        # remove any empty arrays, which may have been created
-#        segmented_samples = [ts for ts in segmented_samples if not len(ts) <= 10]
 
         return segmented_samples
 
@@ -198,6 +203,35 @@ class PolarTransform():
     def filterEmptySplines(self, transformed_samples):
         return [ts for ts in transformed_samples if not len(ts) <= 10]
 
+    def splitWrappingCurves(self, curves):
+
+        # now segment any curves that wrap around theta=0/2pi boundary
+        width = self.f.params['width']
+        minTen = width / 10
+        maxTen = 9 * minTen
+        center = width / 2
+        wrap_segmented = []
+        for curve in curves:
+            minTheta, maxTheta = self.getThetaRange(curve)
+            if minTheta <= minTen and maxTheta >= maxTen:
+                # if the smallest theta value is in the smallest decile of
+                # the theta axis and the max theta is in the largest decile
+                # this curve might wrap so split it in two
+                left = []
+                right = []
+                for theta, r in curve:
+                    if theta < center:
+                        left.append([theta, r])
+                    else:
+                        right.append([theta, r])
+
+                wrap_segmented.append(left)
+                wrap_segmented.append(right)
+            else:
+                wrap_segmented.append(curve)
+
+        return wrap_segmented
+
     def removeCurveOverlaps(self, curves):
         filtered = []
         for curve in curves:
@@ -207,8 +241,8 @@ class PolarTransform():
                 if curve == otherCurve:
                     continue
 
-                #if not self.curvesOverlap(curve, otherCurve):
-                #    continue
+                if not self.curvesOverlap(curve, otherCurve):
+                    continue
 
                 curve = self.removeOverlap(curve, otherCurve)
 
@@ -216,17 +250,43 @@ class PolarTransform():
 
         return filtered
 
-#    def curvesOverlap(self, curve1, curve2):
-#        pass
+    def curvesOverlap(self, curve1, curve2):
+        range1 = self.getThetaRange(curve1)
+        range2 = self.getThetaRange(curve2)
+
+        overlap = False
+        if range1[0] >= range2[0] and range1[0] <= range2[1]:
+            overlap = True
+        if range1[1] >= range2[0] and range1[1] <= range2[1]:
+            overlap = True
+        if range2[0] >= range1[0] and range2[0] <= range1[1]:
+            overlap = True
+        if range2[1] >= range1[0] and range2[1] <= range1[1]:
+            overlap = True
+
+        return overlap
 
     def removeOverlap(self, curve1, curve2):
-        # remove overlapping region from curve1
-        # DOES NOT WORK AT ALL
-        minTheta, maxTheta = self.getThetaRange(curve2)
+        # remove overlapping points from curve1
+        range2 = self.getThetaRange(curve2)
         filtered = []
         for theta, r in curve1:
-            if not (theta > minTheta and theta < maxTheta):
-                filtered.append([theta, r])
+            if not (theta >= range2[0] and theta <= range2[1]):
+                continue
+            
+            for i, (theta2, r2) in enumerate(curve2):
+                if i < len(curve2) - 1:
+                    theta2_n, r2_n = curve2[i + 1]
+                    tmin = min([theta2, theta2_n])
+                    tmax = max([theta2, theta2_n])
+                    if theta >= tmin and theta <= tmax:
+                        if r <= r2 or r <= r2_n:
+                            # filter this one out
+                            pass
+                        else:
+                            filtered.append([theta, r])
+                    else:
+                        filtered.append([theta, r])
 
         return filtered
 
@@ -403,6 +463,19 @@ class PolarTransform():
 #        print self.transformedSplines
         return expanded_samples
 
+    def duplicateCurvesToNeg2PI(self, curves):
+        duped_curves = []
+        width = self.f.params['width']
+        for curve in curves:
+            shifted = []
+            for theta, r in curve:
+                shifted.append([theta + width, r])
+
+            duped_curves.append(curve)
+            duped_curves.append(shifted)
+
+        return duped_curves
+
     def updateFunctionData(self, rmax, points, splines):
         # replace the the transformed data in the gradeable data struct
         # this only works for freeform only inputs
@@ -414,8 +487,9 @@ class PolarTransform():
 
         # reverse the yrange because expecting data from canvas with inverted
         # y axis
+        self.f.params['width'] = self.f.params['width'] * 2
         self.f.params['yrange'] = [rmax, 0] 
-        self.f.params['xrange'] = [0, 2 * math.pi]
+        self.f.params['xrange'] = [-2 * math.pi, 2 * math.pi]
 #        self.f.params['xscale'] = 'linear'
 #        self.f.params['yscale'] = 'linear'
         
