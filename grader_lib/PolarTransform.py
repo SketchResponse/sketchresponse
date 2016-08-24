@@ -58,23 +58,21 @@ class PolarTransform():
         transSplines = self.splitWrappingCurves(transSplines)
 
         # remove curve overlapping regions
-#        transSplines = self.removeCurveOverlaps(transSplines)
+        transSplines = self.removeCurveOverlaps(transSplines)
 
         # sometimes it ends up with empty arrays after filtering, remove them
         transSplines = self.filterEmptySplines(transSplines)
         #        print transSplines
         #        self.transformedSplines = transSplines
 
-        # copy the curves so the full range of curve data spans [-2pi, 2pi]
-        print len(transSplines)
-        transSplines = self.duplicateCurvesToNeg2PI(transSplines)
-        print len(transSplines)
-        
-        self.transformedSplines = copy.deepcopy(transSplines)
-
         # refit spline datapoints to a spline curve
-        # TODO: actually refit instead of just fitting piecewise linear splines
         transSplines = self.refitSplines(transSplines)
+
+        # copy the curves so the full range of curve data spans [-2pi, 2pi]
+        transSplines = self.duplicateCurvesToNeg2PI(transSplines)
+
+        print transSplines
+        self.transformedSplines = copy.deepcopy(transSplines)
 
         self.updateFunctionData(rmax, transPoints, transSplines)
 
@@ -146,7 +144,7 @@ class PolarTransform():
 
             spline_samples.append(curve_samples)
 
-        #self.transformedSplines = spline_samples
+        self.transformedSplines = spline_samples
 
     def segmentSplines(self, transformed_samples):
         segmented_samples = []
@@ -241,12 +239,15 @@ class PolarTransform():
                 if curve == otherCurve:
                     continue
 
-                if not self.curvesOverlap(curve, otherCurve):
+                (pre, overlap1, post, overlap2) = self.curvesOverlap(curve, otherCurve)
+                if len(overlap1) == 0:
                     continue
 
-                curve = self.removeOverlap(curve, otherCurve)
+                overlap1 = self.removeOverlap(overlap1, overlap2)
+                pre.extend(overlap1)
+                pre.extend(post)
 
-            filtered.append(curve)
+            filtered.append(pre)
 
         return filtered
 
@@ -254,26 +255,67 @@ class PolarTransform():
         range1 = self.getThetaRange(curve1)
         range2 = self.getThetaRange(curve2)
 
-        overlap = False
-        if range1[0] >= range2[0] and range1[0] <= range2[1]:
-            overlap = True
-        if range1[1] >= range2[0] and range1[1] <= range2[1]:
-            overlap = True
-        if range2[0] >= range1[0] and range2[0] <= range1[1]:
-            overlap = True
-        if range2[1] >= range1[0] and range2[1] <= range1[1]:
-            overlap = True
+        pre = []
+        overlap1 = []
+        post = []
+        overlap2 = []
 
-        return overlap
+        overlapMin = None
+        overlapMax = None
+        
+        overlap = False
+        if (range1[0] <= range2[0] and range2[0] <= range2[1] and
+            range2[0] <= range1[1] and range1[1] <= range2[1]):
+            overlap = True
+            overlapMin = range2[0]
+            overlapMax = range1[1]
+        if (range2[0] <= range1[0] and range1[0] <= range2[1] and
+            range2[0] <= range1[1] and range1[1] <= range2[1]):
+            overlap = True
+            overlapMin = range1[0]
+            overlapMax = range1[1]
+        if (range2[0] <= range1[0] and range1[0] <= range2[1] and
+            range2[0] <= range2[1] and range2[1] <= range1[1]):
+            overlap = True
+            overlapMin = range1[0]
+            overlapMax = range2[1]
+        if (range1[0] <= range2[0] and range2[0] <= range1[1] and
+            range1[0] <= range2[1] and range2[1] <= range1[1]):
+            overlap = True
+            overlapMin = range2[0]
+            overlapMax = range2[1]
+        #if range1[0] >= range2[0] and range1[0] <= range2[1]:
+        #    overlap = True
+        #if range1[1] >= range2[0] and range1[1] <= range2[1]:
+        #    overlap = True
+        #if range2[0] >= range1[0] and range2[0] <= range1[1]:
+        #    overlap = True
+        #if range2[1] >= range1[0] and range2[1] <= range1[1]:
+        #    overlap = True
+        if not overlap:
+            pre = curve1
+        else:
+            # segemnt curve1 into three sections preoverlap, overlap
+            # and postoverlap
+            for theta, r in curve1:
+                if theta < overlapMin:
+                    pre.append([theta, r])
+                elif theta > overlapMax:
+                    post.append([theta, r])
+                else:
+                    overlap1.append([theta, r])
+
+            # extract the overlapping points from curve2
+            for theta, r in curve2:
+                if theta >= overlapMin and theta <= overlapMax:
+                    overlap2.append([theta, r])
+
+        return (pre, overlap1, post, overlap2)
 
     def removeOverlap(self, curve1, curve2):
         # remove overlapping points from curve1
-        range2 = self.getThetaRange(curve2)
         filtered = []
         for theta, r in curve1:
-            if not (theta >= range2[0] and theta <= range2[1]):
-                continue
-            
             for i, (theta2, r2) in enumerate(curve2):
                 if i < len(curve2) - 1:
                     theta2_n, r2_n = curve2[i + 1]
@@ -351,6 +393,7 @@ class PolarTransform():
 
         return filtered
 
+    #### DEPRECATED #####
     def filterUnderCutRegions(self, points):
         filtered = []
         for ps in points:
@@ -490,6 +533,10 @@ class PolarTransform():
         self.f.params['width'] = self.f.params['width'] * 2
         self.f.params['yrange'] = [rmax, 0] 
         self.f.params['xrange'] = [-2 * math.pi, 2 * math.pi]
+        self.raxis = Axis.Axis([0, rmax], self.f.params['height'])
+        self.thetaaxis = Axis.Axis([-2 * math.pi, 2 * math.pi],
+                                   self.f.params['width'])
+
 #        self.f.params['xscale'] = 'linear'
 #        self.f.params['yscale'] = 'linear'
         
