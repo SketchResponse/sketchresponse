@@ -41,6 +41,9 @@ class PolarTransform():
         # can cross near the origin
         transSplines = self.filterNearOrigin(transSplines, rmax)
 
+        # split curves that wrap the 0/2pi theta boundary
+        transSplines = self.splitWrappingCurves(transSplines)
+
         # sometimes it ends up with empty arrays after filtering, remove them
         transSplines = self.filterEmptySplines(transSplines)
 
@@ -54,11 +57,6 @@ class PolarTransform():
         # lines need to be removed
         transSplines = self.filterSplines(transSplines, rmax)
 
-        # split curves that wrap the 0/2pi theta boundary
-        # seems to not be necessary the undercut filtering actually handles
-        # this problem, I must have been plotting unfiltered data?
-#        transSplines = self.splitWrappingCurves(transSplines)
-
         # remove curve overlapping regions
         transSplines = self.removeCurveOverlaps(transSplines)
 
@@ -67,15 +65,17 @@ class PolarTransform():
         #        print transSplines
         #        self.transformedSplines = transSplines
 
-        # refit spline datapoints to a spline curve
+        # refit raw filtered datapoints to a spline curve
         transSplines = self.refitSplines(transSplines)
 
         # copy the curves so the full range of curve data spans [-2pi, 2pi]
         transSplines = self.duplicateCurvesToNeg2PI(transSplines)
 
         #print transSplines
-        self.transformedSplines = copy.deepcopy(transSplines)
+        #self.transformedSplines = copy.deepcopy(transSplines)
 
+        # update the function data object to contain the transformed data
+        # and transformed space parameters
         self.updateFunctionData(rmax, transPoints, transSplines)
 
     def getTransformedFunctionData(self):
