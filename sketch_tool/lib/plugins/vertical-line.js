@@ -12,6 +12,9 @@ export default class VerticalLine extends BasePlugin {
       alt: 'Vertical line tool'
     };
     super(params, app);
+    // Message listeners
+    this.app.__messageBus.on('addVerticalLine', (id, index) => {this.addVerticalLine(id, index)});
+    this.app.__messageBus.on('deleteVerticalLines', () => {this.deleteVerticalLines()});
   }
 
   getGradeable() {
@@ -29,6 +32,23 @@ export default class VerticalLine extends BasePlugin {
     });
   }
 
+  addVerticalLine(id, index) {
+    if (this.id == id) {
+      this.delIndices.push(index);
+    }
+  }
+
+  deleteVerticalLines() {
+    if (this.delIndices.length != 0) {
+      this.delIndices.sort();
+      for (let i = this.delIndices.length -1; i >= 0; i--) {
+        this.state.splice(this.delIndices[i], 1);
+      }
+      this.delIndices.length = 0;
+      this.render();
+    }
+  }
+
   // This will be called when clicking on the SVG canvas after having
   // selected the horizontal line shape
   initDraw(event) {
@@ -41,7 +61,7 @@ export default class VerticalLine extends BasePlugin {
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
-        z('line', {
+        z('line.vertical-line' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
           x1: position,
           y1: 0,
           x2: position,

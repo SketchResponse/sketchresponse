@@ -29,9 +29,12 @@ export default class LineSegment extends BasePlugin {
         alt: 'Line segment tool'
       };
     }
-
     super(params, app);
-
+    // Message listeners
+    this.app.__messageBus.on('addLineSegment', (id, index) => {this.addLineSegment(id, index)});
+    this.app.__messageBus.on('addLineSegmentPoint', (id, index) => {this.addLineSegmentPoint(id, index)});
+    this.app.__messageBus.on('deleteLineSegments', () => {this.deleteLineSegments()});
+    this.app.__messageBus.on('deleteLineSegmentPoints', () => {this.deleteLineSegmentPoints()});
     this.hConstraint = false;
     this.vConstraint = false;
     this.rConstraint = false;
@@ -47,6 +50,7 @@ export default class LineSegment extends BasePlugin {
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
     this.wasDragged = false;
     this.firstPoint = true;
+    this.delIndices1 = [];
   }
 
   getGradeable() {
@@ -55,6 +59,40 @@ export default class LineSegment extends BasePlugin {
         spline: spline.map(point => [point.x, point.y])
       };
     });
+  }
+
+  addLineSegment(id, index) {
+    if (this.id == id) {
+      this.delIndices.push(index);
+    }
+  }
+
+  addLineSegmentPoint(id, index) {
+    if (this.id == id) {
+      this.delIndices1.push(index);
+    }
+  }
+
+  deleteLineSegments() {
+    if (this.delIndices.length != 0) {
+      this.delIndices.sort();
+      for (let i = this.delIndices.length -1; i >= 0; i--) {
+        this.state.splice(this.delIndices[i], 2);
+      }
+      this.delIndices.length = 0;
+      this.render();
+    }
+  }
+
+  deleteLineSegmentPoints() {
+    if (this.delIndices1.length != 0) {
+      this.delIndices1.sort();
+      for (let i = this.delIndices1.length -1; i >= 0; i--) {
+        this.state.splice(this.delIndices1[i], 1);
+      }
+      this.delIndices1.length = 0;
+      this.render();
+    }
   }
 
   // This will be called when clicking on the SVG canvas after having
@@ -229,6 +267,10 @@ export default class LineSegment extends BasePlugin {
     return (ptIndex == this.state.length - 1) && (ptIndex % 2 == 0) ? '' : 'opacity: 0';
   }
 
+  pointClass(ptIndex) {
+    return (ptIndex == this.state.length - 1) && (ptIndex % 2 == 0) ? '.line-segment-point' + '.plugin-id-' + this.id : '';
+  }
+
   pointRadius(ptIndex) {
     return (ptIndex == this.state.length - 1) && (ptIndex % 2 == 0) ? 4 : 8;
   }
@@ -242,7 +284,7 @@ export default class LineSegment extends BasePlugin {
       // Draw visible line, under invisible line and endpoints
       z.each(this.state, (pt, ptIndex) =>
         z.if(ptIndex % 2 == 0 && ptIndex < this.state.length - 1, () =>
-          z('line.visible-' + ptIndex, {
+          z('line.visible-' + ptIndex + '.line-segment' + '.plugin-id-' + this.id, {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
             x2: this.state[ptIndex+1].x,
@@ -297,7 +339,7 @@ export default class LineSegment extends BasePlugin {
       ),
       // Draw invisible and selectable line endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z('circle.invisible-' + (ptIndex % 2 == 0 ? ptIndex : (ptIndex - 1).toString()), {
+        z('circle.invisible-' + (ptIndex % 2 == 0 ? ptIndex : (ptIndex - 1).toString()) + this.pointClass(ptIndex), {
           cx: this.state[ptIndex].x,
           cy: this.state[ptIndex].y,
           r: this.pointRadius(ptIndex),

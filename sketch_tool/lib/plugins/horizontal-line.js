@@ -12,6 +12,9 @@ export default class HorizontalLine extends BasePlugin {
       alt: 'Horizontal line tool'
     };
     super(params, app);
+    // Message listeners
+    this.app.__messageBus.on('addHorizontalLine', (id, index) => {this.addHorizontalLine(id, index)});
+    this.app.__messageBus.on('deleteHorizontalLines', () => {this.deleteHorizontalLines()});
   }
 
   getGradeable() {
@@ -29,6 +32,23 @@ export default class HorizontalLine extends BasePlugin {
     });
   }
 
+  addHorizontalLine(id, index) {
+    if (this.id == id) {
+      this.delIndices.push(index);
+    }
+  }
+
+  deleteHorizontalLines() {
+    if (this.delIndices.length != 0) {
+      this.delIndices.sort();
+      for (let i = this.delIndices.length -1; i >= 0; i--) {
+        this.state.splice(this.delIndices[i], 1);
+      }
+      this.delIndices.length = 0;
+      this.render();
+    }
+  }
+
   // This will be called when clicking on the SVG canvas after having
   // selected the horizontal line shape
   initDraw(event) {
@@ -41,7 +61,7 @@ export default class HorizontalLine extends BasePlugin {
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
-        z('line', {
+        z('line.horizontal-line' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
           x1: 0,
           y1: position,
           x2: this.params.width,
