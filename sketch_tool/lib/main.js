@@ -155,6 +155,16 @@ export default class SketchInput {
     });
     this.app.registerToolbarItem({
       type: 'button',
+      id: 'delete',
+      label: 'Delete',
+      icon: {
+        src: './lib/delete.svg',
+        alt: 'Delete',
+      },
+      action: () => this.messageBus.emit('deleteSelected'),
+    });
+    this.app.registerToolbarItem({
+      type: 'button',
       id: 'undo',
       label: 'Undo',
       icon: {
@@ -192,7 +202,7 @@ export default class SketchInput {
       if (event.touches.length == 0) this.app.svg.setAttribute('touch-action', 'none');
     }, true);
 
-
+    this.messageBus.on('deleteFinished', () => {this.app.addUndoPoint();});
     //////////// TEMPORARY TEST CODE FOR ELEMENT MANAGER //////////////
 
     // {

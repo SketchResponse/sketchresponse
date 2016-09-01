@@ -12,6 +12,9 @@ export default class Point extends BasePlugin {
       alt: 'Point tool'
     };
     super(params, app);
+    // Message listeners
+    this.app.__messageBus.on('addPoint', (id, index) => {this.addPoint(id, index)});
+    this.app.__messageBus.on('deletePoints', () => {this.deletePoints()});
   }
 
   getGradeable() {
@@ -20,6 +23,23 @@ export default class Point extends BasePlugin {
         point: [point.x, point.y]
       };
     });
+  }
+
+  addPoint(id, index) {
+    if (this.id == id) {
+      this.delIndices.push(index);
+    }
+  }
+
+  deletePoints() {
+    if (this.delIndices.length != 0) {
+      this.delIndices.sort();
+      for (let i = this.delIndices.length -1; i >= 0; i--) {
+        this.state.splice(this.delIndices[i], 1);
+      }
+      this.delIndices.length = 0;
+      this.render();
+    }
   }
 
   // This will be called when clicking on the SVG canvas after having
@@ -37,7 +57,7 @@ export default class Point extends BasePlugin {
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
-        z('circle', {
+        z('circle.point' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
           cx: position.x,
           cy: position.y,
           r: this.params.size / 2,

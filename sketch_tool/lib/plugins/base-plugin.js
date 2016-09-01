@@ -16,8 +16,11 @@ export default class BasePlugin {
     app.svg.appendChild(this.el);
 
     this.state = [];
+    this.delIndices = [];
 
     this.bindEventHandlers();
+
+    this.id = params.id;
 
     app.registerState({
       id: params.id,

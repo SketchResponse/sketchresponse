@@ -29,6 +29,8 @@ export default class SelectionManager {
     messageBus.on('enableSelectMode', () => {this.setSelectMode(true);});
     messageBus.on('disableSelectMode', () => {this.setSelectMode(false);});
     messageBus.on('deselectAll', () => {this.deselectAll()});
+    messageBus.on('deleteSelected', () => {this.deleteSelected()});
+    this.messageBus = messageBus;
   }
 
   setSelectMode(selectMode) {
@@ -52,4 +54,69 @@ export default class SelectionManager {
 
   // Expensive; call circumspectly
   deselectAll() { this.getSelected().forEach(element => this.deselect(element)); }
+
+  deleteSelected() {
+    let elWasDeleted = false;
+    this.getSelected().forEach((element) => {
+      let elementClasses = element.getAttribute('class').split(' ');
+      if (elementClasses.indexOf('point') != -1) {
+        this.messageBus.emit(
+          'addPoint',
+          elementClasses[1].substring(10),
+          parseInt(elementClasses[2].substring(12))
+        );
+        elWasDeleted = true;
+      }
+      else if (elementClasses.indexOf('horizontal-line') != -1) {
+        this.messageBus.emit(
+          'addHorizontalLine',
+          elementClasses[1].substring(10),
+          parseInt(elementClasses[2].substring(12))
+        );
+        elWasDeleted = true;
+      }
+      else if (elementClasses.indexOf('vertical-line') != -1) {
+        this.messageBus.emit(
+          'addVerticalLine',
+          elementClasses[1].substring(10),
+          parseInt(elementClasses[2].substring(12))
+        );
+        elWasDeleted = true;
+      }
+      else if (elementClasses.indexOf('line-segment') != -1) {
+        this.messageBus.emit(
+          'addLineSegment',
+          elementClasses[2].substring(10),
+          parseInt(elementClasses[0].substring(8))
+        );
+        elWasDeleted = true;
+      }
+      else if (elementClasses.indexOf('line-segment-point') != -1) {
+        this.messageBus.emit(
+          'addLineSegmentPoint',
+          elementClasses[2].substring(10),
+          parseInt(elementClasses[0].substring(10))
+        );
+        elWasDeleted = true;
+      }
+      else if (elementClasses.indexOf('freeform') != -1) {
+        this.messageBus.emit(
+          'addFreeform',
+          elementClasses[2].substring(10),
+          parseInt(elementClasses[0].substring(8))
+        );
+        elWasDeleted = true;
+      }
+    });
+    this.messageBus.emit('deletePoints');
+    this.messageBus.emit('deleteHorizontalLines');
+    this.messageBus.emit('deleteVerticalLines');
+    this.messageBus.emit('deleteLineSegments');
+    this.messageBus.emit('deleteLineSegmentPoints');
+    this.messageBus.emit('deleteFreeforms');
+    this.deselectAll();
+    if (elWasDeleted) {
+      this.messageBus.emit('deleteFinished');
+    }
+  }
 }

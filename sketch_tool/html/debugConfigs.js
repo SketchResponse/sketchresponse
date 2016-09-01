@@ -70,14 +70,6 @@ function loadConfig(configId) {
         },
         {
           name: 'line-segment',
-          id: 'vls',
-          label: 'Vertical segment',
-          color: 'dimgray',
-          dashStyle: 'solid',
-          directionConstraint: 'vertical'
-        },
-        {
-          name: 'line-segment',
           id: 'ar',
           label: 'Arrow',
           color: 'green',

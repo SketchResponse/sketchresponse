@@ -21,8 +21,10 @@ export default class Freeform extends BasePlugin {
       src: './plugins/freeform/GOOGLE_ic_create_24px.svg',
       alt: 'Freeform tool'
     };
-
     super(params, app);
+    // Message listeners
+    this.app.__messageBus.on('addFreeform', (id, index) => {this.addFreeform(id, index)});
+    this.app.__messageBus.on('deleteFreeforms', (id, index) => {this.deleteFreeforms(id, index)});
 
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
     this.firstPoint = true;
@@ -35,6 +37,23 @@ export default class Freeform extends BasePlugin {
         spline: spline.map(point => [point.x, point.y])
       };
     });
+  }
+
+  addFreeform(id, index) {
+    if (this.id == id) {
+      this.delIndices.push(index);
+    }
+  }
+
+  deleteFreeforms() {
+    if (this.delIndices.length != 0) {
+      this.delIndices.sort();
+      for (let i = this.delIndices.length -1; i >= 0; i--) {
+        this.state.splice(this.delIndices[i], 1);
+      }
+      this.delIndices.length = 0;
+      this.render();
+    }
   }
 
   // This will be called when clicking on the SVG canvas after having
@@ -123,7 +142,7 @@ export default class Freeform extends BasePlugin {
     z.render(this.el,
       z.each(this.state, (spline, splineIndex) =>
         // Draw visible spline under invisible spline
-        z('path.visible-' + splineIndex, {
+        z('path.visible-' + splineIndex + '.freeform' + '.plugin-id-' + this.id, {
           d: cubicSplinePathData(spline),
           style: `stroke: ${this.params.color}; stroke-width: 3px; fill: none;`,
         })
