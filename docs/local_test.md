@@ -16,7 +16,7 @@ $ pip install -r requirements.txt
 
 Before you can run the local server, you need to build a local copy of the sketch tool. If you
 have already done this and you have not modified the sketch tool in the interim you can skip
-this step. Otherwise, follow the instructions [here](sketch_tool_usage.md#build) for details on building the sketch tool distribution.
+this step. Otherwise, follow the instructions [here](sketch_tool_dev_usage.md#build) for details on building the sketch tool distribution.
 
 ### Start the grader local server
 
