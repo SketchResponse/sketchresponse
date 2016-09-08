@@ -193,7 +193,7 @@ class PolarTransform():
                             inc += 1
                         else:
                             dec += 1
-                print 'reorder: ' + str(inc - dec)
+                #print 'reorder: ' + str(inc - dec)
                 if dec > inc:
                     ts.reverse()
                 reordered.append(ts)
