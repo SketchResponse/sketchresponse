@@ -70,16 +70,16 @@ export default class SelectionManager {
       else if (elementClasses.indexOf('horizontal-line') != -1) {
         this.messageBus.emit(
           'addHorizontalLine',
-          elementClasses[1].substring(10),
-          parseInt(elementClasses[2].substring(12))
+          elementClasses[2].substring(10),
+          parseInt(elementClasses[0].substring(8))
         );
         elWasDeleted = true;
       }
       else if (elementClasses.indexOf('vertical-line') != -1) {
         this.messageBus.emit(
           'addVerticalLine',
-          elementClasses[1].substring(10),
-          parseInt(elementClasses[2].substring(12))
+          elementClasses[2].substring(10),
+          parseInt(elementClasses[0].substring(8))
         );
         elWasDeleted = true;
       }
