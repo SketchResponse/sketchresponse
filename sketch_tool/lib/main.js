@@ -49,13 +49,13 @@ export default class SketchInput {
       <div id="si-help-legal" data-visible="false">
         <div role="dialog" class="si-dialog">
           <header>
-            <h1>SketchInput</h1>
+            <h1>SketchResponse</h1>
             <p class="si-copyright">
-              Copyright 2015 Massachusetts Institute of Technology. All rights Reserved.
+              Copyright 2015-2016 Massachusetts Institute of Technology. All rights Reserved.
             </p>
           </header>
           <p>
-            SketchInput is an extensible graphical input and assessment tool for online learning platforms.
+            SketchResponse is an extensible graphical input and assessment tool for online learning platforms.
             It is very much a work in progress; we welcome your feedback and ideas at
             <a href="mailto:sketchinput-feedback@mit.edu">sketchinput-feedback@mit.edu</a>.
             The source code for this project will likely be available under an open-source license in the near future.
