@@ -60,8 +60,9 @@ export default class VerticalLine extends BasePlugin {
 
   render() {
     z.render(this.el,
+      // Draw visible line, under invisible line
       z.each(this.state, (position, positionIndex) =>
-        z('line.vertical-line' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
+        z('line.visible-' + positionIndex + '.vertical-line' + '.plugin-id-' + this.id, {
           x1: position,
           y1: 0,
           x2: position,
@@ -70,6 +71,21 @@ export default class VerticalLine extends BasePlugin {
             stroke: ${this.params.color};
             stroke-width: 2px;
             stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
+          `
+        })
+      ),
+      // Draw invisible and selectable line
+      z.each(this.state, (position, positionIndex) =>
+        z('line.invisible-' + positionIndex, {
+          x1: position,
+          y1: 0,
+          x2: position,
+          y2: this.params.height,
+          style: `
+            stroke: ${this.params.color};
+            opacity: 0;
+            stroke-width: 10px;
+            stroke-dasharray: solid;
           `,
           onmount: el => {
             this.app.registerElement({

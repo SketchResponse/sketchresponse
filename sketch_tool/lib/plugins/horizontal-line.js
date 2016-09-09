@@ -60,8 +60,9 @@ export default class HorizontalLine extends BasePlugin {
 
   render() {
     z.render(this.el,
+      // Draw visible line, under invisible line
       z.each(this.state, (position, positionIndex) =>
-        z('line.horizontal-line' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
+        z('line.visible-' + positionIndex + '.horizontal-line' + '.plugin-id-' + this.id, {
           x1: 0,
           y1: position,
           x2: this.params.width,
@@ -70,6 +71,21 @@ export default class HorizontalLine extends BasePlugin {
             stroke: ${this.params.color};
             stroke-width: 2px;
             stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
+          `
+        })
+      ),
+      // Draw invisible and selectable line
+      z.each(this.state, (position, positionIndex) =>
+        z('line.invisible-' + positionIndex, {
+          x1: 0,
+          y1: position,
+          x2: this.params.width,
+          y2: position,
+          style: `
+            stroke: ${this.params.color};
+            opacity: 0;
+            stroke-width: 10px;
+            stroke-dasharray: solid;
           `,
           onmount: el => {
             this.app.registerElement({
