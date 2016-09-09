@@ -34,11 +34,15 @@ function loadConfig(configId) {
       height: 420,
       xrange: [-4.5, 4.5],
       yrange: [-2.5, 2.5],
+      rrange: 2,
       xscale: 'linear',
       yscale: 'linear',
       plugins: [
         {
-          name: 'axes'
+          name: 'axes',
+          type: 'polar',
+          rmajor: 0.5,
+          thetamajor: 30
         },
         {
           name: 'point',

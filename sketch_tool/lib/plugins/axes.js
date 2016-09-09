@@ -5,6 +5,10 @@ export const VERSION = '0.1';
 // TODO: move some of these into 'params.defaults'?
 const ROUNDING_PRESCALER = 100;  // e.g., Math.round(value * ROUNDING_PRESCALER) / ROUNDING_PRESCALER
 
+const TWO_PI = 2 * Math.PI;
+const ONE_EIGHTY_DIV_PI = 180 / Math.PI;
+const PI_DIV_ONE_EIGHTY = Math.PI / 180;
+
 const DEFAULT_PARAMS = {
   xmajor: 1,
   ymajor: 1,
@@ -70,12 +74,29 @@ export default class Axes {
 
     this.params = params;
 
+    this.type = (params.type == 'undefined') ? 'cartesian' : params.type;
+
+    if (this.type !== 'cartesian' && this.type !== 'polar') {
+      throw new Error('Only cartesian or polar axes are supported.');
+    }
+
     this.el = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     app.svg.appendChild(this.el);
 
     this.x = new LinearScale([0, params.width], params.xrange);
     this.y = new LinearScale([params.height, 0], params.yrange);
 
+    if (this.type == 'cartesian') {
+      this.initCartesian(params);
+    }
+    else {
+      this.initPolar(params);
+    }
+
+    this.render();
+  }
+
+  initCartesian(params) {
     this.zeroLabel = params.zerolabel;
 
     const approxMajorPixelSpacing = params.width / DEFAULTS.targetXMajorTicks;
@@ -185,88 +206,175 @@ export default class Axes {
     }
 
     this.yMinor = this.yMinor.filter(val => !(this.yMajor.indexOf(val) >= 0));  // Exclude values in xMajor
+  }
 
+  initPolar(params) {
+    this.rRange = (params.rrange !== undefined) ? params.rrange : 10;
+    this.rMajor = (params.rmajor !== undefined) ? params.rmajor : 1;
+    this.thetaMajor = (params.thetamajor !== undefined) ? params.thetamajor : 30;
+    this.thetaMajor = degToRad(this.thetaMajor);
+    this.circles = this.generateCircles(this.rMajor, this.rRange);
+    this.rays = this.generateRays(this.thetaMajor);
+  }
 
-    this.render();
+  generateCirclePoints(r) {
+    let ang, x, y, i, ret = [];
+
+    for (ang = 0; ang <= 360; ang++) {
+      x = r * Math.cos(degToRad(ang));
+      y = r * Math.sin(degToRad(ang));
+      ret.push({
+        x: this.x.pixelVal(x),
+        y: this.y.pixelVal(y)
+      });
+    }
+
+    return ret;
+  }
+
+  generateCircles(rSpacing, rMax) {
+    rSpacing = Math.abs(rSpacing);  // Being defensive
+
+    let circles = [], r = 0;
+
+    while (r < rMax) {
+      r += rSpacing;
+      circles.push(this.generateCirclePoints(r));
+    }
+
+    return circles;
+  }
+
+  generateRays(angleSpacing) {
+    angleSpacing = Math.abs(angleSpacing);  // Being defensive
+
+    let rays = [], angle = 0, radius = this.rRange + 0.25;
+
+    while (angle < TWO_PI) {
+      angle += angleSpacing;
+      rays.push({
+        x1: this.x.pixelVal(0),
+        y1: this.y.pixelVal(0),
+        x2: this.x.pixelVal(radius*Math.cos(angle)),
+        y2: this.y.pixelVal(radius*Math.sin(angle))
+      });
+    }
+
+    return rays;
   }
 
   render() {
-    z.render(this.el,
-      z.each(this.xMinor, xval =>
-        z('line.xminor', {
-          x1: this.x.pixelVal(xval),
-          x2: this.x.pixelVal(xval),
-          y1: this.y.pixelMin,
-          y2: this.y.pixelMax,
-          style: 'stroke: #f6f6f6; stroke-width: 1px; shape-rendering: crispEdges;',
-        })
-      ),
-      z.each(this.yMinor, yval =>
-        z('line.yminor', {
-          x1: this.x.pixelMin,
-          x2: this.x.pixelMax,
-          y1: this.y.pixelVal(yval),
-          y2: this.y.pixelVal(yval),
-          style: 'stroke: #f6f6f6; stroke-width: 1px; shape-rendering: crispEdges;',
-        })
-      ),
-      z.each(this.xMajor, (xval, idx) =>
-        z('g',
-          z('line.xmajor', {
+    if (this.type == 'cartesian') {
+      z.render(this.el,
+        z.each(this.xMinor, xval =>
+          z('line.xminor', {
             x1: this.x.pixelVal(xval),
             x2: this.x.pixelVal(xval),
             y1: this.y.pixelMin,
             y2: this.y.pixelMax,
-            style: 'stroke: #f0f0f0; stroke-width: 2px; shape-rendering: crispEdges;',
-          }),
-          z('text.ticLabel', {
-            'text-anchor': 'middle',
-            x: this.x.pixelVal(xval) + 0,
-            y: this.y.pixelVal(0) + 15,
-            style: `fill: #333; font-size: 14px;`,
-          }, String(this.xLabels[idx]))
-        )
-      ),
-      z.each(this.yMajor, (yval, idx) =>
-        z('g',
-          z('line.ymajor', {
+            style: 'stroke: #f6f6f6; stroke-width: 1px; shape-rendering: crispEdges;',
+          })
+        ),
+        z.each(this.yMinor, yval =>
+          z('line.yminor', {
             x1: this.x.pixelMin,
             x2: this.x.pixelMax,
             y1: this.y.pixelVal(yval),
             y2: this.y.pixelVal(yval),
-            style: 'stroke: #f0f0f0; stroke-width: 2px; shape-rendering: crispEdges;',
-          }),
+            style: 'stroke: #f6f6f6; stroke-width: 1px; shape-rendering: crispEdges;',
+          })
+        ),
+        z.each(this.xMajor, (xval, idx) =>
+          z('g',
+            z('line.xmajor', {
+              x1: this.x.pixelVal(xval),
+              x2: this.x.pixelVal(xval),
+              y1: this.y.pixelMin,
+              y2: this.y.pixelMax,
+              style: 'stroke: #f0f0f0; stroke-width: 2px; shape-rendering: crispEdges;',
+            }),
+            z('text.ticLabel', {
+              'text-anchor': 'middle',
+              x: this.x.pixelVal(xval) + 0,
+              y: this.y.pixelVal(0) + 15,
+              style: `fill: #333; font-size: 14px;`,
+            }, String(this.xLabels[idx]))
+          )
+        ),
+        z.each(this.yMajor, (yval, idx) =>
+          z('g',
+            z('line.ymajor', {
+              x1: this.x.pixelMin,
+              x2: this.x.pixelMax,
+              y1: this.y.pixelVal(yval),
+              y2: this.y.pixelVal(yval),
+              style: 'stroke: #f0f0f0; stroke-width: 2px; shape-rendering: crispEdges;',
+            }),
+            z('text.ticLabel', {
+              'text-anchor': 'end',
+              x: this.x.pixelVal(0) - 4,
+              y: this.y.pixelVal(yval) + 5,
+              style: `fill: #333; font-size: 14px;`,
+            }, String(this.yLabels[idx]))
+          )
+        ),
+        z.if(this.zeroLabel !== undefined && this.zeroLabel !== null, () =>
           z('text.ticLabel', {
             'text-anchor': 'end',
             x: this.x.pixelVal(0) - 4,
-            y: this.y.pixelVal(yval) + 5,
+            y: this.y.pixelVal(0) + 15,
             style: `fill: #333; font-size: 14px;`,
-          }, String(this.yLabels[idx]))
-        )
-      ),
-      z.if(this.zeroLabel !== undefined && this.zeroLabel !== null, () =>
-        z('text.ticLabel', {
-          'text-anchor': 'end',
-          x: this.x.pixelVal(0) - 4,
-          y: this.y.pixelVal(0) + 15,
-          style: `fill: #333; font-size: 14px;`,
-        }, String(this.zeroLabel))
-      ),
-      z('line.xaxis', {
-        x1: this.x.pixelMin,
-        x2: this.x.pixelMax,
-        y1: this.y.pixelVal(0),
-        y2: this.y.pixelVal(0),
-        style: 'stroke: #333; stroke-width: 1px; shape-rendering: crispEdges;',
-      }),
-      z('line.yaxis', {
-        x1: this.x.pixelVal(0),
-        x2: this.x.pixelVal(0),
-        y1: this.y.pixelMin,
-        y2: this.y.pixelMax,
-        style: 'stroke: #333; stroke-width: 1px; shape-rendering: crispEdges;',
-      })
-    );
+          }, String(this.zeroLabel))
+        ),
+        z('line.xaxis', {
+          x1: this.x.pixelMin,
+          x2: this.x.pixelMax,
+          y1: this.y.pixelVal(0),
+          y2: this.y.pixelVal(0),
+          style: 'stroke: #333; stroke-width: 1px; shape-rendering: crispEdges;',
+        }),
+        z('line.yaxis', {
+          x1: this.x.pixelVal(0),
+          x2: this.x.pixelVal(0),
+          y1: this.y.pixelMin,
+          y2: this.y.pixelMax,
+          style: 'stroke: #333; stroke-width: 1px; shape-rendering: crispEdges;',
+        })
+      );
+    }
+    else {
+      z.render(this.el,
+        z.each(this.circles, circle =>
+          z('polyline', {
+            points: polylineData(circle),
+            style: `stroke: #f0f0f0; stroke-width: 2px; fill: none; shape-rendering: crispEdges;`,
+          })
+        ),
+        z.each(this.rays, ray =>
+          z('line', {
+            x1: ray.x1,
+            y1: ray.y1,
+            x2: ray.x2,
+            y2: ray.y2,
+            style: `stroke: #f0f0f0; stroke-width: 2px; fill: none; shape-rendering: crispEdges;`,
+          })
+        ),
+        z('line.xaxis', {
+          x1: this.x.pixelMin,
+          x2: this.x.pixelMax,
+          y1: this.y.pixelVal(0),
+          y2: this.y.pixelVal(0),
+          style: 'stroke: #333; stroke-width: 1px; shape-rendering: crispEdges;',
+        }),
+        z('line.yaxis', {
+          x1: this.x.pixelVal(0),
+          x2: this.x.pixelVal(0),
+          y1: this.y.pixelMin,
+          y2: this.y.pixelMax,
+          style: 'stroke: #333; stroke-width: 1px; shape-rendering: crispEdges;',
+        })
+      );
+    }
   }
 }
 
@@ -289,8 +397,16 @@ class LinearScale {
   }
 }
 
-function clamp(value, min, max) {
-  if (value < min) return min;
-  if (value > max) return max;
-  return value;
+function polylineData(points) {
+  if (points.length < 2) return '';
+  const coords = points.map(p => `${p.x},${p.y}`);
+  return coords.join(' ');
+}
+
+function degToRad(angle) {
+  return PI_DIV_ONE_EIGHTY * angle;
+}
+
+function radToDeg(angle) {
+  return ONE_EIGHTY_DIV_PI * angle;
 }
