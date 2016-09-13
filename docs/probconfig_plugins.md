@@ -15,6 +15,7 @@ is used.
 * [Background](#background)
 * [Freeform](#freeform)
 * [Point](#point)
+* [Line Segment](#line-segment)
 * [Vertical Asymptote](#vert-line)
 * [Horizontal Asymptote](#horiz-line)
 * [Image](#image)
@@ -22,18 +23,32 @@ is used.
 <div id=axes></div>
 ## Axes
 
-Adds horizontal and vertical axes with major and minor ticks and their associated gridlines.
+Adds horizontal and vertical axes, and a grid system. It has one parameter that must be defined:
 
-* `'name': 'axes'` - the name key *must* have the value 'axes'
-* `'xmajor': <number>(default: 1)` - the major tick spacing for the x axis
-* `'ymajor': <number>(default: 1)` - the major tick spacing for the y axis
-* `'xminor': <number>(default: 0.25)` - the minor tick spacing for the x axis
-* `'yminor': <number>(default: 0.25)` - the minor tick spacing for the y axis
+* `'name': 'axes'` - the name key *must* have the value 'axes'.
+
+It also has optional parameters:
+
+* `'type': <a type string>(default: 'cartesian')` - the type key should be a string describing the type of the grid system. Possible values: 'cartesian', 'polar'.
+
+If 'cartesian' is chosen, the following parameters will take effect:
+
+* `'xmajor': <number>(default: none)` - the major tick spacing for the x axis
+* `'ymajor': <number>(default: none)` - the major tick spacing for the y axis
+* `'xminor': <number>(default: none)` - the minor tick spacing for the x axis
+* `'yminor': <number>(default: none)` - the minor tick spacing for the y axis
+
+Note: if some (or all) of the above are missing, an automatic, best-fitting value will be generated as a default.
+
+If 'polar' is chosen, the following parameters will take effect:
+
+* `'rmajor': <number>(default: 1)` - the distance between the circles of the polar grid
+* `'thetamajor': <number>(default: 30)` - the angle (in degrees) between the rays of the polar grid
 
 E.g.
 
 ```python
-{'name': 'axes'}
+{'name': 'axes', 'type': 'polar', 'rmajor': '5', thetamajor: '10'}
 ```
 
 <div id=background></div>
@@ -96,6 +111,50 @@ E.g.
 {'name': 'point', 'id': 'cp', 'label': 'Extremum', 'color': 'black', 'size': 15}
 ```
 
+<div id=line-segment></div>
+## Line Segment
+
+The Line Segment plugin adds a button to the tool to draw line segments on the axes. Optionally these can have a customizable arrow head and can be constrained in their direction (horizontally or vertically) and their length.
+The plugin behaves as follows:
+
+* Pointer press and then drag will create a dynamic line segment from initial press location to current drag location. On drag release, the line segment will be drawn from initial press to drag release.
+
+* Pointer click will create a point. Two behaviors are then possible:
+
+  * A subsequent pointer click will create a line segment from first pointer click to second pointer click.
+
+  * A subsequent pointer press and drag will create a dynamic line segment from initial click location to current drag location. On drag release, the line segment will be drawn from initial click to drag release.
+
+It has five parameters that must be defined:
+
+* `'name': 'line-segment'` - the name key *must* have the value 'line-segment'.
+* `'id': <unique identifier string>` - the id key *must* have a *unique* value.
+This value is used as the key for the data created by this plugin in the JSON
+string returned to the grader function.
+* `'label': <descriptive string>` - the label key should be given a descriptive string. This string will be used to label the selection button in the javascript
+front-end tool.
+* `'color': <a color string>` - the color key should be give a color string that
+javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
+* `'dashStyle': <line dash string>(default: 'solid')` - the dashStyle key should have a string
+description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'.
+
+It also has optional parameters:
+
+* `'directionConstraint': <a constraint string>` - the directionConstraint key should be a string describing the constraint. Possible values: 'horizontal', 'vertical'.
+
+* `'lengthConstraint': <int>` - the lengthConstraint key must be given an integer value. It sets the
+maximum pixel length of the line segment drawn by the plugin.
+
+* `'arrowHead': <object>` - the arrowHead key must be an object containing the following keys:
+  * `'length': <int>` - the length key must be given an integer value. It sets the length of the arrow head of the line segment drawn by the plugin.
+  * `'base': <int>` - the base key must be given an integer value. It sets the base width of the arrow head of the line segment drawn by the plugin.
+
+E.g.
+
+```python
+{'name': 'line-segment', 'id': 'ls', 'label': 'Line segment', 'color': 'gray', 'dashStyle': 'solid', 'directionConstraint': 'horizontal', 'lengthContraint': 50, 'arrowHead': {'length': 10, 'base': 7}
+```
+
 <div id=vert-line></div>
 ## Vertical Asymptote
 
@@ -112,6 +171,8 @@ front-end tool.
 javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
 * `'dashStyle': <line dash string>(default: 'solid')` - the dashStyle key should have a string
 description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'.
+
+E.g.
 
 ```python
 {'name': 'vertical-line', 'id': 'va', 'label': 'Vertical asymptote', 'color': 'gray', 'dashStyle': 'dashdotted'}
@@ -135,6 +196,8 @@ javascript recognizes. A listing of color names can be found [here](http://www.w
 * `'dashStyle': <line dash string>(default: 'solid')` - the dashStyle key should have a string
 description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'.
 
+E.g.
+
 ```python
 {'name': 'horizontal-line', 'id': 'ha', 'label': 'Horizontal asymptote', 'color': 'gray', 'dashStyle': 'dashdotted'}
 ```
@@ -149,6 +212,8 @@ Adds an image to the drawing canvas.
 * `'align': <alignment string>(default: '')` - possible values, 'top', 'left', 'bottom', 'right', ''.
 * `'offset': [<number>,<number>]` - array of x, y offsets (default value[0, 0]).
 * `'src': <path to image file>` - the path to the image file to insert.
+
+E.g.
 
 ```python
 {'name': 'image', 'align': 'bottom', 'src': '/static/image.png'}
