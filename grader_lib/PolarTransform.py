@@ -33,43 +33,44 @@ class PolarTransform():
         # transform any spline objects into r, theta space
         transSplines = self.transformSplines()
 
-        # segment the curves with multiple humps and reorder them so theta is
-        # always increasing
-        transSplines = self.segmentSplines(transSplines)
+        if len(transSplines) > 0:
+            # segment the curves with multiple humps and reorder them so theta is
+            # always increasing
+            transSplines = self.segmentSplines(transSplines)
 
-        # need to filter near origin before reordering splines because samples
-        # can cross near the origin
-        transSplines = self.filterNearOrigin(transSplines, rmax)
+            # need to filter near origin before reordering splines because samples
+            # can cross near the origin
+            transSplines = self.filterNearOrigin(transSplines, rmax)
 
-        # split curves that wrap the 0/2pi theta boundary
-        transSplines = self.splitWrappingCurves(transSplines)
+            # split curves that wrap the 0/2pi theta boundary
+            transSplines = self.splitWrappingCurves(transSplines)
 
-        # sometimes it ends up with empty arrays after filtering, remove them
-        transSplines = self.filterEmptySplines(transSplines)
+            # sometimes it ends up with empty arrays after filtering, remove them
+            transSplines = self.filterEmptySplines(transSplines)
 
-        # now reorder the splines so the data is all in the right order for
-        # the remainder of the filtering tasks
-        transSplines = self.reorderSplines(transSplines)
+            # now reorder the splines so the data is all in the right order for
+            # the remainder of the filtering tasks
+            transSplines = self.reorderSplines(transSplines)
 
-#        import copy
-#        self.transformedSplines = copy.deepcopy(transSplines)
-        # filter the raw spline data, points near origin and nearly vertical
-        # lines need to be removed
-        transSplines = self.filterSplines(transSplines, rmax)
+            #        import copy
+            #        self.transformedSplines = copy.deepcopy(transSplines)
+            # filter the raw spline data, points near origin and nearly vertical
+            # lines need to be removed
+            transSplines = self.filterSplines(transSplines, rmax)
 
-        # remove curve overlapping regions
-        transSplines = self.removeCurveOverlaps(transSplines)
+            # remove curve overlapping regions
+            transSplines = self.removeCurveOverlaps(transSplines)
 
-        # sometimes it ends up with empty arrays after filtering, remove them
-        transSplines = self.filterEmptySplines(transSplines)
-        #        print transSplines
-        #        self.transformedSplines = transSplines
+            # sometimes it ends up with empty arrays after filtering, remove them
+            transSplines = self.filterEmptySplines(transSplines)
+            #        print transSplines
+            #        self.transformedSplines = transSplines
 
-        # refit raw filtered datapoints to a spline curve
-        transSplines = self.refitSplines(transSplines)
+            # refit raw filtered datapoints to a spline curve
+            transSplines = self.refitSplines(transSplines)
 
-        # copy the curves so the full range of curve data spans [-2pi, 2pi]
-        transSplines = self.duplicateCurvesToNeg2PI(transSplines)
+            # copy the curves so the full range of curve data spans [-2pi, 2pi]
+            transSplines = self.duplicateCurvesToNeg2PI(transSplines)
 
         #print transSplines
         #self.transformedSplines = copy.deepcopy(transSplines)
@@ -94,9 +95,14 @@ class PolarTransform():
     def transformPoints(self):
         points = self.g.points
         transPoints = []
+        width = self.f.params['width']
         for p in points:
-            tCoords = self.polar_transform([p.x, p.y])
-            transPoints.append(tCoords)
+            theta, r = self.polar_transform([p.x, p.y])
+
+            # add a point and a shifted point so the points are both in
+            # the positive and negative 0-2pi range
+            transPoints.append([theta, r])
+            transPoints.append([theta + width, r])
 
         return transPoints
 
