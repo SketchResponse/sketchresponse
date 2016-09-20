@@ -3,7 +3,7 @@ import { createInheritingObjectTree } from './util/inheriting-object-tree';
 import { disableDoubleTapZoom, preventClickDelay } from './util/workarounds';
 
 import { EventEmitter } from 'events';
-import Mousetrap from 'mousetrap';
+import KeyMaster from 'keymaster';
 
 import NotificationManager from './notification-manager';
 import GradeableManager from './gradeable-manager';
@@ -189,8 +189,29 @@ export default class SketchInput {
     );
 
     // Global keyboard shortcuts (TODO: move elsewhere?)
-    Mousetrap.bind('mod+z', event => { this.messageBus.emit('undo'); return false; });
-    Mousetrap.bind(['mod+y', 'mod+shift+z'], event => { this.messageBus.emit('redo'); return false; });
+    /*
+      Initially, MouseTrap was used here: https://www.npmjs.com/package/mousetrap
+      But its Apache version 2 license is incompatible except if were to be linked dynamically which
+      is not possible here.
+      We use KeyMaster instead and its MIT license:
+      https://www.npmjs.com/package/keymaster
+
+      NOTE:
+      MouseTrap uses KeyboardEvent.which:
+      https://github.com/ccampbell/mousetrap/blob/master/mousetrap.js
+
+      KeyMaster uses KeyboardEvent.keyCode:
+      https://github.com/madrobby/keymaster/blob/master/keymaster.js
+
+      that are deprecated (as KeyboardEvent.char and KeyboardEvent.charCode):
+      https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+
+      KeyboardEvent.key is recommended and a polyfill exists:
+      https://www.npmjs.com/package/keyboardevent-key-polyfill
+    */
+
+    KeyMaster('⌘+z, ctrl+z', event => { this.messageBus.emit('undo'); return false; });
+    KeyMaster('⌘+y, ctrl+y, ⌘+shift+z, ctrl+shift+z', event => { this.messageBus.emit('redo'); return false; });
     document.addEventListener('mouseenter', event => window.focus());  // So we get keyboard events. Rethink this?
 
     // Allow multitouch zoom on SVG element (TODO: move elsewhere?)
