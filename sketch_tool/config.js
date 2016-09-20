@@ -24,7 +24,7 @@ System.config({
     "fastclick": "npm:fastclick@1.0.6",
     "jquery": "github:components/jquery@2.1.4",
     "jsondiffpatch": "npm:jsondiffpatch@0.1.33",
-    "mousetrap": "npm:mousetrap@1.5.3",
+    "keymaster": "npm:keymaster@1.6.2",
     "pepjs": "github:jquery/pep@0.3.0",
     "simulant": "npm:simulant@0.1.5",
     "github:jspm/nodelibs-assert@0.1.0": {
