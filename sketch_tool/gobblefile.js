@@ -111,7 +111,7 @@ var staticAssets = gobble([
   gobble('html')
     .transform('replace', {
       css_path: 'main.css',
-      font_css_path: 'fonts/roboto.css',
+      font_css_path: 'fonts/noto.css',
       vendor_bundle_path: 'vendorBundle.js',
       config_or_app_bundle_path: (gobble.env() === 'production') ? 'appBundle.js' : 'config.js',
     }),
