@@ -27,8 +27,10 @@ function getBlobUrl(src, color) {
   svg.setAttribute('fill', color);
   // Convert colored svg to an image
   // http://www.timvasil.com/blog14/post/2014/02/06/How-to-convert-an-SVG-image-into-a-static-image-with-only-JavaScript.aspx
+  // Without the charset part or it will fail in Safari
+  // http://stackoverflow.com/questions/23114686/safari-image-onload-event-not-firing-with-blob-url
   svgData = new XMLSerializer().serializeToString(svg);
-  blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+  blob = new Blob([svgData], { type: "image/svg+xml" });
   // Return the blob's URL
   return (self.URL || self.webkitURL || self).createObjectURL(blob);
 }
