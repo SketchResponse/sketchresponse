@@ -133,6 +133,7 @@ export default class SketchInput {
       label: 'Select',
       icon: {
         src: './lib/select-icon.svg',
+        color: 'black',
         alt: 'Select',
       },
       activate: () => {
@@ -159,6 +160,7 @@ export default class SketchInput {
       label: 'Delete',
       icon: {
         src: './lib/delete-icon.svg',
+        color: 'black',
         alt: 'Delete',
       },
       action: () => this.messageBus.emit('deleteSelected'),
@@ -169,6 +171,7 @@ export default class SketchInput {
       label: 'Undo',
       icon: {
         src: './lib/undo-icon.svg',
+        color: 'black',
         alt: 'Undo',
       },
       action: () => this.messageBus.emit('undo'),
@@ -179,6 +182,7 @@ export default class SketchInput {
       label: 'Redo',
       icon: {
         src: './lib/redo-icon.svg',
+        color: 'black',
         alt: 'Redo',
       },
       action: () => this.messageBus.emit('redo'),
