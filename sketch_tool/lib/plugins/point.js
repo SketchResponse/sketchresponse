@@ -8,7 +8,7 @@ export default class Point extends BasePlugin {
   constructor(params, app) {
     // Add params that are specific to this plugin
     params.icon = {
-      src: './plugins/point/GOOGLE_ic_gps_fixed_24px.svg',
+      src: './plugins/point/point-icon.svg',
       alt: 'Point tool'
     };
     super(params, app);

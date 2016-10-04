@@ -8,7 +8,7 @@ export default class VerticalLine extends BasePlugin {
   constructor(params, app) {
     // Add params that are specific to this plugin
     params.icon = {
-      src: './plugins/vertical-line/icon.svg',
+      src: './plugins/vertical-line/vertical-line-icon.svg',
       alt: 'Vertical line tool'
     };
     super(params, app);

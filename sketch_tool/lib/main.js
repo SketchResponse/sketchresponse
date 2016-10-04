@@ -132,7 +132,7 @@ export default class SketchInput {
       id: 'select',
       label: 'Select',
       icon: {
-        src: './lib/select.svg',
+        src: './lib/select-icon.svg',
         alt: 'Select',
       },
       activate: () => {
@@ -158,7 +158,7 @@ export default class SketchInput {
       id: 'delete',
       label: 'Delete',
       icon: {
-        src: './lib/delete.svg',
+        src: './lib/delete-icon.svg',
         alt: 'Delete',
       },
       action: () => this.messageBus.emit('deleteSelected'),
@@ -168,7 +168,7 @@ export default class SketchInput {
       id: 'undo',
       label: 'Undo',
       icon: {
-        src: './lib/GOOGLE_ic_undo_24px.svg',
+        src: './lib/undo-icon.svg',
         alt: 'Undo',
       },
       action: () => this.messageBus.emit('undo'),
@@ -178,7 +178,7 @@ export default class SketchInput {
       id: 'redo',
       label: 'Redo',
       icon: {
-        src: './lib/GOOGLE_ic_redo_24px.svg',
+        src: './lib/redo-icon.svg',
         alt: 'Redo',
       },
       action: () => this.messageBus.emit('redo'),
