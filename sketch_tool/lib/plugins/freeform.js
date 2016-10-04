@@ -18,7 +18,7 @@ export default class Freeform extends BasePlugin {
     // Add params that are specific to this plugin
 
     params.icon = {
-      src: './plugins/freeform/GOOGLE_ic_create_24px.svg',
+      src: './plugins/freeform/freeform-icon.svg',
       alt: 'Freeform tool'
     };
     super(params, app);

@@ -8,7 +8,7 @@ export default class HorizontalLine extends BasePlugin {
   constructor(params, app) {
     // Add params that are specific to this plugin
     params.icon = {
-      src: './plugins/horizontal-line/icon.svg',
+      src: './plugins/horizontal-line/horizontal-line-icon.svg',
       alt: 'Horizontal line tool'
     };
     super(params, app);
