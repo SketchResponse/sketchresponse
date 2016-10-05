@@ -43,20 +43,20 @@
   },
   "jspm": {
     "dependencies": {
-      "classnames": "npm:classnames@^2.1.1",
-      "d3": "github:d3/d3@^3.5.5",
+      "classnames": "npm:classnames@^2.2.5",
+      "d3": "github:d3/d3@^3.5.17",
       "dom-shims": "npm:dom-shims@^0.1.4",
       "events": "github:jspm/nodelibs-events@^0.1.1",
       "fastclick": "npm:fastclick@^1.0.6",
-      "jquery": "github:components/jquery@^2.1.3",
-      "jsondiffpatch": "npm:jsondiffpatch@^0.1.33",
+      "jquery": "github:components/jquery@^2.2.4",
+      "jsondiffpatch": "npm:jsondiffpatch@^0.1.43",
       "keymaster": "npm:keymaster@^1.6.2",
       "pepjs": "github:jquery/pep@^0.3.0",
       "simulant": "npm:simulant@^0.1.5"
     },
     "devDependencies": {
-      "babel": "npm:babel-core@^5.8.3",
-      "babel-runtime": "npm:babel-runtime@^5.8.3",
+      "babel": "npm:babel-core@^5.8.38",
+      "babel-runtime": "npm:babel-runtime@^5.8.38",
       "core-js": "npm:core-js@^0.9.18"
     }
   }
