@@ -375,7 +375,7 @@ class PolarTransform():
             for theta, r in ps:
                 #print r
                 #print self.raxis.pixel_to_coord(r)
-                if not self.raxis.pixel_to_coord(r) < (max_value * 0.15):
+                if not self.raxis.pixel_to_coord(r) < (max_value * 0.35):
                     subfiltered.append([theta, r])
 
             filtered.append(subfiltered)

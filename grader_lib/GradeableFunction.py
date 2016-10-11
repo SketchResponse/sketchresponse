@@ -16,7 +16,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
 
         # transform from polar
         #if f.params['xscale'] == 'polar' and f.params['yscale'] == 'polar':
-        if f.params['coords'] == 'polar':
+        if 'coords' in f.params and f.params['coords'] == 'polar':
             from PolarTransform import PolarTransform
             self.pt = PolarTransform(gradeable, self)
             f = self.pt.getTransformedFunctionData()
