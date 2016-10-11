@@ -15,6 +15,7 @@ export default class HorizontalLine extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addHorizontalLine', (id, index) => {this.addHorizontalLine(id, index)});
     this.app.__messageBus.on('deleteHorizontalLines', () => {this.deleteHorizontalLines()});
+    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
   }
 
   getGradeable() {
@@ -52,10 +53,31 @@ export default class HorizontalLine extends BasePlugin {
   // This will be called when clicking on the SVG canvas after having
   // selected the horizontal line shape
   initDraw(event) {
+    // Add event listeners in capture phase
+    document.addEventListener('pointermove', this.drawMove, true);
+    document.addEventListener('pointerup', this.drawEnd, true);
+    document.addEventListener('pointercancel', this.drawEnd, true);
     this.currentPosition = event.clientY - this.params.top;
     this.state.push(this.currentPosition);
-    this.app.addUndoPoint();
     this.render();
+  }
+
+  drawMove(event) {
+    let y = event.clientY - this.params.top;
+    y = this.clampY(y);
+    this.state[this.state.length-1] = y;
+    this.render();
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  drawEnd(event) {
+    document.removeEventListener('pointermove', this.drawMove, true);
+    document.removeEventListener('pointerup', this.drawEnd, true);
+    document.removeEventListener('pointercancel', this.drawEnd, true);
+    this.app.addUndoPoint();
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   render() {
@@ -115,6 +137,30 @@ export default class HorizontalLine extends BasePlugin {
 
   inBoundsY(y) {
     return y >= this.bounds.ymin && y <= this.bounds.ymax;
+  }
+
+  clampX(x) {
+    if (x < this.bounds.xmin) {
+      return this.bounds.xmin;
+    }
+    else if (x > this.bounds.xmax) {
+      return this.bounds.xmax
+    }
+    else {
+      return x;
+    }
+  }
+
+  clampY(y) {
+    if (y < this.bounds.ymin) {
+      return this.bounds.ymin;
+    }
+    else if (y > this.bounds.ymax) {
+      return this.bounds.ymax
+    }
+    else {
+      return y;
+    }
   }
 }
 
