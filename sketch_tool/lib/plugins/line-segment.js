@@ -103,13 +103,10 @@ export default class LineSegment extends BasePlugin {
     document.addEventListener('pointerup', this.drawEnd, true);
     document.addEventListener('pointercancel', this.drawEnd, true);
     this.firstPoint = (this.state.length % 2 == 0);
-    // Push current position
-    let point = this.rConstrained(event.clientX - this.params.left, event.clientY - this.params.top),
-        xConstrained = this.vConstrained(point.x),
-        yConstrained = this.hConstrained(point.y);
+    // Push current position, no constraint is applied on first point
     this.state.push({
-      x: xConstrained,
-      y: yConstrained
+      x: event.clientX - this.params.left,
+      y: event.clientY - this.params.top
     });
     // If first endpoint, add immediately an undo point.
     // Otherwise, wait until drawEnd has been called to take in account eventual movemements
@@ -138,9 +135,9 @@ export default class LineSegment extends BasePlugin {
     }
     else {
       let lastPosition = this.state[this.state.length-1],
-          point = this.rConstrained1(x, y),
-          xConstrained = this.vConstrained1(point.x),
-          yConstrained = this.hConstrained1(point.y);
+          point = this.rConstrained(x, y),
+          xConstrained = this.vConstrained(point.x),
+          yConstrained = this.hConstrained(point.y);
       lastPosition.x = xConstrained;
       lastPosition.y = yConstrained;
     }
@@ -164,15 +161,14 @@ export default class LineSegment extends BasePlugin {
     event.preventDefault();
   }
 
-  // TODO: refactor
   hConstrained(y) {
     let len = this.state.length;
-    return this.hConstraint && (len != 0) && (len % 2 != 0) ? this.state[len-1].y : y;
+    return this.hConstraint ? this.state[len-1].y : y;
   }
 
   vConstrained(x) {
     let len = this.state.length;
-    return this.vConstraint && (len != 0) && (len % 2 != 0) ? this.state[len-1].x : x;
+    return this.vConstraint ? this.state[len-1].x : x;
   }
 
   rConstrained(x2, y2) {
@@ -181,7 +177,7 @@ export default class LineSegment extends BasePlugin {
           x: x2,
           y: y2
         };
-    if (this.rConstraint && (len != 0) && (len % 2 != 0)) {
+    if (this.rConstraint) {
       let x1 = this.state[len-1].x, y1 = this.state[len-1].y,
           vx = x2 - x1, vy = y2 - y1,
           dist = Math.sqrt(vx**2 + vy**2);
@@ -194,46 +190,17 @@ export default class LineSegment extends BasePlugin {
     return result;
   }
 
-  hConstrained1(y) {
-    let len = this.state.length;
-    return this.hConstraint && (len != 0) && (len % 2 == 0) ? this.state[len-1].y : y;
-  }
-
-  vConstrained1(x) {
-    let len = this.state.length;
-    return this.vConstraint && (len != 0) && (len % 2 == 0) ? this.state[len-1].x : x;
-  }
-
-  rConstrained1(x2, y2) {
-    let len = this.state.length,
-        result = {
-          x: x2,
-          y: y2
-        };
-    if (this.rConstraint && (len != 0) && (len % 2 == 0)) {
-      let x1 = this.state[len-2].x, y1 = this.state[len-2].y,
-          vx = x2 - x1, vy = y2 - y1,
-          dist = Math.sqrt(vx**2 + vy**2);
-      if (dist > this.rConstraintValue) {
-        let theta = Math.atan2(vy, vx);
-        result.x = x1 + this.rConstraintValue*Math.cos(theta);
-        result.y = y1 + this.rConstraintValue*Math.sin(theta);
-      }
-    }
-    return result;
-  }
-
-  hConstrained2(y, index) {
+  hConstrained1(y, index) {
     let len = this.state.length;
     return this.hConstraint && (len != 0) && (len % 2 == 0) ? this.state[index].y : y;
   }
 
-  vConstrained2(x, index) {
+  vConstrained1(x, index) {
     let len = this.state.length;
     return this.vConstraint && (len != 0) && (len % 2 == 0) ? this.state[index].x : x;
   }
 
-  rConstrained2(x, y, index) {
+  rConstrained1(x, y, index) {
     let len = this.state.length,
         result = {
           x: x,
@@ -261,7 +228,6 @@ export default class LineSegment extends BasePlugin {
     }
     return result;
   }
-  // END TODO
 
   pointOpacity(ptIndex) {
     return (ptIndex == this.state.length - 1) && (ptIndex % 2 == 0) ? '' : 'opacity: 0';
@@ -355,9 +321,9 @@ export default class LineSegment extends BasePlugin {
               onDrag: ({dx, dy}) => {
                 let x = this.state[ptIndex].x + dx,
                     y = this.state[ptIndex].y + dy,
-                    point = this.rConstrained2(x, y, ptIndex),
-                    xConstrained = this.vConstrained2(point.x, ptIndex),
-                    yConstrained = this.hConstrained2(point.y, ptIndex);
+                    point = this.rConstrained1(x, y, ptIndex),
+                    xConstrained = this.vConstrained1(point.x, ptIndex),
+                    yConstrained = this.hConstrained1(point.y, ptIndex);
 
                 this.state[ptIndex].x = xConstrained;
                 this.state[ptIndex].y = yConstrained;
