@@ -122,27 +122,4 @@ export default class Point extends BasePlugin {
   inBoundsY(y) {
     return y >= this.bounds.ymin && y <= this.bounds.ymax;
   }
-  clampX(x) {
-    if (x < this.bounds.xmin) {
-      return this.bounds.xmin;
-    }
-    else if (x > this.bounds.xmax) {
-      return this.bounds.xmax
-    }
-    else {
-      return x;
-    }
-  }
-
-  clampY(y) {
-    if (y < this.bounds.ymin) {
-      return this.bounds.ymin;
-    }
-    else if (y > this.bounds.ymax) {
-      return this.bounds.ymax
-    }
-    else {
-      return y;
-    }
-  }
 }
