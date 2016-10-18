@@ -17,21 +17,12 @@
     "gobble-rename": "^0.1.0",
     "gobble-replace": "^0.3.1",
     "gobble-sass": "^0.5.0",
-    "jasmine-core": "^2.3.4",
     "jspm": "^0.16.46",
-    "karma": "^0.12.37",
-    "karma-cli": "0.1.0",
-    "karma-jasmine": "^0.3.6",
-    "karma-jspm": "git://github.com/Workiva/karma-jspm.git#master",
-    "karma-phantomjs-launcher": "~0.2.0",
-    "karma-phantomjs-shim": "~1.0.0",
     "node-sass": "^3.10.1",
-    "phantomjs": "^1.9.17",
     "postcss-cli": "^2.6.0"
   },
   "scripts": {
     "postinstall": "jspm install",
-    "test": "karma start --single-run",
     "start": "gobble",
     "build": "rm -rf ./tmp && npm run css && gobble build dist -f && npm run clean && mv ./dist/ ../static/sketch_tool_dist",
     "css": "rm -rf ./tmp && npm run sass && npm run autoprefixer",
@@ -51,8 +42,7 @@
       "jquery": "github:components/jquery@^2.2.4",
       "jsondiffpatch": "npm:jsondiffpatch@^0.1.43",
       "keymaster": "npm:keymaster@^1.6.2",
-      "pepjs": "github:jquery/pep@^0.3.0",
-      "simulant": "npm:simulant@^0.1.5"
+      "pepjs": "github:jquery/pep@^0.3.0"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.38",
