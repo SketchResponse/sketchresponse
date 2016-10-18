@@ -91,7 +91,8 @@ function loadConfig(configId) {
           id: 'cp',
           label: 'Point',
           color: 'sienna',
-          size: 15
+          size: 15,
+          hollow: true
         },
         {
           name: 'horizontal-line',

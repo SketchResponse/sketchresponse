@@ -7,11 +7,21 @@ export const GRADEABLE_VERSION = '0.1';
 export default class Point extends BasePlugin {
   constructor(params, app) {
     // Add params that are specific to this plugin
-    params.icon = {
-      src: './plugins/point/point-icon.svg',
-      alt: 'Point tool'
-    };
+    if (params.hollow) {
+      params.icon = {
+        src: './plugins/point/point-hollow-icon.svg',
+        alt: 'Point tool'
+      };
+    }
+    else {
+      params.icon = {
+        src: './plugins/point/point-icon.svg',
+        alt: 'Point tool'
+      };
+    }
     super(params, app);
+    this.strokeWidth = params.hollow ? 2 : 0;
+    this.fillOpacity = params.hollow ? 0 : 1;
     // Message listeners
     this.app.__messageBus.on('addPoint', (id, index) => {this.addPoint(id, index)});
     this.app.__messageBus.on('deletePoints', () => {this.deletePoints()});
@@ -90,7 +100,9 @@ export default class Point extends BasePlugin {
           r: this.params.size / 2,
           style: `
             fill: ${this.params.color};
-            stroke-width: 0;
+            fill-opacity: ${this.fillOpacity};
+            stroke: ${this.params.color};
+            stroke-width: ${this.strokeWidth};
           `,
           onmount: el => {
             this.app.registerElement({

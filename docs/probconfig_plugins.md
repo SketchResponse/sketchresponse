@@ -104,10 +104,14 @@ javascript recognizes. A listing of color names can be found [here](http://www.w
 * `'size': <int>` - the size key must be given an integer value. It sets the
 pixel diameter of the point drawn by the plugin.
 
+It also has an optional parameter:
+
+* `'hollow': <boolean>` - if set to true, the point will be drawn hollow. Default value: false.
+
 E.g.
 
 ```python
-{'name': 'point', 'id': 'cp', 'label': 'Extremum', 'color': 'black', 'size': 15}
+{'name': 'point', 'id': 'cp', 'label': 'Extremum', 'color': 'black', 'size': 15, 'hollow': True}
 ```
 
 <div id=line-segment></div>
