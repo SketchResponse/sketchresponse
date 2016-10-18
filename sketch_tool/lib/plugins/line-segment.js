@@ -62,19 +62,19 @@ export default class LineSegment extends BasePlugin {
   }
 
   addLineSegment(id, index) {
-    if (this.id == id) {
+    if (this.id === id) {
       this.delIndices.push(index);
     }
   }
 
   addLineSegmentPoint(id, index) {
-    if (this.id == id) {
+    if (this.id === id) {
       this.delIndices1.push(index);
     }
   }
 
   deleteLineSegments() {
-    if (this.delIndices.length != 0) {
+    if (this.delIndices.length !== 0) {
       this.delIndices.sort();
       for (let i = this.delIndices.length -1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 2);
@@ -85,7 +85,7 @@ export default class LineSegment extends BasePlugin {
   }
 
   deleteLineSegmentPoints() {
-    if (this.delIndices1.length != 0) {
+    if (this.delIndices1.length !== 0) {
       this.delIndices1.sort();
       for (let i = this.delIndices1.length -1; i >= 0; i--) {
         this.state.splice(this.delIndices1[i], 1);
@@ -102,7 +102,7 @@ export default class LineSegment extends BasePlugin {
     document.addEventListener('pointermove', this.drawMove, true);
     document.addEventListener('pointerup', this.drawEnd, true);
     document.addEventListener('pointercancel', this.drawEnd, true);
-    this.firstPoint = (this.state.length % 2 == 0);
+    this.firstPoint = (this.state.length % 2 === 0);
     // Push current position, no constraint is applied on first point
     this.state.push({
       x: event.clientX - this.params.left,
@@ -127,7 +127,7 @@ export default class LineSegment extends BasePlugin {
     y = this.clampY(y);
     // On a click & drag, only push a new point if we are dragging from the first endpoint
     // and the second endpoint has not been already added.
-    if (this.firstPoint && this.state.length % 2 != 0) {
+    if (this.firstPoint && this.state.length % 2 !== 0) {
       this.state.push({
         x: this.vConstrained(x),
         y: this.hConstrained(y)
@@ -192,12 +192,12 @@ export default class LineSegment extends BasePlugin {
 
   hConstrained1(y, index) {
     let len = this.state.length;
-    return this.hConstraint && (len != 0) && (len % 2 == 0) ? this.state[index].y : y;
+    return this.hConstraint && (len !== 0) && (len % 2 === 0) ? this.state[index].y : y;
   }
 
   vConstrained1(x, index) {
     let len = this.state.length;
-    return this.vConstraint && (len != 0) && (len % 2 == 0) ? this.state[index].x : x;
+    return this.vConstraint && (len !== 0) && (len % 2 === 0) ? this.state[index].x : x;
   }
 
   rConstrained1(x, y, index) {
@@ -206,10 +206,10 @@ export default class LineSegment extends BasePlugin {
           x: x,
           y: y
         };
-    if (this.rConstraint && (len != 0) && (len % 2 == 0)) {
+    if (this.rConstraint && (len !== 0) && (len % 2 === 0)) {
       let xf, yf, xm, ym, vx, vy, dist;
       // First end point
-      if (index % 2 == 0) {
+      if (index % 2 === 0) {
         xm = x; ym = y;
         xf = this.state[index+1].x; yf = this.state[index+1].y;
       }
@@ -230,15 +230,15 @@ export default class LineSegment extends BasePlugin {
   }
 
   pointOpacity(ptIndex) {
-    return (ptIndex == this.state.length - 1) && (ptIndex % 2 == 0) ? '' : 'opacity: 0';
+    return (ptIndex === this.state.length - 1) && (ptIndex % 2 === 0) ? '' : 'opacity: 0';
   }
 
   pointClass(ptIndex) {
-    return (ptIndex == this.state.length - 1) && (ptIndex % 2 == 0) ? '.line-segment-point' + '.plugin-id-' + this.id : '';
+    return (ptIndex === this.state.length - 1) && (ptIndex % 2 === 0) ? '.line-segment-point' + '.plugin-id-' + this.id : '';
   }
 
   pointRadius(ptIndex) {
-    return (ptIndex == this.state.length - 1) && (ptIndex % 2 == 0) ? 4 : 8;
+    return (ptIndex === this.state.length - 1) && (ptIndex % 2 === 0) ? 4 : 8;
   }
 
   arrowHead() {
@@ -249,7 +249,7 @@ export default class LineSegment extends BasePlugin {
     z.render(this.el,
       // Draw visible line, under invisible line and endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z.if(ptIndex % 2 == 0 && ptIndex < this.state.length - 1, () =>
+        z.if(ptIndex % 2 === 0 && ptIndex < this.state.length - 1, () =>
           z('line.visible-' + ptIndex + '.line-segment' + '.plugin-id-' + this.id, {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
@@ -266,7 +266,7 @@ export default class LineSegment extends BasePlugin {
       ),
       // Draw invisible and selectable line, under invisible endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z.if(ptIndex % 2 == 0 && ptIndex < this.state.length - 1, () =>
+        z.if(ptIndex % 2 === 0 && ptIndex < this.state.length - 1, () =>
           z('line.invisible-' + ptIndex, {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
@@ -305,7 +305,7 @@ export default class LineSegment extends BasePlugin {
       ),
       // Draw invisible and selectable line endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z('circle.invisible-' + (ptIndex % 2 == 0 ? ptIndex : (ptIndex - 1).toString()) + this.pointClass(ptIndex), {
+        z('circle.invisible-' + (ptIndex % 2 === 0 ? ptIndex : (ptIndex - 1).toString()) + this.pointClass(ptIndex), {
           cx: this.state[ptIndex].x,
           cy: this.state[ptIndex].y,
           r: this.pointRadius(ptIndex),

@@ -40,13 +40,13 @@ export default class Freeform extends BasePlugin {
   }
 
   addFreeform(id, index) {
-    if (this.id == id) {
+    if (this.id === id) {
       this.delIndices.push(index);
     }
   }
 
   deleteFreeforms() {
-    if (this.delIndices.length != 0) {
+    if (this.delIndices.length !== 0) {
       this.delIndices.sort();
       for (let i = this.delIndices.length -1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
@@ -62,7 +62,7 @@ export default class Freeform extends BasePlugin {
     document.addEventListener('pointermove', this.drawMove, true);
     document.addEventListener('pointerup', this.drawEnd, true);
     document.addEventListener('pointercancel', this.drawEnd, true);
-    this.firstPoint = (this.state.length % 2 == 0);
+    this.firstPoint = (this.state.length % 2 === 0);
     this.lastPoint = this.pointerPosition = {
       x: event.clientX - this.params.left,
       y: event.clientY - this.params.top,

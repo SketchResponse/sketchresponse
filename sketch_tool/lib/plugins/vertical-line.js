@@ -34,13 +34,13 @@ export default class VerticalLine extends BasePlugin {
   }
 
   addVerticalLine(id, index) {
-    if (this.id == id) {
+    if (this.id === id) {
       this.delIndices.push(index);
     }
   }
 
   deleteVerticalLines() {
-    if (this.delIndices.length != 0) {
+    if (this.delIndices.length !== 0) {
       this.delIndices.sort();
       for (let i = this.delIndices.length -1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
