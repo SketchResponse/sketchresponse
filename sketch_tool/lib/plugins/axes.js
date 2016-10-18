@@ -74,7 +74,7 @@ export default class Axes {
 
     this.params = params;
 
-    this.type = (params.type == 'undefined') ? 'cartesian' : params.type;
+    this.type = (params.type === undefined) ? 'cartesian' : params.type;
 
     if (this.type !== 'cartesian' && this.type !== 'polar') {
       throw new Error('Only cartesian or polar axes are supported.');
