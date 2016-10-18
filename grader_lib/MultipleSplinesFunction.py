@@ -117,9 +117,9 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
                 if newFailureTolerance < 0:
                     return False
 
-                newValues = [values[i]] + values[i+2 : n]
-                newDelta = [delta[i]] + delta[i+2 : n]
-                newDelta[0] = newDelta[0] + delta[i+1]
+                newValues = [values[i+1]] + values[i+2 : n]
+                newDelta = [delta[i+1]] + delta[i+2 : n]
+                newDelta[0] = newDelta[0] #+ delta[i+1]
                 return self.always_comparer_at_points(comparer, newValues, newDelta, newFailureTolerance)
 
         return True
