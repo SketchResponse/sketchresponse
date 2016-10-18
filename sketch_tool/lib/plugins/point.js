@@ -22,6 +22,9 @@ export default class Point extends BasePlugin {
     super(params, app);
     this.strokeWidth = params.hollow ? 2 : 0;
     this.fillOpacity = params.hollow ? 0 : 1;
+    // Given a params.size, to have identical visible radiuses in both cases, we need to shrink
+    // the hollow point to take in account the 2px width of the stroke
+    this.radius = params.hollow ? (params.size/2)-1 : params.size/2;
     // Message listeners
     this.app.__messageBus.on('addPoint', (id, index) => {this.addPoint(id, index)});
     this.app.__messageBus.on('deletePoints', () => {this.deletePoints()});
@@ -97,7 +100,7 @@ export default class Point extends BasePlugin {
         z('circle.point' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
           cx: position.x,
           cy: position.y,
-          r: this.params.size / 2,
+          r: this.radius,
           style: `
             fill: ${this.params.color};
             fill-opacity: ${this.fillOpacity};
