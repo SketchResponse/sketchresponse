@@ -27,9 +27,7 @@ Adds horizontal and vertical axes, and a grid system. It has one parameter that 
 
 * `'name': 'axes'` - the name key *must* have the value 'axes'.
 
-It also has optional parameters:
-
-* `'type': <a type string>(default: 'cartesian')` - the type key should be a string describing the type of the grid system. Possible values: 'cartesian', 'polar'.
+It also has optional parameters that depend on the 'coordinates' option defined one level up:
 
 If 'cartesian' is chosen, the following parameters will take effect:
 
@@ -42,13 +40,14 @@ Note: if some (or all) of the above are missing, an automatic, best-fitting valu
 
 If 'polar' is chosen, the following parameters will take effect:
 
+* `'rrange': <number>(default: 10)` - the distance between the origin and the outer circle
 * `'rmajor': <number>(default: 1)` - the distance between the circles of the polar grid
 * `'thetamajor': <number>(default: 30)` - the angle (in degrees) between the rays of the polar grid
 
 E.g.
 
 ```python
-{'name': 'axes', 'type': 'polar', 'rmajor': '5', thetamajor: '10'}
+{'name': 'axes', 'rrange': '20', 'rmajor': '5', thetamajor: '10'}
 ```
 
 <div id=background></div>

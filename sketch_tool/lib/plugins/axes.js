@@ -74,9 +74,9 @@ export default class Axes {
 
     this.params = params;
 
-    this.type = (params.type === undefined) ? 'cartesian' : params.type;
+    this.coordinates = (params.coordinates === undefined) ? 'cartesian' : params.coordinates;
 
-    if (this.type !== 'cartesian' && this.type !== 'polar') {
+    if (this.coordinates !== 'cartesian' && this.coordinates !== 'polar') {
       throw new Error('Only cartesian or polar axes are supported.');
     }
 
@@ -86,7 +86,7 @@ export default class Axes {
     this.x = new LinearScale([0, params.width], params.xrange);
     this.y = new LinearScale([params.height, 0], params.yrange);
 
-    if (this.type == 'cartesian') {
+    if (this.coordinates === 'cartesian') {
       this.initCartesian(params);
     }
     else {
@@ -264,7 +264,7 @@ export default class Axes {
   }
 
   render() {
-    if (this.type == 'cartesian') {
+    if (this.coordinates === 'cartesian') {
       z.render(this.el,
         z.each(this.xMinor, xval =>
           z('line.xminor', {

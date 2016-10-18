@@ -7,10 +7,10 @@ function loadConfig(configId) {
       yrange: [-2.5, 2.5],
       xscale: 'linear',
       yscale: 'linear',
+      coordinates: 'cartesian',
       plugins: [
         {
           name: 'axes',
-          type: 'cartesian'
         },
         {
           name: 'point',
@@ -76,13 +76,13 @@ function loadConfig(configId) {
       height: 420,
       xrange: [-4.5, 4.5],
       yrange: [-2.5, 2.5],
-      rrange: 2,
       xscale: 'linear',
       yscale: 'linear',
+      coordinates: 'polar',
       plugins: [
         {
           name: 'axes',
-          type: 'polar',
+          rrange: 2,
           rmajor: 0.5,
           thetamajor: 30
         },
