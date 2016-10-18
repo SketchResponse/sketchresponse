@@ -1,8 +1,8 @@
 {
-  "name": "sketch2",
-  "version": "0.0.1",
+  "name": "@sketchresponse/sketch-tool",
+  "version": "1.0.0",
   "private": true,
-  "description": "A graphical input tool for use on the edX platform",
+  "description": "A configurable Javascript front-end drawing tool with plugin components",
   "author": "Martin Segado",
   "license": "All rights reserved",
   "devDependencies": {
