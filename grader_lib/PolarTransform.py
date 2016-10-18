@@ -371,11 +371,13 @@ class PolarTransform():
         filtered = []
         for ps in points:
             #print self.findMinima(ps)
+            maxVal = self.findMaximumValue(ps)
+            print maxVal
             subfiltered = []
             for theta, r in ps:
                 #print r
                 #print self.raxis.pixel_to_coord(r)
-                if not self.raxis.pixel_to_coord(r) < (max_value * 0.35):
+                if r >= (maxVal * 0.5) and self.raxis.pixel_to_coord(r) >= (max_value * 0.25):
                     subfiltered.append([theta, r])
 
             filtered.append(subfiltered)
@@ -612,3 +614,11 @@ class PolarTransform():
                     maxima.append(i)
 
         return maxima
+
+    def findMaximumValue(self, curve):
+        maximum = float('-inf')
+        for theta, r in curve:
+            if r > maximum:
+                maximum = r
+
+        return maximum
