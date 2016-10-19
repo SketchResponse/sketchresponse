@@ -40,8 +40,8 @@ export default class LineSegment extends BasePlugin {
     this.rConstraint = false;
 
     if (params.directionConstraint) {
-      this.hConstraint = params.directionConstraint == 'horizontal' ? true : false;
-      this.vConstraint = params.directionConstraint == 'vertical' ? true : false;
+      this.hConstraint = params.directionConstraint === 'horizontal' ? true : false;
+      this.vConstraint = params.directionConstraint === 'vertical' ? true : false;
     }
     if (params.lengthConstraint) {
       this.rConstraint = true;
@@ -98,16 +98,30 @@ export default class LineSegment extends BasePlugin {
   // This will be called when clicking on the SVG canvas after having
   // selected the line segment shape
   initDraw(event) {
+    let x = event.clientX - this.params.left,
+        y = event.clientY - this.params.top;
+
     // Add event listeners in capture phase
     document.addEventListener('pointermove', this.drawMove, true);
     document.addEventListener('pointerup', this.drawEnd, true);
     document.addEventListener('pointercancel', this.drawEnd, true);
     this.firstPoint = (this.state.length % 2 === 0);
-    // Push current position, no constraint is applied on first point
-    this.state.push({
-      x: event.clientX - this.params.left,
-      y: event.clientY - this.params.top
-    });
+    // Push current position
+    // First endpoint, no constraint
+    if (this.firstPoint) {
+      this.state.push({
+        x: x,
+        y: y
+      });
+    }
+    // Second endpoint, constrain with first endpoint
+    else {
+      let point = this.pointConstrained(x, y, this.state.length-1);
+      this.state.push({
+        x: point.x,
+        y: point.y
+      });
+    }
     // If first endpoint, add immediately an undo point.
     // Otherwise, wait until drawEnd has been called to take in account eventual movemements
     // in drawMove.
@@ -121,25 +135,27 @@ export default class LineSegment extends BasePlugin {
 
   drawMove(event) {
     let x = event.clientX - this.params.left,
-        y = event.clientY - this.params.top;
+        y = event.clientY - this.params.top,
+        point;
 
     x = this.clampX(x);
     y = this.clampY(y);
-    // On a click & drag, only push a new point if we are dragging from the first endpoint
-    // and the second endpoint has not been already added.
-    if (this.firstPoint && this.state.length % 2 !== 0) {
+    // On a click & drag, only push a new point if the second endpoint has not been added.
+    if (this.firstPoint) {
+      // Constrain with first endpoint which is last in state, as second endpoint as not been yet added
+      point = this.pointConstrained(x, y, this.state.length-1);
       this.state.push({
-        x: this.vConstrained(x),
-        y: this.hConstrained(y)
+        x: point.x,
+        y: point.y
       });
+      this.firstPoint = false;
     }
     else {
-      let lastPosition = this.state[this.state.length-1],
-          point = this.rConstrained(x, y),
-          xConstrained = this.vConstrained(point.x),
-          yConstrained = this.hConstrained(point.y);
-      lastPosition.x = xConstrained;
-      lastPosition.y = yConstrained;
+      // Constrain with first endpoint which is before last in state, as second endpoint has been added
+      let lastPosition = this.state[this.state.length-1];
+      point = this.pointConstrained(x, y, this.state.length-2);
+      lastPosition.x = point.x;
+      lastPosition.y = point.y;
     }
     this.render();
     this.wasDragged = true;
@@ -161,24 +177,23 @@ export default class LineSegment extends BasePlugin {
     event.preventDefault();
   }
 
-  hConstrained(y) {
+  hConstrained(y, index) {
     let len = this.state.length;
-    return this.hConstraint ? this.state[len-1].y : y;
+    return this.hConstraint ? this.state[index].y : y;
   }
 
-  vConstrained(x) {
+  vConstrained(x, index) {
     let len = this.state.length;
-    return this.vConstraint ? this.state[len-1].x : x;
+    return this.vConstraint ? this.state[index].x : x;
   }
 
-  rConstrained(x2, y2) {
-    let len = this.state.length,
-        result = {
+  rConstrained(x2, y2, index) {
+    let result = {
           x: x2,
           y: y2
         };
     if (this.rConstraint) {
-      let x1 = this.state[len-1].x, y1 = this.state[len-1].y,
+      let x1 = this.state[index].x, y1 = this.state[index].y,
           vx = x2 - x1, vy = y2 - y1,
           dist = Math.sqrt(vx**2 + vy**2);
       if (dist > this.rConstraintValue) {
@@ -188,6 +203,17 @@ export default class LineSegment extends BasePlugin {
       }
     }
     return result;
+  }
+
+  pointConstrained(x, y, index) {
+    let point = this.rConstrained(x, y, index),
+        xConstrained = this.vConstrained(point.x, index),
+        yConstrained = this.hConstrained(point.y, index);
+
+    return {
+      x: xConstrained,
+      y: yConstrained
+    }
   }
 
   hConstrained1(y, index) {
