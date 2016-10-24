@@ -5,13 +5,19 @@ import Axis
 
 
 class LineSegments(Gradeable.Gradeable):
-    """Line Segments.
     """
+    Line Segments.
+    """
+
+    DEGREES = (3.142 / 180)
+
     def __init__(self, info, tolerance = dict()):
         Gradeable.Gradeable.__init__(self, info, tolerance)
 
-        self.set_default_tolerance('distance', 20) # consider an line segment to be at a value if it is within 20 pixels
-
+        self.set_default_tolerance('line_distance', 20) # consider an line segment to be at a value if it is within 20 pixels
+        self.set_default_tolerance('point_distance_squared', 400)
+        self.set_default_tolerance('line_angle', 10)
+        
         self.segments = []
         self.px_segments = []
         for spline in info:
@@ -23,23 +29,56 @@ class LineSegments(Gradeable.Gradeable):
         # define the line segment. Convert from pixel space to value space.
         px_pt1 = spline[0]
         px_pt2 = spline[3]
-        val_pt1 = [self.px_to_xval(px_pt1[0]), self.px_to_yval(px_pt1[1])]
-        val_pt2 = [self.px_to_xval(px_pt2[0]), self.px_to_yval(px_pt2[1])]
-        return [val_pt1, val_pt2]
+        point1 = Point.Point(self, px_pt1[0], px_pt1[1])
+        point2 = Point.Point(self, px_pt2[0], px_pt2[1])
 
-    def has_slope_m_at_x(self, m, x, delta=50):
+        return LineSegment(point1, point2)
+
+    def swap(self, x1, x2):
+        if x1 > x2:
+            temp = x1
+            x1 = x2
+            x2 = temp
+        return (x1, x2)
+
+    def x_is_between(self, x, xmin, xmax, tolerance):
+        xmin = xmin - tolerance
+        xmax = xmax + tolerance
+
+        return x >= xmin and x <= xmax
+
+    def has_slope_m_at_x(self, m, x, tolerance=None):
         """Return whether the function has slope m at the value x.
 
         Args:
             m: the slope value to test against.
             x: the position on the x-axis to test against.
-            delta(default:50): ??? Doesn't appear to be used.
+            tolerance: the angle tolerance in degrees
         Returns:
             bool:
             true if the function at value x has slope m within tolerances,
             otherwise false.
         """
-        pass
+        if tolerance == None:
+            tolerance = self.tolerance['line_angle'] * self.DEGREES
+        else:
+            tolerance = tolerance * self.DEGREES
+
+        dist_tolerance = self.tolerance['line_distance'] / self.xscale
+
+        expectedAngle = np.arctan2(self.yscale * m, self.xscale * 1)
+        for segment in self.segments:
+            pt1 = segment.point1
+            pt2 = segment.point2
+            x1 = pt1.x
+            x2 = pt2.x
+            x1, x2 = self.swap(x1, x2)
+            if x_is_between(x, x1, x2, dist_tolerance):
+                # this segment crosses x
+                actualAngle = np.arctan2(pt2.y - pt1.y, pt2.x - pt1.x)
+                return abs(expectedAngle - actualAngle) < tolerance
+
+        return False
 
     def does_not_exist_between(self, xmin, xmax):
         """Return whether the function has no values defined in the range xmin to xmax.
@@ -49,27 +88,45 @@ class LineSegments(Gradeable.Gradeable):
             xmax: the maximum x-axis value of the range to test.
         Returns:
             bool:
-            true if the function has no values within tolerances in the range xmin
-            to xmax, otherwise false.
+            true if no line segments overlap with the range (xmin, xmax) within 
+            tolerances, otherwise false.
         """
-        pass
+        # tolerances should shrink the range slightly so make it negative
+        dist_tolerance = -self.tolerance['line_distance'] / self.xscale
 
-    def does_exist_between(self, xmin, xmax, end_tolerance=70, gap_tolerance=40):
+        for segment in self.segments:
+            x1 = segment.point1.x
+            x2 = segment.point2.x
+            x1, x2 = self.swap(x1, x2)
+            if x_is_between(x1, xmin, xmax, dist_tolerance) or x_is_between(x2, xmin, xmax, dist_tolerance):
+                return False
+
+        return True
+
+    def does_exist_between(self, xmin, xmax):
         """Return whether the function has values defined in the range xmin to xmax.
 
         Args:
             xmin: the minimum x-axis value of the range to test.
             xmax: the maximum x-axis value of the range to test.
-            end_tolerance(default:70): the pixel tolerance for the endpoints of the
-                                       range xmin to xmax.
-            gap_tolerance(default:40): the pixel tolerance for gaps in the function
-                                       in the range xmin to xmax.
+
         Returns:
             bool:
-            true if the function is defined within tolerances over the range xmin
-            to xmax, otherwise false.
+            true if at least one line segment overlaps with the range xmin
+            to xmax within tolerances, otherwise false.
         """
-        pass
+        # tolerances should shrink the range slightly so make it negative
+        dist_tolerance = self.tolerance['line_distance'] / self.xscale
+
+        for segment in self.segments:
+            x1 = segment.point1.x
+            x2 = segment.point2.x
+            x1, x2 = self.swap(x1, x2)
+            if x_is_between(x1, xmin, xmax, dist_tolerance) or x_is_between(x2, xmin, xmax, dist_tolerance):
+                return True
+
+        return False
+        
 
     def closest_point_to_x(self, x):
         """Return the distance to the closest point and a Point instance.
@@ -137,14 +194,30 @@ class LineSegments(Gradeable.Gradeable):
         """
         return self.get_point_at(point, x, y) is not None
 
-    def check_endpoints(self, point1, point2):
-        pass
+    def check_endpoints(self, segment, point1, point2, tolerance=None):
+        if tolerance == None:
+            tolerance = self.tolerance('point_distance_squared')
 
-    def check_startpoint(self, point):
-        pass
+        point1_match = self.check_startpoint(segment, point1, tolerance) or self.check_endpoint(segment, point1, tolerance)
+        point2_match = self.check_startpoint(segment, point2, tolerance) or self.check_endpoint(segment, point2, tolerance)
 
-    def check_endpoint(self, point):
-        pass
+        return point1_match and point2_match
+
+    def check_startpoint(self, segment, point, tolerance=None):
+        if tolerance == None:
+            tolerance = self.tolerance('point_distance_squared')
+
+        start = segment.point1
+
+        return start.get_px_distance_squared(point) < tolerance
+
+    def check_endpoint(self, segment, point, tolerance=None):
+        if tolerance == None:
+            tolerance = self.tolerance('point_distance_squared')
+
+        end = segment.point2
+
+        return end.get_px_distance_squared(point) < tolerance
 
     def get_number_of_segments(self):
         return len(self.segments)
@@ -164,3 +237,9 @@ class LineSegments(Gradeable.Gradeable):
 #  check start point
 #  check end point
 #  get number of segments
+
+
+class LineSegment:
+    def __init__(self, point1, point2):
+        self.point1 = point1
+        self.point2 = point2
