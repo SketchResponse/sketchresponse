@@ -39,7 +39,7 @@ In the example configuration below, the first six key/value pairs are required. 
 
 The last entry `'plugins'` takes a list of dicts that enable the specific javascript plugins that are available to the user. All plugins are declared by 'name'.
 
-The 'axes' and 'freeform' plugin usage here is identical to the [Simple Grader Tutorial](simple_grader.md) and is explained there as well as on the [Plugin Description Page(probconfig_plugins.md).
+The 'axes' and 'freeform' plugin usage here is identical to the [Simple Grader Tutorial](simple_grader.md) and is explained there as well as on the [Plugin Description Page](probconfig_plugins.md).
 
 There are three new plugins introduced in this grading script: 'vertical-line', 'horizontal-line', and 'point'. The declaration of these plugins is very similar to the declaration of the 'freeform' plugin, however, each type of plugin has one additional parameter that needs to be defined: 'dashStyle' for the lines, and 'size' for the points.
 
