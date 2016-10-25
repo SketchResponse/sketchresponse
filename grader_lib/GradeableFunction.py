@@ -14,6 +14,17 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
         self.set_default_tolerance('point_distance_squared', 400) # threshold for finding a point close to a point
         self.set_default_tolerance('point_distance', 20) # threshold for finding a point close to an x value
 
+        # transform from polar
+        #if f.params['xscale'] == 'polar' and f.params['yscale'] == 'polar':
+        if 'coordinates' in f.params and f.params['coordinates'] == 'polar':
+            from PolarTransform import PolarTransform
+            self.pt = PolarTransform(gradeable, self)
+            f = self.pt.getTransformedFunctionData()
+            xaxis = Axis.Axis(f.params['xrange'], f.params['width'])
+            yaxis = Axis.Axis(f.params['yrange'][::-1], f.params['height'])
+            MultipleSplinesFunction.MultipleSplinesFunction.__init__(self, xaxis, yaxis, path_info = f, tolerance = tolerance)
+            self.pt.resampleNewSplines()
+
     def create_from_path_info(self, path_info):
         dtol = 100 # work into tolerances later
         self.functions = []
