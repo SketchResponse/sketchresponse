@@ -216,10 +216,11 @@ class LineSegments(Gradeable.Gradeable):
             y(default: False): the y coordinate of interest.
 
         Note:    
-           There are three use cases:
-              1) point not False: use the Point instance as the target to locate segments in the function.
-              2) x and y not False: use (x, y) as the target to locate segments in the function.
-              3) x not False: use only the x coordinate to locate segments in the function, returning a list of segments that contain the given x value.
+           There are four use cases:
+              1) point not False: use the Point instance as the target to locate segments, returning a list of segments that pass through the Point.
+              2) x and y not False: use (x, y) as the target to locate segments, returning a list of segments that pass through the point (x, y).
+              3) x not False: use only the x coordinate to locate segments, returning a list of segments that pass through given x value.
+              4) y not False: use only the y coordinate to locate segments, returning a list of segments that pass through the given y value.
         Returns:
             list: 
             a list of the line segments within tolerances of the given position
@@ -250,6 +251,18 @@ class LineSegments(Gradeable.Gradeable):
 
             return close_segments
 
+        if y is not False:
+            tolerance = self.tolerance['point_distance'] / self.yscale:
+            close_segments = []
+            for segment in self.segments:
+                y1 = segment.start.y
+                y2 = segment.end.y
+                y1, y2 = self.swap(y1, y2)
+                if x_is_between(y, y1, y2, tolerance):
+                    close_segments.append(segment)
+
+            return close_segments
+
         return None
 
     def has_segments_at(self, point=False, x=False, y=False):
@@ -261,10 +274,11 @@ class LineSegments(Gradeable.Gradeable):
             y(default: False): the y coordinate of interest.
 
         Note:    
-           There are three use cases:
-              1) point not False: use the Point instance as the target to locate segments in the function.
-              2) x and y not False: use (x, y) as the target to locate segments in the function.
-              3) x not False: use only the x coordinate to locate segments in the function, returning a list of segments that contain the given x value.
+           There are four use cases:
+              1) point not False: use the Point instance as the target to locate segments, returning a list of segments that pass through the Point.
+              2) x and y not False: use (x, y) as the target to locate segments, returning a list of segments that pass through the point (x, y).
+              3) x not False: use only the x coordinate to locate segments, returning a list of segments that pass through given x value.
+              4) y not False: use only the y coordinate to locate segments, returning a list of segments that pass through the given y value.
         Returns:
             bool: 
             true if there is at least one line segment within tolerance of the
