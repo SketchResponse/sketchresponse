@@ -1,6 +1,6 @@
 {
   "name": "@sketchresponse/sketch-tool",
-  "version": "1.0.0",
+  "version": "1.0.0-rc",
   "private": true,
   "description": "A configurable Javascript front-end drawing tool with plugin components",
   "author": "Martin Segado",
