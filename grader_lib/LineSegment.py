@@ -178,14 +178,8 @@ class LineSegments(Gradeable.Gradeable):
         return False
 
     def segments_distances_to_point(self, point):
-        """Return the square pixel distances between all segments and a Point instance.
-
-        Args:
-            point: a Point instance
-        Returns:
-            list: 
-            the square pixel distances between all segments and the point
-        """
+        # helper function computes the distances of each line segment to a give
+        # point
         distances = []
         for segment in self.segments:
             start = [segment.start.px, segment.start.py]
