@@ -53,12 +53,6 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
   $ npm run build
   ```
 
-* To test:
-
-  ```sh
-  $ npm run test
-  ```
-
 ### Plugins
 They are located in the following [`directory`](https://github.com/SketchResponse/sketchresponse/tree/master/sketch_tool/lib/plugins/).
 * **axes:**
@@ -87,11 +81,8 @@ NPM modules (see [`package.json`](https://github.com/SketchResponse/sketchrespon
 * [`fast-sourcemap-concat`](https://www.npmjs.com/package/fast-sourcemap-concat)
 * [`glob`](https://www.npmjs.com/package/glob)
 * [`gobble`](https://www.npmjs.com/package/gobble)
-* [`jasmine-core`](https://www.npmjs.com/package/jasmine-core)
 * [`jspm`](https://www.npmjs.com/package/jspm)
-* [`karma`](https://www.npmjs.com/package/karma)
 * [`node-sass`](https://www.npmjs.com/package/node-sass)
-* [`phantomjs`](https://www.npmjs.com/package/phantomjs)
 * [`postcss-cli`](https://www.npmjs.com/package/postcss-cli)
 
 JSPM fetched modules (see [`config.js`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/config.js))
