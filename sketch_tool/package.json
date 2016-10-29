@@ -24,13 +24,11 @@
   "scripts": {
     "postinstall": "jspm install",
     "start": "gobble",
-    "build": "rm -rf ./tmp && npm run css && gobble build dist -f && npm run clean && mv ./dist/* ../static/sketch_tool_dist",
-    "css": "rm -rf ./tmp && npm run sass && npm run autoprefixer",
-    "sass": "node-sass --output-style compressed --source-map true --sourceMapContents true ./styles/ --output ./tmp",
-    "autoprefixer": "postcss --use autoprefixer --replace ./tmp/*.css",
-    "cleancss": "mv ./tmp/main.css ./dist/main.css && mv ./tmp/main.css.map ./dist/main.css.map && rm -rf ./tmp",
-    "cleanjs": "mv vendorBundle.js dist/vendorBundle.js && mv vendorBundle.map dist/vendorBundle.js.map",
-    "clean": "npm run cleancss && npm run cleanjs"
+    "build": "mkdir -p ../static/sketch_tool_dist/ && rm -rf ../static/sketch_tool_dist/* && gobble build ../static/sketch_tool_dist/ -f && npm run cleanjs && npm run css",
+    "css": "npm run sass && npm run autoprefixer",
+    "sass": "node-sass --output-style compressed --source-map true --sourceMapContents true ./styles/ --output ../static/sketch_tool_dist/",
+    "autoprefixer": "postcss --use autoprefixer --replace ../static/sketch_tool_dist/*.css",
+    "cleanjs": "mv vendorBundle.js ../static/sketch_tool_dist/vendorBundle.js && mv vendorBundle.map ../static/sketch_tool_dist/vendorBundle.js.map"
   },
   "jspm": {
     "dependencies": {
