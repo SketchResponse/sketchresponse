@@ -21,21 +21,20 @@ class LineSegments(Gradeable.Gradeable):
         self.set_default_tolerance('line_angle', 10)
 
         self.segments = []
-        startPnt = None
-        for point in info:
-            pt = self.value_from_point(point['point'])
-            if startPnt == None:
-                startPnt = pt
-            else:
-                seg = LineSegment(startPnt, pt)
+        for spline in info:
+            if len(spline['spline']) == 4:
+                seg = self.value_from_spline(spline['spline'])
                 self.segments.append(seg)
-                startPnt = None
+            else:
+                # TODO - through error if try to grade non line seg splines
+                pass
 
-    def value_from_point(self, point):
+    def value_from_spline(self, spline):
         # convert the point array into a point object
-        point1 = Point.Point(self, point[0], point[1])
+        point1 = Point.Point(self, spline[0][0], spline[0][1])
+        point2 = Point.Point(self, spline[3][0], spline[3][1])
 
-        return point1
+        return LineSegment(point1, point2)
 
     def swap(self, x1, x2):
         if x1 > x2:
