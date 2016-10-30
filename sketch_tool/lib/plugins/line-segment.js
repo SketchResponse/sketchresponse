@@ -54,9 +54,9 @@ export default class LineSegment extends BasePlugin {
   }
 
   getGradeable() {
-    return this.state.map(spline => {
+    return this.state.map(point => {
       return {
-        spline: spline.map(point => [point.x, point.y])
+        point: [point.x, point.y]
       };
     });
   }
