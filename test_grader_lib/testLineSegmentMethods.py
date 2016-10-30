@@ -3,6 +3,7 @@ import TestData
 from grader_lib import Asymptote
 import math
 
+
 class TestAsymptoteMethods(TestData.TestData):
 
 #    Test the methods in the Asymptote class
