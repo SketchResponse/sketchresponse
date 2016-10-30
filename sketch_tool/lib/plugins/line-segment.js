@@ -54,11 +54,27 @@ export default class LineSegment extends BasePlugin {
   }
 
   getGradeable() {
-    return this.state.map(point => {
-      return {
-        point: [point.x, point.y]
-      };
-    });
+    let result = [],
+        len = this.state.length,
+        x1, y1, x2, y2;
+    // Do not take into account dangling points from half drawn segments
+    len =  len % 2 === 0 ? len : len - 1;
+    for (let i = 0; i < len; i += 2) {
+      x1 = this.state[i].x;
+      y1 = this.state[i].y;
+      x2 = this.state[i+1].x;
+      y2 = this.state[i+1].y;
+      // Use a spline to describe a line segment
+      result.push({
+        spline: [
+          [x1, y1],
+          [(2*x1 + x2)/3, (2*y1 + y2)/3],
+          [(x1 + 2*x2)/3, (y1 + 2*y2)/3],
+          [x2, y2]
+        ]
+      })
+    }
+    return result;
   }
 
   addLineSegment(id, index) {
