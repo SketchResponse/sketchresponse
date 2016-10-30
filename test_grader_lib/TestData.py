@@ -50,7 +50,8 @@ class TestData(unittest.TestCase):
     extra_data = [straight, increasing, decreasing,
                  slope_1_at_0, constant_2, min_at_0,
                   max_at_0, vert_cross, horiz_cross,
-                  not_constant, not_exist]
+                  not_constant, not_exist, ls_slope_2,
+                  ls_not_exist, ls_exist, ls_segs]
 
     def get_data(self, source):
         if source in self.data_dict:

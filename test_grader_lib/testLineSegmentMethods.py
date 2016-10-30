@@ -1,6 +1,6 @@
 import unittest
 import TestData
-from grader_lib import Asymptote
+from grader_lib import LineSegment
 import math
 
 
@@ -26,13 +26,13 @@ class TestAsymptoteMethods(TestData.TestData):
         data = self.load_as_gradeable_collections('ls-slope-2')
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
-            self.assertTrue(ls.has_slope_m_at_x(math.atan(2), 0))
+            self.assertTrue(ls.has_angle_t_at_x(math.atan(2), 0))
 
     def test_false_has_angle_t_at_x(self):
         data = self.load_as_gradeable_collections('ls-slope-2')
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
-            self.assertFalse(ls.has_slope_m_at_x(math.atan(4), 0))
+            self.assertFalse(ls.has_angle_t_at_x(math.atan(4), 0))
 
     def test_true_does_not_exist_between(self):
         data = self.load_as_gradeable_collections('ls-not-exist')
@@ -184,13 +184,13 @@ class TestAsymptoteMethods(TestData.TestData):
         data = self.load_as_gradeable_collections('ls-segs')
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
-            self.assertEqual(ls.get_number_of_segment(), 4)
+            self.assertEqual(ls.get_number_of_segments(), 4)
 
     def test_false_get_number_of_segments(self):
         data = self.load_as_gradeable_collections('ls-segs')
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
-            self.assertNotEqual(ls.get_number_of_segment(), 0)
+            self.assertNotEqual(ls.get_number_of_segments(), 0)
 
 if __name__ == '__main__':
     unittest.main()
