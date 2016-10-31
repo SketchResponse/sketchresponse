@@ -79,7 +79,7 @@ class Asymptotes(Gradeable.Gradeable):
 
         return None
 
-    def has_asym_at_value(self, v, tolerance = None):
+    def has_asym_at_value(self, v, tolerance=None):
         """Return whether an asymtote is declared at the given value.
 
         Args:
@@ -89,7 +89,7 @@ class Asymptotes(Gradeable.Gradeable):
             bool: true if there is an asymptote declared within tolerances
             of the value v, or false otherwise.
         """
-        return self.get_asym_at_value(v, tolerance) is not None
+        return self.get_asym_at_value(v, tolerance=tolerance) is not None
 
     def get_number_of_asyms(self):
         """Return the number of asymptotes declared in the function.

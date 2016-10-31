@@ -13,7 +13,6 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
         MultipleSplinesFunction.MultipleSplinesFunction.__init__(self, xaxis, yaxis, path_info = f, tolerance = tolerance)
         self.set_default_tolerance('point_distance_squared', 400) # threshold for finding a point close to a point
         self.set_default_tolerance('point_distance', 20) # threshold for finding a point close to an x value
-        self.set_default_tolerance('point_same_distance_squared', 100)
 
         # transform from polar
         #if f.params['xscale'] == 'polar' and f.params['yscale'] == 'polar':
@@ -27,7 +26,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             self.pt.resampleNewSplines()
 
     def create_from_path_info(self, path_info):
-        dtol = self.tolerance['point_same_distance_squared']
+        dtol = 100
         self.functions = []
         self.points = []
         xvals = []
@@ -129,8 +128,8 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
                 return foundPoint
 
         if y is not False and x is not False:
-            point = Point.Point(self, x, y, pixel = False)
-            return self.get_point_at(point = point)
+            point = Point.Point(self, x, y, pixel=False)
+            return self.get_point_at(point=point)
 
         if x is not False:
             distance, foundPoint = self.closest_point_to_x(x)
@@ -162,7 +161,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             true if there is a Point declared within tolerances of the given
             argument(s), false otherwise.
         """
-        return self.get_point_at(point, x, y, tolerance) is not None
+        return self.get_point_at(point, x, y, tolerance=tolerance) is not None
 
     def get_number_of_points(self):
         """Return the number of points declared in the function."""
