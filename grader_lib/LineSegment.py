@@ -22,12 +22,26 @@ class LineSegments(Gradeable.Gradeable):
 
         self.segments = []
         for spline in info:
-            if len(spline['spline']) == 4:
+            if len(spline['spline']) == 4 and self.isALine(spline['spline']):
                 seg = self.value_from_spline(spline['spline'])
                 self.segments.append(seg)
             else:
                 # TODO - through error if try to grade non line seg splines
-                pass
+                raise ValueError("This spline does not appear to be a line segment: " + str(spline['spline']))
+
+    def isALine(self, spline):
+        # compute R^2 fitness of a straight line return true if > .99
+        xs = [x for x, y in spline]
+        ys = [y for x, y in spline]
+
+        coeffs, res, _, _, _ = np.polyfit(xs, ys, 1, full=True)
+
+        ybar = np.sum(ys) / len(ys)
+        sstot = np.sum((ys - ybar) ** 2)
+        r2 = (sstot - res) / sstot
+
+        #print r2[0] > 0.99
+        return r2[0] > 0.99
 
     def value_from_spline(self, spline):
         # convert the point array into a point object
