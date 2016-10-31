@@ -99,9 +99,11 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             point(default: False): a Point instance at the value of interest.
             x(default: False): the x coordinate of interest.
             y(default: False): the y coordinate of interest.
-            tolerance(default: None): the distance tolerance to use, in None given
-                      will be 'point_distance' or 'point_distance_squared' depending
-                      on if both x and y coordinates are given.
+            tolerance(default: None): the pixel distance if only x is given or 
+                      square pixel distance if a point or x and y are both given. 
+                      If None is given
+                      will be 'point_distance' or 'point_distance_squared' constant
+                      depending on if a point or both x and y coordinates are given.
 
         Note:    
            There are three use cases:
@@ -118,6 +120,8 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
         else:
             if tolerance is None:
                 tolerance = self.tolerance['point_distance'] / self.xscale
+            else:
+                tolerance /= self.xscale
                 
         if point is not False:
             distanceSquared, foundPoint = self.closest_point_to_point(point)
@@ -142,9 +146,11 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             point(default: False): a Point instance at the value of interest.
             x(default: False): the x coordinate of interest.
             y(default: False): the y coordinate of interest.
-            tolerance(default: None): the distance tolerance to use, in None given
-                      will be 'point_distance' or 'point_distance_squared' depending
-                      on if both x and y coordinates are given.
+            tolerance(default: None): the pixel distance if only x is given or 
+                      square pixel distance if a point or x and y are both given. 
+                      If None is given
+                      will be 'point_distance' or 'point_distance_squared' constant
+                      depending on if a point or both x and y coordinates are given.
 
         Note:    
            There are three use cases:
