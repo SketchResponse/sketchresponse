@@ -217,7 +217,8 @@ class LineSegments(Gradeable.Gradeable):
 
     def segments_distances_to_point(self, point):
         # helper function computes the distances of each line segment to a give
-        # point
+        # point based on tutorial published at:
+        # http://www.fundza.com/vectors/point2line/index.html
         distances = []
         for segment in self.segments:
             start = [segment.start.px, segment.start.py]
