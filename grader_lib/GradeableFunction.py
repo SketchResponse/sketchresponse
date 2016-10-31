@@ -13,6 +13,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
         MultipleSplinesFunction.MultipleSplinesFunction.__init__(self, xaxis, yaxis, path_info = f, tolerance = tolerance)
         self.set_default_tolerance('point_distance_squared', 400) # threshold for finding a point close to a point
         self.set_default_tolerance('point_distance', 20) # threshold for finding a point close to an x value
+        self.set_default_tolerance('point_same_distance_squared', 100)
 
         # transform from polar
         #if f.params['xscale'] == 'polar' and f.params['yscale'] == 'polar':
@@ -26,7 +27,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             self.pt.resampleNewSplines()
 
     def create_from_path_info(self, path_info):
-        dtol = 100 # work into tolerances later
+        dtol = self.tolerance['point_same_distance_squared']
         self.functions = []
         self.points = []
         xvals = []
@@ -42,8 +43,6 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
                 d, p = self.closest_point_to_point(point)
                 if d >= dtol:
                     self.points.append(point)
-
-
 
 ## for Points ##
 
@@ -93,13 +92,16 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
         return minDistance, minPoint
 
     # returns None if no point is close enough
-    def get_point_at(self, point = False, x = False, y = False):
+    def get_point_at(self, point=False, x=False, y=False, tolerance=None):
         """ Return a reference to the Point declared at the given value.
 
         Args:
             point(default: False): a Point instance at the value of interest.
             x(default: False): the x coordinate of interest.
             y(default: False): the y coordinate of interest.
+            tolerance(default: None): the distance tolerance to use, in None given
+                      will be 'point_distance' or 'point_distance_squared' depending
+                      on if both x and y coordinates are given.
 
         Note:    
            There are three use cases:
@@ -110,9 +112,16 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             Point: 
             the first Point instance within tolerances of the given arguments, or None
         """
+        if point is not False or (x is not False and y is not False):
+            if tolerance is None:
+                tolerance = self.tolerance['point_distance_squared']
+        else:
+            if tolerance is None:
+                tolerance = self.tolerance['point_distance'] / self.xscale
+                
         if point is not False:
             distanceSquared, foundPoint = self.closest_point_to_point(point)
-            if distanceSquared < self.tolerance['point_distance_squared']:
+            if distanceSquared < tolerance:
                 return foundPoint
 
         if y is not False and x is not False:
@@ -121,18 +130,21 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
 
         if x is not False:
             distance, foundPoint = self.closest_point_to_x(x)
-            if distance < self.tolerance['point_distance'] / self.xscale:
+            if distance < tolerance:
                 return foundPoint
 
         return None
 
-    def has_point_at(self, **kwargs):
+    def has_point_at(self, point=False, x=False, y=False, tolerance=None):
         """ Return whether a point is declared at the given value.
 
         Args:
             point(default: False): a Point instance at the value of interest.
             x(default: False): the x coordinate of interest.
             y(default: False): the y coordinate of interest.
+            tolerance(default: None): the distance tolerance to use, in None given
+                      will be 'point_distance' or 'point_distance_squared' depending
+                      on if both x and y coordinates are given.
 
         Note:    
            There are three use cases:
@@ -144,7 +156,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             true if there is a Point declared within tolerances of the given
             argument(s), false otherwise.
         """
-        return self.get_point_at(**kwargs) is not None
+        return self.get_point_at(point, x, y, tolerance) is not None
 
     def get_number_of_points(self):
         """Return the number of points declared in the function."""
