@@ -240,13 +240,21 @@ class LineSegments(Gradeable.Gradeable):
 
         return distances
 
-    def get_segments_at(self, point=False, x=False, y=False):
+    def get_segments_at(self, point=False, x=False, y=False, distTolerance=None,
+                        squareDistTolerance=None):
         """ Return a list of line segments declared at the given value.
 
         Args:
             point(default: False): a Point instance at the value of interest.
             x(default: False): the x coordinate of interest.
             y(default: False): the y coordinate of interest.
+            distTolerance(default: None): the pixel distance tolerance if 
+                                          only the x or y coordinate is given. If None
+                                          default constant 'line_distance' is used.
+            squareDistTolerance(default: None): the square pixel distance tolerance
+                                          if point, or x and y are given. If
+                                          None, default constant 'line_distance_squared'
+                                          is used.
 
         Note:    
            There are four use cases:
@@ -259,11 +267,25 @@ class LineSegments(Gradeable.Gradeable):
             a list of the line segments within tolerances of the given position
             arguments, or None
         """
+        if distTolerance is None:
+            if x is not False:
+                distTolerance = self.tolerance['line_distance'] / self.xscale
+            else:
+                distTolerance = self.tolerance['line_distance'] / self.yscale
+        else:
+            if x is not False:
+                distTolerance /= self.xscale
+            else:
+                distTolerance /= self.yscale
+
+        if squareDistTolerance is None:
+            squareDistTolerance = self.tolerance['line_distance_squared']
+
         if point is not False:
             close_segments = []
             distsSquared = self.segments_distances_to_point(point)
             for i, segment in enumerate(self.segments):
-                if distsSquared[i] < self.tolerance['line_distance_squared']:
+                if distsSquared[i] < squareDistTolerance:
                     close_segments.append(segment)
 
             if len(close_segments) == 0:
@@ -276,13 +298,12 @@ class LineSegments(Gradeable.Gradeable):
             return self.get_segments_at(point=point)
 
         if x is not False:
-            tolerance = self.tolerance['line_distance'] / self.xscale
             close_segments = []
             for segment in self.segments:
                 x1 = segment.start.x
                 x2 = segment.end.x
                 x1, x2 = self.swap(x1, x2)
-                if self.x_is_between(x, x1, x2, tolerance):
+                if self.x_is_between(x, x1, x2, distTolerance):
                     close_segments.append(segment)
 
             if len(close_segments) == 0:
@@ -291,13 +312,12 @@ class LineSegments(Gradeable.Gradeable):
             return close_segments
 
         if y is not False:
-            tolerance = self.tolerance['line_distance'] / self.yscale
             close_segments = []
             for segment in self.segments:
                 y1 = segment.start.y
                 y2 = segment.end.y
                 y1, y2 = self.swap(y1, y2)
-                if self.x_is_between(y, y1, y2, tolerance):
+                if self.x_is_between(y, y1, y2, distTolerance):
                     close_segments.append(segment)
 
             if len(close_segments) == 0:
@@ -307,13 +327,21 @@ class LineSegments(Gradeable.Gradeable):
 
         return None
 
-    def has_segments_at(self, point=False, x=False, y=False):
+    def has_segments_at(self, point=False, x=False, y=False, distTolerance=None,
+                        squareDistTolerance=None):
         """ Return a list of line segments declared at the given value.
 
         Args:
             point(default: False): a Point instance at the value of interest.
             x(default: False): the x coordinate of interest.
             y(default: False): the y coordinate of interest.
+            distTolerance(default: None): the pixel distance tolerance if 
+                                          only the x or y coordinate is given. If None
+                                          default constant 'line_distance' is used.
+            squareDistTolerance(default: None): the square pixel distance tolerance
+                                          if point, or x and y are given. If
+                                          None, default constant 'line_distance_squared'
+                                          is used.
 
         Note:    
            There are four use cases:
