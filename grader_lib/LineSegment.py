@@ -354,7 +354,8 @@ class LineSegments(Gradeable.Gradeable):
             true if there is at least one line segment within tolerance of the
             given position, otherwise false.
         """
-        return self.get_point_at(point, x, y) is not None
+        return self.get_point_at(point, x, y, distTolerance,
+                                 squareDistTolerance) is not None
 
     def check_segment_endpoints(self, segment, points, tolerance=None):
         """Return whether the segment's start and end points are both in
