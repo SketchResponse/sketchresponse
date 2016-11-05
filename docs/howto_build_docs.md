@@ -6,7 +6,7 @@ The API docs are build from the grader library source code using Sphinx. The
 usage docs are built from the markdown in the /docs directory using Gitbook.
 
 ## Building the API documentation
-<div id=api/>
+<div id=api></div>
 1. The first step to building the API documentation is installing [Sphinx](http://www.sphinx-doc.org/en/1.4.8/). The easiest way to do this is to install using pip.
 
 ```sh
@@ -42,7 +42,7 @@ $ git checkout master
 
 
 ## Building the Usage documentation
-<div id=usage/>
+<div id=usage></div>
 1. The first step in building the usage documentation is installing [Gitbook](https://github.com/GitbookIO/gitbook). Gitbook requires [NodeJS](https://nodejs.org/en/) to install since Gitbook is an npm package.
 ```sh
 $ npm install gitbook-cli -g
