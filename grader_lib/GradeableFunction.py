@@ -91,18 +91,21 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
         return minDistance, minPoint
 
     # returns None if no point is close enough
-    def get_point_at(self, point=False, x=False, y=False, tolerance=None):
+    def get_point_at(self, point=False, x=False, y=False, distTolerance=None,
+                     squareDistTolerance=None):
         """ Return a reference to the Point declared at the given value.
 
         Args:
             point(default: False): a Point instance at the value of interest.
             x(default: False): the x coordinate of interest.
             y(default: False): the y coordinate of interest.
-            tolerance(default: None): the pixel distance if only x is given or 
-                      square pixel distance if a point or x and y are both given. 
-                      If None is given
-                      will be 'point_distance' or 'point_distance_squared' constant
-                      depending on if a point or both x and y coordinates are given.
+            distTolerance(default: None): the pixel distance tolerance if 
+                                          only the x coordinate is given. If None
+                                          default constant 'point_distance' is used.
+            squareDistTolerance(default: None): the square pixel distance tolerance
+                                          if point, or x and y are given. If
+                                          None, default constant 'point_distance_squared'
+                                          is used.
 
         Note:    
            There are three use cases:
@@ -113,18 +116,17 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             Point: 
             the first Point instance within tolerances of the given arguments, or None
         """
-        if point is not False or (x is not False and y is not False):
-            if tolerance is None:
-                tolerance = self.tolerance['point_distance_squared']
+        if distTolerance is None:
+            distTolerance = self.tolerance['point_distance'] / self.xscale
         else:
-            if tolerance is None:
-                tolerance = self.tolerance['point_distance'] / self.xscale
-            else:
-                tolerance /= self.xscale
+            distTolerance /= self.xscale
+
+        if squareDistTolerance is None:
+            squareDistTolerance = self.tolerance['point_distance_squared']
                 
         if point is not False:
             distanceSquared, foundPoint = self.closest_point_to_point(point)
-            if distanceSquared < tolerance:
+            if distanceSquared < squareDistTolerance:
                 return foundPoint
 
         if y is not False and x is not False:
@@ -133,23 +135,26 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
 
         if x is not False:
             distance, foundPoint = self.closest_point_to_x(x)
-            if distance < tolerance:
+            if distance < distTolerance:
                 return foundPoint
 
         return None
 
-    def has_point_at(self, point=False, x=False, y=False, tolerance=None):
+    def has_point_at(self, point=False, x=False, y=False, distTolerance=None,
+                     squareDistTolerance=None):
         """ Return whether a point is declared at the given value.
 
         Args:
             point(default: False): a Point instance at the value of interest.
             x(default: False): the x coordinate of interest.
             y(default: False): the y coordinate of interest.
-            tolerance(default: None): the pixel distance if only x is given or 
-                      square pixel distance if a point or x and y are both given. 
-                      If None is given
-                      will be 'point_distance' or 'point_distance_squared' constant
-                      depending on if a point or both x and y coordinates are given.
+            distTolerance(default: None): the pixel distance tolerance if 
+                                          only the x coordinate is given. If None
+                                          default constant 'point_distance' is used.
+            squareDistTolerance(default: None): the square pixel distance tolerance
+                                          if point, or x and y are given. If
+                                          None, default constant 'point_distance_squared'
+                                          is used.
 
         Note:    
            There are three use cases:
