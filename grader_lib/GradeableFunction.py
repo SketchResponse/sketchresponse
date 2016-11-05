@@ -167,7 +167,8 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             argument(s), false otherwise.
         """
         return self.get_point_at(point=point, x=x, y=y,
-                                 tolerance=tolerance) is not None
+                                 distTolerance=distTolerance,
+                                 squareDistTolerance=squareDistTolerance) is not None
 
     def get_number_of_points(self):
         """Return the number of points declared in the function."""
