@@ -40,7 +40,12 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
         self.set_default_tolerance('domain', 25) # allows x pixels outside of domains
         self.set_default_tolerance('approach angle', 45 * DEGREES) # to be used for asymptotes. not in use at the moment
         self.set_default_tolerance('extrema', 20) # considers values within 20 pixels for extrema checks
+        self.set_default_tolerance('curve_failure', 1)
         ## TODO: add numSegments and failureTolerance to tolerance
+        if 'coordinates' in path_info and path_info['coordinates'] == 'polar':
+            self.set_default_tolerance('inc_dec_failure', 4)
+        else:
+            self.set_default_tolerance('inc_dec_failure', 2)
 
     def create_from_path_info(self, path_info):
         self.functions = []
@@ -179,7 +184,7 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
     def is_a_function(self):
         abstractMethod(self)
 
-    def is_always_increasing(self):
+    def is_always_increasing(self, failureTolerance=None):
         """Return whether the function is increasing over its entire domain.
 
         Returns:
@@ -188,30 +193,34 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
             domain, otherwise false.
         """
         (xmin, xmax) = self.get_domain()
-        return self.is_increasing_between(xmin, xmax)
+        return self.is_increasing_between(xmin, xmax, failureTolerance=failureTolerance)
 
-    def is_increasing_between(self, xmin, xmax, numPoints = 10, failureTolerance = 2):
+    def is_increasing_between(self, xmin, xmax, numPoints=10, failureTolerance=None):
         """Return whether the function is increasing in the range xmin to xmax.
 
         Args:
             xmin: the minimum x-axis value of the range to test.
             xmax: the maximum x-axis value of the range to test.
             numPoints(default: 10): the number of points to test along the range.
-            failureTolerance(default: 2): the number of pairwise point increase
+            failureTolerance(default: None): the number of pairwise point increase
                                           comparisons that can fail before the test
-                                          fails.
+                                          fails. If None give, default constant
+                                          'inc_dec_failure' is used.
         Returns:
             bool:
             true if all sequential pairs of points have increasing values within tolerances
             for the range xmin to xmax, otherwise false.
         """
+        if failureTolerance is None:
+            failureTolerance = self.tolerance['inc_dec_failure']
+
         [xleft, xright] = self.get_between_vals(xmin, xmax)
         if (xleft > xright):
             return False
         xvals, yvals, delta = self.get_sample_points(numPoints, xleft, xright)
         return self.always_comparer_at_points(lesser_or_equal, yvals, delta, failureTolerance)
 
-    def is_always_decreasing(self):
+    def is_always_decreasing(self, failureTolerance=None):
         """Return whether the function is decreasing over its entire domain.
 
         Returns:
@@ -220,23 +229,27 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
             domain, otherwise false.
         """
         (xmin, xmax) = self.get_domain()
-        return self.is_decreasing_between(xmin, xmax)
+        return self.is_decreasing_between(xmin, xmax, failureTolerance=failureTolerance)
 
-    def is_decreasing_between(self, xmin, xmax, numPoints = 10, failureTolerance = 2):
+    def is_decreasing_between(self, xmin, xmax, numPoints=10, failureTolerance=None):
         """Return whether the function is decreasing in the range xmin to xmax.
 
         Args:
             xmin: the minimum x-axis value of the range to test.
             xmax: the maximum x-axis value of the range to test.
             numPoints(default: 10): the number of points to test along the range.
-            failureTolerance(default: 2): the number of pairwise point decrease
+            failureTolerance(default: None): the number of pairwise point decrease
                                           comparisons that can fail before the test
-                                          fails.
+                                          fails. If None give, default constant
+                                          'inc_dec_failure' is used.
         Returns:
             bool:
             true if all sequential pairs of points have decreasing values within tolerances
             for the range xmin to xmax, otherwise false.
         """
+        if failureTolerance is None:
+            failureTolerance = self.tolerance['inc_dec_failure']
+
         [xleft, xright] = self.get_between_vals(xmin, xmax)
         if (xleft > xright):
             return False
@@ -258,7 +271,8 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
 
         return self.always_comparer_at_points(comparer, ydiffs, delta, failureTolerance)
 
-    def has_positive_curvature_between(self, xmin, xmax, numSegments = 5, failureTolerance = 1):
+    def has_positive_curvature_between(self, xmin, xmax, numSegments=5,
+                                       failureTolerance=None):
         """Return whether the function has positive curvature in the range xmin to xmax.
 
         Args:
@@ -267,17 +281,22 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
             numSegments(default: 5): the number of segments to divide the function
                                      into to individually test for positive
                                      curvature.
-            failureTolerance(default: 1): the number of segments that can fail the
+            failureTolerance(default: None): the number of segments that can fail the
                                           positive curvature test before test
-                                          failure.
+                                          failure. If None given uses default constant
+                                          'curve_failure'.
         Returns:
             bool:
             true if all segments, in the range xmin to xmax, have positive curvature within tolerances,
             otherwise false.
         """
+        if failureTolerance is None:
+            failureTolerance = self.tolerance['curve_failure']
+
         return self.has_curvature_between(xmin, xmax, numSegments, failureTolerance, lesser_or_equal, float('-inf'))
 
-    def has_negative_curvature_between(self, xmin, xmax, numSegments = 5, failureTolerance = 1):
+    def has_negative_curvature_between(self, xmin, xmax, numSegments=5,
+                                       failureTolerance=None):
         """Return whether the function has negative curvature in the range xmin to xmax.
 
         Args:
@@ -286,32 +305,42 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
             numSegments(default: 5): the number of segments to divide the function
                                      into to individually test for negative
                                      curvature.
-            failureTolerance(default: 1): the number of segments that can fail the
+            failureTolerance(default: None): the number of segments that can fail the
                                           negative curvature test before test
-                                          failure.
+                                          failure. If None given uses default constant
+                                          'curve_failure'.
         Returns:
             bool:
             true if all segments, in the range xmin to xmax, have negative curvature within tolerances,
             otherwise false.
         """
+        if failureTolerance is None:
+            failureTolerance = self.tolerance['curve_failure']
+
         return self.has_curvature_between(xmin, xmax, numSegments, failureTolerance, greater_or_equal, float('inf'))
 
-    def has_slope_m_at_x(self, m, x, delta = 50):
+    def has_slope_m_at_x(self, m, x, tolerance=None):
         """Return whether the function has slope m at the value x.
 
         Args:
             m: the slope value to test against.
             x: the position on the x-axis to test against.
-            delta(default:50): ??? Doesn't appear to be used.
+            tolerance(default:None): angle tolerance in degrees. If None given uses
+                                     default constant 'angle'.
         Returns:
             bool:
             true if the function at value x has slope m within tolerances,
             otherwise false.
         """
+        if tolerance is None:
+            tolerance = self.tolerance['angle'] * DEGREES
+        else:
+            tolerance *= DEGREES
+            
         # compares the expected angle (from the expected slope m) and the actual angle
         expectedAngle = np.arctan2(self.yscale*m, self.xscale*1)
         no_gap, actualAngle = self.get_angle_at_gap(x)
-        return abs(expectedAngle - actualAngle) < self.tolerance['angle'] * DEGREES
+        return abs(expectedAngle - actualAngle) < tolerance
 
     def has_constant_value_y_between(self, y, xmin, xmax):
         """Return whether the function has a constant value y over the range xmin to xmax.
@@ -357,7 +386,7 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
 
         return self.comparer(xleft, xmin, leeway) and self.comparer(xmax, xright, leeway)
 
-    def does_exist_between(self, xmin, xmax, end_tolerance = 70, gap_tolerance = 40):
+    def does_exist_between(self, xmin, xmax, end_tolerance=70, gap_tolerance=40):
         """Return whether the function has values defined in the range xmin to xmax.
 
         Args:
@@ -414,7 +443,7 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
 
     # checks that the local minima between xmin and xmax is at x
     # may specify xmin and xmax directly, or with a delta value that indicates them, or leave it to the default delta
-    def has_min_at(self, x, delta = False, xmin = False, xmax = False):
+    def has_min_at(self, x, delta=False, xmin=False, xmax=False):
         """Return if the function has a local minimum at the value x.
 
         Args:
@@ -445,7 +474,7 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
         return yleft > y and yright > y
 
     # see has_min_at
-    def has_max_at(self, x, delta = False, xmin = False, xmax = False):
+    def has_max_at(self, x, delta=False, xmin=False, xmax=False):
         """Return if the function has a local maximum at the value x.
 
         Args:

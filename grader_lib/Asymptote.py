@@ -15,8 +15,8 @@ class Asymptotes(Gradeable.Gradeable):
     def __init__(self, info, tolerance = dict()):
         Gradeable.Gradeable.__init__(self, info, tolerance)
 
-        self.set_default_tolerance('distance', 20) # consider an asymptote to be at a value if it is within 20 pixels
-        self.set_default_tolerance('same', 10) # consider two asymptotes the same if they are within 10 pixels
+        self.set_default_tolerance('asym_distance', 20) # consider an asymptote to be at a value if it is within 20 pixels
+        self.set_default_tolerance('asym_same', 10) # consider two asymptotes the same if they are within 10 pixels
 
         self.asyms = []
         self.px_asyms = []
@@ -24,7 +24,7 @@ class Asymptotes(Gradeable.Gradeable):
             px, val = self.value_from_spline(spline['spline'])
             include = True
             for pxa in self.px_asyms:
-                if abs(pxa - px) < self.tolerance['same']:
+                if abs(pxa - px) < self.tolerance['asym_same']:
                     include = False
             if include:
                 self.asyms.append(val)
@@ -58,31 +58,38 @@ class Asymptotes(Gradeable.Gradeable):
 
         return minDistance, closestAsym
 
-    def get_asym_at_value(self, v):
+    def get_asym_at_value(self, v, tolerance=None):
         """Return the asymptote at the value v, or None.
 
         Args:
             v: a value in the range of the x or y axis.
+            tolerance(default: None): pixel distance tolerance, if None is given 'asym_distance' constant is used.
         Returns:
             float: the value of an asymptote that is within tolerances of
                    the value v, or None if no such asymptote exists.
         """
+        if tolerance is None:
+            tolerance = self.tolerance['asym_distance'] / (1.0 * self.scale)
+        else:
+            tolerance /= (1.0 * self.scale)
+
         d, asym = self.closest_asym_to_value(v)
-        if d < self.tolerance['distance'] / (1.0*self.scale):
+        if d < tolerance:
             return asym
 
         return None
 
-    def has_asym_at_value(self, v):
+    def has_asym_at_value(self, v, tolerance=None):
         """Return whether an asymtote is declared at the given value.
 
         Args:
             v: a value in the range of the x or y axis.
+            tolerance(default: None): pixel distance tolerance, if None is given 'asym_distance' constant is used.
         Returns:
             bool: true if there is an asymptote declared within tolerances
             of the value v, or false otherwise.
         """
-        return self.get_asym_at_value(v) is not None
+        return self.get_asym_at_value(v, tolerance=tolerance) is not None
 
     def get_number_of_asyms(self):
         """Return the number of asymptotes declared in the function.

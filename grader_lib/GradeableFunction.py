@@ -26,7 +26,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             self.pt.resampleNewSplines()
 
     def create_from_path_info(self, path_info):
-        dtol = 100 # work into tolerances later
+        dtol = 100
         self.functions = []
         self.points = []
         xvals = []
@@ -42,8 +42,6 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
                 d, p = self.closest_point_to_point(point)
                 if d >= dtol:
                     self.points.append(point)
-
-
 
 ## for Points ##
 
@@ -93,13 +91,21 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
         return minDistance, minPoint
 
     # returns None if no point is close enough
-    def get_point_at(self, point = False, x = False, y = False):
+    def get_point_at(self, point=False, x=False, y=False, distTolerance=None,
+                     squareDistTolerance=None):
         """ Return a reference to the Point declared at the given value.
 
         Args:
             point(default: False): a Point instance at the value of interest.
             x(default: False): the x coordinate of interest.
             y(default: False): the y coordinate of interest.
+            distTolerance(default: None): the pixel distance tolerance if 
+                                          only the x coordinate is given. If None
+                                          default constant 'point_distance' is used.
+            squareDistTolerance(default: None): the square pixel distance tolerance
+                                          if point, or x and y are given. If
+                                          None, default constant 'point_distance_squared'
+                                          is used.
 
         Note:    
            There are three use cases:
@@ -110,29 +116,45 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             Point: 
             the first Point instance within tolerances of the given arguments, or None
         """
+        if distTolerance is None:
+            distTolerance = self.tolerance['point_distance'] / self.xscale
+        else:
+            distTolerance /= self.xscale
+
+        if squareDistTolerance is None:
+            squareDistTolerance = self.tolerance['point_distance_squared']
+                
         if point is not False:
             distanceSquared, foundPoint = self.closest_point_to_point(point)
-            if distanceSquared < self.tolerance['point_distance_squared']:
+            if distanceSquared < squareDistTolerance:
                 return foundPoint
 
         if y is not False and x is not False:
-            point = Point.Point(self, x, y, pixel = False)
-            return self.get_point_at(point = point)
+            point = Point.Point(self, x, y, pixel=False)
+            return self.get_point_at(point=point)
 
         if x is not False:
             distance, foundPoint = self.closest_point_to_x(x)
-            if distance < self.tolerance['point_distance'] / self.xscale:
+            if distance < distTolerance:
                 return foundPoint
 
         return None
 
-    def has_point_at(self, **kwargs):
+    def has_point_at(self, point=False, x=False, y=False, distTolerance=None,
+                     squareDistTolerance=None):
         """ Return whether a point is declared at the given value.
 
         Args:
             point(default: False): a Point instance at the value of interest.
             x(default: False): the x coordinate of interest.
             y(default: False): the y coordinate of interest.
+            distTolerance(default: None): the pixel distance tolerance if 
+                                          only the x coordinate is given. If None
+                                          default constant 'point_distance' is used.
+            squareDistTolerance(default: None): the square pixel distance tolerance
+                                          if point, or x and y are given. If
+                                          None, default constant 'point_distance_squared'
+                                          is used.
 
         Note:    
            There are three use cases:
@@ -144,7 +166,9 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             true if there is a Point declared within tolerances of the given
             argument(s), false otherwise.
         """
-        return self.get_point_at(**kwargs) is not None
+        return self.get_point_at(point=point, x=x, y=y,
+                                 distTolerance=distTolerance,
+                                 squareDistTolerance=squareDistTolerance) is not None
 
     def get_number_of_points(self):
         """Return the number of points declared in the function."""
