@@ -23,20 +23,25 @@ docstrings from the source code.
 ```sh
 $ make html
 ```
-5. Checkout the `gh-pages` branch.
+5. Generate a pdf copy of the api docs. This will generate a pdf using latex in the directory _build/latex/. We will move this into the docs/assets directory for use when we build the usage docs.
+```sh
+$ make latexpdf
+$ mv _build/latex/SketchResponse.pdf ../assets/SketchResponseAPI.pdf
+```
+6. Checkout the `gh-pages` branch.
 ```sh
 $ git checkout gh-pages
 ```
-6. Move the new docs to the top level directory.
+7. Move the new docs to the top level directory.
 ```sh
 $ rsync -a _build/html/ ../..
 ```
-7. Commit and push all the modified files.
+8. Commit and push all the modified files.
 ```sh
 $ git commit -a -m "informative commit message here"
 $ git push
 ```
-8. And you are done. Checkout master (or whatever other branch you prefer).
+9. And you are done. Checkout master (or whatever other branch you prefer).
 ```sh
 $ git checkout master
 ```
@@ -44,15 +49,19 @@ $ git checkout master
 <div id=usage></div>
 ## Building the Usage documentation
 
-1. The first step in building the usage documentation is installing [Gitbook](https://github.com/GitbookIO/gitbook). Gitbook requires [NodeJS](https://nodejs.org/en/) to install since Gitbook is an npm package.
+1. The first step in building the usage documentation is installing [Gitbook](https://github.com/GitbookIO/gitbook). Gitbook requires [NodeJS](https://nodejs.org/en/) to install since Gitbook is an npm package. You will also need Calibre installed because we will need `ebook-convert` to generate the pdf version of the gitbook. Follow the instructions [here](https://toolchain.gitbook.com/ebook.html) to install Calibre and make `ebook-convert` accessible on your PATH.
 ```sh
 $ npm install gitbook-cli -g
 ```
-2. Build the docs. This will create the html in the directory _book.
+2. Build the pdf. This will create a pdf copy of the docs in the current direcotry.
+```sh
+$ gitbook pdf ./ ./docs/assets/SketchResponse.pdf
+```
+3. Build the docs. This will create the html in the directory _book.
 ```sh
 $ gitbook build
 ```
-3. Clone or pull down the lastest copy of the SketchResponse github.io page.
+4. Clone or pull down the lastest copy of the SketchResponse github.io page.
 ```sh
 $ cd ..
 $ git clone https://github.com/SketchResponse/SketchResponse.github.io.git
@@ -62,14 +71,14 @@ or
 $ cd ../SketchResponse.github.io
 $ git pull
 ```
-4. Change back into the book directory and copy the new files to the github.io repository.
+5. Change back into the book directory and copy the new files to the github.io repository.
 ```sh
 $ cd sketchresponse/_book
 $ rsync -a _book/ ../SketchResponse.github.io/
 ```
-5. Change directory to the github.io reponsitory, commit and push all changes.
+6. Change directory to the github.io reponsitory, commit and push all changes.
 ```sh
 $ cd ../SketchResponse.github.io
 $ git commit -a -m "informative commit message here"
 $ git push
-6. That's it. You are done.
+7. That's it. You are done.
