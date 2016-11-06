@@ -81,18 +81,28 @@ grading functions below.</p>
 
 <dl class="method">
 <dt id="grader_lib.Asymptote.Asymptotes.get_asym_at_value">
-<code class="descname">get_asym_at_value</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.get_asym_at_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_asym_at_value</code><span class="sig-paren">(</span><em>v</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.get_asym_at_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the asymptote at the value v, or None.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> &#8211; a value in the range of the x or y axis.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> &#8211; a value in the range of the x or y axis.</li>
+<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance, if None is given &#8216;asym_distance&#8217; constant is used.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the value of an asymptote that is within tolerances of
-the value v, or None if no such asymptote exists.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>the value of an asymptote that is within tolerances of</dt>
+<dd><p class="first last">the value v, or None if no such asymptote exists.</p>
+</dd>
+</dl>
+</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -116,18 +126,24 @@ the value v, or None if no such asymptote exists.</td>
 
 <dl class="method">
 <dt id="grader_lib.Asymptote.Asymptotes.has_asym_at_value">
-<code class="descname">has_asym_at_value</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.has_asym_at_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_asym_at_value</code><span class="sig-paren">(</span><em>v</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.has_asym_at_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether an asymtote is declared at the given value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> &#8211; a value in the range of the x or y axis.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> &#8211; a value in the range of the x or y axis.</li>
+<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance, if None is given &#8216;asym_distance&#8217; constant is used.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">true if there is an asymptote declared within tolerances
-of the value v, or false otherwise.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if there is an asymptote declared within tolerances
+of the value v, or false otherwise.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -160,6 +176,367 @@ function you are grading.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="grader-lib-linesegment-module">
+<h2>grader_lib.LineSegment module<a class="headerlink" href="#grader-lib-linesegment-module" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-grader_lib.LineSegment"></span><dl class="class">
+<dt id="grader_lib.LineSegment.LineSegment">
+<em class="property">class </em><code class="descclassname">grader_lib.LineSegment.</code><code class="descname">LineSegment</code><span class="sig-paren">(</span><em>point1</em>, <em>point2</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegment" title="Permalink to this definition">¶</a></dt>
+<dd><p>A line segment wrapper class. Contains two Points defining the
+start point and the end point of the segment.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="grader_lib.LineSegment.LineSegments">
+<em class="property">class </em><code class="descclassname">grader_lib.LineSegment.</code><code class="descname">LineSegments</code><span class="sig-paren">(</span><em>info</em>, <em>tolerance={}</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
+<p>Line Segments.</p>
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.check_segment_endpoint">
+<code class="descname">check_segment_endpoint</code><span class="sig-paren">(</span><em>segment</em>, <em>point</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.check_segment_endpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the segment has its end point at the point (x,y).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>segment</strong> &#8211; the line segment to check</li>
+<li><strong>point</strong> &#8211; a list [x, y] defining the point to check</li>
+<li><strong>tolerance</strong> &#8211; the square of the distance in pixels</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the segment&#8217;s end point is at (x,y) within tolerances,
+otherwise false.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.check_segment_endpoints">
+<code class="descname">check_segment_endpoints</code><span class="sig-paren">(</span><em>segment</em>, <em>points</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.check_segment_endpoints" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return whether the segment&#8217;s start and end points are both in</dt>
+<dd>the list of points.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>segment</strong> &#8211; the line segment to check</li>
+<li><strong>points</strong> &#8211; a list of [x, y] coordiates</li>
+<li><strong>tolerance</strong> &#8211; the square of the distance in pixels</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the segments start and end points are in points,
+otherwise false.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.check_segment_startpoint">
+<code class="descname">check_segment_startpoint</code><span class="sig-paren">(</span><em>segment</em>, <em>point</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.check_segment_startpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the segment has its start point at the point (x,y).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>segment</strong> &#8211; the line segment to check</li>
+<li><strong>point</strong> &#8211; a list [x, y] defining the point to check</li>
+<li><strong>tolerance</strong> &#8211; the square of the distance in pixels</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the segment&#8217;s start point is at (x,y) within tolerances,
+otherwise false.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.does_exist_between">
+<code class="descname">does_exist_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.does_exist_between" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return whether the function has values defined in the range xmin</dt>
+<dd>to xmax.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if at least one line segment overlaps with the range xmin
+to xmax within tolerances, otherwise false.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.does_not_exist_between">
+<code class="descname">does_not_exist_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.does_not_exist_between" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return whether the function has no values defined in the range</dt>
+<dd>xmin to xmax.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if no line segments overlap with the range (xmin, xmax)
+within tolerances, otherwise false.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.get_number_of_segments">
+<code class="descname">get_number_of_segments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.get_number_of_segments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of line segments in this grader module.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the number of line segments in this grader module</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.get_segment_angle">
+<code class="descname">get_segment_angle</code><span class="sig-paren">(</span><em>segment</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.get_segment_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the angle of the line segment in radians.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segment</strong> &#8211; the line segment to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the angle of the line segment in radians</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.get_segment_length">
+<code class="descname">get_segment_length</code><span class="sig-paren">(</span><em>segment</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.get_segment_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the length of the line segment.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segment</strong> &#8211; the line segment to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the length of the line segment</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.get_segments_at">
+<code class="descname">get_segments_at</code><span class="sig-paren">(</span><em>point=False</em>, <em>x=False</em>, <em>y=False</em>, <em>distTolerance=None</em>, <em>squareDistTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.get_segments_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of line segments declared at the given value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>point(default</strong> &#8211; False): a Point instance at the value of interest.</li>
+<li><strong>x(default</strong> &#8211; False): the x coordinate of interest.</li>
+<li><strong>y(default</strong> &#8211; False): the y coordinate of interest.</li>
+<li><strong>distTolerance(default</strong> &#8211; None): the pixel distance tolerance if
+only the x or y coordinate is given. If None
+default constant &#8216;line_distance&#8217; is used.</li>
+<li><strong>squareDistTolerance(default</strong> &#8211; None): the square pixel distance tolerance
+if point, or x and y are given. If
+None, default constant &#8216;line_distance_squared&#8217;
+is used.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<dl class="last docutils">
+<dt>There are four use cases:</dt>
+<dd><ol class="first last arabic simple">
+<li>point not False: use the Point instance as the target to locate segments, returning a list of segments that pass through the Point.</li>
+<li>x and y not False: use (x, y) as the target to locate segments, returning a list of segments that pass through the point (x, y).</li>
+<li>x not False: use only the x coordinate to locate segments, returning a list of segments that pass through given x value.</li>
+<li>y not False: use only the y coordinate to locate segments, returning a list of segments that pass through the given y value.</li>
+</ol>
+</dd>
+</dl>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a list of the line segments within tolerances of the given position
+arguments, or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.has_angle_t_at_x">
+<code class="descname">has_angle_t_at_x</code><span class="sig-paren">(</span><em>t</em>, <em>x</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.has_angle_t_at_x" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return whether the line segment at position x has an angle of t</dt>
+<dd>wrt the x axis.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t</strong> &#8211; the angle in radians</li>
+<li><strong>x</strong> &#8211; the position on the x-axis to test against.</li>
+<li><strong>tolerance</strong> &#8211; the angle tolerance in degrees</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the function at value x has angle t within tolerances,
+otherwise false.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.has_segments_at">
+<code class="descname">has_segments_at</code><span class="sig-paren">(</span><em>point=False</em>, <em>x=False</em>, <em>y=False</em>, <em>distTolerance=None</em>, <em>squareDistTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.has_segments_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of line segments declared at the given value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>point(default</strong> &#8211; False): a Point instance at the value of interest.</li>
+<li><strong>x(default</strong> &#8211; False): the x coordinate of interest.</li>
+<li><strong>y(default</strong> &#8211; False): the y coordinate of interest.</li>
+<li><strong>distTolerance(default</strong> &#8211; None): the pixel distance tolerance if
+only the x or y coordinate is given. If None
+default constant &#8216;line_distance&#8217; is used.</li>
+<li><strong>squareDistTolerance(default</strong> &#8211; None): the square pixel distance tolerance
+if point, or x and y are given. If
+None, default constant &#8216;line_distance_squared&#8217;
+is used.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<dl class="last docutils">
+<dt>There are four use cases:</dt>
+<dd><ol class="first last arabic simple">
+<li>point not False: use the Point instance as the target to locate segments, returning a list of segments that pass through the Point.</li>
+<li>x and y not False: use (x, y) as the target to locate segments, returning a list of segments that pass through the point (x, y).</li>
+<li>x not False: use only the x coordinate to locate segments, returning a list of segments that pass through given x value.</li>
+<li>y not False: use only the y coordinate to locate segments, returning a list of segments that pass through the given y value.</li>
+</ol>
+</dd>
+</dl>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">true if there is at least one line segment within tolerance of the
+given position, otherwise false.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.has_slope_m_at_x">
+<code class="descname">has_slope_m_at_x</code><span class="sig-paren">(</span><em>m</em>, <em>x</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.has_slope_m_at_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the function has slope m at the value x.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>m</strong> &#8211; the slope value to test against.</li>
+<li><strong>x</strong> &#8211; the position on the x-axis to test against.</li>
+<li><strong>tolerance</strong> &#8211; the angle tolerance in degrees</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the function at value x has slope m within tolerances,
+otherwise false.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-grader_lib.GradeableFunction">
 <span id="grader-lib-gradeablefunction-module"></span><h2>grader_lib.GradeableFunction module<a class="headerlink" href="#module-grader_lib.GradeableFunction" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -171,7 +548,6 @@ function you are grading.</p>
 <dt id="grader_lib.GradeableFunction.GradeableFunction.closest_point_to_point">
 <code class="descname">closest_point_to_point</code><span class="sig-paren">(</span><em>point</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.closest_point_to_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the square pixel distance to the closest point and a Point instance.</p>
-<p>Note: IS THIS SUPPOSED TO BE PART OF THE PUBLIC API? ITS UNCLEAR.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -295,7 +671,7 @@ to xmax, otherwise false.</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.get_point_at">
-<code class="descname">get_point_at</code><span class="sig-paren">(</span><em>point=False</em>, <em>x=False</em>, <em>y=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.get_point_at" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_point_at</code><span class="sig-paren">(</span><em>point=False</em>, <em>x=False</em>, <em>y=False</em>, <em>distTolerance=None</em>, <em>squareDistTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.get_point_at" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a reference to the Point declared at the given value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -305,6 +681,13 @@ to xmax, otherwise false.</p>
 <li><strong>point(default</strong> &#8211; False): a Point instance at the value of interest.</li>
 <li><strong>x(default</strong> &#8211; False): the x coordinate of interest.</li>
 <li><strong>y(default</strong> &#8211; False): the y coordinate of interest.</li>
+<li><strong>distTolerance(default</strong> &#8211; None): the pixel distance tolerance if
+only the x coordinate is given. If None
+default constant &#8216;point_distance&#8217; is used.</li>
+<li><strong>squareDistTolerance(default</strong> &#8211; None): the square pixel distance tolerance
+if point, or x and y are given. If
+None, default constant &#8216;point_distance_squared&#8217;
+is used.</li>
 </ul>
 </td>
 </tr>
@@ -440,7 +823,7 @@ xmin and xmax, otherwise false.</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.has_negative_curvature_between">
-<code class="descname">has_negative_curvature_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em>, <em>numSegments=5</em>, <em>failureTolerance=1</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.has_negative_curvature_between" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_negative_curvature_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em>, <em>numSegments=5</em>, <em>failureTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.has_negative_curvature_between" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether the function has negative curvature in the range xmin to xmax.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -452,9 +835,10 @@ xmin and xmax, otherwise false.</p>
 <li><strong>numSegments(default</strong> &#8211; 5): the number of segments to divide the function
 into to individually test for negative
 curvature.</li>
-<li><strong>failureTolerance(default</strong> &#8211; 1): the number of segments that can fail the
+<li><strong>failureTolerance(default</strong> &#8211; None): the number of segments that can fail the
 negative curvature test before test
-failure.</li>
+failure. If None given uses default constant
+&#8216;curve_failure&#8217;.</li>
 </ul>
 </td>
 </tr>
@@ -471,7 +855,7 @@ otherwise false.</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.has_point_at">
-<code class="descname">has_point_at</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.has_point_at" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_point_at</code><span class="sig-paren">(</span><em>point=False</em>, <em>x=False</em>, <em>y=False</em>, <em>distTolerance=None</em>, <em>squareDistTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.has_point_at" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether a point is declared at the given value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -481,6 +865,13 @@ otherwise false.</p>
 <li><strong>point(default</strong> &#8211; False): a Point instance at the value of interest.</li>
 <li><strong>x(default</strong> &#8211; False): the x coordinate of interest.</li>
 <li><strong>y(default</strong> &#8211; False): the y coordinate of interest.</li>
+<li><strong>distTolerance(default</strong> &#8211; None): the pixel distance tolerance if
+only the x coordinate is given. If None
+default constant &#8216;point_distance&#8217; is used.</li>
+<li><strong>squareDistTolerance(default</strong> &#8211; None): the square pixel distance tolerance
+if point, or x and y are given. If
+None, default constant &#8216;point_distance_squared&#8217;
+is used.</li>
 </ul>
 </td>
 </tr>
@@ -513,7 +904,7 @@ argument(s), false otherwise.</td>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.has_positive_curvature_between">
-<code class="descname">has_positive_curvature_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em>, <em>numSegments=5</em>, <em>failureTolerance=1</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.has_positive_curvature_between" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_positive_curvature_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em>, <em>numSegments=5</em>, <em>failureTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.has_positive_curvature_between" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether the function has positive curvature in the range xmin to xmax.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -525,9 +916,10 @@ argument(s), false otherwise.</td>
 <li><strong>numSegments(default</strong> &#8211; 5): the number of segments to divide the function
 into to individually test for positive
 curvature.</li>
-<li><strong>failureTolerance(default</strong> &#8211; 1): the number of segments that can fail the
+<li><strong>failureTolerance(default</strong> &#8211; None): the number of segments that can fail the
 positive curvature test before test
-failure.</li>
+failure. If None given uses default constant
+&#8216;curve_failure&#8217;.</li>
 </ul>
 </td>
 </tr>
@@ -544,7 +936,7 @@ otherwise false.</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.has_slope_m_at_x">
-<code class="descname">has_slope_m_at_x</code><span class="sig-paren">(</span><em>m</em>, <em>x</em>, <em>delta=50</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.has_slope_m_at_x" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_slope_m_at_x</code><span class="sig-paren">(</span><em>m</em>, <em>x</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.has_slope_m_at_x" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether the function has slope m at the value x.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -553,7 +945,8 @@ otherwise false.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>m</strong> &#8211; the slope value to test against.</li>
 <li><strong>x</strong> &#8211; the position on the x-axis to test against.</li>
-<li><strong>delta(default</strong> &#8211; 50): ??? Doesn&#8217;t appear to be used.</li>
+<li><strong>tolerance(default</strong> &#8211; None): angle tolerance in degrees. If None given uses
+default constant &#8216;angle&#8217;.</li>
 </ul>
 </td>
 </tr>
@@ -570,7 +963,7 @@ otherwise false.</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.has_value_y_at_x">
-<code class="descname">has_value_y_at_x</code><span class="sig-paren">(</span><em>y</em>, <em>x</em>, <em>yTolerance=False</em>, <em>xTolerance=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.has_value_y_at_x" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_value_y_at_x</code><span class="sig-paren">(</span><em>y</em>, <em>x</em>, <em>yTolerance=None</em>, <em>xTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.has_value_y_at_x" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether the function has the value y at x.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -579,9 +972,9 @@ otherwise false.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>y</strong> &#8211; the target y value.</li>
 <li><strong>x</strong> &#8211; the x value.</li>
-<li><strong>yTolerance(default</strong> &#8211; False): the y-axis pixel distance within which
+<li><strong>yTolerance(default</strong> &#8211; None): the y-axis pixel distance within which
 the function value is accepted.</li>
-<li><strong>xTolerance(default</strong> &#8211; False): the x-axis pixel distance within which
+<li><strong>xTolerance(default</strong> &#8211; None): the x-axis pixel distance within which
 the function value is accepted.</li>
 </ul>
 </td>
@@ -599,7 +992,7 @@ false</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.is_always_decreasing">
-<code class="descname">is_always_decreasing</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_always_decreasing" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_always_decreasing</code><span class="sig-paren">(</span><em>failureTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_always_decreasing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether the function is decreasing over its entire domain.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -616,7 +1009,7 @@ domain, otherwise false.</td>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.is_always_increasing">
-<code class="descname">is_always_increasing</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_always_increasing" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_always_increasing</code><span class="sig-paren">(</span><em>failureTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_always_increasing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether the function is increasing over its entire domain.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -633,7 +1026,7 @@ domain, otherwise false.</td>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.is_decreasing_between">
-<code class="descname">is_decreasing_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em>, <em>numPoints=10</em>, <em>failureTolerance=2</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_decreasing_between" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_decreasing_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em>, <em>numPoints=10</em>, <em>failureTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_decreasing_between" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether the function is decreasing in the range xmin to xmax.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -643,9 +1036,10 @@ domain, otherwise false.</td>
 <li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
 <li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
 <li><strong>numPoints(default</strong> &#8211; 10): the number of points to test along the range.</li>
-<li><strong>failureTolerance(default</strong> &#8211; 2): the number of pairwise point decrease
+<li><strong>failureTolerance(default</strong> &#8211; None): the number of pairwise point decrease
 comparisons that can fail before the test
-fails.</li>
+fails. If None give, default constant
+&#8216;inc_dec_failure&#8217; is used.</li>
 </ul>
 </td>
 </tr>
@@ -662,7 +1056,7 @@ for the range xmin to xmax, otherwise false.</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.is_greater_than_y_between">
-<code class="descname">is_greater_than_y_between</code><span class="sig-paren">(</span><em>y</em>, <em>xmin</em>, <em>xmax</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_greater_than_y_between" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_greater_than_y_between</code><span class="sig-paren">(</span><em>y</em>, <em>xmin</em>, <em>xmax</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_greater_than_y_between" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether function is always greater than y in the range xmin to xmax.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -672,6 +1066,8 @@ for the range xmin to xmax, otherwise false.</p>
 <li><strong>y</strong> &#8211; the target y value.</li>
 <li><strong>xmin</strong> &#8211; the minimum x range value.</li>
 <li><strong>xmax</strong> &#8211; the maximum x range value.</li>
+<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance. If None given uses
+default constant &#8216;comparison&#8217;.</li>
 </ul>
 </td>
 </tr>
@@ -688,7 +1084,7 @@ is greater than y within tolerances, otherwise false.</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.is_increasing_between">
-<code class="descname">is_increasing_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em>, <em>numPoints=10</em>, <em>failureTolerance=2</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_increasing_between" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_increasing_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em>, <em>numPoints=10</em>, <em>failureTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_increasing_between" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether the function is increasing in the range xmin to xmax.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -698,9 +1094,10 @@ is greater than y within tolerances, otherwise false.</p>
 <li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
 <li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
 <li><strong>numPoints(default</strong> &#8211; 10): the number of points to test along the range.</li>
-<li><strong>failureTolerance(default</strong> &#8211; 2): the number of pairwise point increase
+<li><strong>failureTolerance(default</strong> &#8211; None): the number of pairwise point increase
 comparisons that can fail before the test
-fails.</li>
+fails. If None give, default constant
+&#8216;inc_dec_failure&#8217; is used.</li>
 </ul>
 </td>
 </tr>
@@ -717,7 +1114,7 @@ for the range xmin to xmax, otherwise false.</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.is_less_than_y_between">
-<code class="descname">is_less_than_y_between</code><span class="sig-paren">(</span><em>y</em>, <em>xmin</em>, <em>xmax</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_less_than_y_between" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_less_than_y_between</code><span class="sig-paren">(</span><em>y</em>, <em>xmin</em>, <em>xmax</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_less_than_y_between" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether function is always less than y in the range xmin to xmax.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -727,6 +1124,8 @@ for the range xmin to xmax, otherwise false.</p>
 <li><strong>y</strong> &#8211; the target y value.</li>
 <li><strong>xmin</strong> &#8211; the minimum x range value.</li>
 <li><strong>xmax</strong> &#8211; the maximum x range value.</li>
+<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance. If None given uses
+default constant &#8216;comparison&#8217;.</li>
 </ul>
 </td>
 </tr>
@@ -785,16 +1184,16 @@ otherwise false</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.is_zero_at_x_equals_zero">
-<code class="descname">is_zero_at_x_equals_zero</code><span class="sig-paren">(</span><em>yTolerance=False</em>, <em>xTolerance=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_zero_at_x_equals_zero" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_zero_at_x_equals_zero</code><span class="sig-paren">(</span><em>yTolerance=None</em>, <em>xTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.is_zero_at_x_equals_zero" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether the function is zero at x equals zero.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>yTolerance(default</strong> &#8211; False): the y-axis pixel distance within which
+<li><strong>yTolerance(default</strong> &#8211; None): the y-axis pixel distance within which
 the function value is accepted.</li>
-<li><strong>xTolerance(default</strong> &#8211; False): the x-axis pixel distance within which
+<li><strong>xTolerance(default</strong> &#8211; None): the x-axis pixel distance within which
 the function value is accepted.</li>
 </ul>
 </td>
@@ -844,6 +1243,7 @@ tolerances, otherwise false</p>
 <li><a class="reference internal" href="#">grader_lib package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-grader_lib.Asymptote">grader_lib.Asymptote module</a></li>
+<li><a class="reference internal" href="#grader-lib-linesegment-module">grader_lib.LineSegment module</a></li>
 <li><a class="reference internal" href="#module-grader_lib.GradeableFunction">grader_lib.GradeableFunction module</a></li>
 <li><a class="reference internal" href="#module-grader_lib.Point">grader_lib.Point module</a></li>
 </ul>
@@ -867,14 +1267,11 @@ tolerances, otherwise false</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -885,7 +1282,7 @@ tolerances, otherwise false</p>
       &copy;2016.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
       
       |
