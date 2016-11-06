@@ -53,15 +53,19 @@ $ git checkout master
 ```sh
 $ npm install gitbook-cli -g
 ```
-2. Build the pdf. This will create a pdf copy of the docs in the current direcotry.
+2. Change directory to the root of the SketchResponse repository.
+```sh
+$ cd ../..
+```
+3. Build the pdf. This will create a pdf copy of the docs in the current direcotry.
 ```sh
 $ gitbook pdf ./ ./docs/assets/SketchResponse.pdf
 ```
-3. Build the docs. This will create the html in the directory _book.
+4. Build the docs. This will create the html in the directory _book.
 ```sh
 $ gitbook build
 ```
-4. Clone or pull down the lastest copy of the SketchResponse github.io page.
+5. Clone or pull down the lastest copy of the SketchResponse github.io page.
 ```sh
 $ cd ..
 $ git clone https://github.com/SketchResponse/SketchResponse.github.io.git
@@ -71,14 +75,14 @@ or
 $ cd ../SketchResponse.github.io
 $ git pull
 ```
-5. Change back into the book directory and copy the new files to the github.io repository.
+6. Change back into the sketchresponse directory and copy the new files to the github.io repository.
 ```sh
-$ cd sketchresponse/_book
+$ cd ../sketchresponse
 $ rsync -a _book/ ../SketchResponse.github.io/
 ```
-6. Change directory to the github.io reponsitory, commit and push all changes.
+7. Change directory to the github.io reponsitory, commit and push all changes.
 ```sh
 $ cd ../SketchResponse.github.io
 $ git commit -a -m "informative commit message here"
 $ git push
-7. That's it. You are done.
+8. That's it. You are done.
