@@ -405,6 +405,9 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
         gap = gap_tolerance / self.xscale
         endgap = end_tolerance / self.xscale
 
+        if len(self.functions) == 0:
+            return False
+
         for function in self.functions:
             [xleft, xright] = function.get_domain()
 
