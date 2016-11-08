@@ -57,6 +57,9 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 docs/apidocs/_build/
+docs/assets/SketchResponse.pdf
+docs/assets/SketchResponseAPI.pdf
+.buildinfo
 
 # PyBuilder
 target/
