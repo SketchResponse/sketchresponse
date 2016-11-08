@@ -29,7 +29,7 @@ class TestPointPlugin(unittest.TestCase):
         self.actions = ActionChains(self.driver)
         # Click point plugin button in toolbar to activate it
         # Not really necessary for this plugin, as it is activated by default but things may change
-        self.click_toolbar_button(self, 'cp')
+        self.click_toolbar_button('cp')
 
     def test_creation_selection_deletion_grading(self):
         # Create a points on the canvas.
@@ -57,6 +57,7 @@ class TestPointPlugin(unittest.TestCase):
         grade = json.loads(grade_str)
         self.assertTrue(not grade['data']['cp'])
 
+    @classmethod
     def click_toolbar_button(self, id):
         button = self.driver.find_element_by_css_selector('#si-toolbar > #%s > button' % id)
         button.click()
