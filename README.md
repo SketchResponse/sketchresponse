@@ -123,9 +123,7 @@ As this project evolves, the current documentation will no longer match the exis
 Support
 -------
 
-TODO
-If you are having issues, please let us know.
-We have a mailing list located at: $project@google-groups.com
+If you are having issues or encounter a bug, please [create a GitHub issue](https://github.com/SketchResponse/sketchresponse/issues) and we'll try to help!
 
 License
 -------
