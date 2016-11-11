@@ -88,24 +88,10 @@ Usage Guides
 Contribute
 ----------
 
+Contributions to this project are very welcome! If you'd like to contribute, please open a GitHub issue and we'll get in touch.
+
 - Issue Tracker: [github.com/SketchResponse/sketchresponse/issues](https://github.com/SketchResponse/sketchresponse/issues)
 - Source Code: [github.com/SketchResponse/sketchresponse/](https://github.com/SketchResponse/sketchresponse/)
-
-## Main sketch tool dev dependencies
-
-NPM modules (see [`package.json`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/package.json))
-* [`autoprefixer`](https://www.npmjs.com/package/autoprefixer)
-* [`fast-sourcemap-concat`](https://www.npmjs.com/package/fast-sourcemap-concat)
-* [`glob`](https://www.npmjs.com/package/glob)
-* [`gobble`](https://www.npmjs.com/package/gobble)
-* [`jasmine-core`](https://www.npmjs.com/package/jasmine-core)
-* [`jspm`](https://www.npmjs.com/package/jspm)
-* [`karma`](https://www.npmjs.com/package/karma)
-* [`node-sass`](https://www.npmjs.com/package/node-sass)
-* [`phantomjs`](https://www.npmjs.com/package/phantomjs)
-* [`postcss-cli`](https://www.npmjs.com/package/postcss-cli)
-
-JSPM fetched modules (see [`config.js`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/config.js))
 
 ## Running tests for the Grader Library Back-end
 
