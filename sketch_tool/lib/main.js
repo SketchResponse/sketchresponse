@@ -51,20 +51,24 @@ export default class SketchInput {
           <header>
             <h1>SketchResponse</h1>
             <p class="si-copyright">
-              Copyright 2015-2016 Massachusetts Institute of Technology. All rights Reserved.
+              Copyright (c) 2015-2016 Massachusetts Institute of Technology.
             </p>
           </header>
           <p>
-            SketchResponse is an extensible graphical input and assessment tool for online learning platforms.
-            It is very much a work in progress; we welcome your feedback and ideas at
-            <a href="mailto:sketchinput-feedback@mit.edu">sketchinput-feedback@mit.edu</a>.
-            The source code for this project will likely be available under an open-source license in the near future.
-            If you are interested in updates, please let us know!
+            SketchResponse is an open-source graphical input and assessment tool for online learning
+            platforms. The code and documentation for this project (including instructions for course authors wishing to
+            create their own sketch problems) are freely available at
+            <a href="https://github.com/SketchResponse/sketchresponse" target="_blank">github.com/SketchResponse</a>.
+            We welcome collaborators and are open to any feedback you may have!
           </p>
           <p>
-            This software contains open-source, third-party code and creative-commons licensed content (for which
-            we are grateful). These are distributed under the terms of their own licenses, which are included
-            in the <a href="LICENSE.txt" target="_blank">LICENSE file</a> provided with this project.
+            This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser
+            General Public License as published by the Free Software Foundation. Please see our <a href="LICENSE.txt"
+            target="_blank">LICENSE file</a> for complete license terms.
+          </p>
+          <p>
+            SketchResponse also uses third-party code and creative-commons licensed content which are distributed under
+            their own license terms; details may be found in the LICENSE file linked above.
           </p>
         </div>
       </div>
