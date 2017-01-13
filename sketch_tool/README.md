@@ -88,4 +88,5 @@ NPM modules (see [`package.json`](https://github.com/SketchResponse/sketchrespon
 JSPM fetched modules (see [`config.js`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/config.js))
 
 ### License
-The code in this repository is under copyright from the *Massachusetts Institute of Technology, 2015, All Rights Reserved* unless otherwise noted. Please see the [`LICENSE`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/LICENSE) file for details.
+
+Please refer to the [LICENSE file](https://github.com/SketchResponse/sketchresponse/blob/master/LICENSE) in the root of the SketchResponse repository.

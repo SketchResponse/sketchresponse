@@ -103,7 +103,7 @@ else {
 var staticAssets = gobble([
   libAndPlugins.exclude('**/*.js'),
 
-  gobble('LICENSE')
+  gobble('../LICENSE')
     .transform('rename', {from: 'LICENSE', to: 'LICENSE.txt'}),
 
   gobble('fonts').moveTo('fonts'),
