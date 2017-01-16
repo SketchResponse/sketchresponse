@@ -114,5 +114,4 @@ If you are having issues or encounter a bug, please [create a GitHub issue](http
 License
 -------
 
-Copyright (c) 2016 Massachusetts Institute of Technology
-All rights reserved.
+Please refer to the [LICENSE file](LICENSE) in the root of the SketchResponse repository.
