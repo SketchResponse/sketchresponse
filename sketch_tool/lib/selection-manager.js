@@ -107,6 +107,14 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
+      else if (elementClasses.indexOf('drawing') != -1) {
+        this.messageBus.emit(
+          'addDrawing',
+          elementClasses[1].substring(10),
+          parseInt(elementClasses[2].substring(12))
+        );
+        elWasDeleted = true;
+      }
     });
     this.messageBus.emit('deletePoints');
     this.messageBus.emit('deleteHorizontalLines');
@@ -114,6 +122,7 @@ export default class SelectionManager {
     this.messageBus.emit('deleteLineSegments');
     this.messageBus.emit('deleteLineSegmentPoints');
     this.messageBus.emit('deleteFreeforms');
+    this.messageBus.emit('deleteDrawings');
     this.deselectAll();
     if (elWasDeleted) {
       this.messageBus.emit('deleteFinished');

@@ -145,6 +145,28 @@ function loadConfig(configId) {
           color: 'orange'
         }
       ]
+    },
+    config3: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes',
+        },
+        {
+          name: 'drawing',
+          id: 'dr',
+          label: 'Beam',
+          color: 'cornflowerblue',
+          src: './plugins/ibeam.svg',
+          scale: 0.5
+        }
+      ]
     }
   };
   if (configs.hasOwnProperty(configId)) {
