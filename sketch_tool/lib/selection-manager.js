@@ -107,9 +107,9 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
-      else if (elementClasses.indexOf('drawing') != -1) {
+      else if (elementClasses.indexOf('stamp') != -1) {
         this.messageBus.emit(
-          'addDrawing',
+          'addStamp',
           elementClasses[1].substring(10),
           parseInt(elementClasses[2].substring(12))
         );
@@ -122,7 +122,7 @@ export default class SelectionManager {
     this.messageBus.emit('deleteLineSegments');
     this.messageBus.emit('deleteLineSegmentPoints');
     this.messageBus.emit('deleteFreeforms');
-    this.messageBus.emit('deleteDrawings');
+    this.messageBus.emit('deleteStamps');
     this.deselectAll();
     if (elWasDeleted) {
       this.messageBus.emit('deleteFinished');
