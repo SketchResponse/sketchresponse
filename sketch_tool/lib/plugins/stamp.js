@@ -4,21 +4,25 @@ import BasePlugin from './base-plugin';
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 export const DEFAULTS = {
+  width: 100,
+  height: 100,
   scale: 1
 };
 
-export default class Drawing extends BasePlugin {
+export default class Stamp extends BasePlugin {
   constructor(params, app) {
     // Add params that are specific to this plugin
     params.icon = {
-      src: './plugins/ibeam-icon.svg',
-      alt: 'Drawing tool'
+      src: './plugins/stamp/ibeam-icon.svg',
+      alt: 'Stamp tool'
     };
     super(params, app);
     this.scale = (params.scale !== undefined) ? params.scale : DEFAULTS.scale;
+    this.width = (params.imgwidth !== undefined) ? params.imgwidth : DEFAULTS.width;
+    this.height = (params.imgheight !== undefined) ? params.imgheight : DEFAULTS.height;
     // Message listeners
-    this.app.__messageBus.on('addDrawing', (id, index) => {this.addDrawing(id, index)});
-    this.app.__messageBus.on('deleteDrawings', () => {this.deleteDrawings()});
+    this.app.__messageBus.on('addStamp', (id, index) => {this.addStamp(id, index)});
+    this.app.__messageBus.on('deleteStamps', () => {this.deleteStamps()});
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
   }
 
@@ -30,13 +34,13 @@ export default class Drawing extends BasePlugin {
     });
   }
 
-  addDrawing(id, index) {console.log(this.id); console.log(id)
+  addStamp(id, index) {
     if (this.id === id) {
       this.delIndices.push(index);
     }
   }
 
-  deleteDrawings() {
+  deleteStamps() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
       for (let i = this.delIndices.length -1; i >= 0; i--) {
@@ -85,15 +89,23 @@ export default class Drawing extends BasePlugin {
     event.preventDefault();
   }
 
+  // We first scale our image.
+  // Then translate so that the image is centered on mouse click.
+  getTransform(x, y) {
+    let xt = x - 0.5*this.scale*this.width,
+        yt = y - 0.5*this.scale*this.height;
+    return `translate(${xt}, ${yt}) scale(${this.scale})`;
+  }
+
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
-        z('image.drawing' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
-          x: position.x,
-          y: position.y,
-          width: '450',
-          height: '100',
-          transform: `scale(${this.scale})`,
+        z('image.stamp' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
+          x: 0,
+          y: 0,
+          width: this.width,
+          height: this.height,
+          transform: this.getTransform(position.x, position.y),
           'xlink:href': this.params.src,
           style: `
             border-color: blue;
@@ -123,10 +135,12 @@ export default class Drawing extends BasePlugin {
   }
 
   inBoundsX(x) {
-    return x >= this.bounds.xmin && x <= this.bounds.xmax;
+    let dx = 0.5*this.scale*this.width;
+    return x - dx >= this.bounds.xmin && x + dx <= this.bounds.xmax;
   }
 
   inBoundsY(y) {
-    return y >= this.bounds.ymin && y <= this.bounds.ymax;
+    let dy = 0.5*this.scale*this.height;
+    return y - dy >= this.bounds.ymin && y + dy <= this.bounds.ymax;
   }
 }

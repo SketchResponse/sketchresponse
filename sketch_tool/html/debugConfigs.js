@@ -159,11 +159,13 @@ function loadConfig(configId) {
           name: 'axes',
         },
         {
-          name: 'drawing',
-          id: 'dr',
+          name: 'stamp',
+          id: 'st',
           label: 'Beam',
           color: 'cornflowerblue',
-          src: './plugins/ibeam.svg',
+          src: './plugins/stamp/ibeam.svg',
+          imgwidth: 450,
+          imgheight: 100,
           scale: 0.5
         }
       ]
