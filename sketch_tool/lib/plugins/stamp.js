@@ -135,12 +135,10 @@ export default class Stamp extends BasePlugin {
   }
 
   inBoundsX(x) {
-    let dx = 0.5*this.scale*this.width;
-    return x - dx >= this.bounds.xmin && x + dx <= this.bounds.xmax;
+    return x>= this.bounds.xmin && x <= this.bounds.xmax;
   }
 
   inBoundsY(y) {
-    let dy = 0.5*this.scale*this.height;
-    return y - dy >= this.bounds.ymin && y + dy <= this.bounds.ymax;
+    return y  >= this.bounds.ymin && y <= this.bounds.ymax;
   }
 }
