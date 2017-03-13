@@ -38,7 +38,8 @@ class LineSegments(Gradeable.Gradeable):
 
         ybar = np.sum(ys) / len(ys)
         sstot = np.sum((ys - ybar) ** 2)
-        if sstot == 0:
+        if sstot == 0 or len(res) == 0:
+            # sstot == 0 means horizontal line, len(res) == 0 means vertical line
             return True
         else:
             r2 = (sstot - res) / sstot
