@@ -38,7 +38,10 @@ class LineSegments(Gradeable.Gradeable):
 
         ybar = np.sum(ys) / len(ys)
         sstot = np.sum((ys - ybar) ** 2)
-        r2 = (sstot - res) / sstot
+        if sstot == 0:
+            return True
+        else:
+            r2 = (sstot - res) / sstot
 
         #print r2[0] > 0.99
         return r2[0] > 0.99
