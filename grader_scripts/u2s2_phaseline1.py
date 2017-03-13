@@ -13,7 +13,7 @@ problemconfig = sketchresponse.config({
         {'name': 'point', 'id': 'stb', 'label': 'Stable', 'color': 'Blue', 'size': 15},
         {'name': 'point', 'id': 'semi', 'label': 'Semistable', 'color': 'Black', 'size': 15},
         {'name': 'point', 'id': 'uns', 'label': 'Unstable', 'color':'Orange','size': 15},
-        {'name': 'line-segment', 'id': 'carw', 'label': 'Arrow', 'color': 'Gray', 'size': 15, 'directionConstraint': 'horizontal', 'lengthContraint': 1, 'arrowHead': {'length': 10, 'base': 20}, 'constrained': True}
+        {'name': 'line-segment', 'id': 'carw', 'label': 'Arrow', 'color': 'Gray', 'size': 15, 'directionConstraint': 'horizontal', 'lengthConstraint': 1, 'arrowHead': {'length': 10, 'base': 20}}
     ]
 })
 
@@ -32,6 +32,7 @@ def grader(stb,semi,uns,carw):
        return False, '<font color="blue"> The location of your unstable critical point is incorrect. </font><br />'
 
     
+<<<<<<< HEAD
     downarrow = carw.get_segments_at(x=-1,distTolerance=50)
     bottomuparrow = carw.get_segments_at(x=-3,distTolerance=100)
     topuparrow = carw.get_segments_at(x=2,distTolerance=200)
@@ -54,6 +55,21 @@ def grader(stb,semi,uns,carw):
             return False, '<font color="blue"> The direction of the arrow on the far right is not correct. </font><br />'  
     else:
         return False, '<font color="blue">  You have no arrow on the far right of your critical points.  </font><br />'
+=======
+    downarrow = carw.get_segments_at(x=-1)
+    bottomuparrow = carw.get_segments_at(x=-3)
+    topuparrow = carw.get_segments_at(x=2)
+
+    if downarrow.check_segment_endpoint.y - downarrow.check_segment_startpoint.y > 0:
+       return False, '<font color="blue"> The direction of the arrow between your two critical points is not correct. </font><br />'  
+
+    if bottomuparrow.check_segment_endpoint.y - bottomuparrow.check_segment_startpoint.y < 0:
+       return False, '<font color="blue"> The direction of the arrow on the far left not correct. </font><br />'  
+
+    if topuparrow.check_segment_endpoint.y - topuparrow.check_segment_startpoint.y < 0:
+       return False, '<font color="blue"> The direction of the arrow on the far right is not correct. </font><br />'  
+
+>>>>>>> phase line attempts
 
     return True, '<font color="blue"> Good job!</font>'
 
