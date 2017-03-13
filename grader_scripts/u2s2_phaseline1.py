@@ -25,7 +25,7 @@ def grader(stb,semi,uns,carw):
     uns = GradeableFunction.GradeableFunction(uns)
     carw = LineSegment.LineSegments(carw)
 
-    if not stb.has_point_at(x=-2, y= 0):
+    if not stb.has_point_at(x=0, y= -2):
         return False, '<font color="blue"> The location of your stable critical point is incorrect. </font><br />'
 
     if not uns.has_point_at(x=0, y=0):
@@ -60,13 +60,13 @@ def grader(stb,semi,uns,carw):
     bottomuparrow = carw.get_segments_at(x=-3)
     topuparrow = carw.get_segments_at(x=2)
 
-    if downarrow.check_segment_endpoint.y - downarrow.check_segment_startpoint.y > 0:
+    if downarrow.check_segment_endpoint.x - downarrow.check_segment_startpoint.x > 0:
        return False, '<font color="blue"> The direction of the arrow between your two critical points is not correct. </font><br />'  
 
-    if bottomuparrow.check_segment_endpoint.y - bottomuparrow.check_segment_startpoint.y < 0:
+    if bottomuparrow.check_segment_endpoint.x - bottomuparrow.check_segment_startpoint.x < 0:
        return False, '<font color="blue"> The direction of the arrow on the far left not correct. </font><br />'  
 
-    if topuparrow.check_segment_endpoint.y - topuparrow.check_segment_startpoint.y < 0:
+    if topuparrow.check_segment_endpoint.x - topuparrow.check_segment_startpoint.x < 0:
        return False, '<font color="blue"> The direction of the arrow on the far right is not correct. </font><br />'  
 
 >>>>>>> phase line attempts
