@@ -36,15 +36,24 @@ def grader(stb,semi,uns,carw):
     bottomuparrow = carw.get_segments_at(x=-3)
     topuparrow = carw.get_segments_at(x=2)
 
-    if downarrow[0].start.x - downarrow[0].end.x >0:
-       return False, '<font color="blue"> The direction of the arrow between your two critical points is not correct. </font><br />'  
+    if downarrow:
+        if downarrow[0].start.x - downarrow[0].end.x < 0:
+            return False, '<font color="blue"> The direction of the arrow between your two critical points is not correct. </font><br />'  
+    else:
+        return False, '<font color="blue"> You have no arrow between your critical points. </font><br />'
 
-    # if bottomuparrow.point1.x - bottomuparrow.point2.x < 0:
-    #    return False, '<font color="blue"> The direction of the arrow on the far left not correct. </font><br />'  
 
-    # if topuparrow.point1.x - topuparrow.point2.x < 0:
-    #    return False, '<font color="blue"> The direction of the arrow on the far right is not correct. </font><br />'  
+    if bottomuparrow:
+        if bottomuparrow[0].start.x - bottomuparrow[0].end.x > 0:
+            return False, '<font color="blue"> The direction of the arrow on the far left not correct. </font><br />'  
+    else:
+        return False, '<font color="blue"> You have no arrow on the far left of your critical points. </font><br />'
 
+    if topuparrow:
+        if topuparrow[0].start.x - topuparrow[0].end.x > 0:
+            return False, '<font color="blue"> The direction of the arrow on the far right is not correct. </font><br />'  
+    else:
+        return False, '<font color="blue">  You have no arrow on the far right of your critical points.  </font><br />'
 
     return True, '<font color="blue"> Good job!</font>'
 
