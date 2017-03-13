@@ -32,7 +32,6 @@ def grader(stb,semi,uns,carw):
        return False, '<font color="blue"> The location of your unstable critical point is incorrect. </font><br />'
 
     
-<<<<<<< HEAD
     downarrow = carw.get_segments_at(x=-1,distTolerance=50)
     bottomuparrow = carw.get_segments_at(x=-3,distTolerance=100)
     topuparrow = carw.get_segments_at(x=2,distTolerance=200)
@@ -55,10 +54,6 @@ def grader(stb,semi,uns,carw):
             return False, '<font color="blue"> The direction of the arrow on the far right is not correct. </font><br />'  
     else:
         return False, '<font color="blue">  You have no arrow on the far right of your critical points.  </font><br />'
-=======
-    downarrow = carw.get_segments_at(x=-1)
-    bottomuparrow = carw.get_segments_at(x=-3)
-    topuparrow = carw.get_segments_at(x=2)
 
     if downarrow[0].start.x - downarrow[0].end.x >0:
        return False, '<font color="blue"> The direction of the arrow between your two critical points is not correct. </font><br />'  
@@ -69,7 +64,24 @@ def grader(stb,semi,uns,carw):
     # if topuparrow.point1.x - topuparrow.point2.x < 0:
     #    return False, '<font color="blue"> The direction of the arrow on the far right is not correct. </font><br />'  
 
->>>>>>> phase line attempts
+    if downarrow:
+        if downarrow[0].start.x - downarrow[0].end.x < 0:
+            return False, '<font color="blue"> The direction of the arrow between your two critical points is not correct. </font><br />'  
+    else:
+        return False, '<font color="blue"> You have no arrow between your critical points. </font><br />'
+
+
+    if bottomuparrow:
+        if bottomuparrow[0].start.x - bottomuparrow[0].end.x > 0:
+            return False, '<font color="blue"> The direction of the arrow on the far left not correct. </font><br />'  
+    else:
+        return False, '<font color="blue"> You have no arrow on the far left of your critical points. </font><br />'
+
+    if topuparrow:
+        if topuparrow[0].start.x - topuparrow[0].end.x > 0:
+            return False, '<font color="blue"> The direction of the arrow on the far right is not correct. </font><br />'  
+    else:
+        return False, '<font color="blue">  You have no arrow on the far right of your critical points.  </font><br />'
 
     return True, '<font color="blue"> Good job!</font>'
 
