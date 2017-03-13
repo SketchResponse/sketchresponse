@@ -3,14 +3,18 @@ import { createInheritingObjectTree } from './util/inheriting-object-tree';
 import { disableDoubleTapZoom, preventClickDelay } from './util/workarounds';
 
 import { EventEmitter } from 'events';
-import Mousetrap from 'mousetrap';
+import KeyMaster from 'keymaster';
 
 import NotificationManager from './notification-manager';
 import GradeableManager from './gradeable-manager';
 import StateManager from './state-manager';
 import HistoryManager from './history-manager';
+import ElementManager from './element-manager';
 
 import Toolbar from './toolbar';
+
+
+import * as attrCache from './util/dom-attr-cache';
 
 
 export default class SketchInput {
@@ -47,20 +51,24 @@ export default class SketchInput {
           <header>
             <h1>SketchResponse</h1>
             <p class="si-copyright">
-              Copyright 2015-2016 Massachusetts Institute of Technology. All rights Reserved.
+              Copyright (c) 2015-2016 Massachusetts Institute of Technology.
             </p>
           </header>
           <p>
-            SketchResponse is an extensible graphical input and assessment tool for online learning platforms.
-            It is very much a work in progress; we welcome your feedback and ideas at
-            <a href="mailto:sketchinput-feedback@mit.edu">sketchinput-feedback@mit.edu</a>.
-            The source code for this project will likely be available under an open-source license in the near future.
-            If you are interested in updates, please let us know!
+            SketchResponse is an open-source graphical input and assessment tool for online learning
+            platforms. The code and documentation for this project (including instructions for course authors wishing to
+            create their own sketch problems) are freely available at
+            <a href="https://github.com/SketchResponse/sketchresponse" target="_blank">github.com/SketchResponse</a>.
+            We welcome collaborators and are open to any feedback you may have!
           </p>
           <p>
-            This software contains open-source, third-party code and creative-commons licensed content (for which
-            we are grateful). These are distributed under the terms of their own licenses, which are included
-            in the <a href="LICENSE.txt" target="_blank">LICENSE file</a> provided with this project.
+            This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser
+            General Public License as published by the Free Software Foundation. Please see our <a href="LICENSE.txt"
+            target="_blank">LICENSE file</a> for complete license terms.
+          </p>
+          <p>
+            SketchResponse also uses third-party code and creative-commons licensed content which are distributed under
+            their own license terms; details may be found in the LICENSE file linked above.
           </p>
         </div>
       </div>
@@ -114,6 +122,8 @@ export default class SketchInput {
     });
 
     this.toolbar = new Toolbar(this.params, this.app);
+    this.elementManager = new ElementManager(this.app);
+    this.app.registerElement = this.elementManager.registerElement.bind(this.elementManager);
 
     plugins.forEach((Plugin, idx) => {
       new Plugin(this.params.plugins[idx], this.app);
@@ -123,10 +133,49 @@ export default class SketchInput {
     this.app.registerToolbarItem({type: 'separator'});
     this.app.registerToolbarItem({
       type: 'button',
+      id: 'select',
+      label: 'Select',
+      icon: {
+        src: './lib/select-icon.svg',
+        color: 'black',
+        alt: 'Select',
+      },
+      activate: () => {
+        // Temporarily hold a reference for ulterior removal
+        this.handlePointerDown = () => {
+          this.messageBus.emit('deselectAll');
+        }
+        this.app.svg.addEventListener('pointerdown', this.handlePointerDown);
+        this.app.svg.style.cursor = null;
+      },
+      deactivate: () => {
+        this.app.svg.removeEventListener('pointerdown', this.handlePointerDown);
+        // Remove the temporary reference
+        delete this['handlePointerDown'];
+      },
+      action: () => {
+        this.messageBus.emit('enableSelectMode');
+        this.messageBus.emit('activateItem', 'select');
+      }
+    });
+    this.app.registerToolbarItem({
+      type: 'button',
+      id: 'delete',
+      label: 'Delete',
+      icon: {
+        src: './lib/delete-icon.svg',
+        color: 'black',
+        alt: 'Delete',
+      },
+      action: () => this.messageBus.emit('deleteSelected'),
+    });
+    this.app.registerToolbarItem({
+      type: 'button',
       id: 'undo',
       label: 'Undo',
       icon: {
-        src: './lib/GOOGLE_ic_undo_24px.svg',
+        src: './lib/undo-icon.svg',
+        color: 'black',
         alt: 'Undo',
       },
       action: () => this.messageBus.emit('undo'),
@@ -136,20 +185,43 @@ export default class SketchInput {
       id: 'redo',
       label: 'Redo',
       icon: {
-        src: './lib/GOOGLE_ic_redo_24px.svg',
+        src: './lib/redo-icon.svg',
+        color: 'black',
         alt: 'Redo',
       },
       action: () => this.messageBus.emit('redo'),
     });
-
 
     this.messageBus.emit('activateItem',
       this.params.plugins.find(pluginSpec => pluginSpec.id !== undefined).id
     );
 
     // Global keyboard shortcuts (TODO: move elsewhere?)
-    Mousetrap.bind('mod+z', event => { this.messageBus.emit('undo'); return false; });
-    Mousetrap.bind(['mod+y', 'mod+shift+z'], event => { this.messageBus.emit('redo'); return false; });
+    /*
+      Initially, MouseTrap was used here: https://www.npmjs.com/package/mousetrap
+      But its Apache version 2 license is incompatible except if were to be linked dynamically which
+      is not possible here.
+      We use KeyMaster instead and its MIT license:
+      https://www.npmjs.com/package/keymaster
+
+      NOTE:
+      MouseTrap uses KeyboardEvent.which:
+      https://github.com/ccampbell/mousetrap/blob/master/mousetrap.js
+
+      KeyMaster uses KeyboardEvent.keyCode:
+      https://github.com/madrobby/keymaster/blob/master/keymaster.js
+
+      that are deprecated (as KeyboardEvent.char and KeyboardEvent.charCode):
+      https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+
+      KeyboardEvent.key is recommended and a polyfill exists:
+      https://www.npmjs.com/package/keyboardevent-key-polyfill
+    */
+
+    KeyMaster('⌘+z, ctrl+z', event => { this.messageBus.emit('undo'); return false; });
+    KeyMaster('⌘+y, ctrl+y, ⌘+shift+z, ctrl+shift+z', event => { this.messageBus.emit('redo'); return false; });
+    KeyMaster('esc', event => { this.messageBus.emit('deselectAll'); return false; });
+    KeyMaster('delete, backspace', event => { this.messageBus.emit('deleteSelected'); return false; });
     document.addEventListener('mouseenter', event => window.focus());  // So we get keyboard events. Rethink this?
 
     // Allow multitouch zoom on SVG element (TODO: move elsewhere?)
@@ -160,6 +232,33 @@ export default class SketchInput {
     this.app.svg.addEventListener('touchend', event => {
       if (event.touches.length == 0) this.app.svg.setAttribute('touch-action', 'none');
     }, true);
+
+    this.messageBus.on('deleteFinished', () => {this.app.addUndoPoint();});
+    //////////// TEMPORARY TEST CODE FOR ELEMENT MANAGER //////////////
+
+    // {
+    //   const svg = document.getElementById('si-canvas')
+    //   const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    //   attrCache.setAttributeNS(circle, null, 'cx', 150);
+    //   attrCache.setAttributeNS(circle, null, 'cy', 150);
+    //   attrCache.setAttributeNS(circle, null, 'r', 9);
+    //   attrCache.setAttributeNS(circle, null, 'style', 'fill: orange;');
+    //   svg.appendChild(circle);
+
+    //   this.elementManager.registerElement({
+    //     ownerID: 'f',
+    //     element: circle,
+    //     onDrag: ({dx, dy}) => {
+    //       const x = Number(attrCache.getAttributeNS(circle, null, 'cx'));
+    //       const y = Number(attrCache.getAttributeNS(circle, null, 'cy'));
+    //       attrCache.setAttributeNS(circle, null, 'cx', x + dx);
+    //       attrCache.setAttributeNS(circle, null, 'cy', y + dy);
+    //     },
+    //   });
+    // }
+
+    //////////// END TEMPORARY TEST CODE FOR ELEMENT MANAGER //////////////
+
 
     this.messageBus.emit('ready');
   }

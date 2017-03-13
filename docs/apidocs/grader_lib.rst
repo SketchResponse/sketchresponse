@@ -11,6 +11,13 @@ grader_lib.Asymptote module
    :members:
    :show-inheritance:   
 
+grader_lib.LineSegment module
+---------------------------
+
+.. automodule:: grader_lib.LineSegment
+   :members:
+   :show-inheritance:   
+
 grader_lib.GradeableFunction module
 -----------------------------------
 

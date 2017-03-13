@@ -28,7 +28,7 @@ size and scale of the drawing space and to define which drawing tools are
 available for the problem. The `sketchresponse.config()` function takes a dict of
 configuration options.
 
-In the example configuration below, the first six key/value pairs are required. In this configuration we increase the ranges of the X and Y axes compared to the [Simple Grader Tutorial](simple_grader.md):
+In the example configuration below, the first seven key/value pairs are required. In this configuration we increase the ranges of the X and Y axes compared to the [Simple Grader Tutorial](simple_grader.md):
 
 * `'width': 750` sets the pixel width of the drawing space as 750 pixels
 * `'height': 420` sets the pixel height of the drawing space to 420 pixels
@@ -36,10 +36,11 @@ In the example configuration below, the first six key/value pairs are required. 
 * `'yrange': [-4.5, 4.5]` sets the numerical range of the y axis
 * `'xscale': 'linear'` sets the scale of the x axis to linear (only option currently implemented)
 * `'yscale': 'linear'` sets the scale of the y axis to linear (only option currently implemented)
+* `'coordinates': 'cartesian' or 'polar'` sets the coordinate system used by the axes plugin to either cartesian or polar
 
 The last entry `'plugins'` takes a list of dicts that enable the specific javascript plugins that are available to the user. All plugins are declared by 'name'.
 
-The 'axes' and 'freeform' plugin usage here is identical to the [Simple Grader Tutorial](simple_grader.md) and is explained there as well as on the [Plugin Description Page(probconfig_plugins.md).
+The 'axes' and 'freeform' plugin usage here is identical to the [Simple Grader Tutorial](simple_grader.md) and is explained there as well as on the [Plugin Description Page](probconfig_plugins.md).
 
 There are three new plugins introduced in this grading script: 'vertical-line', 'horizontal-line', and 'point'. The declaration of these plugins is very similar to the declaration of the 'freeform' plugin, however, each type of plugin has one additional parameter that needs to be defined: 'dashStyle' for the lines, and 'size' for the points.
 

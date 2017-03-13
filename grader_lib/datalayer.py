@@ -131,25 +131,29 @@ class Function():
     def is_a_function(self):
         abstractMethod(self)
 
-    def has_value_y_at_x(self, y, x, yTolerance = False, xTolerance = False):
+    def has_value_y_at_x(self, y, x, yTolerance=None, xTolerance=None):
         """Return whether the function has the value y at x.
 
         Args:
             y: the target y value.
             x: the x value.
-            yTolerance(default:False): the y-axis pixel distance within which
+            yTolerance(default:None): the y-axis pixel distance within which
                                        the function value is accepted.
-            xTolerance(default:False): the x-axis pixel distance within which
+            xTolerance(default:None): the x-axis pixel distance within which
                                        the function value is accepted.
         Returns:
             bool:
             true if the function value at x is y within tolerances, otherwise
             false
         """
-        if yTolerance == False:
+        if yTolerance is None:
             yTolerance = self.tolerance['pixel'] / self.yscale
-        if xTolerance == False:
+        else:
+            yTolerance /= self.yscale
+        if xTolerance is None:
             xTolerance = self.tolerance['pixel'] / self.xscale
+        else:
+            xTolerance /= self.xscale
 
         # if the min value of the function around the desired x is higher than the desired y
         # or if the max value of the function around the desired x is lower
@@ -166,45 +170,60 @@ class Function():
         else:
             return False
 
-    def is_zero_at_x_equals_zero(self, yTolerance = False, xTolerance = False):
+    def is_zero_at_x_equals_zero(self, yTolerance=None, xTolerance=None):
         """Return whether the function is zero at x equals zero.
 
         Args:
-            yTolerance(default:False): the y-axis pixel distance within which
+            yTolerance(default:None): the y-axis pixel distance within which
                                        the function value is accepted.
-            xTolerance(default:False): the x-axis pixel distance within which
+            xTolerance(default:None): the x-axis pixel distance within which
                                        the function value is accepted.
         Returns:
             bool:
             true if the function value at x equals zero is zero within
             tolerances, otherwise false
         """
-        return self.has_value_y_at_x(0, 0, yTolerance, xTolerance)
+        return self.has_value_y_at_x(0, 0, yTolerance=yTolerance,
+                                     xTolerance=xTolerance)
 
-    def is_greater_than_y_between(self, y, xmin, xmax):
+    def is_greater_than_y_between(self, y, xmin, xmax, tolerance=None):
         """Return whether function is always greater than y in the range xmin to xmax.
 
         Args:
             y: the target y value.
             xmin: the minimum x range value.
             xmax: the maximum x range value.
+            tolerance(default:None): pixel distance tolerance. If None given uses
+                                     default constant 'comparison'.
         Returns:
             bool:
             true if the minimum value of the function in the range (xmin,xmax)
             is greater than y within tolerances, otherwise false.
         """
-        return self.get_min_value_between(xmin, xmax) > y - self.tolerance['comparison'] / self.yscale
+        if tolerance is None:
+            tolerance = self.tolerance['comparison'] / self.yscale
+        else:
+            tolerance /= self.yscale
 
-    def is_less_than_y_between(self, y, xmin, xmax):
+        return self.get_min_value_between(xmin, xmax) > y - tolerance
+
+    def is_less_than_y_between(self, y, xmin, xmax, tolerance=None):
         """Return whether function is always less than y in the range xmin to xmax.
 
         Args:
             y: the target y value.
             xmin: the minimum x range value.
             xmax: the maximum x range value.
+            tolerance(default:None): pixel distance tolerance. If None given uses
+                                     default constant 'comparison'.
         Returns:
             bool:
             true if the maximum value of the function in the range (xmin,xmax)
             is less than y within tolerances, otherwise false.
         """
-        return self.get_max_value_between(xmin, xmax) < y + self.tolerance['comparison'] / self.yscale
+        if tolerance is None:
+            tolerance = self.tolerance['comparison'] / self.yscale
+        else:
+            tolerance /= self.yscale
+
+        return self.get_max_value_between(xmin, xmax) < y + tolerance

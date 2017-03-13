@@ -43,12 +43,6 @@
         Loading SketchInput...
       </div>
     </div>
-    <script src="//cdn.ravenjs.com/1.1.19/native/raven.min.js"></script>
-    <script>
-      Raven.config('https://ba0147f0571642aea6c8228de3c3f1e1@app.getsentry.com/49449', {
-        whitelistUrls: ['s3.amazonaws.com/1801-static-assets/']
-      }).install();
-    </script>
     <script src="<@vendor_bundle_path@>"></script>
     <script src="<@config_or_app_bundle_path@>"></script>
     <script>
@@ -57,7 +51,7 @@
 
         var loadTimer = window.setTimeout(function() {
           if (window.isLoaded) return;
-          Raven.captureMessage('Did not load within 10 seconds', {tags: {shortname: 'loadTimeout'}});
+          console.info('Did not load within 10 seconds');
         }, 10000);
 
         // Base64-encode the state to avoid multiple JSON escaping in edX
@@ -100,6 +94,8 @@
                 return;  // Abort the loading process
               }
               else {
+                // We have a config, load the app
+                loadApp();
                 console.info(configId + ' has been loaded : ', window.config);
               }
             });
@@ -111,42 +107,46 @@
                 .replace(/-/g, '+')
                 .replace(/_/g, '/')
             ));
+            // We have a config, load the app
+            loadApp();
           }
         }
         catch (error) {
           document.getElementById('si-placeholder').textContent =
             'Could not parse problem configuration data';
-          Raven.captureException(error, {tags: {shortname: 'hashParseError'}});
+          console.error('Hash parse error')
           window.clearTimeout(loadTimer);
           return;  // Abort the loading process
         }
 
-        System.import('lib/main').then(function(main) {
-          window.si = new main.default(document.getElementById('si-container'), config);
+        function loadApp() {
+          System.import('lib/main').then(function(main) {
+            window.si = new main.default(document.getElementById('si-container'), config);
 
-          window.si.messageBus.on('ready', function() {
-            window.isLoaded = true;
-            if (window.__state) window.si.setState(window.__state);
+            window.si.messageBus.on('ready', function() {
+              window.isLoaded = true;
+              if (window.__state) window.si.setState(window.__state);
+            });
+
+            window.si.messageBus.on('warnUser', function(type, error) {
+              console.error(error);
+            });
+
+            window.getState = function() {
+              return window.useBase64Encoding ? DATA_URI_PREAMBLE + btoa(si.getState()) : si.getState();
+            };
+
+            window.getGrade = si.getGradeable.bind(si);
+
+            if (window.channel) {
+              window.channel
+                .bind('getState', window.getState)
+                .bind('getGrade', window.getGrade);
+            }
+          }).catch(function(error) {
+            console.error('Import promise error')
           });
-
-          window.si.messageBus.on('warnUser', function(type, error) {
-            Raven.captureException(error, {tags: {shortname: type}});
-          });
-
-          window.getState = function() {
-            return window.useBase64Encoding ? DATA_URI_PREAMBLE + btoa(si.getState()) : si.getState();
-          };
-
-          window.getGrade = si.getGradeable.bind(si);
-
-          if (window.channel) {
-            window.channel
-              .bind('getState', window.getState)
-              .bind('getGrade', window.getGrade);
-          }
-        }).catch(function(error) {
-          Raven.captureException(error, {tags: {shortname: 'importPromiseError'}});
-        });
+        }
       }());
     </script>
   </body>

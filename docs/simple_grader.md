@@ -25,7 +25,7 @@ size and scale of the drawing space and to define which drawing tools are
 available for the problem. The `sketchresponse.config()` function takes a dict of
 configuration options.
 
-In the example configuration below, the first six key/value pairs are required:
+In the example configuration below, the first seven key/value pairs are required:
 
 * `'width': 750` sets the pixel width of the drawing space as 750 pixels
 * `'height': 420` sets the pixel height of the drawing space to 420 pixels
@@ -33,10 +33,11 @@ In the example configuration below, the first six key/value pairs are required:
 * `'yrange': [-1.15, 1.15]` sets the numerical range of the y axis
 * `'xscale': 'linear'` sets the scale of the x axis to linear (only option currently implemented)
 * `'yscale': 'linear'` sets the scale of the y axis to linear (only option currently implemented)
+* `'coordinates': 'cartesian' or 'polar'` sets the coordinate system used by the axes plugin to either cartesian or polar
 
 The last entry `'plugins'` takes a list of dicts that enable the specific javascript plugins that are available to the user. All plugins are declared by 'name'.
 
-The 'axes' plugin entry is the simplest plugin to enable. It has no configuration options so all that must be set is the 'name'. This plugin enables the axes in the drawing space. *It should probably be on by default no?*
+The 'axes' plugin entry is the simplest plugin to enable. It has no mandatory options so all that must be set is the 'name'. This plugin enables the axes in the drawing space. *It should probably be on by default no?*
 
 The 'freeform' plugin entry enables the freeform drawing tool. It has three configuration options to set:
 

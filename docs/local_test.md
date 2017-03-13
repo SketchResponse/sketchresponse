@@ -4,7 +4,7 @@ The SketchResponse tool is designed to be used as a web application so when it i
 
 ## Flask
 
-The local testing server is implemented using [Flask](http://flask.pocoo.org/). If you do not have flask you will need to install it, which is easily done by running the command:
+The local testing server is implemented using [Flask](http://flask.pocoo.org/). If you do not have flask you will need to install it, which is easily done by running the command. *If you are in Windows make sure you are running the Git Bash shell as Administrator.*
 
 ```sh
 $ pip install -r requirements.txt
@@ -16,11 +16,11 @@ $ pip install -r requirements.txt
 
 Before you can run the local server, you need to build a local copy of the sketch tool. If you
 have already done this and you have not modified the sketch tool in the interim you can skip
-this step. Otherwise, follow the instructions [here](sketch_tool_usage.md#build) for details on building the sketch tool distribution.
+this step. Otherwise, follow the instructions [here](sketch_tool_dev_usage.md#build) for details on building the sketch tool distribution.
 
 ### Start the grader local server
 
-To run the local server, make sure the grading script you are testing is in the `grading_scripts` directory. Then run the following command from the repository root directory:
+To run the local server, make sure the grading script you are testing is in the `grading_scripts` directory. Then run the following command from the repository root directory. *If you are in Windows you may need to run the Git Bash shell as Administrator to interact with the local server.*
 
 ```sh
 $ python server.py

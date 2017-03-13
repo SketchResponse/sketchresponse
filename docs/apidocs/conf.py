@@ -49,8 +49,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'SketchResponse'
-copyright = u'2016'
-author = u'Martin Segado'
+copyright = u'2016 Massachusetts Institute of Technology'
+author = u'Massachusetts Institute of Technology'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -225,7 +225,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'SketchResponse.tex', u'SketchResponse Documentation',
-     u'Martin Segado', 'manual'),
+     u'Massachusetts Institute of Technology', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

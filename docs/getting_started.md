@@ -14,7 +14,7 @@ To work with the SketchResponse codebase, there are a few technology prerequisit
 
 * You will also need to be comfortable using the command-line to execute commands.
 
-**Note for Windows Users:** You should use the Git Bash shell to execute all commands in this document. You will need to run it as Administrator to execute the *npm* and *pip* installation commands below. To do this, right-click Git Bash from the Start Menu and select Run as Administrator.
+**Note for Windows Users:** You should use the Git Bash shell to execute all commands in this document. You will need to run it as Administrator to execute the *npm* and *pip* installation commands below. You may also need to run the Git Bash shell as Administrator to run the local flask testing server. To do this, right-click Git Bash from the Start Menu and select Run as Administrator.
 
 If you have statisfied all of the above prerequisites, then we can start working on the codebase.
 
@@ -37,7 +37,7 @@ Running either of the above commands will create a new directory called SketchRe
 * Run this command to change directories to the *repo* of the SketchResponse repository.
 
   ```sh
-  $ cd SketchResponse
+  $ cd sketchresponse
   ```
 
 ## Building the Sketch Tool front-end
@@ -48,7 +48,7 @@ Running either of the above commands will create a new directory called SketchRe
   $ cd sketch_tool
   ```
 
-* Install dependencies listed in *package.json* using `npm`:
+* Install dependencies listed in *package.json* using `npm`. *If you are in Windows make sure you are running the Git Bash shell as Administrator*:
 
   ```sh
   $ npm install
@@ -77,7 +77,7 @@ You will need to be in the *repo* directory of the codebase. If you are still in
 $ cd ..
 ```
 
-Now that you are in the *repo* directory, you can run the following command to install the required python packages.
+Now that you are in the *repo* directory, you can run the following command to install the required python packages. *If you are in Windows make sure you are running the Git Bash shell as Administrator*
 
 ```sh
 $ pip install -r requirements.txt

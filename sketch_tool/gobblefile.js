@@ -103,7 +103,7 @@ else {
 var staticAssets = gobble([
   libAndPlugins.exclude('**/*.js'),
 
-  gobble('LICENSE')
+  gobble('../LICENSE')
     .transform('rename', {from: 'LICENSE', to: 'LICENSE.txt'}),
 
   gobble('fonts').moveTo('fonts'),
@@ -111,7 +111,7 @@ var staticAssets = gobble([
   gobble('html')
     .transform('replace', {
       css_path: 'main.css',
-      font_css_path: 'fonts/roboto.css',
+      font_css_path: 'fonts/noto.css',
       vendor_bundle_path: 'vendorBundle.js',
       config_or_app_bundle_path: (gobble.env() === 'production') ? 'appBundle.js' : 'config.js',
     }),

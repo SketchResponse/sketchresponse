@@ -9,6 +9,7 @@ There are three modules that you may interact with in the Grader Library API. Th
 The Grader Library API is also hosted separately with a searchable index [here](http://sketchresponse.github.io/sketchresponse). Direct links to the individual modules are below.
 
 * [Asymptote](http://sketchresponse.github.io/sketchresponse/grader_lib.html#module-grader_lib.Asymptote)
+* [LineSegment](http://sketchresponse.github.io/sketchresponse/grader_lib.html#module-grader_lib.LineSegment)
 * [GradeableFunction](http://sketchresponse.github.io/sketchresponse/grader_lib.html#module-grader_lib.GradeableFunction)
 * [Point](http://sketchresponse.github.io/sketchresponse/grader_lib.html#module-grader_lib.Point)
 

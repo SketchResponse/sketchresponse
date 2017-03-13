@@ -10,7 +10,7 @@ Features
 --------
 
 - Sketch Tool - configurable Javascript front-end with plugin components to provide different
-function drawing and annotation capabilities. See
+function drawing and annotation capabilities. See [Sketch-Tool Usage](docs/sketch_tool_usage.md) for a description of the non-configurable interface elements of the sketch tool. See
 [Sketch-Tool Plugin Configuration](docs/probconfig_plugins.md) for a description of the available
 plugins.
 - Grader Library - python back-end that provides an API of function grading methods that
@@ -74,7 +74,7 @@ Usage Guides
 
 ### Examples and Tutorials
 - [Grading Script Template](grader_scripts/grader_template.py)
-- [Running & Building the Sketch Tool Front-end](docs/sketch_tool_usage.md)
+- [Running & Building the Sketch Tool Front-end](docs/sketch_tool_dev_usage.md)
 - [Testing a Grading Script on a Local Server](docs/local_test.md)
 - Tutorial - [Create a Simple Grading Script](docs/simple_grader.md)
 - Tutorial - [Create a Complex Grading Script](docs/complex_grader.md)
@@ -88,35 +88,30 @@ Usage Guides
 Contribute
 ----------
 
+Contributions to this project are very welcome! If you'd like to contribute, please open a GitHub issue and we'll get in touch.
+
 - Issue Tracker: [github.com/SketchResponse/sketchresponse/issues](https://github.com/SketchResponse/sketchresponse/issues)
 - Source Code: [github.com/SketchResponse/sketchresponse/](https://github.com/SketchResponse/sketchresponse/)
 
-## Main sketch tool dev dependencies
+## Running tests for the Grader Library Back-end
 
-NPM modules (see [`package.json`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/package.json))
-* [`autoprefixer`](https://www.npmjs.com/package/autoprefixer)
-* [`fast-sourcemap-concat`](https://www.npmjs.com/package/fast-sourcemap-concat)
-* [`glob`](https://www.npmjs.com/package/glob)
-* [`gobble`](https://www.npmjs.com/package/gobble)
-* [`jasmine-core`](https://www.npmjs.com/package/jasmine-core)
-* [`jspm`](https://www.npmjs.com/package/jspm)
-* [`karma`](https://www.npmjs.com/package/karma)
-* [`node-sass`](https://www.npmjs.com/package/node-sass)
-* [`phantomjs`](https://www.npmjs.com/package/phantomjs)
-* [`postcss-cli`](https://www.npmjs.com/package/postcss-cli)
+The grader library has a collection of tests to validate the functioning of API functions. Those tests can be run from the root directory of the sketchresponse repository with the command below.
 
-JSPM fetched modules (see [`config.js`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/config.js))
+```sh
+$ python -m unittest discover test_grader_lib/
+```
+
+## Rebuilding the documentation
+
+As this project evolves, the current documentation will no longer match the existing codebase. Follow the instructions in [HowTo Build the Docs](docs/howto_build_docs.md) to rebuild as needed.
 
 
 Support
 -------
 
-TODO
-If you are having issues, please let us know.
-We have a mailing list located at: $project@google-groups.com
+If you are having issues or encounter a bug, please [create a GitHub issue](https://github.com/SketchResponse/sketchresponse/issues) and we'll try to help!
 
 License
 -------
 
-Copyright (c) 2016 Massachusetts Institute of Technology
-All rights reserved.
+Please refer to the [LICENSE file](LICENSE) in the root of the SketchResponse repository.

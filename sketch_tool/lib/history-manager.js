@@ -55,6 +55,9 @@ export default class HistoryManager {
   undo() {
     if (this.undoStack.length <= 0) return;
 
+    // TODO: is there a better way to do this as calling deselectAll is expensive
+    this.messageBus.emit('deselectAll');
+
     const diff = this.undoStack.pop();
     this.redoStack.push(diff);
 
@@ -64,6 +67,9 @@ export default class HistoryManager {
 
   redo() {
     if (this.redoStack.length <= 0) return;
+
+    // TODO: is there a better way to do this as calling deselectAll is expensive
+    this.messageBus.emit('deselectAll');
 
     const diff = this.redoStack.pop();
     this.undoStack.push(diff);

@@ -1,3 +1,5 @@
+@import "vendor/normalize";
+
 body {
   background: none transparent;
   padding: 15px;
@@ -29,8 +31,9 @@ body {
   flex-direction: column;
 
   // Default font
-  font-family: "Roboto", sans-serif;
-  font-size: 13px;
+  font-family: "Noto Sans Regular", sans-serif;
+  font-size: 12px;
+  line-height: 1.3;
 }
 
 #si-canvas {

@@ -1,52 +1,21 @@
 import z from 'sketch2/util/zdom';
+import BasePlugin from './base-plugin';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 
-// TODO: move some of these into 'params.defaults'?
-const ROUNDING_PRESCALER = 100;  // e.g., Math.round(value * ROUNDING_PRESCALER) / ROUNDING_PRESCALER
-
-export default class VerticalLine {
+export default class VerticalLine extends BasePlugin {
   constructor(params, app) {
-    this.params = params;
-    this.app = app;
-
-    this.el = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    app.svg.appendChild(this.el);
-
-    this.state = [];
-
-    this.bindEventHandlers();
-
-    app.registerState({
-      id: params.id,
-      dataVersion: VERSION,
-      getState: () => this.state,
-      setState: state => { this.state = state; this.render(); },
-    });
-
-    app.registerGradeable({
-      id: params.id,
-      version: GRADEABLE_VERSION,
-      getGradeable: () => this.getGradeable(),
-    });
-
-    app.registerToolbarItem({
-      type: 'button',
-      id: params.id,
-      label: params.label,
-      icon: {
-        src: './plugins/vertical-line/icon.svg',
-        alt: 'Vertical line tool',
-      },
-      activate: this.activate.bind(this),
-      deactivate: this.deactivate.bind(this),
-    });
-  }
-
-  bindEventHandlers() {
-    ['drawStart', 'drawMove', 'drawEnd']
-      .forEach(name => this[name] = this[name].bind(this));
+    // Add params that are specific to this plugin
+    params.icon = {
+      src: './plugins/vertical-line/vertical-line-icon.svg',
+      alt: 'Vertical line tool'
+    };
+    super(params, app);
+    // Message listeners
+    this.app.__messageBus.on('addVerticalLine', (id, index) => {this.addVerticalLine(id, index)});
+    this.app.__messageBus.on('deleteVerticalLines', () => {this.deleteVerticalLines()});
+    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
   }
 
   getGradeable() {
@@ -64,79 +33,111 @@ export default class VerticalLine {
     });
   }
 
-  activate() {
-    this.app.svg.addEventListener('pointerdown', this.drawStart);
-    this.app.svg.style.cursor = 'crosshair';
+  addVerticalLine(id, index) {
+    if (this.id === id) {
+      this.delIndices.push(index);
+    }
   }
 
-  deactivate() {
-    this.app.svg.removeEventListener('pointerdown', this.drawStart);
-    this.app.svg.style.cursor = null;
+  deleteVerticalLines() {
+    if (this.delIndices.length !== 0) {
+      this.delIndices.sort();
+      for (let i = this.delIndices.length -1; i >= 0; i--) {
+        this.state.splice(this.delIndices[i], 1);
+      }
+      this.delIndices.length = 0;
+      this.render();
+    }
   }
 
-  drawStart(event) {
-    this.app.svg.setPointerCapture(event.pointerId);
-    this.app.svg.addEventListener('pointermove', this.drawMove);
-    this.app.svg.addEventListener('pointerup', this.drawEnd);
-    this.app.svg.addEventListener('pointercancel', this.drawEnd);
-    this.drawMove(event);
+  // This will be called when clicking on the SVG canvas after having
+  // selected the horizontal line shape
+  initDraw(event) {
+    // Add event listeners in capture phase
+    document.addEventListener('pointermove', this.drawMove, true);
+    document.addEventListener('pointerup', this.drawEnd, true);
+    document.addEventListener('pointercancel', this.drawEnd, true);
+    this.currentPosition = event.clientX - this.params.left;
+    this.state.push(this.currentPosition);
+    this.render();
   }
 
   drawMove(event) {
-    this.currentLocation = clamp(event.clientX - this.params.left, 0, this.params.width);
+    let x = event.clientX - this.params.left;
+    x = this.clampX(x);
+    this.state[this.state.length-1] = x;
     this.render();
+    event.stopPropagation();
+    event.preventDefault();
   }
 
-  // TODO: this adds state event when pointer was cancelled. add a drawCancel method?
   drawEnd(event) {
-    this.app.svg.releasePointerCapture(event.pointerId);
-    this.app.svg.removeEventListener('pointermove', this.drawMove);
-    this.app.svg.removeEventListener('pointerup', this.drawEnd);
-    this.app.svg.removeEventListener('pointercancel', this.drawEnd);
-    this.state.push(this.currentLocation);
-    this.currentLocation = undefined;
+    document.removeEventListener('pointermove', this.drawMove, true);
+    document.removeEventListener('pointerup', this.drawEnd, true);
+    document.removeEventListener('pointercancel', this.drawEnd, true);
     this.app.addUndoPoint();
-    this.render();
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   render() {
     z.render(this.el,
-      z.each(this.state, location =>
-        z('line', {
-          x1: location,
+      // Draw visible line, under invisible line
+      z.each(this.state, (position, positionIndex) =>
+        z('line.visible-' + positionIndex + '.vertical-line' + '.plugin-id-' + this.id, {
+          x1: position,
           y1: 0,
-          x2: location,
+          x2: position,
           y2: this.params.height,
           style: `
             stroke: ${this.params.color};
             stroke-width: 2px;
             stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
-          `,
+          `
         })
       ),
-      // TODO: eliminate code duplication
-      z.if(this.currentLocation !== undefined, () =>
-        z('line', {
-          x1: this.currentLocation,
+      // Draw invisible and selectable line
+      z.each(this.state, (position, positionIndex) =>
+        z('line.invisible-' + positionIndex, {
+          x1: position,
           y1: 0,
-          x2: this.currentLocation,
+          x2: position,
           y2: this.params.height,
           style: `
             stroke: ${this.params.color};
-            stroke-width: 2px;
-            stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
-            opacity: 0.7;
+            opacity: 0;
+            stroke-width: 10px;
+            stroke-dasharray: solid;
           `,
+          onmount: el => {
+            this.app.registerElement({
+              ownerID: this.params.id,
+              element: el,
+              initialBehavior: 'none',
+              onDrag: ({dx, dy}) => {
+                this.state[positionIndex] += dx;
+                this.render();
+              },
+              inBoundsX: (dx) => {
+                return this.inBoundsX(this.state[positionIndex] + dx)
+              },
+              inBoundsY: (dy) => {
+                return true;
+              },
+            });
+          }
         })
       )
     );
   }
-}
 
-function clamp(value, min, max) {
-  if (value < min) return min;
-  if (value > max) return max;
-  return value;
+  inBoundsX(x) {
+    return x >= this.bounds.xmin && x <= this.bounds.xmax;
+  }
+
+  inBoundsY(y) {
+    return true;
+  }
 }
 
 const strokeWidth = 2;  // TODO: pass in
