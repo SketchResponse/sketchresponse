@@ -115,6 +115,14 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
+      else if (elementClasses.indexOf('polyline') != -1) {
+        this.messageBus.emit(
+          'addPolyline',
+          elementClasses[2].substring(10),
+          parseInt(elementClasses[0].substring(8))
+        );
+        elWasDeleted = true;
+      }
     });
     this.messageBus.emit('deletePoints');
     this.messageBus.emit('deleteHorizontalLines');
@@ -123,6 +131,7 @@ export default class SelectionManager {
     this.messageBus.emit('deleteLineSegmentPoints');
     this.messageBus.emit('deleteFreeforms');
     this.messageBus.emit('deleteStamps');
+    this.messageBus.emit('deletePolylines');
     this.deselectAll();
     if (elWasDeleted) {
       this.messageBus.emit('deleteFinished');

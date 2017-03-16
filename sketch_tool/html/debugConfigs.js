@@ -167,6 +167,13 @@ function loadConfig(configId) {
           imgwidth: 450,
           imgheight: 100,
           scale: 0.5
+        },
+        {
+          name: 'polyline',
+          id: 'pl',
+          label: 'Polyline',
+          color: 'cornflowerblue',
+          dashStyle: 'solid'
         }
       ]
     }
