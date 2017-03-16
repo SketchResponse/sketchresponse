@@ -25,26 +25,41 @@ def grader(stb,semi,uns,carw):
     uns = GradeableFunction.GradeableFunction(uns)
     carw = LineSegment.LineSegments(carw)
 
-    if not stb.has_point_at(x=0, y= -2):
+    if not stb.has_point_at(x=0, y= -1):
         return False, '<font color="blue"> The location of your stable critical point is incorrect. </font><br />'
 
-    if not uns.has_point_at(x=0, y=0):
+    if not uns.has_point_at(x=0, y=2):
         return False, '<font color="blue"> The location of your unstable critical point is incorrect. </font><br />'
 
-    if semi:
-        return False, '<font color="blue"> There should be no semistable critical points. </font><br />'
+    if not semi.has_point_at(x=0, y=1):
+        return False, '<font color="blue"> The location of your semistable critical point is incorrect. </font><br />'
 
+    # for arrow in carw:
+    #     if -3.5 < arrow.start.y < -1 and -3.5 < arrow.end.y < -1 :
+    #         bottomuparrow = arrow
+    #     if -1 < arrow.start.y < 1 and -1 < arrow.end.y < 1:
+    #         bottomwdownarrow = arrow
+    #     if 1 < arrow.start.y < 2 and 1 < arrow.end.y < 2:
+    #         topdownarrow = arrow
+    #     if 2 < arrow.start.y < 4 and 2 < arrow.end.y < 4:
+    #         topuparrow = arrow
 
-    
-    downarrow = carw.get_segments_at(y=-1,distTolerance=50)
-    bottomuparrow = carw.get_segments_at(y=-3,distTolerance=50)
-    topuparrow = carw.get_segments_at(y=2,distTolerance=50)
+    topdownarrow = carw.get_segments_at(y=1.5,distTolerance=50)
+    bottomdownarrow = carw.get_segments_at(y=0,distTolerance=50)
+    bottomuparrow = carw.get_segments_at(y=-2,distTolerance=50)
+    topuparrow = carw.get_segments_at(y=3,distTolerance=50)
 
-    if downarrow:
-        if downarrow[0].start.y - downarrow[0].end.y < 0:
-            return False, '<font color="blue"> The direction of the arrow between your two critical points is not correct. </font><br />'  
+    if topdownarrow:
+        if topdownarrow[0].start.y - topdownarrow[0].end.y < 0:
+            return False, '<font color="blue"> The direction of the arrow between two of your critical points is not correct. </font><br />'  
     else:
-        return False, '<font color="blue"> You have no arrow between your critical points. </font><br />'
+        return False, '<font color="blue"> You have no arrow between two of your critical points. </font><br />'
+
+    if bottomdownarrow:
+        if bottomdownarrow[0].start.y - bottomdownarrow[0].end.y < 0:
+            return False, '<font color="blue"> The direction of the arrow between two of your critical points is not correct. </font><br />'  
+    else:
+        return False, '<font color="blue"> You have no arrow between two of your critical points. </font><br />'
 
 
     if bottomuparrow:
@@ -59,7 +74,7 @@ def grader(stb,semi,uns,carw):
     else:
         return False, '<font color="blue">  You have no arrow below your bottom most critical point.  </font><br />'
 
-    return True, '<font color="blue"> Good job!</font>'
 
+    return True, '<font color="blue"> Good job!</font>'
 
 

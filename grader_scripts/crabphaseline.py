@@ -4,12 +4,12 @@ from grader_lib import GradeableFunction, LineSegment
 problemconfig = sketchresponse.config({
     'width': 750,
     'height': 150,
-    'xrange': [-3.5, 3.5],
+    'xrange': [-.5, 2.5],
     'yrange': [-1, 1],
     'xscale': 'linear',
     'yscale': 'linear',
     'plugins': [
-        {'name': 'axes', 'ymajor': 5},
+        {'name': 'axes', 'ymajor': 4, 'ymajor': 4},
         {'name': 'point', 'id': 'stb', 'label': 'Stable', 'color': 'Blue', 'size': 15},
         {'name': 'point', 'id': 'semi', 'label': 'Semistable', 'color': 'Black', 'size': 15},
         {'name': 'point', 'id': 'uns', 'label': 'Unstable', 'color':'Orange','size': 15},
@@ -25,32 +25,55 @@ def grader(stb,semi,uns,carw):
     uns = GradeableFunction.GradeableFunction(uns)
     carw = LineSegment.LineSegments(carw)
 
-    if not stb.has_point_at(x=-2, y= 0):
+    if stb.get_number_of_points() != 1:
+        return False, '<font color="blue"> The number of stable critical points you have drawn is incorrect.</font>'
+    if uns.get_number_of_points() != 1:
+        return False, '<font color="blue"> The number of unstable critical points you have drawn is incorrect.</font>'
+    if semi.get_number_of_points() != 0:
+        return False, '<font color="blue"> The number of semistable critical points you have drawn is incorrect.</font>'
+
+    stb1 = stb.closest_point_to_x(x=1.7)
+    uns1= uns.closest_point_to_x(x=.3)
+
+    #print "%s, %s" %(stb1, uns1[1])
+
+    if stb1[1].x < uns1[1].x :
+        return False, '<font color="blue"> The relative location of your critical point is incorrect. </font><br />'
+
+    if stb1[0] > .1:
         return False, '<font color="blue"> The location of your stable critical point is incorrect. </font><br />'
 
-    if not uns.has_point_at(x=0, y=0):
-       return False, '<font color="blue"> The location of your unstable critical point is incorrect. </font><br />'
+    if uns1[0] > .1:
+        return False, '<font color="blue"> The location of your unstable critical point is incorrect. </font><br />'
 
-    
-    downarrow = carw.get_segments_at(x=-1,distTolerance=50)
-    bottomuparrow = carw.get_segments_at(x=-3,distTolerance=100)
-    topuparrow = carw.get_segments_at(x=2,distTolerance=200)
+    if carw.get_number_of_segments() != 3:
+        return False, '<font color="blue"> You should have 3 arrows drawn. </font><br />'
+    arrows = carw.get_segments_at(y=0)
 
-    if downarrow:
-        if downarrow[0].start.x - downarrow[0].end.x < 0:
+    for arrow in arrows: # in range(len(arrows)): 
+        if arrow.start.x < uns1[1].x and arrow.end.x < uns1[1].x:
+            leftarrow = arrow
+        if uns1[1].x < arrow.start.x < stb1[1].x and uns1[1].x < arrow.end.x < stb1[1].x:
+            middlearrow = arrow
+        if stb1[1].x < arrow.start.x and stb1[1].x < arrow.start.x:
+            rightarrow = arrow
+
+
+    if middlearrow:
+        if middlearrow.start.x - middlearrow.end.x > 0:
             return False, '<font color="blue"> The direction of the arrow between your two critical points is not correct. </font><br />'  
     else:
         return False, '<font color="blue"> You have no arrow between your critical points. </font><br />'
 
 
-    if bottomuparrow:
-        if bottomuparrow[0].start.x - bottomuparrow[0].end.x > 0:
+    if leftarrow:
+        if leftarrow.start.x - leftarrow.end.x < 0:
             return False, '<font color="blue"> The direction of the arrow on the far left not correct. </font><br />'  
     else:
         return False, '<font color="blue"> You have no arrow on the far left of your critical points. </font><br />'
 
-    if topuparrow:
-        if topuparrow[0].start.x - topuparrow[0].end.x > 0:
+    if rightarrow:
+        if rightarrow.start.x - rightarrow.end.x < 0:
             return False, '<font color="blue"> The direction of the arrow on the far right is not correct. </font><br />'  
     else:
         return False, '<font color="blue">  You have no arrow on the far right of your critical points.  </font><br />'
