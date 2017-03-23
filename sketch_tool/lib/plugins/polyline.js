@@ -9,39 +9,41 @@ export default class Polyline extends BasePlugin {
 
   constructor(params, app) {
     // Add params that are specific to this plugin
-    params.icon = {
-      src: './plugins/polyline/polyline-icon.svg',
-      alt: 'Polyline tool'
-    };
+    if (params.closed) {
+      params.icon = {
+        src: './plugins/polyline/polyline-closed-icon.svg',
+        alt: 'Polyline tool'
+      };
+    }
+    else {
+      params.icon = {
+        src: './plugins/polyline/polyline-open-icon.svg',
+        alt: 'Polyline tool'
+      };
+    }
     super(params, app);
     // Message listeners
     this.app.__messageBus.on('addPolyline', (id, index) => {this.addPolyline(id, index)});
     this.app.__messageBus.on('deletePolylines', () => {this.deletePolylines()});
-    this.wasDragged = false;
+    this.app.__messageBus.on('finalizeShape', () => {this.drawEnd()});
+    this.closed = false;
+    this.fillColor = 'none';
+    if (params.closed) {
+      this.closed = params.closed;
+    }
+    if (params.fillColor) {
+      this.fillColor = params.fillColor;
+    }
+    this.pointsBeingDrawn = [];
+    this.delIndices1 = [];
   }
 
   getGradeable() {
-    let result = [],
-        lastPtIndex = this.state.length - 1,
-        x1, y1, x2, y2;
-    if (lastPtIndex > 0) {
-      for (let i = 0; i < lastPtIndex; i++) {
-        x1 = this.state[i].x;
-        y1 = this.state[i].y;
-        x2 = this.state[i+1].x;
-        y2 = this.state[i+1].y;
-        // Use a spline to describe a line segment of polyline
-        result.push({
-          spline: [
-            [x1, y1],
-            [(2*x1 + x2)/3, (2*y1 + y2)/3],
-            [(x1 + 2*x2)/3, (y1 + 2*y2)/3],
-            [x2, y2]
-          ]
-        });
-      }
-    }
-    return result;
+    return this.state.map(spline => {
+      return {
+        spline: spline.map(point => [point.x, point.y])
+      };
+    });
   }
 
   addPolyline(id, index) {
@@ -52,7 +54,10 @@ export default class Polyline extends BasePlugin {
 
   deletePolylines() {
     if (this.delIndices.length !== 0) {
-      this.state.length = 0;
+      this.delIndices.sort();
+      for (let i = this.delIndices.length -1; i >= 0; i--) {
+        this.state.splice(this.delIndices[i], 1);
+      }
       this.delIndices.length = 0;
       this.render();
     }
@@ -63,24 +68,119 @@ export default class Polyline extends BasePlugin {
   initDraw(event) {
     let x = event.clientX - this.params.left,
         y = event.clientY - this.params.top;
-
     // Push current position
-    this.state.push({
+    this.pointsBeingDrawn.push({
       x: x,
       y: y
     });
-    this.app.addUndoPoint();
     this.render();
     event.stopPropagation();
     event.preventDefault();
   }
 
+  drawEnd() {
+    if (this.pointsBeingDrawn.length > 0) {
+      this.state.push(this.pointsBeingDrawn);
+      this.app.addUndoPoint();
+      this.pointsBeingDrawn = [];
+      this.render();
+    }
+  }
+
   render() {
     z.render(this.el,
-      z.if(this.state.length === 1, () =>
+      z.each(this.state, (polyline, polylineIndex) =>
+        // Draw visible polyline under invisible polyline
+        z('path.visible-' + polylineIndex + '.polyline' + '.plugin-id-' + this.id, {
+          d: polylinePathData(this.state[polylineIndex], this.closed),
+          style: `
+              stroke: ${this.params.color};
+              stroke-width: 2px;
+              stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
+              fill: ${this.fillColor};
+            `
+        })
+      ),
+      z.each(this.state, (polyline, polylineIndex) =>
+        // Draw invisible and selectable polyline under invisible points
+        z('path.invisible-' + polylineIndex, {
+          d: polylinePathData(this.state[polylineIndex], this.closed),
+          style: `
+              stroke: ${this.params.color};
+              stroke-width: 10px;
+              stroke-dasharray: solid;
+              fill: ${this.fillColor};
+              opacity: 0;
+            `,
+          onmount: el => {
+            this.app.registerElement({
+              ownerID: this.params.id,
+              element: el,
+              initialBehavior: 'none',
+              onDrag: ({dx, dy}) => {
+                this.state[polylineIndex].forEach(function (pt) {
+                  pt.x += dx;
+                  pt.y += dy;
+                });
+                this.render();
+              },
+              inBoundsX: (dx) => {
+                for (let pt of this.state[polylineIndex]) {
+                  if (!this.inBoundsX(pt.x + dx)) {
+                    return false;
+                  }
+                }
+                return true;
+              },
+              inBoundsY: (dy) => {
+                for (let pt of this.state[polylineIndex]) {
+                  if (!this.inBoundsY(pt.y + dy)) {
+                    return false;
+                  }
+                }
+                return true;
+              }
+            });
+          }
+        })
+      ),
+      z.each(this.state, (polyline, polylineIndex) =>
+        // Draw invisible and selectable points
+        z.each(polyline, (pt, ptIndex) =>
+          z('circle.invisible-' + polylineIndex, {
+            cx: polyline[ptIndex].x,
+            cy: polyline[ptIndex].y,
+            r: 8,
+            style: `
+              fill: ${this.params.color};
+              stroke-width: 0;
+              opacity: 0;
+            `,
+            onmount: el => {
+              this.app.registerElement({
+                ownerID: this.params.id,
+                element: el,
+                initialBehavior: 'none',
+                onDrag: ({dx, dy}) => {
+                  polyline[ptIndex].x += dx;
+                  polyline[ptIndex].y += dy;
+                  this.render();
+                },
+                inBoundsX: (dx) => {
+                  return this.inBoundsX(polyline[ptIndex].x + dx);
+                },
+                inBoundsY: (dy) => {
+                  return this.inBoundsY(polyline[ptIndex].y + dy)
+                },
+              });
+            }
+          })
+        )
+      ),
+      z.if(this.pointsBeingDrawn.length === 1, () =>
         z('circle', {
-            cx: this.state[0].x,
-            cy: this.state[0].y,
+            cx: this.pointsBeingDrawn[0].x,
+            cy: this.pointsBeingDrawn[0].y,
             r: 4,
             style: `
               fill: ${this.params.color};
@@ -88,84 +188,15 @@ export default class Polyline extends BasePlugin {
             `,
         })
       ),
-      z('polyline.visible-' + 0 + '.polyline' + '.plugin-id-' + this.id, {
-        points: polylineData(this.state),
-        style: `
-              stroke: ${this.params.color};
-              stroke-width: 2px;
-              stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
-              fill: none;
-            `
-      }),
-      z('polyline.invisible-' + 0, {
-        points: polylineData(this.state),
-        style: `
-              stroke: ${this.params.color};
-              stroke-width: 10px;
-              stroke-dasharray: solid;
-              fill: none;
-              opacity: 0;
-            `,
-        onmount: el => {
-          this.app.registerElement({
-            ownerID: this.params.id,
-            element: el,
-            initialBehavior: 'none',
-            onDrag: ({dx, dy}) => {
-              this.state.forEach(function (pt) {
-                pt.x += dx;
-                pt.y += dy;
-              });
-              this.render();
-            },
-            inBoundsX: (dx) => {
-              for (let pt of this.state) {
-                if (!this.inBoundsX(pt.x + dx)) {
-                  return false;
-                }
-              }
-              return true;
-            },
-            inBoundsY: (dy) => {
-              for (let pt of this.state) {
-                if (!this.inBoundsY(pt.y + dy)) {
-                  return false;
-                }
-              }
-              return true;
-            }
-          });
-        }
-      }),
-      // Draw invisible and selectable line endpoints
-      z.each(this.state, (pt, ptIndex) =>
-        z('circle.invisible-' + ptIndex, {
-          cx: this.state[ptIndex].x,
-          cy: this.state[ptIndex].y,
-          r: 8,
+      z.if(this.pointsBeingDrawn.length >= 2, () =>
+        z('path', {
+          d: polylinePathData(this.pointsBeingDrawn, this.closed),
           style: `
-            fill: ${this.params.color};
-            stroke-width: 0;
-            opacity: 0;
-          `,
-          onmount: el => {
-            this.app.registerElement({
-              ownerID: this.params.id,
-              element: el,
-              initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
-                this.state[ptIndex].x += dx;
-                this.state[ptIndex].y += dy;
-                this.render();
-              },
-              inBoundsX: (dx) => {
-                return this.inBoundsX(this.state[ptIndex].x + dx);
-              },
-              inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[ptIndex].y + dy)
-              },
-            });
-          }
+            stroke: ${this.params.color};
+            stroke-width: 3px;
+            fill: ${this.fillColor};
+            opacity: 0.7;
+            `,
         })
       )
     );
@@ -193,7 +224,10 @@ function computeDashArray(dashStyle) {
   }
 }
 
-function polylineData(points) {
+function polylinePathData(points, closed) {
+  var result;
+  if (points.length < 2) return '';
   const coords = points.map(p => `${p.x},${p.y}`);
-  return coords.join(' ');
+  result = `M${coords[0]} L${coords.splice(1).join(' L')}`;
+  return closed ? result + ` L${coords[0]}` : result;
 }

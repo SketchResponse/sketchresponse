@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="polyline-closed-icon.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1863"
+     inkscape:window-height="1056"
+     id="namedview6"
+     showgrid="false"
+     inkscape:zoom="9.8333333"
+     inkscape:cx="-18.254237"
+     inkscape:cy="12"
+     inkscape:window-x="57"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <path
+     d="M 11.216953,3.7098689 6.1551846,20.46184 4.2406745,19.883353 9.3024426,3.1313809 11.216953,3.7098689 Z"
+     id="path4"
+     inkscape:connector-curvature="0" />
+  <path
+     d="M 11.539906,2.6411825 20.235741,12.775494 18.046422,13.301246 9.3505872,3.1669334 11.539906,2.6411825 Z"
+     id="path4-4"
+     inkscape:connector-curvature="0"
+     inkscape:transform-center-x="-14.116171"
+     inkscape:transform-center-y="3.5172844" />
+  <path
+     d="M 17.075755,12.263189 4.3239325,20.077195 7.5344134,20.482574 20.286236,12.668567 17.075755,12.263189 Z"
+     id="path4-4-1"
+     inkscape:connector-curvature="0"
+     inkscape:transform-center-x="20.700362"
+     inkscape:transform-center-y="2.7119835" />
+</svg>

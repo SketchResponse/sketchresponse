@@ -170,9 +170,18 @@ function loadConfig(configId) {
         },
         {
           name: 'polyline',
-          id: 'pl',
+          id: 'pll',
           label: 'Polyline',
           color: 'cornflowerblue',
+          dashStyle: 'solid'
+        },
+        {
+          name: 'polyline',
+          id: 'plg',
+          label: 'Polygon',
+          closed: true,
+          color: 'mediumseagreen',
+          fillColor: 'lightsteelblue',
           dashStyle: 'solid'
         }
       ]

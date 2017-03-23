@@ -222,6 +222,7 @@ export default class SketchInput {
     KeyMaster('⌘+y, ctrl+y, ⌘+shift+z, ctrl+shift+z', event => { this.messageBus.emit('redo'); return false; });
     KeyMaster('esc', event => { this.messageBus.emit('deselectAll'); return false; });
     KeyMaster('delete, backspace', event => { this.messageBus.emit('deleteSelected'); return false; });
+    KeyMaster('enter', event => { this.messageBus.emit('finalizeShape'); return false; });
     document.addEventListener('mouseenter', event => window.focus());  // So we get keyboard events. Rethink this?
 
     // Allow multitouch zoom on SVG element (TODO: move elsewhere?)
