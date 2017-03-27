@@ -1,9 +1,4 @@
-import datalayer
 import Gradeable
-import Point
-import numpy as np
-import Axis
-from math import sqrt
 from copy import deepcopy
 from LineSegment import LineSegments
 from GradeableFunction import GradeableFunction
@@ -13,15 +8,8 @@ class PolyLines(Gradeable.Gradeable):
     """
     PolyLines.
     """
-
-    DEGREES = (3.142 / 180)
-
     def __init__(self, info, tolerance=dict()):
         Gradeable.Gradeable.__init__(self, info, tolerance)
-
-        self.set_default_tolerance('line_distance', 20) # consider an line segment to be at a value if it is within 20 pixels
-        self.set_default_tolerance('line_distance_squared', 400)
-        self.set_default_tolerance('line_angle', 10)
 
         self.polysegments = []
         self.polysplines = []
