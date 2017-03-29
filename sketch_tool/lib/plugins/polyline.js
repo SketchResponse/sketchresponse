@@ -25,7 +25,7 @@ export default class Polyline extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addPolyline', (id, index) => {this.addPolyline(id, index)});
     this.app.__messageBus.on('deletePolylines', () => {this.deletePolylines()});
-    this.app.__messageBus.on('finalizeShape', () => {this.drawEnd()});
+    this.app.__messageBus.on('finalizeShapes', () => {this.drawEnd()});
     this.closed = false;
     this.fillColor = 'none';
     if (params.closed) {

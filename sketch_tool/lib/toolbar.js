@@ -154,7 +154,11 @@ export default class Toolbar {
 
           z.if(type === 'button',
             z('button', {
-                onclick: e => action ? action() : this.app.__messageBus.emit('activateItem', id),
+                onclick: e => {
+                  // Finalize any shape that isn't
+                  this.app.__messageBus.emit('finalizeShapes');
+                  action ? action() : this.app.__messageBus.emit('activateItem', id);
+                },
                 'aria-labelledby': `${id}-label ${id}-icon`,
               },
               renderIcon(`${id}-icon`, icon.src, icon.alt),
