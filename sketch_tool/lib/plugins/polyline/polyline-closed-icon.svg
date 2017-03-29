@@ -23,15 +23,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1863"
-     inkscape:window-height="1056"
+     inkscape:window-width="1600"
+     inkscape:window-height="847"
      id="namedview6"
      showgrid="false"
      inkscape:zoom="9.8333333"
-     inkscape:cx="-18.254237"
+     inkscape:cx="-33.864406"
      inkscape:cy="12"
-     inkscape:window-x="57"
-     inkscape:window-y="24"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
   <metadata
@@ -42,26 +42,27 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
      id="defs8" />
   <path
-     d="M 11.216953,3.7098689 6.1551846,20.46184 4.2406745,19.883353 9.3024426,3.1313809 11.216953,3.7098689 Z"
-     id="path4"
-     inkscape:connector-curvature="0" />
-  <path
-     d="M 11.539906,2.6411825 20.235741,12.775494 18.046422,13.301246 9.3505872,3.1669334 11.539906,2.6411825 Z"
-     id="path4-4"
-     inkscape:connector-curvature="0"
-     inkscape:transform-center-x="-14.116171"
-     inkscape:transform-center-y="3.5172844" />
-  <path
-     d="M 17.075755,12.263189 4.3239325,20.077195 7.5344134,20.482574 20.286236,12.668567 17.075755,12.263189 Z"
-     id="path4-4-1"
-     inkscape:connector-curvature="0"
-     inkscape:transform-center-x="20.700362"
-     inkscape:transform-center-y="2.7119835" />
+     sodipodi:type="star"
+     id="path3355"
+     sodipodi:sides="5"
+     sodipodi:cx="7.6271186"
+     sodipodi:cy="8.9491529"
+     sodipodi:r1="5.2063427"
+     sodipodi:r2="4.2120199"
+     sodipodi:arg1="1.354246"
+     sodipodi:arg2="1.9825646"
+     inkscape:flatsided="true"
+     inkscape:rounded="0"
+     inkscape:randomized="0"
+     d="M 8.7457628,14.033899 3.1369181,11.58432 3.7333779,5.4930298 9.710855,4.1779847 12.808679,9.456532 Z"
+     inkscape:transform-center-x="-0.69972395"
+     inkscape:transform-center-y="-0.17663442"
+     transform="matrix(2.0241949,-0.26315596,0,1.5608801,-4.1399304,0.04188391)" />
 </svg>
