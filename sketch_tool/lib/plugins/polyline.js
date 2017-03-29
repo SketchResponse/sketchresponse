@@ -118,10 +118,10 @@ export default class Polyline extends BasePlugin {
               element: el,
               initialBehavior: 'none',
               onDrag: ({dx, dy}) => {
-                this.state[polylineIndex].forEach(function (pt) {
+                for (let pt of this.state[polylineIndex]) {
                   pt.x += dx;
                   pt.y += dy;
-                });
+                }
                 this.render();
               },
               inBoundsX: (dx) => {
@@ -148,8 +148,8 @@ export default class Polyline extends BasePlugin {
         // Draw invisible and selectable points
         z.each(polyline, (pt, ptIndex) =>
           z('circle.invisible-' + polylineIndex, {
-            cx: polyline[ptIndex].x,
-            cy: polyline[ptIndex].y,
+            cx: this.state[polylineIndex][ptIndex].x,
+            cy: this.state[polylineIndex][ptIndex].y,
             r: 8,
             style: `
               fill: ${this.params.color};
@@ -162,15 +162,15 @@ export default class Polyline extends BasePlugin {
                 element: el,
                 initialBehavior: 'none',
                 onDrag: ({dx, dy}) => {
-                  polyline[ptIndex].x += dx;
-                  polyline[ptIndex].y += dy;
+                  this.state[polylineIndex][ptIndex].x += dx;
+                  this.state[polylineIndex][ptIndex].y += dy;
                   this.render();
                 },
                 inBoundsX: (dx) => {
-                  return this.inBoundsX(polyline[ptIndex].x + dx);
+                  return this.inBoundsX(this.state[polylineIndex][ptIndex].x + dx);
                 },
                 inBoundsY: (dy) => {
-                  return this.inBoundsY(polyline[ptIndex].y + dy)
+                  return this.inBoundsY(this.state[polylineIndex][ptIndex].y + dy)
                 },
               });
             }
