@@ -163,7 +163,6 @@ function loadConfig(configId) {
           id: 'st',
           label: 'Beam',
           color: 'cornflowerblue',
-          src: './plugins/stamp/ibeam.svg',
           imgwidth: 450,
           imgheight: 100,
           scale: 0.5

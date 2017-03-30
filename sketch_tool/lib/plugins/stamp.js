@@ -13,10 +13,11 @@ export default class Stamp extends BasePlugin {
   constructor(params, app) {
     // Add params that are specific to this plugin
     params.icon = {
-      src: './plugins/stamp/ibeam-icon.svg',
+      src: params.iconsSrc ? params.iconSrc : './plugins/stamp/stamp-icon.svg',
       alt: 'Stamp tool'
     };
     super(params, app);
+    this.src = params.src ? params.src : './plugins/stamp/stamp.svg';
     this.scale = (params.scale !== undefined) ? params.scale : DEFAULTS.scale;
     this.width = (params.imgwidth !== undefined) ? params.imgwidth : DEFAULTS.width;
     this.height = (params.imgheight !== undefined) ? params.imgheight : DEFAULTS.height;
@@ -106,11 +107,7 @@ export default class Stamp extends BasePlugin {
           width: this.width,
           height: this.height,
           transform: this.getTransform(position.x, position.y),
-          'xlink:href': this.params.src,
-          style: `
-            border-color: blue;
-            border-width: 1px;
-          `,
+          'xlink:href': this.src,
           onmount: el => {
             this.app.registerElement({
               ownerID: this.params.id,
