@@ -35,6 +35,17 @@ export default class BasePlugin {
       getGradeable: () => this.getGradeable(),
     });
 
+    // Most icons look better if only fill is  used.
+    // Stroke and fill are needed for polyline plugin.
+    let strokeColor, fillColor;
+    if (params.fillColor) {
+      strokeColor = params.icon.color;
+      fillColor = params.icon.fillColor;
+    }
+    else {
+      strokeColor = 'none';
+      fillColor = params.icon.color;
+    }
     app.registerToolbarItem({
       type: 'button',
       id: params.id,
@@ -42,7 +53,8 @@ export default class BasePlugin {
       icon: {
         src: params.icon.src,
         alt: params.icon.alt,
-        color: params.color
+        stroke: strokeColor,
+        fill: fillColor
       },
       activate: this.activate.bind(this),
       deactivate: this.deactivate.bind(this),

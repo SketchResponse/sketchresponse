@@ -8,18 +8,16 @@ export const GRADEABLE_VERSION = '0.1';
 export default class Polyline extends BasePlugin {
 
   constructor(params, app) {
+    let iconSrc = params.closed ? './plugins/polyline/polyline-closed-icon.svg'
+                                : './plugins/polyline/polyline-open-icon.svg';
     // Add params that are specific to this plugin
-    if (params.closed) {
-      params.icon = {
-        src: './plugins/polyline/polyline-closed-icon.svg',
-        alt: 'Polyline tool'
-      };
-    }
-    else {
-      params.icon = {
-        src: './plugins/polyline/polyline-open-icon.svg',
-        alt: 'Polyline tool'
-      };
+    params.icon = {
+      src: iconSrc,
+      alt: 'Polyline tool',
+      color: params.color
+    };
+    if (params.closed && params.fillColor) {
+        params.icon.fillColor = params.fillColor;
     }
     super(params, app);
     // Message listeners

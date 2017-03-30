@@ -6,19 +6,15 @@ export const GRADEABLE_VERSION = '0.1';
 
 export default class Point extends BasePlugin {
   constructor(params, app) {
+    let iconSrc, strokeColor, fillColor;
     // Add params that are specific to this plugin
-    if (params.hollow) {
-      params.icon = {
-        src: './plugins/point/point-hollow-icon.svg',
-        alt: 'Point tool'
-      };
-    }
-    else {
-      params.icon = {
-        src: './plugins/point/point-icon.svg',
-        alt: 'Point tool'
-      };
-    }
+    iconSrc = params.hollow ? './plugins/point/point-hollow-icon.svg'
+                            : './plugins/point/point-icon.svg';
+    params.icon = {
+      src: iconSrc,
+      alt: 'Point tool',
+      color: params.color
+    };
     super(params, app);
     this.strokeWidth = params.hollow ? 2 : 0;
     this.fillOpacity = params.hollow ? 0 : 1;
