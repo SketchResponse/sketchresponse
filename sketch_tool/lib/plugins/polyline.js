@@ -23,7 +23,7 @@ export default class Polyline extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addPolyline', (id, index) => {this.addPolyline(id, index)});
     this.app.__messageBus.on('deletePolylines', () => {this.deletePolylines()});
-    this.app.__messageBus.on('finalizeShapes', () => {this.drawEnd()});
+    this.app.__messageBus.on('finalizeShapes', (id) => {this.drawEnd(id)});
     this.closed = false;
     this.fillColor = 'none';
     if (params.closed) {
@@ -32,8 +32,6 @@ export default class Polyline extends BasePlugin {
     if (params.fillColor) {
       this.fillColor = params.fillColor;
     }
-    this.pointsBeingDrawn = [];
-    this.delIndices1 = [];
   }
 
   getGradeable() {
@@ -66,38 +64,64 @@ export default class Polyline extends BasePlugin {
   initDraw(event) {
     let x = event.clientX - this.params.left,
         y = event.clientY - this.params.top;
-    // Push current position
-    this.pointsBeingDrawn.push({
-      x: x,
-      y: y
-    });
+    // We already have at least one polyline defined, add new points to the last one
+    if (this.state.length > 0) {
+      this.state[this.state.length-1].push({
+        x: x,
+        y: y
+      });
+    }
+    // Create our first polyline
+    else {
+      this.state.push([{
+        x: x,
+        y: y
+      }]);
+    }
+    this.app.addUndoPoint();
     this.render();
     event.stopPropagation();
     event.preventDefault();
   }
 
-  drawEnd() {
-    if (this.pointsBeingDrawn.length > 0) {
-      this.state.push(this.pointsBeingDrawn);
-      this.app.addUndoPoint();
-      this.pointsBeingDrawn = [];
-      this.render();
+  drawEnd(id) {
+    // To signal that a polyline has been completed, push an empty array
+    if (id !== this.id && id !== 'undo' && id !== 'redo' &&
+        this.state.length > 0 && this.state[this.state.length-1].length !== 0) {
+        this.state.push([]);
+        this.app.addUndoPoint();
     }
+    this.render();
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  polylineStrokeWidth(index) {
+    return index === this.state.length-1 ? '3px' : '2px';
+  }
+
+  pointRadius(polylineIndex) {
+    return this.state[polylineIndex].length === 1 ? 4 : 8;
+  }
+
+  pointOpacity(polylineIndex) {
+    return this.state[polylineIndex].length === 1 ? '' : 0;
   }
 
   render() {
     z.render(this.el,
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw visible polyline under invisible polyline
-        z('path.visible-' + polylineIndex + '.polyline' + '.plugin-id-' + this.id, {
-          d: polylinePathData(this.state[polylineIndex], this.closed),
-          style: `
-              stroke: ${this.params.color};
-              stroke-width: 2px;
-              stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
-              fill: ${this.fillColor};
-            `
-        })
+          z('path.visible-' + polylineIndex + '.polyline' + '.plugin-id-' + this.id, {
+            d: polylinePathData(this.state[polylineIndex], this.closed),
+            style: `
+                stroke: ${this.params.color};
+                stroke-width: ${this.polylineStrokeWidth(polylineIndex)};
+                stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
+                fill: ${this.fillColor};
+              `
+          })
+
       ),
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw invisible and selectable polyline under invisible points
@@ -143,16 +167,16 @@ export default class Polyline extends BasePlugin {
         })
       ),
       z.each(this.state, (polyline, polylineIndex) =>
-        // Draw invisible and selectable points
+        // Draw invisible (when length of polyline > 1) and selectable points
         z.each(polyline, (pt, ptIndex) =>
           z('circle.invisible-' + polylineIndex, {
             cx: this.state[polylineIndex][ptIndex].x,
             cy: this.state[polylineIndex][ptIndex].y,
-            r: 8,
+            r: this.pointRadius(polylineIndex),
             style: `
               fill: ${this.params.color};
               stroke-width: 0;
-              opacity: 0;
+              opacity: ${this.pointOpacity(polylineIndex)};
             `,
             onmount: el => {
               this.app.registerElement({
@@ -174,28 +198,6 @@ export default class Polyline extends BasePlugin {
             }
           })
         )
-      ),
-      z.if(this.pointsBeingDrawn.length === 1, () =>
-        z('circle', {
-            cx: this.pointsBeingDrawn[0].x,
-            cy: this.pointsBeingDrawn[0].y,
-            r: 4,
-            style: `
-              fill: ${this.params.color};
-              stroke: ${this.params.color};
-            `,
-        })
-      ),
-      z.if(this.pointsBeingDrawn.length >= 2, () =>
-        z('path', {
-          d: polylinePathData(this.pointsBeingDrawn, this.closed),
-          style: `
-            stroke: ${this.params.color};
-            stroke-width: 3px;
-            fill: ${this.fillColor};
-            opacity: 0.7;
-            `,
-        })
       )
     );
   }

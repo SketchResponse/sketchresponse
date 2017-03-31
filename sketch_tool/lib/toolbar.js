@@ -157,7 +157,7 @@ export default class Toolbar {
             z('button', {
                 onclick: e => {
                   // Finalize any shape that isn't
-                  this.app.__messageBus.emit('finalizeShapes');
+                  this.app.__messageBus.emit('finalizeShapes', id);
                   action ? action() : this.app.__messageBus.emit('activateItem', id);
                 },
                 'aria-labelledby': `${id}-label ${id}-icon`,
