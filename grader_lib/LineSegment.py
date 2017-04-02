@@ -123,11 +123,6 @@ class LineSegments(Gradeable.Gradeable):
             true if the function at value x has slope m within tolerances,
             otherwise false.
         """
-        if ignoreDirection:
-            arctan = np.arctan
-        else:
-            arctan = np.arctan2
-            
         if tolerance == None:
             tolerance = self.tolerance['line_angle'] * self.DEGREES
         else:
@@ -135,7 +130,10 @@ class LineSegments(Gradeable.Gradeable):
 
         dist_tolerance = self.tolerance['line_distance'] / self.xscale
 
-        expectedAngle = np.arctan2(self.yscale * m, self.xscale * 1)
+        if ignoreDirection:
+            expectedAngle = np.arctan(self.yscale * m / self.xscale)
+        else:
+            expectedAngle = np.arctan2(self.yscale * m, self.xscale * 1)
         for segment in self.segments:
             pt1 = segment.start
             pt2 = segment.end
@@ -144,18 +142,24 @@ class LineSegments(Gradeable.Gradeable):
             x1, x2 = self.swap(x1, x2)
             if self.x_is_between(x, x1, x2, dist_tolerance):
                 # this segment crosses x
-                actualAngle = arctan(pt2.y - pt1.y, pt2.x - pt1.x)
+                ydiff = pt2.y - pt1.y
+                xdiff = pt2.x - pt1.x
+                if ignoreDirection:
+                    actualAngle = np.arctan(ydiff / xdiff)
+                else:
+                    actualAngle = np.arctan2(ydiff, xdiff)
                 return abs(expectedAngle - actualAngle) < tolerance
 
         return False
 
-    def has_angle_t_at_x(self, t, x, tolerance=None):
+    def has_angle_t_at_x(self, t, x, ignoreDirection=True, tolerance=None):
         """Return whether the line segment at position x has an angle of t
            wrt the x axis.
 
         Args:
             t: the angle in radians
             x: the position on the x-axis to test against.
+            ignoreDirection (default: true): ignore segment direction
             tolerance: the angle tolerance in degrees
         Returns:
             bool:
@@ -175,7 +179,13 @@ class LineSegments(Gradeable.Gradeable):
             x1, x2 = self.swap(x1, x2)
             if self.x_is_between(x, x1, x2, dist_tolerance):
                 # this segment crosses x
-                actualAngle = np.arctan2(pt2.y - pt1.y, pt2.x - pt1.x)
+                ydiff = pt2.y - pt1.y
+                xdiff = pt2.x - pt1.x
+                if ignoreDirection:
+                    actualAngle = np.arctan(ydiff / xdiff)
+                else:
+                    actualAngle = np.arctan2(ydiff, xdiff)
+
                 return abs(t - actualAngle) < tolerance
 
         return False
