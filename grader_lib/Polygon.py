@@ -15,7 +15,8 @@ class Polygons(Gradeable.Gradeable):
 
         for spline in info:
             points = self.convertToRealPoints(spline['spline'])
-            self.polygons.append(points)
+            if len(points) > 0:
+                self.polygons.append(points)
 
     def convertToRealPoints(self, points):
         # input is a list of points [[x1,y1], [x2,y2], ...]
@@ -37,7 +38,7 @@ class Polygons(Gradeable.Gradeable):
         if not polygon is None:
             polygons = [polygon]
 
-        contains = false
+        contains = False
             
         for p in polygons:
             poly = Polygon(*p) # sympy polygon does not take a list of points, stupidly
