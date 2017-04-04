@@ -19,8 +19,8 @@ def grader(lineseg):
 
     lineseg = LineSegment.LineSegments(lineseg)
 
-    if lineseg.get_number_of_segments() != 3:
-        return False, "<font color='blue'>Your sketch should have 3 line segments.</font>"
+    # if lineseg.get_number_of_segments() != 3:
+    #     return False, "<font color='blue'>Your sketch should have 3 line segments.</font>"
 
     line1 = lineseg.get_segments_at(x=.25)[0]
     line2 = lineseg.get_segments_at(x =.75)[0]
