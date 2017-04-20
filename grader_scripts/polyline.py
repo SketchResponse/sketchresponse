@@ -27,20 +27,20 @@ def grader(lineseg):
     line3 = lineseg.get_segments_at(x=1.25)[0]
 
     if lineseg.check_segment_endpoints(line1,[[0,-1],[.5,-.5]]):
-        if not lineseg.has_slope_m_at_x(1,.25,tolerance=25):
-            return False, "<font color='blue'>Check the slope of the left most line segment.</font>"
+        #if not lineseg.has_slope_m_at_x(1,.25,tolerance=25):
+        return False, "<font color='blue'>Check the slope of the left most line segment.</font>"
     else:
         return False, "<font color='blue'>Check the endpoints of the left most line segment.</font>"
 
     if lineseg.check_segment_endpoints(line2,[[1,-.5],[.5,-.5]]):
-        if not lineseg.has_slope_m_at_x(0,.75,tolerance=25):
-            return False, "<font color='blue'>Check the slope of the middle line segment.</font>"
+        #if not lineseg.has_slope_m_at_x(0,.75,tolerance=25):
+        return False, "<font color='blue'>Check the slope of the middle line segment.</font>"
     else:
         return False, "<font color='blue'>Check the endpoints of the middle line segment.</font>"
     
     if lineseg.check_segment_endpoints(line3,[[1,-.5],[1.5,-.875]]):
-        if not lineseg.has_slope_m_at_x(-.75,1.25,tolerance=25):
-            return False, "<font color='blue'>Check the slope of the right most line segment.</font>"
+        #if not lineseg.has_slope_m_at_x(-.75,1.25,tolerance=25):
+        return False, "<font color='blue'>Check the slope of the right most line segment.</font>"
     else:
         return False, "<font color='blue'>Check the endpoints of the right most line segment.</font>"
 
