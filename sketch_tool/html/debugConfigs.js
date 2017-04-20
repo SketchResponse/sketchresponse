@@ -145,6 +145,45 @@ function loadConfig(configId) {
           color: 'orange'
         }
       ]
+    },
+    config3: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes',
+        },
+        {
+          name: 'stamp',
+          id: 'st',
+          label: 'Beam',
+          color: 'cornflowerblue',
+          imgwidth: 450,
+          imgheight: 100,
+          scale: 0.5
+        },
+        {
+          name: 'polyline',
+          id: 'pll',
+          label: 'Polyline',
+          color: 'cornflowerblue',
+          dashStyle: 'solid'
+        },
+        {
+          name: 'polyline',
+          id: 'plg',
+          label: 'Polygon',
+          closed: true,
+          color: 'mediumseagreen',
+          fillColor: 'lightsteelblue',
+          dashStyle: 'solid'
+        }
+      ]
     }
   };
   if (configs.hasOwnProperty(configId)) {

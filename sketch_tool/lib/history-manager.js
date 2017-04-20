@@ -2,6 +2,10 @@ import jsondiffpatch from 'jsondiffpatch';
 
 export const VERSION = '0.1';
 
+function deepCopy(serializableObj) {
+  return JSON.parse(JSON.stringify(serializableObj));
+}
+
 export default class HistoryManager {
   constructor(config, messageBus, stateManager) {
     this.config = config;
@@ -47,7 +51,7 @@ export default class HistoryManager {
     const newState = this.getUndoableState();
     const diff = jsondiffpatch.diff(this.currentState, newState);
 
-    this.undoStack.push(diff);
+    this.undoStack.push(deepCopy(diff));
     this.redoStack = [];
     this.currentState = newState;
   }
@@ -59,7 +63,7 @@ export default class HistoryManager {
     this.messageBus.emit('deselectAll');
 
     const diff = this.undoStack.pop();
-    this.redoStack.push(diff);
+    this.redoStack.push(deepCopy(diff));
 
     this.currentState = jsondiffpatch.unpatch(this.currentState, diff);
     this.stateManager.setPluginState(this.currentState);
@@ -72,7 +76,7 @@ export default class HistoryManager {
     this.messageBus.emit('deselectAll');
 
     const diff = this.redoStack.pop();
-    this.undoStack.push(diff);
+    this.undoStack.push(deepCopy(diff));
 
     this.currentState = jsondiffpatch.patch(this.currentState, diff);
     this.stateManager.setPluginState(this.currentState);

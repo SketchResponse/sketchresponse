@@ -16,10 +16,10 @@ export default class Freeform extends BasePlugin {
 
   constructor(params, app) {
     // Add params that are specific to this plugin
-
     params.icon = {
       src: './plugins/freeform/freeform-icon.svg',
-      alt: 'Freeform tool'
+      alt: 'Freeform tool',
+      color: params.color
     };
     super(params, app);
     // Message listeners

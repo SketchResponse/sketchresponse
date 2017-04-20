@@ -3,27 +3,27 @@ import BasePlugin from './base-plugin';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
+export const DEFAULTS = {
+  width: 100,
+  height: 100,
+  scale: 1
+};
 
-export default class Point extends BasePlugin {
+export default class Stamp extends BasePlugin {
   constructor(params, app) {
-    let iconSrc, strokeColor, fillColor;
     // Add params that are specific to this plugin
-    iconSrc = params.hollow ? './plugins/point/point-hollow-icon.svg'
-                            : './plugins/point/point-icon.svg';
     params.icon = {
-      src: iconSrc,
-      alt: 'Point tool',
-      color: params.color
+      src: params.iconsSrc ? params.iconSrc : './plugins/stamp/stamp-icon.svg',
+      alt: 'Stamp tool'
     };
     super(params, app);
-    this.strokeWidth = params.hollow ? 2 : 0;
-    this.fillOpacity = params.hollow ? 0 : 1;
-    // Given a params.size, to have identical visible radiuses in both cases, we need to shrink
-    // the hollow point to take in account the 2px width of the stroke
-    this.radius = params.hollow ? (params.size/2)-1 : params.size/2;
+    this.src = params.src ? params.src : './plugins/stamp/stamp.svg';
+    this.scale = (params.scale !== undefined) ? params.scale : DEFAULTS.scale;
+    this.width = (params.imgwidth !== undefined) ? params.imgwidth : DEFAULTS.width;
+    this.height = (params.imgheight !== undefined) ? params.imgheight : DEFAULTS.height;
     // Message listeners
-    this.app.__messageBus.on('addPoint', (id, index) => {this.addPoint(id, index)});
-    this.app.__messageBus.on('deletePoints', () => {this.deletePoints()});
+    this.app.__messageBus.on('addStamp', (id, index) => {this.addStamp(id, index)});
+    this.app.__messageBus.on('deleteStamps', () => {this.deleteStamps()});
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
   }
 
@@ -35,13 +35,13 @@ export default class Point extends BasePlugin {
     });
   }
 
-  addPoint(id, index) {
+  addStamp(id, index) {
     if (this.id === id) {
       this.delIndices.push(index);
     }
   }
 
-  deletePoints() {
+  deleteStamps() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
       for (let i = this.delIndices.length -1; i >= 0; i--) {
@@ -90,19 +90,24 @@ export default class Point extends BasePlugin {
     event.preventDefault();
   }
 
+  // We first scale our image.
+  // Then translate so that the image is centered on mouse click.
+  getTransform(x, y) {
+    let xt = x - 0.5*this.scale*this.width,
+        yt = y - 0.5*this.scale*this.height;
+    return `translate(${xt}, ${yt}) scale(${this.scale})`;
+  }
+
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
-        z('circle.point' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
-          cx: position.x,
-          cy: position.y,
-          r: this.radius,
-          style: `
-            fill: ${this.params.color};
-            fill-opacity: ${this.fillOpacity};
-            stroke: ${this.params.color};
-            stroke-width: ${this.strokeWidth};
-          `,
+        z('image.stamp' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
+          x: 0,
+          y: 0,
+          width: this.width,
+          height: this.height,
+          transform: this.getTransform(position.x, position.y),
+          'xlink:href': this.src,
           onmount: el => {
             this.app.registerElement({
               ownerID: this.params.id,
@@ -127,10 +132,10 @@ export default class Point extends BasePlugin {
   }
 
   inBoundsX(x) {
-    return x >= this.bounds.xmin && x <= this.bounds.xmax;
+    return x>= this.bounds.xmin && x <= this.bounds.xmax;
   }
 
   inBoundsY(y) {
-    return y >= this.bounds.ymin && y <= this.bounds.ymax;
+    return y  >= this.bounds.ymin && y <= this.bounds.ymax;
   }
 }

@@ -137,7 +137,8 @@ export default class SketchInput {
       label: 'Select',
       icon: {
         src: './lib/select-icon.svg',
-        color: 'black',
+        stroke: 'none',
+        fill: 'black',
         alt: 'Select',
       },
       activate: () => {
@@ -164,7 +165,8 @@ export default class SketchInput {
       label: 'Delete',
       icon: {
         src: './lib/delete-icon.svg',
-        color: 'black',
+        stroke: 'none',
+        fill: 'black',
         alt: 'Delete',
       },
       action: () => this.messageBus.emit('deleteSelected'),
@@ -175,7 +177,8 @@ export default class SketchInput {
       label: 'Undo',
       icon: {
         src: './lib/undo-icon.svg',
-        color: 'black',
+        stroke: 'none',
+        fill: 'black',
         alt: 'Undo',
       },
       action: () => this.messageBus.emit('undo'),
@@ -186,7 +189,8 @@ export default class SketchInput {
       label: 'Redo',
       icon: {
         src: './lib/redo-icon.svg',
-        color: 'black',
+        stroke: 'none',
+        fill: 'black',
         alt: 'Redo',
       },
       action: () => this.messageBus.emit('redo'),
@@ -222,6 +226,7 @@ export default class SketchInput {
     KeyMaster('⌘+y, ctrl+y, ⌘+shift+z, ctrl+shift+z', event => { this.messageBus.emit('redo'); return false; });
     KeyMaster('esc', event => { this.messageBus.emit('deselectAll'); return false; });
     KeyMaster('delete, backspace', event => { this.messageBus.emit('deleteSelected'); return false; });
+    KeyMaster('enter', event => { this.messageBus.emit('finalizeShapes'); return false; });
     document.addEventListener('mouseenter', event => window.focus());  // So we get keyboard events. Rethink this?
 
     // Allow multitouch zoom on SVG element (TODO: move elsewhere?)
