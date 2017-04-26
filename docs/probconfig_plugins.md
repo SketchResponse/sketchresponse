@@ -108,7 +108,7 @@ pixel diameter of the point drawn by the plugin.
 
 It also has an optional parameter:
 
-* `'hollow': <boolean>` - if set to true, the point will be drawn hollow. Default value: false.
+* `'hollow': <True|False>` - if set to True, the point will be drawn hollow. Default value: False.
 
 E.g.
 
@@ -262,15 +262,15 @@ This value is used as the key for the data created by this plugin in the JSON
 string returned to the grader function.
 * `'label': <descriptive string>` - the label key should be given a descriptive string. This string will be used to label the selection button in the javascript
 front-end tool.
-* `'closed': <'true'|'false'>` - true if you want a polygon, false if you want a polyline.
+* `'closed': <True|False>` - True if you want a polygon, False if you want a polyline.
 * `'color': <a color string>` - the color key should be give a color string that
 javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
-* `'fillColor': <a color string>` - the fillColor is used if the 'closed' parameter is true.
+* `'fillColor': <a color string>` - the fillColor is used if the 'closed' parameter is set to True.
 * `'dashStyle': <line dash string>(default: 'solid')` - the dashStyle key should have a string
 description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'.
 
 E.g.
 
 ```python
-{'name': 'polyline', 'id': 'pl', 'label': 'PolyLine', 'closed': 'true', 'color': 'gray', 'fillColor': 'lightblue', 'dashStyle': 'dashdotted'}
+{'name': 'polyline', 'id': 'pl', 'label': 'PolyLine', 'closed': True, 'color': 'gray', 'fillColor': 'lightblue', 'dashStyle': 'dashdotted'}
 ```
