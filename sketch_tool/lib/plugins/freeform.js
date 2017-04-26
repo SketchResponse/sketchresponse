@@ -149,7 +149,7 @@ export default class Freeform extends BasePlugin {
       ),
       // Draw invisible, selectable spline
       z.each(this.state, (spline, splineIndex) =>
-        z('path.invisible-' + splineIndex, {
+        z('path.invisible-' + splineIndex + this.readOnlyClass(), {
           d: cubicSplinePathData(spline),
           style: `stroke: ${this.params.color}; stroke-width: 10px; fill: none; opacity: 0;`,
           onmount: el => {

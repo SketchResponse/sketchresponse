@@ -93,7 +93,7 @@ export default class Point extends BasePlugin {
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
-        z('circle.point' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex, {
+        z('circle.point' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex + this.readOnlyClass(), {
           cx: position.x,
           cy: position.y,
           r: this.radius,

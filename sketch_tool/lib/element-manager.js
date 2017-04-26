@@ -53,6 +53,11 @@ export default class ElementManager {
   }
 
   onPointerDown(event) {
+    let className = event.currentTarget.getAttribute('class');
+    // Readonly elements cannot be selected or dragged
+    if (className.indexOf('readonly') !== -1) {
+      return;
+    }
     // This can only trigger when the element is active, so no need to check that again
     // We do check that (1) there isn't already an active pointer, and (2) this is a left click
     // or touch/pen equivalent (see http://www.w3.org/TR/pointerevents/#button-states)

@@ -15,6 +15,7 @@ function loadConfig(configId) {
         {
           name: 'point',
           id: 'cp',
+          readonly: true,
           label: 'Point',
           color: 'sienna',
           size: 15
@@ -43,6 +44,7 @@ function loadConfig(configId) {
         {
           name: 'line-segment',
           id: 'ar',
+          readonly: true,
           label: 'Arrow',
           color: 'mediumseagreen',
           dashStyle: 'solid',
