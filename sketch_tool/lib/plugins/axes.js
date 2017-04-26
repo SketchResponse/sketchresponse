@@ -410,7 +410,7 @@ export default class Axes {
               stroke: ${this.params.colors.circle};
               stroke-width: ${this.params.strokeWidth.circle}px;
               fill: none;
-              shape-rendering: crispEdges;
+              shape-rendering: geometricPrecision;
             `,
           })
         ),
@@ -424,7 +424,7 @@ export default class Axes {
               stroke: ${this.params.colors.ray};
               stroke-width: ${this.params.strokeWidth.ray}px;
               fill: none;
-              shape-rendering: crispEdges;
+              shape-rendering: geometricPrecision;
             `,
           })
         ),
@@ -436,7 +436,7 @@ export default class Axes {
           style: `
             stroke: ${this.params.colors.xaxis};
             stroke-width: ${this.params.strokeWidth.xaxis}px;
-            shape-rendering: crispEdges;
+            shape-rendering: geometricPrecision;
           `,
         }),
         z('line.yaxis', {
@@ -447,7 +447,7 @@ export default class Axes {
           style: `
             stroke: ${this.params.colors.xaxis};
             stroke-width: ${this.params.strokeWidth.xaxis}px;
-            shape-rendering: crispEdges;
+            shape-rendering: geometricPrecision;
           `,
         })
       );
