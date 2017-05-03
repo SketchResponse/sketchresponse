@@ -27,8 +27,8 @@ class PolyLines(Gradeable.Gradeable):
         for i, pt1 in enumerate(points):
             if i < len(points) - 1:
                 pt4 = points[i + 1]
-                ydiff = pt4[1] - pt1[1]
-                xdiff = pt4[0] - pt1[0]
+                ydiff = pt4[1] - (pt1[1] * 1.0)
+                xdiff = pt4[0] - (pt1[0] * 1.0)
                 pt2 = [pt1[0] + xdiff / 3, pt1[1] + ydiff / 3]
                 pt3 = [pt4[0] - xdiff / 3, pt4[1] - ydiff / 3]
                 splines.append([pt1, pt2, pt3, pt4])
