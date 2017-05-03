@@ -15,6 +15,7 @@ function loadConfig(configId) {
         {
           name: 'point',
           id: 'cp',
+          readonly: true,
           label: 'Point',
           color: 'sienna',
           size: 15
@@ -43,6 +44,7 @@ function loadConfig(configId) {
         {
           name: 'line-segment',
           id: 'ar',
+          readonly: true,
           label: 'Arrow',
           color: 'mediumseagreen',
           dashStyle: 'solid',
@@ -69,7 +71,41 @@ function loadConfig(configId) {
           label: 'Function f(x)',
           color: 'orange'
         }
-      ]
+      ],
+      initialstate: {
+        'cp': [
+          {
+            'x': 100,
+            'y': 100
+          },
+          {
+            'x': 200,
+            'y': 200
+          },
+          {
+            'x': 300,
+            'y': 300
+          }
+        ],
+        'ar':  [
+          {
+            'x': 250,
+            'y': 150
+          },
+          {
+            'x': 350,
+            'y': 250
+          },
+          {
+            'x': 150,
+            'y': 150
+          },
+          {
+            'x': 120,
+            'y': 120
+          }
+        ]
+      }
     },
     config2: {
       width: 750,

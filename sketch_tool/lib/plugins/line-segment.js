@@ -309,7 +309,7 @@ export default class LineSegment extends BasePlugin {
       // Draw invisible and selectable line, under invisible endpoints
       z.each(this.state, (pt, ptIndex) =>
         z.if(ptIndex % 2 === 0 && ptIndex < this.state.length - 1, () =>
-          z('line.invisible-' + ptIndex, {
+          z('line.invisible-' + ptIndex + this.readOnlyClass(), {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
             x2: this.state[ptIndex+1].x,
@@ -347,7 +347,7 @@ export default class LineSegment extends BasePlugin {
       ),
       // Draw invisible and selectable line endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z('circle.invisible-' + (ptIndex % 2 === 0 ? ptIndex : (ptIndex - 1).toString()) + this.pointClass(ptIndex), {
+        z('circle.invisible-' + (ptIndex % 2 === 0 ? ptIndex : (ptIndex - 1).toString()) + this.pointClass(ptIndex) + this.readOnlyClass(), {
           cx: this.state[ptIndex].x,
           cy: this.state[ptIndex].y,
           r: this.pointRadius(ptIndex),

@@ -125,7 +125,7 @@ export default class Polyline extends BasePlugin {
       ),
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw invisible and selectable polyline under invisible points
-        z('path.invisible-' + polylineIndex, {
+        z('path.invisible-' + polylineIndex + this.readOnlyClass(), {
           d: polylinePathData(this.state[polylineIndex], this.closed),
           style: `
               stroke: ${this.params.color};
@@ -169,7 +169,7 @@ export default class Polyline extends BasePlugin {
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw invisible (when length of polyline > 1) and selectable points
         z.each(polyline, (pt, ptIndex) =>
-          z('circle.invisible-' + polylineIndex, {
+          z('circle.invisible-' + polylineIndex + this.readOnlyClass(), {
             cx: this.state[polylineIndex][ptIndex].x,
             cy: this.state[polylineIndex][ptIndex].y,
             r: this.pointRadius(polylineIndex),

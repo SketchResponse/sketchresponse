@@ -5,9 +5,13 @@ function deepCopy(serializableObj) {
 }
 
 export default class StateManager {
-  constructor(config, messageBus) {
+  constructor(config, messageBus, initialState) {
     this.config = config;
     this.messageBus = messageBus;
+    if (initialState) {
+      this.initialState = initialState;
+      messageBus.on('loadInitialState', () => this.loadInitialState());
+    }
 
     // TODO: convert to a key-based registry?
     this.registry = [];
@@ -62,6 +66,20 @@ export default class StateManager {
       this.registry.forEach(entry => {
         // TODO: plugin version checking?
         if (state.data.hasOwnProperty(entry.id)) entry.setState(state.data[entry.id]);
+      });
+
+      this.messageBus.emit('stateSet');
+    }
+    catch(error) {
+      this.messageBus.emit('warnUser', 'setStateError', error);
+      throw error;
+    }
+  }
+
+  loadInitialState() {
+    try {
+      this.registry.forEach(entry => {
+        if (this.initialState.hasOwnProperty(entry.id)) entry.setState(this.initialState[entry.id]);
       });
 
       this.messageBus.emit('stateSet');

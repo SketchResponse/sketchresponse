@@ -26,7 +26,10 @@
     #correctness-image {
       vertical-align: middle;
     }
-    #message-area {
+    #initial-state-title {
+      color: blue;
+    }
+    .text-areas {
       display: block;
       width: 800px;
       margin-top: 10px;
@@ -44,15 +47,19 @@
     <button id="save-state-button" onclick="saveState()">Save State ></button>
     <input id="state-text-input" type="text" placeholder="(Paste state here)">
     <button id="load-state-button" onclick="loadState()" disabled>> Load State</button>
-    <div id="message-area"></div>
+    <div id="message-area" class="text-areas"></div>
+    <div id="initial-state-title" class="text-areas">INITIAL STATE:</div>
+    <textarea id="initial-state-text" class="text-areas" rows="25"></textarea>
   </div>
   <script type="text/javascript">
+    var DATA_URI_PREAMBLE = 'data:application/json;base64,';
     var appFrame = document.getElementById('app-frame');
     var checkButton = document.getElementById('check-button');
     var correctnessImage = document.getElementById('correctness-image');
     var messageArea = document.getElementById('message-area');
     var stateTextInput = document.getElementById('state-text-input');
     var loadStateButton = document.getElementById('load-state-button');
+    var initialStateText = document.getElementById('initial-state-text');
 
     var channel = Channel.build({
       window: appFrame.contentWindow,
@@ -117,6 +124,7 @@
           stateTextInput.value = state;
           loadStateButton.disabled = false;
           messageArea.textContent = 'Saved current state'
+          displayInitialState(state);
         }
       })
     }
@@ -129,6 +137,20 @@
           messageArea.textContent = 'Loaded new state'
         }
       })
+    }
+
+    function displayInitialState(state) {
+      var stateStr = atob(state.slice(DATA_URI_PREAMBLE.length));
+      var data = JSON.parse(stateStr).data;
+      var initialState = {}, prop;
+      for (prop in data) {
+        if(data.hasOwnProperty(prop) && prop !== '$__history' && prop !== '$__toolbar') {
+          if (data[prop].length !== 0) {
+            initialState[prop] = data[prop]
+          }
+        }
+      }
+      initialStateText.value = JSON.stringify(initialState, undefined, 2);
     }
   </script>
 </body>

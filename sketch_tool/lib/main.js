@@ -24,6 +24,11 @@ export default class SketchInput {
     );
 
     this.el = el;
+    if (config.initialstate) {
+      // Deep copy initial state
+      this.initialState = JSON.parse(JSON.stringify(config.initialstate));
+      delete config.initialstate;
+    }
     this.config = config;
     this.params = createInheritingObjectTree(config);
     this.messageBus = new EventEmitter();
@@ -95,7 +100,7 @@ export default class SketchInput {
 
     this.notificationManager = new NotificationManager(this.config, this.messageBus);
     this.gradeableManager = new GradeableManager(this.config, this.messageBus);
-    this.stateManager = new StateManager(this.config, this.messageBus);
+    this.stateManager = new StateManager(this.config, this.messageBus, this.initialState);
     this.historyManager = new HistoryManager(this.config, this.messageBus, this.stateManager);
 
     this.app = {
@@ -263,9 +268,12 @@ export default class SketchInput {
     // }
 
     //////////// END TEMPORARY TEST CODE FOR ELEMENT MANAGER //////////////
-
-
-    this.messageBus.emit('ready');
+    if (this.initialState) {
+      this.messageBus.emit('loadInitialState');
+    }
+    else {
+      this.messageBus.emit('ready');
+    }
   }
 
   setState(state) { return this.stateManager.setState(state); }
