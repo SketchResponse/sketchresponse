@@ -11,6 +11,30 @@ function loadConfig(configId) {
       plugins: [
         {
           name: 'axes',
+          colors: {
+            xmajor: 'red',
+            ymajor: 'red',
+            xminor: 'blue',
+            yminor: 'blue',
+            xaxis: 'green',
+            yaxis: 'green',
+            xlabel: 'purple',
+            ylabel: 'purple',
+            zeroLabel: 'purple'
+          },
+          strokeWidth: {
+            xmajor: 3,
+            ymajor: 3,
+            xminor: 2,
+            yminor: 2,
+            xaxis: 4,
+            yaxis: 4
+          },
+          fontSize: {
+            xlabel:    18,
+            ylabel:    18,
+            zeroLabel: 18
+          }
         },
         {
           name: 'point',
@@ -120,7 +144,15 @@ function loadConfig(configId) {
           name: 'axes',
           rrange: 2,
           rmajor: 0.5,
-          thetamajor: 30
+          thetamajor: 30,
+          colors: {
+            circle: 'red',
+            ray: 'blue'
+          },
+          strokeWidth: {
+            circle: 3,
+            ray: 3
+          }
         },
         {
           name: 'point',

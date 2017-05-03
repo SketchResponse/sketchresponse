@@ -1,4 +1,5 @@
 import z from 'sketch2/util/zdom';
+import deepExtend from 'deep-extend';
 
 export const VERSION = '0.1';
 
@@ -10,10 +11,34 @@ const ONE_EIGHTY_DIV_PI = 180 / Math.PI;
 const PI_DIV_ONE_EIGHTY = Math.PI / 180;
 
 const DEFAULT_PARAMS = {
-  xmajor: 1,
-  ymajor: 1,
-  xminor: 0.25,
-  yminor: 0.25,
+  colors: {
+    xmajor: '#f0f0f0',
+    ymajor: '#f0f0f0',
+    xminor: '#f6f6f6',
+    yminor: '#f6f6f6',
+    xaxis: '#333',
+    yaxis: '#333',
+    xlabel: '#333',
+    ylabel: '#333',
+    zeroLabel: '#333',
+    circle: '#f0f0f0',
+    ray: '#f0f0f0'
+  },
+  strokeWidth: {
+    xmajor: 2,
+    ymajor: 2,
+    xminor: 1,
+    yminor: 1,
+    xaxis: 1,
+    yaxis: 1,
+    circle: 2,
+    ray: 2
+  },
+  fontSize: {
+    xlabel:    14,
+    ylabel:    14,
+    zeroLabel: 14
+  }
 };
 
 const DEFAULTS = {
@@ -72,7 +97,8 @@ export default class Axes {
       throw new Error('Only linear axis scales are supported in this release.');
     }
 
-    this.params = params;
+    this.params = DEFAULT_PARAMS;
+    deepExtend(this.params, params);
 
     this.coordinates = (params.coordinates === undefined) ? 'cartesian' : params.coordinates;
 
@@ -272,7 +298,11 @@ export default class Axes {
             x2: this.x.pixelVal(xval),
             y1: this.y.pixelMin,
             y2: this.y.pixelMax,
-            style: 'stroke: #f6f6f6; stroke-width: 1px; shape-rendering: crispEdges;',
+            style: `
+              stroke: ${this.params.colors.xminor};
+              stroke-width: ${this.params.strokeWidth.xminor}px;
+              shape-rendering: crispEdges;
+            `,
           })
         ),
         z.each(this.yMinor, yval =>
@@ -281,7 +311,11 @@ export default class Axes {
             x2: this.x.pixelMax,
             y1: this.y.pixelVal(yval),
             y2: this.y.pixelVal(yval),
-            style: 'stroke: #f6f6f6; stroke-width: 1px; shape-rendering: crispEdges;',
+            style: `
+              stroke: ${this.params.colors.yminor};
+              stroke-width: ${this.params.strokeWidth.yminor}px;
+              shape-rendering: crispEdges;
+            `,
           })
         ),
         z.each(this.xMajor, (xval, idx) =>
@@ -291,13 +325,20 @@ export default class Axes {
               x2: this.x.pixelVal(xval),
               y1: this.y.pixelMin,
               y2: this.y.pixelMax,
-              style: 'stroke: #f0f0f0; stroke-width: 2px; shape-rendering: crispEdges;',
+              style: `
+                stroke: ${this.params.colors.xmajor};
+                stroke-width: ${this.params.strokeWidth.xmajor}px;
+                shape-rendering: crispEdges;
+              `,
             }),
             z('text.ticLabel', {
               'text-anchor': 'middle',
               x: this.x.pixelVal(xval) + 0,
               y: this.y.pixelVal(0) + 15,
-              style: `fill: #333; font-size: 14px;`,
+              style: `
+                fill: ${this.params.colors.xlabel};
+                font-size: ${this.params.fontSize.xlabel}px;
+              `,
             }, String(this.xLabels[idx]))
           )
         ),
@@ -308,13 +349,20 @@ export default class Axes {
               x2: this.x.pixelMax,
               y1: this.y.pixelVal(yval),
               y2: this.y.pixelVal(yval),
-              style: 'stroke: #f0f0f0; stroke-width: 2px; shape-rendering: crispEdges;',
+              style: `
+                stroke: ${this.params.colors.ymajor};
+                stroke-width: ${this.params.strokeWidth.ymajor}px;
+                shape-rendering: crispEdges;
+              `,
             }),
             z('text.ticLabel', {
               'text-anchor': 'end',
               x: this.x.pixelVal(0) - 4,
               y: this.y.pixelVal(yval) + 5,
-              style: `fill: #333; font-size: 14px;`,
+              style: `
+                fill: ${this.params.colors.ylabel};
+                font-size: ${this.params.fontSize.ylabel}px;
+              `,
             }, String(this.yLabels[idx]))
           )
         ),
@@ -323,7 +371,10 @@ export default class Axes {
             'text-anchor': 'end',
             x: this.x.pixelVal(0) - 4,
             y: this.y.pixelVal(0) + 15,
-            style: `fill: #333; font-size: 14px;`,
+            style: `
+              fill: ${this.params.colors.zeroLabel};
+              font-size: ${this.params.fontSize.zeroLabel}px;
+            `,
           }, String(this.zeroLabel))
         ),
         z('line.xaxis', {
@@ -331,14 +382,22 @@ export default class Axes {
           x2: this.x.pixelMax,
           y1: this.y.pixelVal(0),
           y2: this.y.pixelVal(0),
-          style: 'stroke: #333; stroke-width: 1px; shape-rendering: crispEdges;',
+          style: `
+            stroke: ${this.params.colors.xaxis};
+            stroke-width: ${this.params.strokeWidth.xaxis}px;
+            shape-rendering: crispEdges;
+          `,
         }),
         z('line.yaxis', {
           x1: this.x.pixelVal(0),
           x2: this.x.pixelVal(0),
           y1: this.y.pixelMin,
           y2: this.y.pixelMax,
-          style: 'stroke: #333; stroke-width: 1px; shape-rendering: crispEdges;',
+          style: `
+            stroke: ${this.params.colors.yaxis};
+            stroke-width: ${this.params.strokeWidth.yaxis}px;
+            shape-rendering: crispEdges;
+          `,
         })
       );
     }
@@ -347,7 +406,12 @@ export default class Axes {
         z.each(this.circles, circle =>
           z('polyline', {
             points: polylineData(circle),
-            style: `stroke: #f0f0f0; stroke-width: 2px; fill: none; shape-rendering: crispEdges;`,
+            style: `
+              stroke: ${this.params.colors.circle};
+              stroke-width: ${this.params.strokeWidth.circle}px;
+              fill: none;
+              shape-rendering: geometricPrecision;
+            `,
           })
         ),
         z.each(this.rays, ray =>
@@ -356,7 +420,12 @@ export default class Axes {
             y1: ray.y1,
             x2: ray.x2,
             y2: ray.y2,
-            style: `stroke: #f0f0f0; stroke-width: 2px; fill: none; shape-rendering: crispEdges;`,
+            style: `
+              stroke: ${this.params.colors.ray};
+              stroke-width: ${this.params.strokeWidth.ray}px;
+              fill: none;
+              shape-rendering: geometricPrecision;
+            `,
           })
         ),
         z('line.xaxis', {
@@ -364,14 +433,22 @@ export default class Axes {
           x2: this.x.pixelMax,
           y1: this.y.pixelVal(0),
           y2: this.y.pixelVal(0),
-          style: 'stroke: #333; stroke-width: 1px; shape-rendering: crispEdges;',
+          style: `
+            stroke: ${this.params.colors.xaxis};
+            stroke-width: ${this.params.strokeWidth.xaxis}px;
+            shape-rendering: geometricPrecision;
+          `,
         }),
         z('line.yaxis', {
           x1: this.x.pixelVal(0),
           x2: this.x.pixelVal(0),
           y1: this.y.pixelMin,
           y2: this.y.pixelMax,
-          style: 'stroke: #333; stroke-width: 1px; shape-rendering: crispEdges;',
+          style: `
+            stroke: ${this.params.colors.xaxis};
+            stroke-width: ${this.params.strokeWidth.xaxis}px;
+            shape-rendering: geometricPrecision;
+          `,
         })
       );
     }
