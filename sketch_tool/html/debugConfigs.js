@@ -10,11 +10,12 @@ function loadConfig(configId) {
       coordinates: 'cartesian',
       plugins: [
         {
-          name: 'axes',
+          name: 'axes'
         },
         {
           name: 'point',
           id: 'cp',
+          readonly: true,
           label: 'Point',
           color: 'sienna',
           size: 15
@@ -43,6 +44,7 @@ function loadConfig(configId) {
         {
           name: 'line-segment',
           id: 'ar',
+          readonly: true,
           label: 'Arrow',
           color: 'mediumseagreen',
           dashStyle: 'solid',
@@ -69,7 +71,41 @@ function loadConfig(configId) {
           label: 'Function f(x)',
           color: 'orange'
         }
-      ]
+      ],
+      initialstate: {
+        'cp': [
+          {
+            'x': 100,
+            'y': 100
+          },
+          {
+            'x': 200,
+            'y': 200
+          },
+          {
+            'x': 300,
+            'y': 300
+          }
+        ],
+        'ar':  [
+          {
+            'x': 250,
+            'y': 150
+          },
+          {
+            'x': 350,
+            'y': 250
+          },
+          {
+            'x': 150,
+            'y': 150
+          },
+          {
+            'x': 120,
+            'y': 120
+          }
+        ]
+      }
     },
     config2: {
       width: 750,
@@ -84,7 +120,15 @@ function loadConfig(configId) {
           name: 'axes',
           rrange: 2,
           rmajor: 0.5,
-          thetamajor: 30
+          thetamajor: 30,
+          colors: {
+            circle: 'red',
+            ray: 'blue'
+          },
+          strokeWidth: {
+            circle: 3,
+            ray: 3
+          }
         },
         {
           name: 'point',
@@ -143,6 +187,45 @@ function loadConfig(configId) {
           id: 'f',
           label: 'Function f(x)',
           color: 'orange'
+        }
+      ]
+    },
+    config3: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes',
+        },
+        {
+          name: 'stamp',
+          id: 'st',
+          label: 'Beam',
+          color: 'cornflowerblue',
+          imgwidth: 450,
+          imgheight: 100,
+          scale: 0.5
+        },
+        {
+          name: 'polyline',
+          id: 'pll',
+          label: 'Polyline',
+          color: 'cornflowerblue',
+          dashStyle: 'solid'
+        },
+        {
+          name: 'polyline',
+          id: 'plg',
+          label: 'Polygon',
+          closed: true,
+          color: 'mediumseagreen',
+          fillColor: 'lightsteelblue',
+          dashStyle: 'solid'
         }
       ]
     }

@@ -19,6 +19,8 @@ is used.
 * [Vertical Asymptote](#vert-line)
 * [Horizontal Asymptote](#horiz-line)
 * [Image](#image)
+* [Stamp](#stamp)
+* [PolyLine](#polyline)
 
 <div id=axes></div>
 ## Axes
@@ -106,7 +108,7 @@ pixel diameter of the point drawn by the plugin.
 
 It also has an optional parameter:
 
-* `'hollow': <boolean>` - if set to true, the point will be drawn hollow. Default value: false.
+* `'hollow': <True|False>` - if set to True, the point will be drawn hollow. Default value: False.
 
 E.g.
 
@@ -220,4 +222,55 @@ E.g.
 
 ```python
 {'name': 'image', 'align': 'bottom', 'src': '/static/image.png'}
+```
+
+<div id=stamp></div>
+## Stamp
+
+The Stamp plugin adds a button to the tool to draw a custom image to the canvas that can be positioned like a Point.
+
+* `'name': 'stamp'` - the name key *must* have the value 'stamp'
+* `'id': <unique identifier string>` - the id key *must* have a *unique* value.
+This value is used as the key for the data created by this plugin in the JSON
+string returned to the grader function.
+* `'label': <descriptive string>` - the label key should be given a descriptive string. This string will be used to label the selection button in the javascript
+front-end tool.
+* `'color': <a color string>` - the color key should be give a color string that
+javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
+* `'scale': <number>(default: 1)` - multiplier to scale the size of the image.
+* `'width': <number>(default: '100')` - the pixel width of the image.
+* `'height': <number>(default: '100')` - the pixel height of the image.
+* `'src': <path to image file>` - the path to the image file to insert.
+
+E.g.
+
+```python
+{'name': 'stamp', 'id': 'st', 'label': 'Stamp', 'src': '/static/image.png'}
+```
+
+<div id=polyline></div>
+## PolyLine/Polygon
+
+The PolyLine plugin adds a button to the tool to draw a PolyLine or Polygon by
+placing the points that define its component line segments. It has seven
+parameters that must be defined:
+
+* `'name': 'polyline'` - the name key *must* have the value
+'polyline'
+* `'id': <unique identifier string>` - the id key *must* have a *unique* value.
+This value is used as the key for the data created by this plugin in the JSON
+string returned to the grader function.
+* `'label': <descriptive string>` - the label key should be given a descriptive string. This string will be used to label the selection button in the javascript
+front-end tool.
+* `'closed': <True|False>` - True if you want a polygon, False if you want a polyline.
+* `'color': <a color string>` - the color key should be give a color string that
+javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
+* `'fillColor': <a color string>` - the fillColor is used if the 'closed' parameter is set to True.
+* `'dashStyle': <line dash string>(default: 'solid')` - the dashStyle key should have a string
+description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'.
+
+E.g.
+
+```python
+{'name': 'polyline', 'id': 'pl', 'label': 'PolyLine', 'closed': True, 'color': 'gray', 'fillColor': 'lightblue', 'dashStyle': 'dashdotted'}
 ```

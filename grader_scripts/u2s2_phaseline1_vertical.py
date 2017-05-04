@@ -29,7 +29,6 @@ def grader(stb,semi,uns,carw):
         return False, '<font color="blue"> The location of your stable critical point is incorrect. </font><br />'
 
     if not uns.has_point_at(x=0, y=0):
-<<<<<<< HEAD
         return False, '<font color="blue"> The location of your unstable critical point is incorrect. </font><br />'
 
     if semi.has_point_at(x=0):
@@ -68,29 +67,6 @@ def grader(stb,semi,uns,carw):
             return False, '<font color="blue"> The direction of the arrow below your bottom most is is not correct. </font><br />'  
     else:
         return False, '<font color="blue">  You have no arrow below your bottom most critical point.  </font><br />'
-=======
-       return False, '<font color="blue"> The location of your unstable critical point is incorrect. </font><br />'
-
-    
-    downarrow = carw.get_segments_at(y=-1)
-    bottomuparrow = carw.get_segments_at(y=-3)
-    topuparrow = carw.get_segments_at(y=2)
-
-    if downarrow[0].start.x - downarrow[0].end.x >0:
-       return False, '<font color="blue"> The direction of the arrow between your two critical points is not correct. </font><br />'  
-
-    # if bottomuparrow.point1.x - bottomuparrow.point2.x < 0:
-    #    return False, '<font color="blue"> The direction of the arrow on the far left not correct. </font><br />'  
-
-    # if topuparrow.point1.x - topuparrow.point2.x < 0:
-    #    return False, '<font color="blue"> The direction of the arrow on the far right is not correct. </font><br />'  
-
->>>>>>> phase lines vertical
 
     return True, '<font color="blue"> Good job!</font>'
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> phase lines vertical

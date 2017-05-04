@@ -16,10 +16,10 @@ export default class Freeform extends BasePlugin {
 
   constructor(params, app) {
     // Add params that are specific to this plugin
-
     params.icon = {
       src: './plugins/freeform/freeform-icon.svg',
-      alt: 'Freeform tool'
+      alt: 'Freeform tool',
+      color: params.color
     };
     super(params, app);
     // Message listeners
@@ -149,7 +149,7 @@ export default class Freeform extends BasePlugin {
       ),
       // Draw invisible, selectable spline
       z.each(this.state, (spline, splineIndex) =>
-        z('path.invisible-' + splineIndex, {
+        z('path.invisible-' + splineIndex + this.readOnlyClass(), {
           d: cubicSplinePathData(spline),
           style: `stroke: ${this.params.color}; stroke-width: 10px; fill: none; opacity: 0;`,
           onmount: el => {

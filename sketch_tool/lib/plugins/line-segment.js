@@ -8,27 +8,27 @@ export const GRADEABLE_VERSION = '0.1';
 export default class LineSegment extends BasePlugin {
 
   constructor(params, app) {
+    let iconSrc;
     // Add params that are specific to this plugin
     if (params.arrowHead) {
       let length = params.arrowHead.length,
           base = params.arrowHead.base,
           refY = base/2;
-      params.icon = {
-        src: './plugins/line-segment/arrow-icon.svg',
-        alt: 'Line segment tool'
-      };
       injectSVGDefs(`
         <marker id="arrowhead-${params.id}" markerWidth="${length}" markerHeight="${base}" refX="${length}" refY="${refY}" orient="auto">
           <polygon points="0 0, ${length} ${refY}, 0 ${base}" style="fill: ${params.color}; stroke: ${params.color}; stroke-width: 1;"/>
         </marker>`
       );
+      iconSrc = './plugins/line-segment/arrow-icon.svg';
     }
     else {
-      params.icon = {
-        src: './plugins/line-segment/line-icon.svg',
-        alt: 'Line segment tool'
-      };
+      iconSrc = './plugins/line-segment/line-icon.svg';
     }
+    params.icon = {
+      src: iconSrc,
+      alt: 'Line segment tool',
+      color: params.color
+    };
     super(params, app);
     // Message listeners
     this.app.__messageBus.on('addLineSegment', (id, index) => {this.addLineSegment(id, index)});
@@ -309,7 +309,7 @@ export default class LineSegment extends BasePlugin {
       // Draw invisible and selectable line, under invisible endpoints
       z.each(this.state, (pt, ptIndex) =>
         z.if(ptIndex % 2 === 0 && ptIndex < this.state.length - 1, () =>
-          z('line.invisible-' + ptIndex, {
+          z('line.invisible-' + ptIndex + this.readOnlyClass(), {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
             x2: this.state[ptIndex+1].x,
@@ -347,7 +347,7 @@ export default class LineSegment extends BasePlugin {
       ),
       // Draw invisible and selectable line endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z('circle.invisible-' + (ptIndex % 2 === 0 ? ptIndex : (ptIndex - 1).toString()) + this.pointClass(ptIndex), {
+        z('circle.invisible-' + (ptIndex % 2 === 0 ? ptIndex : (ptIndex - 1).toString()) + this.pointClass(ptIndex) + this.readOnlyClass(), {
           cx: this.state[ptIndex].x,
           cy: this.state[ptIndex].y,
           r: this.pointRadius(ptIndex),

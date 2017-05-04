@@ -17,8 +17,11 @@ export default class BasePlugin {
 
     this.state = [];
     this.delIndices = [];
+    this.readonly = params.readonly;
 
-    this.bindEventHandlers();
+    if(!this.readonly) {
+      this.bindEventHandlers();
+    }
 
     this.id = params.id;
 
@@ -34,19 +37,33 @@ export default class BasePlugin {
       version: GRADEABLE_VERSION,
       getGradeable: () => this.getGradeable(),
     });
-
-    app.registerToolbarItem({
-      type: 'button',
-      id: params.id,
-      label: params.label,
-      icon: {
-        src: params.icon.src,
-        alt: params.icon.alt,
-        color: params.color
-      },
-      activate: this.activate.bind(this),
-      deactivate: this.deactivate.bind(this),
-    });
+    // Only add a button to toolbar is the plugin is not readonly
+    if (!this.readonly) {
+      // Most icons look better if only fill is  used.
+      // Stroke and fill are needed for polyline plugin.
+      let strokeColor, fillColor;
+      if (params.fillColor) {
+        strokeColor = params.icon.color;
+        fillColor = params.icon.fillColor;
+      }
+      else {
+        strokeColor = 'none';
+        fillColor = params.icon.color;
+      }
+      app.registerToolbarItem({
+        type: 'button',
+        id: params.id,
+        label: params.label,
+        icon: {
+          src: params.icon.src,
+          alt: params.icon.alt,
+          stroke: strokeColor,
+          fill: fillColor
+        },
+        activate: this.activate.bind(this),
+        deactivate: this.deactivate.bind(this),
+      });
+    }
     /*
       Check if all the methods that must be implemented in extended classes are
       present
@@ -103,5 +120,9 @@ export default class BasePlugin {
     else {
       return y;
     }
+  }
+
+  readOnlyClass() {
+    return this.readonly ? '.readonly' : '';
   }
 }

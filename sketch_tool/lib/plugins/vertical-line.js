@@ -9,7 +9,8 @@ export default class VerticalLine extends BasePlugin {
     // Add params that are specific to this plugin
     params.icon = {
       src: './plugins/vertical-line/vertical-line-icon.svg',
-      alt: 'Vertical line tool'
+      alt: 'Vertical line tool',
+      color: params.color
     };
     super(params, app);
     // Message listeners
@@ -98,7 +99,7 @@ export default class VerticalLine extends BasePlugin {
       ),
       // Draw invisible and selectable line
       z.each(this.state, (position, positionIndex) =>
-        z('line.invisible-' + positionIndex, {
+        z('line.invisible-' + positionIndex + this.readOnlyClass(), {
           x1: position,
           y1: 0,
           x2: position,

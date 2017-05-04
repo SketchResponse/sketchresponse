@@ -9,7 +9,8 @@ export default class HorizontalLine extends BasePlugin {
     // Add params that are specific to this plugin
     params.icon = {
       src: './plugins/horizontal-line/horizontal-line-icon.svg',
-      alt: 'Horizontal line tool'
+      alt: 'Horizontal line tool',
+      color: params.color
     };
     super(params, app);
     // Message listeners
@@ -98,7 +99,7 @@ export default class HorizontalLine extends BasePlugin {
       ),
       // Draw invisible and selectable line
       z.each(this.state, (position, positionIndex) =>
-        z('line.invisible-' + positionIndex, {
+        z('line.invisible-' + positionIndex + this.readOnlyClass(), {
           x1: 0,
           y1: position,
           x2: this.params.width,

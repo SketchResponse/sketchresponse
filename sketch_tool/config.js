@@ -19,6 +19,7 @@ System.config({
     "classnames": "npm:classnames@2.2.5",
     "core-js": "npm:core-js@0.9.18",
     "d3": "github:d3/d3@3.5.17",
+    "deep-extend": "npm:deep-extend@0.4.1",
     "dom-shims": "npm:dom-shims@0.1.4",
     "events": "github:jspm/nodelibs-events@0.1.1",
     "fastclick": "npm:fastclick@1.0.6",
@@ -76,6 +77,9 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
+    },
+    "npm:deep-extend@0.4.1": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0"
     },
     "npm:has-ansi@0.1.0": {
       "ansi-regex": "npm:ansi-regex@0.2.1",

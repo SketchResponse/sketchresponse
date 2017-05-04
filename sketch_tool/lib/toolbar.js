@@ -15,7 +15,7 @@ function renderIcon(id, src, alt) {
   });
 }
 
-function getBlobUrl(src, color) {
+function getBlobUrl(src, stroke, fill) {
   let ajax = new XMLHttpRequest(), div, svg, svgData, blob;
   ajax.open('GET', src, false); // For the time being, use a deprecated synchronous request
   ajax.send(null);
@@ -24,7 +24,8 @@ function getBlobUrl(src, color) {
   svg = div.children[0];
   svg.setAttribute('width', 35);
   svg.setAttribute('height', 35);
-  svg.setAttribute('fill', color);
+  svg.setAttribute('stroke', stroke);
+  svg.setAttribute('fill', fill);
   // Convert colored svg to an image
   // http://www.timvasil.com/blog14/post/2014/02/06/How-to-convert-an-SVG-image-into-a-static-image-with-only-JavaScript.aspx
   // Without the charset part or it will fail in Safari
@@ -123,7 +124,7 @@ export default class Toolbar {
       this.selectedDropdownItemMap[item.id] = item.items[0].id;
     }
     if (item.type == 'button') {
-      item.icon.src = getBlobUrl(item.icon.src, item.icon.color);
+      item.icon.src = getBlobUrl(item.icon.src, item.icon.stroke, item.icon.fill);
     }
     this.items.push(item);
     this.render();
@@ -154,7 +155,11 @@ export default class Toolbar {
 
           z.if(type === 'button',
             z('button', {
-                onclick: e => action ? action() : this.app.__messageBus.emit('activateItem', id),
+                onclick: e => {
+                  // Finalize any shape that isn't
+                  this.app.__messageBus.emit('finalizeShapes', id);
+                  action ? action() : this.app.__messageBus.emit('activateItem', id);
+                },
                 'aria-labelledby': `${id}-label ${id}-icon`,
               },
               renderIcon(`${id}-icon`, icon.src, icon.alt),
