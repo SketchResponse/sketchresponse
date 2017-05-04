@@ -13,7 +13,7 @@ export default class Stamp extends BasePlugin {
   constructor(params, app) {
     // Add params that are specific to this plugin
     params.icon = {
-      src: params.iconsSrc ? params.iconSrc : './plugins/stamp/stamp-icon.svg',
+      src: params.iconSrc ? params.iconSrc : './plugins/stamp/stamp-icon.svg',
       alt: 'Stamp tool'
     };
     super(params, app);
