@@ -27,10 +27,10 @@ export default class Point extends BasePlugin {
     }
     this.selectMode = false;
     // Message listeners
-    this.app.__messageBus.on('addPoint', (id, index) => {this.addPoint(id, index)});
-    this.app.__messageBus.on('deletePoints', () => {this.deletePoints()});
-    this.app.__messageBus.on('enableSelectMode', () => {this.selectMode = true;});
-    this.app.__messageBus.on('disableSelectMode', () => {this.selectMode = false;});
+    this.app.__messageBus.on('addPoint', (id, index) => this.addPoint(id, index));
+    this.app.__messageBus.on('deletePoints', () => this.deletePoints());
+    this.app.__messageBus.on('enableSelectMode', () => this.setSelectMode(true));
+    this.app.__messageBus.on('disableSelectMode', () => this.setSelectMode(false));
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
   }
 
@@ -58,6 +58,11 @@ export default class Point extends BasePlugin {
       this.delIndices.length = 0;
       this.render();
     }
+  }
+
+  setSelectMode(selectMode) {
+    this.selectMode = selectMode;
+    this.render(); // To change tag cursor
   }
 
   // This will be called when clicking on the SVG canvas after having
@@ -155,8 +160,13 @@ export default class Point extends BasePlugin {
                 el.addEventListener('dblclick', (event) => {
                   if (this.selectMode) {
                     let val = prompt('Enter tag value:');
-                    if (val !== null) {
+                    if (val === null) {
+                      return; // Happens when cancel button is pressed in prompt window
+                    }
+                    val.trim();
+                    if (val !== '') {
                       this.state[positionIndex].tag = val;
+                      this.app.addUndoPoint();
                       this.render();
                     }
                   }
