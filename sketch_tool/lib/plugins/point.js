@@ -21,16 +21,24 @@ export default class Point extends BasePlugin {
     // Given a params.size, to have identical visible radiuses in both cases, we need to shrink
     // the hollow point to take in account the 2px width of the stroke
     this.radius = params.hollow ? (params.size/2)-1 : params.size/2;
+    this.hasTag = params.tag !== undefined && params.tag !== null;
+    if (this.hasTag) {
+      this.tag = params.tag;
+    }
+    this.selectMode = false;
     // Message listeners
     this.app.__messageBus.on('addPoint', (id, index) => {this.addPoint(id, index)});
     this.app.__messageBus.on('deletePoints', () => {this.deletePoints()});
+    this.app.__messageBus.on('enableSelectMode', () => {this.selectMode = true;});
+    this.app.__messageBus.on('disableSelectMode', () => {this.selectMode = false;});
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
   }
 
   getGradeable() {
     return this.state.map(point => {
       return {
-        point: [point.x, point.y]
+        point: [point.x, point.y],
+        tag: point.tag
       };
     });
   }
@@ -63,6 +71,9 @@ export default class Point extends BasePlugin {
       x: event.clientX - this.params.left,
       y: event.clientY - this.params.top
     };
+    if (this.hasTag) {
+      this.currentPosition.tag = this.tag.value;
+    }
     this.state.push(this.currentPosition);
     this.render();
   }
@@ -88,6 +99,10 @@ export default class Point extends BasePlugin {
     this.app.addUndoPoint();
     event.stopPropagation();
     event.preventDefault();
+  }
+
+  getTagCursor() {
+    return this.params.readonly ? 'default' : (this.selectMode ? 'context-menu' : 'crosshair');
   }
 
   render() {
@@ -122,6 +137,34 @@ export default class Point extends BasePlugin {
             });
           }
         })
+      ),
+      z.each(this.state, (position, positionIndex) =>
+        z.if(this.hasTag, () =>
+          z('text.tag', {
+            'text-anchor': this.tag.align,
+            x: position.x + this.tag.xoffset,
+            y: position.y + this.tag.yoffset,
+            style: `
+              fill: #333;
+              font-size: 14px;
+              user-select: none;
+              cursor: ${this.getTagCursor()};
+            `,
+            onmount: el => {
+              if (!this.params.readonly) {
+                el.addEventListener('dblclick', (event) => {
+                  if (this.selectMode) {
+                    let val = prompt('Enter tag value:');
+                    if (val !== null) {
+                      this.state[positionIndex].tag = val;
+                      this.render();
+                    }
+                  }
+                });
+              }
+            }
+          }, this.state[positionIndex].tag)
+        )
       )
     );
   }

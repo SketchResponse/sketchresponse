@@ -228,6 +228,117 @@ function loadConfig(configId) {
           opacity: 0.8
         }
       ]
+    },
+    config4: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes'
+        },
+        {
+          name: 'point',
+          id: 'cp',
+          label: 'Point',
+          color: 'sienna',
+          size: 15,
+          readonly: true,
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        },
+        {
+          name: 'point',
+          id: 'tp',
+          label: 'Point',
+          color: 'lightcoral',
+          size: 15,
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        },
+        {
+          name: 'horizontal-line',
+          id: 'ha',
+          label: 'Horizontal line',
+          color: 'dimgray',
+          dashStyle: 'dashdotted'
+        },
+        {
+          name: 'vertical-line',
+          id: 'va',
+          label: 'Vertical line',
+          color: 'dimgray',
+          dashStyle: 'dashdotted'
+        },
+        {
+          name: 'line-segment',
+          id: 'ls',
+          label: 'Segment',
+          color: 'cornflowerblue',
+          dashStyle: 'solid'
+        },
+        {
+          name: 'line-segment',
+          id: 'ar',
+          readonly: true,
+          label: 'Arrow',
+          color: 'mediumseagreen',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          }
+        },
+        {
+          name: 'line-segment',
+          id: 'car',
+          label: 'Constrained arrow',
+          color: 'mediumseagreen',
+          dashStyle: 'solid',
+          lengthConstraint: 100,
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
+        },
+        {
+          name: 'freeform',
+          id: 'f',
+          label: 'Function f(x)',
+          color: 'orange'
+        }
+      ],
+      initialstate: {
+        'cp': [
+          {
+            'x': 100,
+            'y': 100,
+            'tag': 'pt1'
+          },
+          {
+            'x': 200,
+            'y': 100,
+            'tag': 'pt2'
+          },
+          {
+            'x': 300,
+            'y': 100,
+            'tag': 'pt3'
+          }
+        ]
+      }
     }
   };
   if (configs.hasOwnProperty(configId)) {
