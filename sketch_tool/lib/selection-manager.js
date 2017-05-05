@@ -20,7 +20,11 @@ export const SELECTED_ATTR = 'data-si-selected';
 //     <feComposite in="SourceGraphic" />
 //   </filter>
 // `);
-injectStyleSheet(`[${ SELECTED_ATTR }] { opacity: 0.5;}`);
+injectStyleSheet(`
+  [${ SELECTED_ATTR }='default'] { opacity: 0.5;}
+  [${ SELECTED_ATTR }='override'] { opacity: 0.5 !important;}
+`
+);
 
 export default class SelectionManager {
   constructor(rootElement, messageBus) {
@@ -39,13 +43,15 @@ export default class SelectionManager {
       this.deselectAll();
     }
   }
-  select(element) { attrCache.setAttributeNS(element, null, SELECTED_ATTR, ''); }
+  select(element, mode) {
+    attrCache.setAttributeNS(element, null, SELECTED_ATTR, mode == 'override' ? 'override' : 'default');
+  }
   deselect(element) { attrCache.removeAttributeNS(element, null, SELECTED_ATTR); }
   isSelected(element) {return attrCache.getAttributeNS(element, null, SELECTED_ATTR) !== null; }
 
-  toggleSelected(element, condition) {
-    if (arguments.length < 2) condition = !this.isSelected(element);  // toggle current value
-    if (condition) this.select(element);
+  toggleSelected(element, mode) {
+    let condition = !this.isSelected(element);  // toggle current value
+    if (condition) this.select(element, mode);
     else this.deselect(element);
   }
 

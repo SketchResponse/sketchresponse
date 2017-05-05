@@ -25,7 +25,13 @@ export default class DragManager {
         let classNamePrefix = className.substring(9);
         this.visibleElement = element.parentNode.getElementsByClassName('visible'+classNamePrefix)[0];
         if (this.visibleElement) {
-          this.selectionManager.select(this.visibleElement);
+          // Only polyline has an opacity that needs to be overriden during selection
+          if (this.visibleElement.getAttribute('class').indexOf('polyline') != -1) {
+            this.selectionManager.select(this.visibleElement, 'override');
+          }
+          else {
+            this.selectionManager.select(this.visibleElement);
+          }
         }
       }
       this.elementsToDrag = [element];

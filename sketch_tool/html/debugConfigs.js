@@ -225,7 +225,8 @@ function loadConfig(configId) {
           closed: true,
           color: 'mediumseagreen',
           fillColor: 'lightsteelblue',
-          dashStyle: 'solid'
+          dashStyle: 'solid',
+          opacity: 0.8
         }
       ]
     }

@@ -109,14 +109,26 @@ export default class ElementManager {
     else if (event.shiftKey || event.pointerType === 'touch') {
       this.selectionManager.toggleSelected(element);
       if (visibleElement) {
-        this.selectionManager.toggleSelected(visibleElement);
+        // Only polyline has an opacity that needs to be overriden during selection
+        if (visibleElement.getAttribute('class').indexOf('polyline') != -1) {
+          this.selectionManager.toggleSelected(visibleElement, 'override');
+        }
+        else {
+          this.selectionManager.toggleSelected(visibleElement);
+        }
       }
     }
     else {
       this.selectionManager.deselectAll();
       this.selectionManager.select(element);
       if (visibleElement) {
-        this.selectionManager.select(visibleElement);
+        // Only polyline has an opacity that needs to be overriden during selection
+        if (visibleElement.getAttribute('class').indexOf('polyline') != -1) {
+          this.selectionManager.select(visibleElement, 'override');
+        }
+        else {
+          this.selectionManager.select(visibleElement);
+        }
       }
     }
 
