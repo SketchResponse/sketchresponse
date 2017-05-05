@@ -33,22 +33,27 @@ class Polygons(Gradeable.Gradeable):
         """Returns the number of polylines defined in the function."""
         return len(self.polygons)
 
-    def containsPoint(self, point):
+    def containsPoint(self, point, tolerance=None):
         contains = False
 
         for p in polygons:
             # sympy polygon does not take a list of points, stupidly
             poly = Polygon(*p)
-            contains = contains or poly.encloses_point(Point(*point))
+            isInside = poly.encloses_point(Point(*point))
+            onBoundary = self.pointOnBoundary(point, tolerance=tolerance)
+            contains = contains or isInside or onBoundary
 
         return contains
 
-    def polygonContainsPoint(self, polygon, point):
+    def polygonContainsPoint(self, polygon, point, tolerance=None):
         # sympy polygon does not take a list of points, stupidly
         poly = Polygon(*polygon)
-        return poly.encloses_point(Point(*point))
+        isInside = poly.encloses_point(Point(*point))
+        onBoundary = self.pointOnBoundary(point, tolerance=tolerance)
 
-    def intersectionsWithBoundary(self, point1, point2):
+        return isInside or onBoundary
+
+    def intersectionsWithBoundary(self, point1, point2, tolerance=None):
         intersections = []
         in_seg = Segment(Point(*point1), Point(*point2))
 
@@ -65,11 +70,12 @@ class Polygons(Gradeable.Gradeable):
                 for ip in intersection_points:
                     p_intersections.append([ip.x, ip.y])
 
+            p_intersections = [i for i in p_intersections if not self.pointOnBoundary(i, tolerance=tolerance)]
             intersections.append(p_intersections)
 
         return intersections
 
-    def intersectionsWithPolygonBoundary(self, point1, point2, polygon):
+    def intersectionsWithPolygonBoundary(self, point1, point2, polygon, tolerance=None):
         intersections = []
         in_seg = Segment(Point(*point1), Point(*point2))
 
@@ -84,22 +90,25 @@ class Polygons(Gradeable.Gradeable):
             for ip in intersection_points:
                 intersections.append([ip.x, ip.y])
 
+        intersections = [i for i in intersections if not self.pointOnBoundary(i, tolerance=tolerance)]
+        
         return intersections
 
-    def containsPolygon(self, polygon):
+    def containsPolygon(self, polygon, tolerance=None):
         for p in self.polygons:
             contains = True
             for point in polygon:
-                contains = contains and self.polygonContainsPoint(p, point)
+                contains = contains and self.polygonContainsPoint(p, point,
+                                                                  tolerance=tolerance)
 
             if contains:
                 return p
 
         return None
 
-    def pointOnBoundary(self, point, distTolerance=None):
-        if distTolerance is None:
-            distTolerance = self.tolerance['point_distance'] / self.xscale
+    def pointOnBoundary(self, point, tolerance=None):
+        if tolerance is None:
+            tolerance = self.tolerance['point_distance'] / self.xscale
         
         for polygon in self.polygons:
             for i, pt in enumerate(polygon):
@@ -110,7 +119,7 @@ class Polygons(Gradeable.Gradeable):
 
                 poly_seg = Segment(pt, pt2)
                 distance = poly_seg.distance(Point(*point))
-                if distance < distTolerance:
+                if distance < tolerance:
                     print distance
                     return polygon
 
