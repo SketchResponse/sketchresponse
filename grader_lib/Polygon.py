@@ -1,6 +1,6 @@
 import Gradeable
 from copy import deepcopy
-from Point import Point as srPoint
+from Point import Point as SR_Point
 from sympy.geometry import Polygon, Point, Segment, intersection
 
 
@@ -24,9 +24,9 @@ class Polygons(Gradeable.Gradeable):
         pointList = []
 
         for px_x, px_y in points:
-            point = srPoint(self, px_x, px_y)
+            point = SR_Point(self, px_x, px_y)
             pointList.append((point.x, point.y))
-        
+
         return pointList
 
     def getPolygonCount(self):
@@ -53,7 +53,7 @@ class Polygons(Gradeable.Gradeable):
 
         return isInside or onBoundary
 
-    def intersectionsWithBoundary(self, point1, point2, tolerance=None):
+    def getIntersectionsWithBoundary(self, point1, point2, tolerance=None):
         intersections = []
         in_seg = Segment(Point(*point1), Point(*point2))
 
@@ -64,18 +64,21 @@ class Polygons(Gradeable.Gradeable):
                     pt2 = polygon[i + 1]
                 else:
                     pt2 = polygon[0]
-                    
+
                 poly_seg = Segment(pt, pt2)
                 intersection_points = intersection(in_seg, poly_seg)
                 for ip in intersection_points:
                     p_intersections.append([ip.x, ip.y])
 
-            p_intersections = [i for i in p_intersections if not self.pointOnBoundary(i, tolerance=tolerance)]
+            p_intersections = self.filterIntersectionList(p_intersections,
+                                                          point1, point2,
+                                                          tolerance=tolerance)
             intersections.append(p_intersections)
 
         return intersections
 
-    def intersectionsWithPolygonBoundary(self, point1, point2, polygon, tolerance=None):
+    def getIntersectionsWithPolygonBoundary(self, point1, point2,
+                                            polygon, tolerance=None):
         intersections = []
         in_seg = Segment(Point(*point1), Point(*point2))
 
@@ -90,8 +93,10 @@ class Polygons(Gradeable.Gradeable):
             for ip in intersection_points:
                 intersections.append([ip.x, ip.y])
 
-        intersections = [i for i in intersections if not self.pointOnBoundary(i, tolerance=tolerance)]
-        
+        intersections = self.filterIntersectionList(intersections,
+                                                    point1, point2,
+                                                    tolerance=tolerance)
+
         return intersections
 
     def containsPolygon(self, polygon, tolerance=None):
@@ -109,7 +114,7 @@ class Polygons(Gradeable.Gradeable):
     def pointOnBoundary(self, point, tolerance=None):
         if tolerance is None:
             tolerance = self.tolerance['point_distance'] / self.xscale
-        
+
         for polygon in self.polygons:
             for i, pt in enumerate(polygon):
                 if i < len(polygon) - 1:
@@ -124,3 +129,31 @@ class Polygons(Gradeable.Gradeable):
                     return polygon
 
         return None
+
+    ###################
+    # Helper Functions
+    ###################
+
+    # Returns true of the two points are within the given distance tolerance
+    # of each other.
+    def pointWithinTolerance(self, point1, point2, tolerance=None):
+        if tolerance is None:
+            tolerance = self.tolerance['point_distance'] / self.xscale
+
+        p1 = Point(*point1)
+        return p1.distance(Point(*point2)) < tolerance
+
+    # Returns a list of intersections where all points that are within
+    # tolerance of either end point of the intersecting line segment
+    # are removed.
+    def filterIntersectionList(self, intersections, startPoint, endPoint,
+                               tolerance=None):
+        filtered = []
+        for i in intersections:
+            isStart = self.pointWithinTolerance(startPoint, i,
+                                                tolerance=tolerance)
+            isEnd = self.pointWithinTolerance(endPoint, i, tolerance=tolerance)
+            if not isStart and not isEnd:
+                filtered.append(i)
+
+        return filtered
