@@ -71,7 +71,8 @@ export default class LineSegment extends BasePlugin {
           [(2*x1 + x2)/3, (2*y1 + y2)/3],
           [(x1 + 2*x2)/3, (y1 + 2*y2)/3],
           [x2, y2]
-        ]
+        ],
+        tag: this.state[i].tag
       })
     }
     return result;
@@ -115,8 +116,11 @@ export default class LineSegment extends BasePlugin {
   // selected the line segment shape
   initDraw(event) {
     let x = event.clientX - this.params.left,
-        y = event.clientY - this.params.top;
-
+        y = event.clientY - this.params.top,
+        currentPosition = {
+          x: x,
+          y: y
+        };
     // Add event listeners in capture phase
     document.addEventListener('pointermove', this.drawMove, true);
     document.addEventListener('pointerup', this.drawEnd, true);
@@ -125,18 +129,18 @@ export default class LineSegment extends BasePlugin {
     // Push current position
     // First endpoint, no constraint
     if (this.firstPoint) {
-      this.state.push({
-        x: x,
-        y: y
-      });
+      // Only add tag to first point
+      if (this.hasTag) {
+        currentPosition.tag = this.tag.value;
+      }
+      this.state.push(currentPosition);
     }
     // Second endpoint, constrain with first endpoint
     else {
       let point = this.pointConstrained(x, y, this.state.length-1);
-      this.state.push({
-        x: point.x,
-        y: point.y
-      });
+      currentPosition.x = point.x;
+      currentPosition.y = point.y;
+      this.state.push(currentPosition);
     }
     // If first endpoint, add immediately an undo point.
     // Otherwise, wait until drawEnd has been called to take in account eventual movemements
@@ -380,6 +384,39 @@ export default class LineSegment extends BasePlugin {
             });
           }
         })
+      ),
+      z.each(this.state, (pt, ptIndex) =>
+        z.if(this.hasTag && ptIndex % 2 === 0, () =>
+          z('text.tag', {
+            'text-anchor': this.tag.align,
+            x: this.state[ptIndex].x + this.tag.xoffset,
+            y: this.state[ptIndex].y + this.tag.yoffset,
+            style: `
+              fill: #333;
+              font-size: 14px;
+              user-select: none;
+              cursor: ${this.getTagCursor()};
+            `,
+            onmount: el => {
+              if (!this.params.readonly) {
+                el.addEventListener('dblclick', (event) => {
+                  if (this.selectMode) {
+                    let val = prompt('Enter tag value:');
+                    if (val === null) {
+                      return; // Happens when cancel button is pressed in prompt window
+                    }
+                    val.trim();
+                    if (val !== '') {
+                      this.state[ptIndex].tag = val;
+                      this.app.addUndoPoint();
+                      this.render();
+                    }
+                  }
+                });
+              }
+            }
+          }, this.state[ptIndex].tag)
+        )
       )
     );
   }

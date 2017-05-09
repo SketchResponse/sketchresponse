@@ -311,34 +311,20 @@ function loadConfig(configId) {
         },
         {
           name: 'line-segment',
-          id: 'ls',
-          label: 'Segment',
-          color: 'cornflowerblue',
-          dashStyle: 'solid'
-        },
-        {
-          name: 'line-segment',
           id: 'ar',
-          readonly: true,
           label: 'Arrow',
           color: 'mediumseagreen',
           dashStyle: 'solid',
           arrowHead: {
             length: 10,
             base: 7
-          }
-        },
-        {
-          name: 'line-segment',
-          id: 'car',
-          label: 'Constrained arrow',
-          color: 'mediumseagreen',
-          dashStyle: 'solid',
-          lengthConstraint: 100,
-          arrowHead: {
-            length: 10,
-            base: 7
           },
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'middle'
+          }
         },
         {
           name: 'freeform',
