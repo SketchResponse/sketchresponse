@@ -32,6 +32,7 @@ export default class Polyline extends BasePlugin {
     if (params.fillColor) {
       this.fillColor = params.fillColor;
     }
+    this.opacity = params.opacity ? params.opacity : 1;
   }
 
   getGradeable() {
@@ -119,6 +120,7 @@ export default class Polyline extends BasePlugin {
                 stroke-width: ${this.polylineStrokeWidth(polylineIndex)};
                 stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
                 fill: ${this.fillColor};
+                opacity: ${this.opacity};
               `
           })
 
