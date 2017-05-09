@@ -327,6 +327,22 @@ function loadConfig(configId) {
           }
         },
         {
+          name: 'polyline',
+          id: 'plg',
+          label: 'Polygon',
+          closed: true,
+          color: 'mediumseagreen',
+          fillColor: 'lightsteelblue',
+          dashStyle: 'solid',
+          opacity: 0.8,
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        },
+        {
           name: 'freeform',
           id: 'f',
           label: 'Function f(x)',

@@ -38,7 +38,8 @@ export default class Polyline extends BasePlugin {
   getGradeable() {
     return this.state.map(spline => {
       return {
-        spline: spline.map(point => [point.x, point.y])
+        spline: spline.map(point => [point.x, point.y]),
+        tag: spline[0].tag
       };
     });
   }
@@ -63,21 +64,25 @@ export default class Polyline extends BasePlugin {
   // This will be called when clicking on the SVG canvas after having
   // selected the line segment shape
   initDraw(event) {
-    let x = event.clientX - this.params.left,
-        y = event.clientY - this.params.top;
+    let currentPosition = {
+      x: event.clientX - this.params.left,
+      y: event.clientY - this.params.top
+    };
     // We already have at least one polyline defined, add new points to the last one
     if (this.state.length > 0) {
-      this.state[this.state.length-1].push({
-        x: x,
-        y: y
-      });
+      // Only add tag to first point
+      if (this.hasTag && this.state[this.state.length-1].length === 0) {
+        currentPosition.tag = this.tag.value;
+      }
+      this.state[this.state.length-1].push(currentPosition);
     }
     // Create our first polyline
     else {
-      this.state.push([{
-        x: x,
-        y: y
-      }]);
+      // Only add tag to first point
+      if (this.hasTag) {
+        currentPosition.tag = this.tag.value;
+      }
+      this.state.push([currentPosition]);
     }
     this.app.addUndoPoint();
     this.render();
@@ -88,9 +93,9 @@ export default class Polyline extends BasePlugin {
   drawEnd(id) {
     // To signal that a polyline has been completed, push an empty array
     if (id !== this.id && id !== 'undo' && id !== 'redo' &&
-        this.state.length > 0 && this.state[this.state.length-1].length !== 0) {
-        this.state.push([]);
-        this.app.addUndoPoint();
+        this.state.length > 0 && this.state[this.state.length-1].length > 0) {
+      this.state.push([]);
+      this.app.addUndoPoint();
     }
     this.render();
     event.stopPropagation();
@@ -199,6 +204,39 @@ export default class Polyline extends BasePlugin {
               });
             }
           })
+        )
+      ),
+      z.each(this.state, (polyline, polylineIndex) =>
+        z.if(this.hasTag && this.state[polylineIndex].length > 0 && this.state[polylineIndex][0].tag, () =>
+          z('text.tag', {
+            'text-anchor': this.tag.align,
+            x: this.state[polylineIndex][0].x + this.tag.xoffset,
+            y: this.state[polylineIndex][0].y + this.tag.yoffset,
+            style: `
+              fill: #333;
+              font-size: 14px;
+              user-select: none;
+              cursor: ${this.getTagCursor()};
+            `,
+            onmount: el => {
+              if (!this.params.readonly) {
+                el.addEventListener('dblclick', (event) => {
+                  if (this.selectMode) {
+                    let val = prompt('Enter tag value:');
+                    if (val === null) {
+                      return; // Happens when cancel button is pressed in prompt window
+                    }
+                    val.trim();
+                    if (val !== '') {
+                      this.state[polylineIndex][0].tag = val;
+                      this.app.addUndoPoint();
+                      this.render();
+                    }
+                  }
+                });
+              }
+            }
+          }, this.state[polylineIndex][0].tag)
         )
       )
     );
