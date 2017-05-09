@@ -25,6 +25,15 @@ export default class BasePlugin {
 
     this.id = params.id;
 
+    // Tag related
+    this.hasTag = params.tag !== undefined && params.tag !== null;
+    if (this.hasTag) {
+      this.tag = params.tag;
+    }
+    this.selectMode = false;
+    this.app.__messageBus.on('enableSelectMode', () => this.setSelectMode(true));
+    this.app.__messageBus.on('disableSelectMode', () => this.setSelectMode(false));
+
     app.registerState({
       id: params.id,
       dataVersion: VERSION,
@@ -125,5 +134,15 @@ export default class BasePlugin {
 
   readOnlyClass() {
     return this.readonly ? '.readonly' : '';
+  }
+
+  // Tag related
+  setSelectMode(selectMode) {
+    this.selectMode = selectMode;
+    this.render(); // To change tag cursor
+  }
+
+  getTagCursor() {
+    return this.params.readonly ? 'default' : (this.selectMode ? 'context-menu' : 'crosshair');
   }
 }

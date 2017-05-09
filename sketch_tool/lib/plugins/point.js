@@ -21,24 +21,17 @@ export default class Point extends BasePlugin {
     // Given a params.size, to have identical visible radiuses in both cases, we need to shrink
     // the hollow point to take in account the 2px width of the stroke
     this.radius = params.hollow ? (params.size/2)-1 : params.size/2;
-    this.hasTag = params.tag !== undefined && params.tag !== null;
-    if (this.hasTag) {
-      this.tag = params.tag;
-    }
-    this.selectMode = false;
     // Message listeners
     this.app.__messageBus.on('addPoint', (id, index) => this.addPoint(id, index));
     this.app.__messageBus.on('deletePoints', () => this.deletePoints());
-    this.app.__messageBus.on('enableSelectMode', () => this.setSelectMode(true));
-    this.app.__messageBus.on('disableSelectMode', () => this.setSelectMode(false));
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
   }
 
   getGradeable() {
-    return this.state.map(point => {
+    return this.state.map(position => {
       return {
-        point: [point.x, point.y],
-        tag: point.tag
+        point: [position.x, position.y],
+        tag: position.tag
       };
     });
   }
@@ -58,11 +51,6 @@ export default class Point extends BasePlugin {
       this.delIndices.length = 0;
       this.render();
     }
-  }
-
-  setSelectMode(selectMode) {
-    this.selectMode = selectMode;
-    this.render(); // To change tag cursor
   }
 
   // This will be called when clicking on the SVG canvas after having
@@ -104,10 +92,6 @@ export default class Point extends BasePlugin {
     this.app.addUndoPoint();
     event.stopPropagation();
     event.preventDefault();
-  }
-
-  getTagCursor() {
-    return this.params.readonly ? 'default' : (this.selectMode ? 'context-menu' : 'crosshair');
   }
 
   render() {
