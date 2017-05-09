@@ -243,23 +243,9 @@ function loadConfig(configId) {
         },
         {
           name: 'point',
-          id: 'cp',
+          id: 'pt',
           label: 'Point',
           color: 'sienna',
-          size: 15,
-          readonly: true,
-          tag: {
-            value : 'tag',
-            xoffset: 15,
-            yoffset: 15,
-            align: 'start'
-          }
-        },
-        {
-          name: 'point',
-          id: 'tp',
-          label: 'Point',
-          color: 'lightcoral',
           size: 15,
           tag: {
             value : 'tag',
@@ -270,7 +256,7 @@ function loadConfig(configId) {
         },
         {
           name: 'horizontal-line',
-          id: 'ha',
+          id: 'hl',
           label: 'Horizontal line',
           color: 'dimgray',
           dashStyle: 'dashdotted',
@@ -283,7 +269,7 @@ function loadConfig(configId) {
         },
         {
           name: 'vertical-line',
-          id: 'va',
+          id: 'vl',
           label: 'Vertical line',
           color: 'dimgray',
           dashStyle: 'dashdotted',
@@ -346,28 +332,15 @@ function loadConfig(configId) {
           name: 'freeform',
           id: 'f',
           label: 'Function f(x)',
-          color: 'orange'
-        }
-      ],
-      initialstate: {
-        'cp': [
-          {
-            'x': 100,
-            'y': 100,
-            'tag': 'pt1'
-          },
-          {
-            'x': 200,
-            'y': 100,
-            'tag': 'pt2'
-          },
-          {
-            'x': 300,
-            'y': 100,
-            'tag': 'pt3'
+          color: 'orange',
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
           }
-        ]
-      }
+        }
+      ]
     }
   };
   if (configs.hasOwnProperty(configId)) {
