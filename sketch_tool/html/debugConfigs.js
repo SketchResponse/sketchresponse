@@ -273,7 +273,13 @@ function loadConfig(configId) {
           id: 'ha',
           label: 'Horizontal line',
           color: 'dimgray',
-          dashStyle: 'dashdotted'
+          dashStyle: 'dashdotted',
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
         },
         {
           name: 'vertical-line',
