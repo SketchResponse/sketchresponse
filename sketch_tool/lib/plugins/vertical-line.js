@@ -58,7 +58,12 @@ export default class VerticalLine extends BasePlugin {
     document.addEventListener('pointermove', this.drawMove, true);
     document.addEventListener('pointerup', this.drawEnd, true);
     document.addEventListener('pointercancel', this.drawEnd, true);
-    this.currentPosition = event.clientX - this.params.left;
+    this.currentPosition = {
+      x: event.clientX - this.params.left
+    }
+    if (this.hasTag) {
+      this.currentPosition.tag = this.tag.value;
+    }
     this.state.push(this.currentPosition);
     this.render();
   }
@@ -66,7 +71,7 @@ export default class VerticalLine extends BasePlugin {
   drawMove(event) {
     let x = event.clientX - this.params.left;
     x = this.clampX(x);
-    this.state[this.state.length-1] = x;
+    this.state[this.state.length-1].x = x;
     this.render();
     event.stopPropagation();
     event.preventDefault();
@@ -86,9 +91,9 @@ export default class VerticalLine extends BasePlugin {
       // Draw visible line, under invisible line
       z.each(this.state, (position, positionIndex) =>
         z('line.visible-' + positionIndex + '.vertical-line' + '.plugin-id-' + this.id, {
-          x1: position,
+          x1: position.x,
           y1: 0,
-          x2: position,
+          x2: position.x,
           y2: this.params.height,
           style: `
             stroke: ${this.params.color};
@@ -100,9 +105,9 @@ export default class VerticalLine extends BasePlugin {
       // Draw invisible and selectable line
       z.each(this.state, (position, positionIndex) =>
         z('line.invisible-' + positionIndex + this.readOnlyClass(), {
-          x1: position,
+          x1: position.x,
           y1: 0,
-          x2: position,
+          x2: position.x,
           y2: this.params.height,
           style: `
             stroke: ${this.params.color};
@@ -116,11 +121,11 @@ export default class VerticalLine extends BasePlugin {
               element: el,
               initialBehavior: 'none',
               onDrag: ({dx, dy}) => {
-                this.state[positionIndex] += dx;
+                this.state[positionIndex].x += dx;
                 this.render();
               },
               inBoundsX: (dx) => {
-                return this.inBoundsX(this.state[positionIndex] + dx)
+                return this.inBoundsX(this.state[positionIndex].x + dx)
               },
               inBoundsY: (dy) => {
                 return true;
@@ -128,6 +133,39 @@ export default class VerticalLine extends BasePlugin {
             });
           }
         })
+      ),
+      z.each(this.state, (position, positionIndex) =>
+        z.if(this.hasTag, () =>
+          z('text.tag', {
+            'text-anchor': this.tag.align,
+            x: position.x + this.tag.xoffset,
+            y: this.params.height/2 + this.tag.yoffset,
+            style: `
+              fill: #333;
+              font-size: 14px;
+              user-select: none;
+              cursor: ${this.getTagCursor()};
+            `,
+            onmount: el => {
+              if (!this.params.readonly) {
+                el.addEventListener('dblclick', (event) => {
+                  if (this.selectMode) {
+                    let val = prompt('Enter tag value:');
+                    if (val === null) {
+                      return; // Happens when cancel button is pressed in prompt window
+                    }
+                    val.trim();
+                    if (val !== '') {
+                      this.state[positionIndex].tag = val;
+                      this.app.addUndoPoint();
+                      this.render();
+                    }
+                  }
+                });
+              }
+            }
+          }, this.state[positionIndex].tag)
+        )
       )
     );
   }
