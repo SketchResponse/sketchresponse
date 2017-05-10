@@ -1,6 +1,7 @@
 import Gradeable
 from copy import deepcopy
 from Point import Point as SR_Point
+from LineSegment import LineSegment
 from sympy.geometry import Polygon, Point, Segment, intersection
 
 
@@ -36,6 +37,9 @@ class Polygons(Gradeable.Gradeable):
     def containsPoint(self, point, tolerance=None):
         contains = False
 
+        if isinstance(point, SR_Point):
+            point = [point.x, point.y]
+
         for p in polygons:
             # sympy polygon does not take a list of points, stupidly
             poly = Polygon(*p)
@@ -47,14 +51,24 @@ class Polygons(Gradeable.Gradeable):
 
     def polygonContainsPoint(self, polygon, point, tolerance=None):
         # sympy polygon does not take a list of points, stupidly
+        if isinstance(point, SR_Point):
+            point = [point.x, point.y]
+
         poly = Polygon(*polygon)
         isInside = poly.encloses_point(Point(*point))
         onBoundary = self.pointOnBoundary(point, tolerance=tolerance)
 
         return isInside or onBoundary
 
-    def getIntersectionsWithBoundary(self, point1, point2, tolerance=None):
+    def getIntersectionsWithBoundary(self, line_segment, tolerance=None):
         intersections = []
+        if isinstance(line_segment, LineSegment):
+            point1 = line_segment.getStartPoint()
+            point2 = line_segment.getEndPoint()
+        else:
+            point1 = line_segment[0]
+            point2 = line_segment[1]
+
         in_seg = Segment(Point(*point1), Point(*point2))
 
         for polygon in self.polygons:
@@ -77,9 +91,16 @@ class Polygons(Gradeable.Gradeable):
 
         return intersections
 
-    def getIntersectionsWithPolygonBoundary(self, point1, point2,
+    def getIntersectionsWithPolygonBoundary(self, line_segment,
                                             polygon, tolerance=None):
         intersections = []
+        if isinstance(line_segment, LineSegment):
+            point1 = line_segment.getStartPoint()
+            point2 = line_segment.getEndPoint()
+        else:
+            point1 = line_segment[0]
+            point2 = line_segment[1]
+
         in_seg = Segment(Point(*point1), Point(*point2))
 
         for i, pt in enumerate(polygon):
@@ -115,6 +136,9 @@ class Polygons(Gradeable.Gradeable):
         if tolerance is None:
             tolerance = self.tolerance['point_distance'] / self.xscale
 
+        if isinstance(point, SR_Point):
+            point = [point.x, point.y]
+
         for polygon in self.polygons:
             for i, pt in enumerate(polygon):
                 if i < len(polygon) - 1:
@@ -125,7 +149,6 @@ class Polygons(Gradeable.Gradeable):
                 poly_seg = Segment(pt, pt2)
                 distance = poly_seg.distance(Point(*point))
                 if distance < tolerance:
-                    print distance
                     return polygon
 
         return None
