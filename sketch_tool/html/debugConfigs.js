@@ -206,7 +206,6 @@ function loadConfig(configId) {
           name: 'stamp',
           id: 'st',
           label: 'Beam',
-          color: 'cornflowerblue',
           imgwidth: 450,
           imgheight: 100,
           scale: 0.5

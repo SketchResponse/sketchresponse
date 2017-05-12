@@ -53,6 +53,7 @@ export default class BasePlugin {
       app.registerToolbarItem({
         type: 'button',
         id: params.id,
+        name: params.name,
         label: params.label,
         icon: {
           src: params.icon.src,
