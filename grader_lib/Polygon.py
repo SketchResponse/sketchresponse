@@ -50,11 +50,12 @@ class Polygons(Gradeable.Gradeable):
         if isinstance(point, SR_Point):
             point = [point.x, point.y]
 
-        for p in polygons:
+        for p in self.polygons:
             # sympy polygon does not take a list of points, stupidly
             poly = Polygon(*p)
             isInside = poly.encloses_point(Point(*point))
-            onBoundary = self.pointOnBoundary(point, tolerance=tolerance)
+            onBoundary = self.point_is_on_polygon_boundary(p, point,
+                                                           tolerance=tolerance)
             if isInside or onBoundary:
                 return p
 
@@ -80,7 +81,8 @@ class Polygons(Gradeable.Gradeable):
 
         poly = Polygon(*polygon)
         isInside = poly.encloses_point(Point(*point))
-        onBoundary = self.pointOnBoundary(point, tolerance=tolerance)
+        onBoundary = self.point_is_on_polygon_boundary(polygon, point,
+                                                       tolerance=tolerance)
 
         return isInside or onBoundary
 
@@ -98,8 +100,8 @@ class Polygons(Gradeable.Gradeable):
         for p in self.polygons:
             contains = True
             for point in polygon:
-                contains = contains and self.polygonContainsPoint(p, point,
-                                                                  tolerance=tolerance)
+                contains = contains and self.polygon_contains_point(p, point,
+                                                                    tolerance=tolerance)
 
             if contains:
                 return p
@@ -121,8 +123,9 @@ class Polygons(Gradeable.Gradeable):
         """
         contains = True
         for point in contained:
-            contains = contains and self.polygonContainsPoint(container, point,
-                                                              tolerance=tolerance)
+            contains = contains and self.polygon_contains_point(container,
+                                                                point,
+                                                                tolerance=tolerance)
 
         return contains
 
