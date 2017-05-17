@@ -66,7 +66,7 @@ class PolyLines(Gradeable.Gradeable):
         else:
             return None
 
-    def get_polyline_as_segments(self, index):
+    def get_polyline_as_splines(self, index):
         """Return the polyline at index as a GradeableFunction grader.
 
         Args:

@@ -10,46 +10,45 @@ class TestPolyLineMethods(TestData.TestData):
         data = self.load_as_gradeable_collections('polyline')
         d = data[1]
         poly = PolyLine.PolyLines(d['pl'])
-        self.assertIsNotNone(poly.getPolyLineAsSegments(0))
+        self.assertIsNotNone(poly.get_polyline_as_segments(0))
 
     def test_polyline_segments_true_count(self):
         data = self.load_as_gradeable_collections('polyline')
         d = data[1]
         poly = PolyLine.PolyLines(d['pl'])
-        segments = poly.getPolyLineAsSegments(0)
+        segments = poly.get_polyline_as_segments(0)
         self.assertTrue(len(segments.segments) > 0)
 
     def test_polyline_segments_false(self):
         data = self.load_as_gradeable_collections('polyline')
         d = data[0]
         poly = PolyLine.PolyLines(d['pl'])
-        self.assertIsNone(poly.getPolyLineAsSegments(0))
+        self.assertIsNone(poly.get_polyline_as_segments(0))
 
     def test_polyline_splines_true(self):
         data = self.load_as_gradeable_collections('polyline')
         d = data[1]
         poly = PolyLine.PolyLines(d['pl'])
-        self.assertIsNotNone(poly.getPolyLineAsSplines(0))
+        self.assertIsNotNone(poly.get_polyline_as_splines(0))
 
     def test_polyline_splines_true_count(self):
         data = self.load_as_gradeable_collections('polyline')
         d = data[1]
         poly = PolyLine.PolyLines(d['pl'])
-        splines = poly.getPolyLineAsSplines(0)
+        splines = poly.get_polyline_as_splines(0)
         self.assertTrue(len(splines.functions) > 0)
 
     def test_polyline_splines_false(self):
         data = self.load_as_gradeable_collections('polyline')
         d = data[0]
         poly = PolyLine.PolyLines(d['pl'])
-        self.assertIsNone(poly.getPolyLineAsSplines(0))
+        self.assertIsNone(poly.get_polyline_as_splines(0))
 
     def test_polyline_count(self):
         data = self.load_as_gradeable_collections('polyline')
         d = data[1]
         poly = PolyLine.PolyLines(d['pl'])
-        self.assertEqual(poly.getPolyLineCount(), 1)
-        
+        self.assertEqual(poly.get_polyline_count(), 1)
 
 
 if __name__ == '__main__':
