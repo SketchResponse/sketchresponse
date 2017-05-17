@@ -43,8 +43,8 @@ def grader(pl, pt, h, r, ls, cwm, ccwm):
     cwm = GradeableFunction.GradeableFunction(cwm)
     ccwm = GradeableFunction.GradeableFunction(ccwm)
 
-    if pl.getPolyLineCount() > 0:
-        beam = pl.getPolyLineAsSegments(0)
+    if pl.get_polyline_count() > 0:
+        beam = pl.get_polyline_as_segments(0)
         if beam.get_number_of_segments() != 2:
             return False, "Did you forget the beam?"
 

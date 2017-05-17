@@ -30,11 +30,11 @@ class Polygons(Gradeable.Gradeable):
 
         return pointList
 
-    def getPolygonCount(self):
+    def get_polygon_count(self):
         """Returns the number of polylines defined in the function."""
         return len(self.polygons)
 
-    def containsPoint(self, point, tolerance=None):
+    def contains_point(self, point, tolerance=None):
         contains = False
 
         if isinstance(point, SR_Point):
@@ -49,7 +49,7 @@ class Polygons(Gradeable.Gradeable):
 
         return contains
 
-    def polygonContainsPoint(self, polygon, point, tolerance=None):
+    def polygon_contains_point(self, polygon, point, tolerance=None):
         # sympy polygon does not take a list of points, stupidly
         if isinstance(point, SR_Point):
             point = [point.x, point.y]
@@ -60,7 +60,7 @@ class Polygons(Gradeable.Gradeable):
 
         return isInside or onBoundary
 
-    def getIntersectionsWithBoundary(self, line_segment, tolerance=None):
+    def get_intersections_with_boundary(self, line_segment, tolerance=None):
         intersections = []
         if isinstance(line_segment, LineSegment):
             point1 = line_segment.getStartPoint()
@@ -91,7 +91,7 @@ class Polygons(Gradeable.Gradeable):
 
         return intersections
 
-    def getIntersectionsWithPolygonBoundary(self, line_segment,
+    def get_intersections_with_polygon_boundary(self, line_segment,
                                             polygon, tolerance=None):
         intersections = []
         if isinstance(line_segment, LineSegment):
@@ -120,7 +120,7 @@ class Polygons(Gradeable.Gradeable):
 
         return intersections
 
-    def containsPolygon(self, polygon, tolerance=None):
+    def contains_polygon(self, polygon, tolerance=None):
         for p in self.polygons:
             contains = True
             for point in polygon:
@@ -132,7 +132,7 @@ class Polygons(Gradeable.Gradeable):
 
         return None
 
-    def pointOnBoundary(self, point, tolerance=None):
+    def point_is_on_boundary(self, point, tolerance=None):
         if tolerance is None:
             tolerance = self.tolerance['point_distance'] / self.xscale
 

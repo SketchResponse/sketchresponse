@@ -48,11 +48,11 @@ class PolyLines(Gradeable.Gradeable):
 
         return newinfo
 
-    def getPolyLineCount(self):
+    def get_polyline_count(self):
         """Returns the number of polylines defined in the function."""
         return len(self.polysegments)
 
-    def getPolyLineAsSegments(self, index):
+    def get_polyline_as_segments(self, index):
         """Return the polyline at index as a LineSegments grader.
 
         Args:
@@ -66,7 +66,7 @@ class PolyLines(Gradeable.Gradeable):
         else:
             return None
 
-    def getPolyLineAsSplines(self, index):
+    def get_polyline_as_segments(self, index):
         """Return the polyline at index as a GradeableFunction grader.
 
         Args:

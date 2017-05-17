@@ -90,9 +90,9 @@ def grader(pl, pg, pg2, pt, ls, c, cwm, ccwm):
     pg2 = Polygon.Polygons(pg2)
     cls = LineSegment.LineSegments(c)
 
-    beam = pl.getPolyLineAsSegments(0)
+    beam = pl.get_polyline_as_segments(0)
 
-    if not pg.getPolygonCount() == 1:
+    if not pg.get_polygon_count() == 1:
         return False, "Did you forget the isolation bubble?"
 
     poly = pg.polygons[0]
@@ -100,16 +100,16 @@ def grader(pl, pg, pg2, pt, ls, c, cwm, ccwm):
     beam1 = beam.segments[0]
     beam2 = beam.segments[1]
 
-    if len(pg.getIntersectionsWithPolygonBoundary(beam1, poly)) > 0:
+    if len(pg.get_intersections_with_polygon_boundary(beam1, poly)) > 0:
         return False, "wrong 1"
 
-    if len(pg.getIntersectionsWithPolygonBoundary(beam2, poly)) > 1:
+    if len(pg.get_intersections_with_polygon_boundary(beam2, poly)) > 1:
         return False, "wrong 2"
 
-    if pg.pointOnBoundary([-2, -1]) == None:
+    if pg.point_is_on_boundary([-2, -1]) == None:
         return False, "wrong 3"
 
-    if pg.pointOnBoundary([-3, 2]) == None and pg.pointOnBoundary([2, -1]) == None:
+    if pg.point_is_on_boundary([-3, 2]) == None and pg.point_is_on_boundary([2, -1]) == None:
         return False, "wrong 4"
 
     return True, "Good job!"

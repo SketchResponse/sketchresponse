@@ -105,7 +105,7 @@ def grader(b1, b2, b3, lw, rw, blk, sl, force, plate, iso):
 
     block_poly = block.polygons[0]
 
-    if not iso_bub.getPolygonCount() == 1:
+    if not iso_bub.get_polygon_count() == 1:
         return False, "There should be one isolation bubble."
 
     iso_poly = iso_bub.polygons[0]
@@ -113,18 +113,18 @@ def grader(b1, b2, b3, lw, rw, blk, sl, force, plate, iso):
     bar1_line = bar1.getPolyLineAsSegments(0).segments[0]
     bar2_line = bar2.getPolyLineAsSegments(0).segments[0]
 
-    if len(iso_bub.getIntersectionsWithPolygonBoundary(bar1_line,
+    if len(iso_bub.get_intersections_with_polygon_boundary(bar1_line,
                                                        iso_poly)) != 1:
         return False, "Iso bubble should cut the bars"
 
-    if len(iso_bub.getIntersectionsWithPolygonBoundary(bar2_line,
+    if len(iso_bub.get_intersections_with_polygon_boundary(bar2_line,
                                                        iso_poly)) != 1:
         return False, "Iso bubble should cut the bars"
 
-    if iso_bub.containsPolygon(block_poly) == None:
+    if iso_bub.contains_polygon(block_poly) == None:
         return False, "Iso bubble should contain the block"
 
-    if not iso_bub.pointOnBoundary([3, 0.6]):
+    if not iso_bub.point_is_on_boundary([3, 0.6]):
         return False, "Iso bubble should cut the slider"
 
     return True, "Good job!"
