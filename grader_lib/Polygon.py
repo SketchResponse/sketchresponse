@@ -235,15 +235,15 @@ class Polygons(Gradeable.Gradeable):
 
         return intersections
 
-    def get_intersections_with_polygon_boundary(self, line_segment,
-                                            polygon, tolerance=None):
+    def get_intersections_with_polygon_boundary(self, polygon, line_segment,
+                                                tolerance=None):
         """Return a list of intersection points of the given line segment
            with the given polygon.
 
         Args:
+            polygon: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon
             line_segment: an list of two points [[x1, y1], [x2,y2]], or
                           a LineSegment object from a LineSegment grader
-            polygon: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon
             tolerance: a pixel distance tolerance
         Returns:
             list:
