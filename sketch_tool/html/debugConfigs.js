@@ -330,6 +330,18 @@ function loadConfig(configId) {
           }
         },
         {
+          name: 'spline',
+          id: 'spl',
+          label: 'Spline',
+          color: 'royalblue',
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        },
+        {
           name: 'freeform',
           id: 'f',
           label: 'Function f(x)',
