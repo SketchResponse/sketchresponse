@@ -309,7 +309,8 @@ function loadConfig(configId) {
             value : 'tag',
             xoffset: 15,
             yoffset: 15,
-            align: 'middle'
+            align: 'middle',
+            position: 'end'
           }
         },
         {
@@ -338,6 +339,74 @@ function loadConfig(configId) {
             xoffset: 15,
             yoffset: 15,
             align: 'start'
+          }
+        }
+      ]
+    },
+    config5: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes'
+        },
+        {
+          name: 'line-segment',
+          id: 'startarrow',
+          label: 'Start',
+          color: 'sienna',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
+          tag: {
+            value : 'tag',
+            xoffset: -10,
+            yoffset: 4,
+            align: 'end',
+            position: 'start'
+          }
+        },
+        {
+          name: 'line-segment',
+          id: 'middlearrow',
+          label: 'Middle',
+          color: 'cornflowerblue',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
+          tag: {
+            value : 'tag',
+            xoffset: 0,
+            yoffset: -15,
+            align: 'middle',
+            position: 'middle'
+          }
+        },
+        {
+          name: 'line-segment',
+          id: 'endarrow',
+          label: 'End',
+          color: 'mediumseagreen',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
+          tag: {
+            value : 'tag',
+            xoffset: 10,
+            yoffset: 4,
+            align: 'start',
+            position: 'end'
           }
         }
       ]

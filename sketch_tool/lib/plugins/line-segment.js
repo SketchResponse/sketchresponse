@@ -291,11 +291,53 @@ export default class LineSegment extends BasePlugin {
     return this.params.arrowHead ? `url(#arrowhead-${this.params.id})` : ''
   }
 
+  lineIsDefined(ptIndex) {
+    return ptIndex % 2 === 0 && ptIndex < this.state.length - 1;
+  }
+
+  tagXPosition(ptIndex) {
+    let x1 = this.state[ptIndex].x, x2;
+    // The two points of the line segment have been defined
+    if (this.lineIsDefined(ptIndex)) {
+      x2 = this.state[ptIndex+1].x;
+      switch(this.tag.position) {
+        case 'start':
+          return x1;
+        case 'middle':
+          return (x1+x2)/2;
+        case 'end':
+          return x2;
+      }
+    }
+    else {
+      return x1;
+    }
+  }
+
+  tagYPosition(ptIndex) {
+    let y1 = this.state[ptIndex].y, y2;
+    // The two points of the line segment have been defined
+    if (this.lineIsDefined(ptIndex)) {
+      y2 = this.state[ptIndex+1].y;
+      switch(this.tag.position) {
+        case 'start':
+          return y1;
+        case 'middle':
+          return (y1+y2)/2;
+        case 'end':
+          return y2;
+      }
+    }
+    else {
+      return y1;
+    }
+  }
+
   render() {
     z.render(this.el,
       // Draw visible line, under invisible line and endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z.if(ptIndex % 2 === 0 && ptIndex < this.state.length - 1, () =>
+        z.if(this.lineIsDefined(ptIndex), () =>
           z('line.visible-' + ptIndex + '.line-segment' + '.plugin-id-' + this.id, {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
@@ -312,7 +354,7 @@ export default class LineSegment extends BasePlugin {
       ),
       // Draw invisible and selectable line, under invisible endpoints
       z.each(this.state, (pt, ptIndex) =>
-        z.if(ptIndex % 2 === 0 && ptIndex < this.state.length - 1, () =>
+        z.if(this.lineIsDefined(ptIndex), () =>
           z('line.invisible-' + ptIndex + this.readOnlyClass(), {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
@@ -389,8 +431,8 @@ export default class LineSegment extends BasePlugin {
         z.if(this.hasTag && ptIndex % 2 === 0, () =>
           z('text.tag', {
             'text-anchor': this.tag.align,
-            x: this.state[ptIndex].x + this.tag.xoffset,
-            y: this.state[ptIndex].y + this.tag.yoffset,
+            x: this.tagXPosition(ptIndex) + this.tag.xoffset,
+            y: this.tagYPosition(ptIndex) + this.tag.yoffset,
             style: `
               fill: #333;
               font-size: 14px;
