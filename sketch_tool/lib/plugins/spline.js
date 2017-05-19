@@ -6,13 +6,13 @@ import { injectStyleSheet, injectSVGDefs } from 'sketch2/util/dom-style-helpers'
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 
-const FIT_TOLERANCE = 5;
+const FIT_TOLERANCE = 0;
 const ROUNDING_PRESCALER = 100;
 
 export default class Spline extends BasePlugin {
 
   constructor(params, app) {
-    let iconSrc = './plugins/polyline/polyline-open-icon.svg';
+    let iconSrc = './plugins/spline/spline-icon.svg';
     // Add params that are specific to this plugin
     params.icon = {
       src: iconSrc,
@@ -27,9 +27,13 @@ export default class Spline extends BasePlugin {
   }
 
   getGradeable() {
-    return this.state.map(spline => {
+    // Do not take in account single points
+    let result = this.state.filter(spline => spline.length >= 2);
+    // State contains arrays of points of user clicks.
+    // Convert these to spline data.
+    return result.map(spline => {
       return {
-        spline: spline.map(point => [point.x, point.y]),
+        spline: splineData(spline).map(point => [point.x, point.y]),
         tag: spline[0].tag
       };
     });
@@ -97,37 +101,43 @@ export default class Spline extends BasePlugin {
     return index === this.state.length-1 ? '3px' : '2px';
   }
 
-  pointRadius(splineIndex) {
-    return this.state[splineIndex].length === 1 ? 4 : 8;
-  }
-
-  pointOpacity(splineIndex) {
-    return this.state[splineIndex].length === 1 ? '' : 0;
-  }
-
   render() {
     z.render(this.el,
+      // Draw visible elements under invisible elements
       z.each(this.state, (spline, splineIndex) =>
-        // Draw visible spline under invisible spline
-          z('path.visible-' + splineIndex + '.spline' + '.plugin-id-' + this.id, {
-            d: shapePathData(this.state[splineIndex], this.closed),
+        // Draw spline
+        z('path.visible-' + splineIndex + '.spline' + '.plugin-id-' + this.id, {
+          d: splinePathData(this.state[splineIndex]),
+          style: `
+              stroke: ${this.params.color};
+              stroke-width: ${this.splineStrokeWidth(splineIndex)};
+              stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
+              fill: none;
+            `
+        })
+      ),
+      // Draw points
+      z.each(this.state, (spline, splineIndex) =>
+        z.each(spline, (pt, ptIndex) =>
+          z('circle.visible-' + splineIndex + '.spline' + '.plugin-id-' + this.id, {
+            cx: this.state[splineIndex][ptIndex].x,
+            cy: this.state[splineIndex][ptIndex].y,
+            r: 3,
             style: `
-                stroke: ${this.params.color};
-                stroke-width: ${this.splineStrokeWidth(splineIndex)};
-                stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
-                fill: none;
-              `
+              fill: ${this.params.color};
+              stroke: none;
+            `
           })
-
+        )
       ),
       z.each(this.state, (spline, splineIndex) =>
         // Draw invisible and selectable spline under invisible points
         z('path.invisible-' + splineIndex + this.readOnlyClass(), {
-          d: shapePathData(this.state[splineIndex], this.closed),
+          d: splinePathData(this.state[splineIndex]),
           style: `
               stroke: ${this.params.color};
               stroke-width: 10px;
-              stroke-dasharray: solid;
+              fill: none;
               opacity: 0;
             `,
           onmount: el => {
@@ -163,16 +173,16 @@ export default class Spline extends BasePlugin {
         })
       ),
       z.each(this.state, (spline, splineIndex) =>
-        // Draw invisible (when length of spline > 1) and selectable points
+        // Draw invisible and selectable points
         z.each(spline, (pt, ptIndex) =>
           z('circle.invisible-' + splineIndex + this.readOnlyClass(), {
             cx: this.state[splineIndex][ptIndex].x,
             cy: this.state[splineIndex][ptIndex].y,
-            r: this.pointRadius(splineIndex),
+            r: 8,
             style: `
               fill: ${this.params.color};
               stroke-width: 0;
-              opacity: ${this.pointOpacity(splineIndex)};
+              opacity: 0;
             `,
             onmount: el => {
               this.app.registerElement({
@@ -253,15 +263,19 @@ function computeDashArray(dashStyle) {
   }
 }
 
-function shapePathData(points, closed) {
-  let coords, splineData;
+function splinePathData(points) {
+  let coords;
   if (points.length < 2) return '';
 
-  splineData = fitCurve(points, FIT_TOLERANCE);
+  coords = splineData(points).map(p => `${p.x},${p.y}`);
+  return `M${ coords[0] }C${ coords.splice(1).join(' ') }`;
+}
+
+function splineData(points) {
+  let splineData = fitCurve(points, FIT_TOLERANCE);
   splineData.forEach(point => {
     point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
     point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
   });
-  coords = splineData.map(p => `${p.x},${p.y}`);
-  return `M${ coords[0] }C${ coords.splice(1).join(' ') }`;
+  return splineData;
 }
