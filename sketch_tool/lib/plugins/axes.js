@@ -18,6 +18,8 @@ const DEFAULT_PARAMS = {
     yminor: '#f6f6f6',
     xaxis: '#333',
     yaxis: '#333',
+    xaxisLabel: '#333',
+    yaxisLabel: '#333',
     xlabel: '#333',
     ylabel: '#333',
     zeroLabel: '#333',
@@ -36,6 +38,9 @@ const DEFAULT_PARAMS = {
   },
   fontSize: {
     xlabel:    14,
+    ylabel:    14,
+    xaxisLabel: 14,
+    yaxisLabel: 14,
     ylabel:    14,
     zeroLabel: 14
   }
@@ -398,7 +403,29 @@ export default class Axes {
             stroke-width: ${this.params.strokeWidth.yaxis}px;
             shape-rendering: crispEdges;
           `,
-        })
+        }),
+        z.if(this.params.xaxisLabel, () =>
+          z('text.xaxisLabel', {
+            'text-anchor': 'end',
+            x: this.x.pixelMax - this.params.xaxisLabel.dx,
+            y: this.y.pixelVal(0) - this.params.xaxisLabel.dy,
+            style: `
+              fill: ${this.params.colors.xaxisLabel};
+              font-size: ${this.params.fontSize.xaxisLabel}px;
+            `,
+          }, this.params.xaxisLabel.value)
+        ),
+        z.if(this.params.yaxisLabel, () =>
+          z('text.yaxisLabel', {
+            'text-anchor': 'start',
+            x: this.x.pixelVal(0) + this.params.yaxisLabel.dx,
+            y: this.y.pixelMax + this.params.yaxisLabel.dy,
+            style: `
+              fill: ${this.params.colors.yaxisLabel};
+              font-size: ${this.params.fontSize.yaxisLabel}px;
+            `,
+          }, this.params.yaxisLabel.value)
+        )
       );
     }
     else {
@@ -449,7 +476,29 @@ export default class Axes {
             stroke-width: ${this.params.strokeWidth.xaxis}px;
             shape-rendering: geometricPrecision;
           `,
-        })
+        }),
+        z.if(this.params.xaxisLabel, () =>
+          z('text.xaxisLabel', {
+            'text-anchor': 'end',
+            x: this.x.pixelMax - this.params.xaxisLabel.dx,
+            y: this.y.pixelVal(0) - this.params.xaxisLabel.dy,
+            style: `
+              fill: ${this.params.colors.xaxisLabel};
+              font-size: ${this.params.fontSize.xaxisLabel}px;
+            `,
+          }, this.params.xaxisLabel.value)
+        ),
+        z.if(this.params.yaxisLabel, () =>
+          z('text.yaxisLabel', {
+            'text-anchor': 'start',
+            x: this.x.pixelVal(0) + this.params.yaxisLabel.dx,
+            y: this.y.pixelMax + this.params.yaxisLabel.dy,
+            style: `
+              fill: ${this.params.colors.yaxisLabel};
+              font-size: ${this.params.fontSize.yaxisLabel}px;
+            `,
+          }, this.params.yaxisLabel.value)
+        )
       );
     }
   }

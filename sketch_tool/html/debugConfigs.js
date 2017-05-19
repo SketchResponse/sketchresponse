@@ -10,7 +10,25 @@ function loadConfig(configId) {
       coordinates: 'cartesian',
       plugins: [
         {
-          name: 'axes'
+          name: 'axes',
+          xaxisLabel: {
+            value: 'x',
+            dx: 5,
+            dy: 5
+          },
+          yaxisLabel: {
+            value: 'y',
+            dx: 5,
+            dy: 13
+          },
+          colors: {
+            xaxisLabel: 'blue',
+            yaxisLabel: 'blue',
+          },
+          fontSize: {
+            xaxisLabel: 14,
+            yaxisLabel: 14
+          }
         },
         {
           name: 'point',
@@ -121,9 +139,25 @@ function loadConfig(configId) {
           rrange: 2,
           rmajor: 0.5,
           thetamajor: 30,
+          xaxisLabel: {
+            value: 'x',
+            dx: 5,
+            dy: 5
+          },
+          yaxisLabel: {
+            value: 'y',
+            dx: 5,
+            dy: 13
+          },
           colors: {
             circle: 'red',
-            ray: 'blue'
+            ray: 'blue',
+            xaxisLabel: 'blue',
+            yaxisLabel: 'blue',
+          },
+          fontSize: {
+            xaxisLabel: 14,
+            yaxisLabel: 14
           },
           strokeWidth: {
             circle: 3,
