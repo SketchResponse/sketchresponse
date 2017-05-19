@@ -1,6 +1,6 @@
 function loadConfig(configId) {
   var configs = {
-    config1: {
+    initialState: {
       width: 750,
       height: 420,
       xrange: [-4.5, 4.5],
@@ -125,7 +125,7 @@ function loadConfig(configId) {
         ]
       }
     },
-    config2: {
+    axesParams: {
       width: 750,
       height: 420,
       xrange: [-4.5, 4.5],
@@ -224,7 +224,7 @@ function loadConfig(configId) {
         }
       ]
     },
-    config3: {
+    newPlugins: {
       width: 750,
       height: 420,
       xrange: [-4.5, 4.5],
@@ -260,10 +260,16 @@ function loadConfig(configId) {
           fillColor: 'lightsteelblue',
           dashStyle: 'solid',
           opacity: 0.8
+        },
+        {
+          name: 'spline',
+          id: 'spl',
+          label: 'Spline',
+          color: 'orange',
         }
       ]
     },
-    config4: {
+    allPlugins: {
       width: 750,
       height: 420,
       xrange: [-4.5, 4.5],
@@ -317,7 +323,7 @@ function loadConfig(configId) {
         {
           name: 'stamp',
           id: 'st',
-          label: 'Beam',
+          label: 'Stamp',
           color: 'cornflowerblue',
           imgwidth: 450,
           imgheight: 100,
@@ -378,7 +384,7 @@ function loadConfig(configId) {
         {
           name: 'freeform',
           id: 'f',
-          label: 'Function f(x)',
+          label: 'Freeform',
           color: 'orange',
           tag: {
             value : 'tag',
@@ -389,7 +395,7 @@ function loadConfig(configId) {
         }
       ]
     },
-    config5: {
+    tagPosition: {
       width: 750,
       height: 420,
       xrange: [-4.5, 4.5],
