@@ -41,7 +41,6 @@ const DEFAULT_PARAMS = {
     ylabel:    14,
     xaxisLabel: 14,
     yaxisLabel: 14,
-    ylabel:    14,
     zeroLabel: 14
   }
 };
