@@ -93,8 +93,6 @@ export default class Spline extends BasePlugin {
       this.app.addUndoPoint();
     }
     this.render();
-    event.stopPropagation();
-    event.preventDefault();
   }
 
   splineStrokeWidth(index) {

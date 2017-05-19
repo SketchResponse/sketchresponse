@@ -98,8 +98,6 @@ export default class Polyline extends BasePlugin {
       this.app.addUndoPoint();
     }
     this.render();
-    event.stopPropagation();
-    event.preventDefault();
   }
 
   polylineStrokeWidth(index) {
