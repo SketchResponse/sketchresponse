@@ -34,7 +34,8 @@ export default class Freeform extends BasePlugin {
   getGradeable() {
     return this.state.map(spline => {
       return {
-        spline: spline.map(point => [point.x, point.y])
+        spline: spline.map(point => [point.x, point.y]),
+        tag: spline[0].tag
       };
     });
   }
@@ -129,6 +130,9 @@ export default class Freeform extends BasePlugin {
         point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
         point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
       });
+      if (this.hasTag) {
+        splineData[0].tag = this.tag.value;
+      }
       this.state.push(splineData);
       this.app.addUndoPoint();
     }
@@ -210,6 +214,39 @@ export default class Freeform extends BasePlugin {
           y2: this.pointerPosition.y,
           style: 'stroke: lightgray; stroke-width: 2px',
         })
+      ),
+      z.each(this.state, (spline, splineIndex) =>
+        z.if(this.hasTag, () =>
+          z('text.tag', {
+            'text-anchor': this.tag.align,
+            x: this.state[splineIndex][0].x + this.tag.xoffset,
+            y: this.state[splineIndex][0].y + this.tag.yoffset,
+            style: `
+              fill: #333;
+              font-size: 14px;
+              user-select: none;
+              cursor: ${this.getTagCursor()};
+            `,
+            onmount: el => {
+              if (!this.params.readonly) {
+                el.addEventListener('dblclick', (event) => {
+                  if (this.selectMode) {
+                    let val = prompt('Enter tag value:');
+                    if (val === null) {
+                      return; // Happens when cancel button is pressed in prompt window
+                    }
+                    val.trim();
+                    if (val !== '') {
+                      this.state[splineIndex][0].tag = val;
+                      this.app.addUndoPoint();
+                      this.render();
+                    }
+                  }
+                });
+              }
+            }
+          }, this.state[splineIndex][0].tag)
+        )
       )
     );
   }

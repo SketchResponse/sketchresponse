@@ -129,6 +129,14 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
+      else if (elementClasses.indexOf('spline') != -1) {
+        this.messageBus.emit(
+          'addSpline',
+          elementClasses[2].substring(10),
+          parseInt(elementClasses[0].substring(8))
+        );
+        elWasDeleted = true;
+      }
     });
     this.messageBus.emit('deletePoints');
     this.messageBus.emit('deleteHorizontalLines');
@@ -138,6 +146,7 @@ export default class SelectionManager {
     this.messageBus.emit('deleteFreeforms');
     this.messageBus.emit('deleteStamps');
     this.messageBus.emit('deletePolylines');
+    this.messageBus.emit('deleteSplines');
     this.deselectAll();
     if (elWasDeleted) {
       this.messageBus.emit('deleteFinished');

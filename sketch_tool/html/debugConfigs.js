@@ -228,6 +228,200 @@ function loadConfig(configId) {
           opacity: 0.8
         }
       ]
+    },
+    config4: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes'
+        },
+        {
+          name: 'point',
+          id: 'pt',
+          label: 'Point',
+          color: 'sienna',
+          size: 15,
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        },
+        {
+          name: 'horizontal-line',
+          id: 'hl',
+          label: 'Horizontal line',
+          color: 'dimgray',
+          dashStyle: 'dashdotted',
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        },
+        {
+          name: 'vertical-line',
+          id: 'vl',
+          label: 'Vertical line',
+          color: 'dimgray',
+          dashStyle: 'dashdotted',
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: -15,
+            align: 'start'
+          }
+        },
+        {
+          name: 'stamp',
+          id: 'st',
+          label: 'Beam',
+          color: 'cornflowerblue',
+          imgwidth: 450,
+          imgheight: 100,
+          scale: 0.5,
+          tag: {
+            value : 'tag',
+            xoffset: 0,
+            yoffset: -35,
+            align: 'middle'
+          }
+        },
+        {
+          name: 'line-segment',
+          id: 'ar',
+          label: 'Arrow',
+          color: 'mediumseagreen',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'middle',
+            position: 'end'
+          }
+        },
+        {
+          name: 'polyline',
+          id: 'plg',
+          label: 'Polygon',
+          closed: true,
+          color: 'mediumseagreen',
+          fillColor: 'lightsteelblue',
+          dashStyle: 'solid',
+          opacity: 0.8,
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        },
+        {
+          name: 'spline',
+          id: 'spl',
+          label: 'Spline',
+          color: 'royalblue',
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        },
+        {
+          name: 'freeform',
+          id: 'f',
+          label: 'Function f(x)',
+          color: 'orange',
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        }
+      ]
+    },
+    config5: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes'
+        },
+        {
+          name: 'line-segment',
+          id: 'startarrow',
+          label: 'Start',
+          color: 'sienna',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
+          tag: {
+            value : 'tag',
+            xoffset: -10,
+            yoffset: 4,
+            align: 'end',
+            position: 'start'
+          }
+        },
+        {
+          name: 'line-segment',
+          id: 'middlearrow',
+          label: 'Middle',
+          color: 'cornflowerblue',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
+          tag: {
+            value : 'tag',
+            xoffset: 0,
+            yoffset: -15,
+            align: 'middle',
+            position: 'middle'
+          }
+        },
+        {
+          name: 'line-segment',
+          id: 'endarrow',
+          label: 'End',
+          color: 'mediumseagreen',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
+          tag: {
+            value : 'tag',
+            xoffset: 10,
+            yoffset: 4,
+            align: 'start',
+            position: 'end'
+          }
+        }
+      ]
     }
   };
   if (configs.hasOwnProperty(configId)) {

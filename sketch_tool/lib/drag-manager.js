@@ -7,7 +7,7 @@ export default class DragManager {
 
     // Finding all selected elements is slow, so we'll cache them at the beginning of each drag
     this.elementsToDrag = null;
-    this.visibleElement = null;
+    this.visibleElements = null;
   }
 
   dragStart(element, position) {
@@ -23,14 +23,21 @@ export default class DragManager {
       let className = element.getAttribute('class');
       if (className && className.substring(0, 9) == 'invisible') {
         let classNamePrefix = className.substring(9);
-        this.visibleElement = element.parentNode.getElementsByClassName('visible'+classNamePrefix)[0];
-        if (this.visibleElement) {
-          // Only polyline has an opacity that needs to be overriden during selection
-          if (this.visibleElement.getAttribute('class').indexOf('polyline') != -1) {
-            this.selectionManager.select(this.visibleElement, 'override');
+        this.visibleElements = element.parentNode.getElementsByClassName('visible'+classNamePrefix);
+        if (this.visibleElements) {
+          // All plugins except spline
+          if (this.visibleElements.length === 1) {
+            // Only polyline has an opacity that needs to be overriden during selection
+            if (this.visibleElements[0].getAttribute('class').indexOf('polyline') != -1) {
+              this.selectionManager.select(this.visibleElements[0], 'override');
+            }
+            else {
+              this.selectionManager.select(this.visibleElements[0]);
+            }
           }
-          else {
-            this.selectionManager.select(this.visibleElement);
+          else { // spline
+            // HTMLCollection is an 'array-like' object that needs to be spread into an array
+            [...this.visibleElements].forEach(el => this.selectionManager.select(el));
           }
         }
       }
@@ -88,7 +95,7 @@ export default class DragManager {
   }
 
   dragEnd() {
-    this.visibleElement = null;
+    this.visibleElements = null;
     this.previousPosition = null;
     this.elementsToDrag = null;  // Important: allows these elements to be garbage collected if removed
   }

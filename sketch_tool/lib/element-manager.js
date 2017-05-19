@@ -96,10 +96,10 @@ export default class ElementManager {
     event.stopPropagation();
 
     const element = event.currentTarget;
-    let className = element.getAttribute('class'), visibleElement;
+    let className = element.getAttribute('class'), visibleElements;
     if (className && className.substring(0, 9) == 'invisible') {
       let classNamePrefix = className.substring(9);
-      visibleElement = element.parentNode.getElementsByClassName('visible'+classNamePrefix)[0];
+      visibleElements = element.parentNode.getElementsByClassName('visible'+classNamePrefix);
     }
     if (this.isDragging) {
       this.dragManager.dragEnd();
@@ -108,26 +108,40 @@ export default class ElementManager {
     }
     else if (event.shiftKey || event.pointerType === 'touch') {
       this.selectionManager.toggleSelected(element);
-      if (visibleElement) {
-        // Only polyline has an opacity that needs to be overriden during selection
-        if (visibleElement.getAttribute('class').indexOf('polyline') != -1) {
-          this.selectionManager.toggleSelected(visibleElement, 'override');
+      if (visibleElements) {
+        // All plugins except spline
+        if (visibleElements.length === 1) {
+          // Only polyline has an opacity that needs to be overriden during selection
+          if (visibleElements[0].getAttribute('class').indexOf('polyline') != -1) {
+            this.selectionManager.toggleSelected(visibleElements[0], 'override');
+          }
+          else {
+            this.selectionManager.toggleSelected(visibleElements[0]);
+          }
         }
-        else {
-          this.selectionManager.toggleSelected(visibleElement);
+        else { // spline
+          // HTMLCollection is an 'array-like' object that needs to be spread into an array
+          [...visibleElements].forEach(el => this.selectionManager.toggleSelected(el));
         }
       }
     }
     else {
       this.selectionManager.deselectAll();
       this.selectionManager.select(element);
-      if (visibleElement) {
-        // Only polyline has an opacity that needs to be overriden during selection
-        if (visibleElement.getAttribute('class').indexOf('polyline') != -1) {
-          this.selectionManager.select(visibleElement, 'override');
+      if (visibleElements) {
+        // All plugins except spline
+        if (visibleElements.length === 1) {
+          // Only polyline has an opacity that needs to be overriden during selection
+          if (visibleElements[0].getAttribute('class').indexOf('polyline') != -1) {
+            this.selectionManager.select(visibleElements[0], 'override');
+          }
+          else {
+            this.selectionManager.select(visibleElements[0]);
+          }
         }
-        else {
-          this.selectionManager.select(visibleElement);
+        else { // spline
+          // HTMLCollection is an 'array-like' object that needs to be spread into an array
+          [...visibleElements].forEach(el => this.selectionManager.select(el));
         }
       }
     }
