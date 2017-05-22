@@ -135,7 +135,6 @@ export default class Polyline extends BasePlugin {
           style: `
               stroke: ${this.params.color};
               stroke-width: 10px;
-              stroke-dasharray: solid;
               fill: ${this.fillColor};
               opacity: 0;
             `,

@@ -364,7 +364,6 @@ export default class LineSegment extends BasePlugin {
               stroke: ${this.params.color};
               opacity: 0;
               stroke-width: 10px;
-              stroke-dasharray: solid;
             `,
             onmount: el => {
               this.app.registerElement({
