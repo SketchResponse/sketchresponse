@@ -1,7 +1,10 @@
 import datalayer
+from Tag import Tag
 
-class Point:
-    def __init__(self, parent_function, x, y, pixel = True):
+
+class Point(Tag):
+    def __init__(self, parent_function, x, y, pixel=True):
+        Tag.__init__(self)
         if pixel:
             self.px = x
             self.py = y
@@ -16,9 +19,7 @@ class Point:
     def get_px_distance_squared(self, point):
         dx = point.px - self.px
         dy = point.py - self.py
-        return dx**2 + dy**2
+        return dx ** 2 + dy ** 2
 
     def get_x_distance(self, x):
         return abs(x - self.x)
-
-

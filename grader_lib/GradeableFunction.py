@@ -42,6 +42,12 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
                 d, p = self.closest_point_to_point(point)
                 if d >= dtol:
                     self.points.append(point)
+            if 'tag' in path_info[i]:
+                tag = path_info[i]['tag']
+                if len(self.functions) > 0:
+                    self.functions[-1].setTag(tag)
+                elif len(self.points) > 0:
+                    self.points[-1].setTag(tag)
 
 ## for Points ##
 

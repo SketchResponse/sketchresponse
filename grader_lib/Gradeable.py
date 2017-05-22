@@ -1,9 +1,10 @@
 from __future__ import division
 import Axis
 
-class Gradeable:
 
-    def __init__(self, gradeable_info, tolerance = dict()):
+class Gradeable():
+
+    def __init__(self, gradeable_info, tolerance=dict()):
         info = gradeable_info
         xaxis = Axis.Axis(info.params['xrange'], info.params['width'])
         yaxis = Axis.Axis(info.params['yrange'][::-1], info.params['height'])
