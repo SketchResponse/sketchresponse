@@ -371,16 +371,3 @@ function getBoundingBox(x0, y0, x1, y1, x2, y2, x3, y3) {
     max: {x: Math.max.apply(0, bounds[0]), y: Math.max.apply(0, bounds[1])}
   };
 }
-
-const strokeWidth = 2;  // TODO: pass in
-function computeDashArray(dashStyle) {
-  var scale = Math.pow(strokeWidth, 0.6); // seems about right perceptually
-  switch (dashStyle) {
-    case 'dashed': return 5*scale + ',' + 3*scale;
-    case 'longdashed': return 10*scale + ',' + 3*scale;
-    case 'dotted': return 2*scale + ',' + 2*scale;
-    case 'dashdotted': return 7*scale + ',' + 3*scale + ',' + 1.5*scale + ',' + 3*scale;
-    case 'solid':  // falls through
-    default: return '';
-  }
-}

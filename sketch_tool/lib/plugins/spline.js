@@ -109,7 +109,7 @@ export default class Spline extends BasePlugin {
           style: `
               stroke: ${this.params.color};
               stroke-width: ${this.splineStrokeWidth(splineIndex)};
-              stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
+              stroke-dasharray: ${this.computeDashArray(this.params.dashStyle, this.splineStrokeWidth(splineIndex))};
               fill: none;
             `
         })
@@ -245,19 +245,6 @@ export default class Spline extends BasePlugin {
 
   inBoundsY(y) {
     return y >= this.bounds.ymin && y <= this.bounds.ymax;
-  }
-}
-
-const strokeWidth = 2;  // TODO: pass in
-function computeDashArray(dashStyle) {
-  var scale = Math.pow(strokeWidth, 0.6); // seems about right perceptually
-  switch (dashStyle) {
-    case 'dashed': return 5*scale + ',' + 3*scale;
-    case 'longdashed': return 10*scale + ',' + 3*scale;
-    case 'dotted': return 2*scale + ',' + 2*scale;
-    case 'dashdotted': return 7*scale + ',' + 3*scale + ',' + 1.5*scale + ',' + 3*scale;
-    case 'solid':  // falls through
-    default: return '';
   }
 }
 

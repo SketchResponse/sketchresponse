@@ -145,4 +145,16 @@ export default class BasePlugin {
   getTagCursor() {
     return this.params.readonly ? 'default' : (this.selectMode ? 'context-menu' : 'crosshair');
   }
+
+  computeDashArray(dashStyle, strokeWidth) {
+    let scale = Math.pow(strokeWidth, 0.6); // seems about right perceptually
+    switch (dashStyle) {
+      case 'dashed': return 5*scale + ',' + 3*scale;
+      case 'longdashed': return 10*scale + ',' + 3*scale;
+      case 'dotted': return 2*scale + ',' + 2*scale;
+      case 'dashdotted': return 7*scale + ',' + 3*scale + ',' + 1.5*scale + ',' + 3*scale;
+      // 'solid' or anything else
+      default: return 'none';
+    }
+  }
 }
