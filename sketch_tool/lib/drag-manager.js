@@ -1,3 +1,5 @@
+import {getElementsByClassName} from './util/ms-polyfills'
+
 export default class DragManager {
   constructor(registry, selectionManager) {
     this.registry = registry;
@@ -23,7 +25,8 @@ export default class DragManager {
       let className = element.getAttribute('class');
       if (className && className.substring(0, 9) == 'invisible') {
         let classNamePrefix = className.substring(9);
-        this.visibleElements = element.parentNode.getElementsByClassName('visible'+classNamePrefix);
+        // IE and Edge do not have getElementsByClassName on SVG elements, use polyfill instead
+        this.visibleElements = getElementsByClassName(element.parentNode, 'visible'+classNamePrefix);
         if (this.visibleElements) {
           // All plugins except spline
           if (this.visibleElements.length === 1) {

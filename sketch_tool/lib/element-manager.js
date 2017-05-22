@@ -1,6 +1,7 @@
 import PointerDownCache from './pointer-down-cache';
 import SelectionManager from './selection-manager';
 import DragManager from './drag-manager';
+import {getElementsByClassName} from './util/ms-polyfills'
 
 const MIN_DRAG_DISTANCE_SQUARED = 5**2;
 
@@ -99,7 +100,8 @@ export default class ElementManager {
     let className = element.getAttribute('class'), visibleElements;
     if (className && className.substring(0, 9) == 'invisible') {
       let classNamePrefix = className.substring(9);
-      visibleElements = element.parentNode.getElementsByClassName('visible'+classNamePrefix);
+      // IE and Edge do not have getElementsByClassName on SVG elements, use polyfill instead
+      visibleElements = getElementsByClassName(element.parentNode, 'visible'+classNamePrefix);
     }
     if (this.isDragging) {
       this.dragManager.dragEnd();
