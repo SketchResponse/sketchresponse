@@ -49,8 +49,16 @@ export function injectStyleSheet(innerHTML) {
 }
 
 export function injectSVGDefs(innerHTML) {
-  const svgFilterContainer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svgFilterContainer.setAttributeNS(null, 'height', 0);
-  svgFilterContainer.innerHTML = `<defs>${ innerHTML }</defs>`;
-  document.body.appendChild(svgFilterContainer);
+  let canvas = document.getElementById('si-canvas'),
+      defs = canvas.getElementsByTagName('defs'), newDefs;
+  // defs is already defined, just add new definition
+  if (defs.length > 0) {
+    defs[0].innerHTML += innerHTML;
+  }
+  // create a new defs element and then add new definition
+  else {
+    newDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    newDefs.innerHTML = `${ innerHTML }`;
+    canvas.insertBefore(newDefs, canvas.firstChild);
+  }
 }
