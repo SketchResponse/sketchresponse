@@ -37,7 +37,7 @@ class Asymptotes(Gradeable.Gradeable):
             if include:
                 self.asyms.append(Asymptote(val))
                 self.px_asyms.append(px)
-                if not spline['tag'] is None:
+                if 'tag' in spline:
                     self.asyms[-1].setTag(spline['tag'])
 
         self.scale = 1

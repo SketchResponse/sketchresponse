@@ -17,8 +17,8 @@ class Polygons(Gradeable.Gradeable):
         for spline in info:
             points = self.convertToRealPoints(spline['spline'])
             if len(points) > 0:
-                self.polygons.append(Polygon(points))
-                if not spline['tag'] is None:
+                self.polygons.append(TagablePolygon(points))
+                if 'tag' in spline:
                     self.polygons[-1].setTag(spline['tag'])
 
         if len(self.polygons) > 0:
@@ -316,8 +316,8 @@ class Polygons(Gradeable.Gradeable):
 from Tag import Tag
 
 
-class Polygon(Tag, object):
+class TagablePolygon(Tag, object):
 
     def __init__(self, points):
-        super(Polygon, self).__init__()
+        super(TagablePolygon, self).__init__()
         self.points = points

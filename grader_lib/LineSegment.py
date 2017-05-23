@@ -24,7 +24,7 @@ class LineSegments(Gradeable.Gradeable):
         for spline in info:
             if len(spline['spline']) == 4 and self.isALine(spline['spline']):
                 seg = self.value_from_spline(spline['spline'])
-                if not spline['tag'] is None:
+                if 'tag' in spline:
                     seg.setTag(spline['tag'])
                 self.segments.append(seg)
             else:
