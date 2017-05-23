@@ -404,7 +404,7 @@ export default class Axes {
           `,
         }),
         z.if(this.params.xaxisLabel, () =>
-          z('text.xaxisLabel', {
+          z('text.default-text', {
             'text-anchor': 'end',
             x: this.x.pixelMax - this.params.xaxisLabel.dx,
             y: this.y.pixelVal(0) - this.params.xaxisLabel.dy,
@@ -415,7 +415,7 @@ export default class Axes {
           }, this.params.xaxisLabel.value)
         ),
         z.if(this.params.yaxisLabel, () =>
-          z('text.yaxisLabel', {
+          z('text.default-text', {
             'text-anchor': 'start',
             x: this.x.pixelVal(0) + this.params.yaxisLabel.dx,
             y: this.y.pixelMax + this.params.yaxisLabel.dy,
@@ -477,7 +477,7 @@ export default class Axes {
           `,
         }),
         z.if(this.params.xaxisLabel, () =>
-          z('text.xaxisLabel', {
+          z('text.default-text', {
             'text-anchor': 'end',
             x: this.x.pixelMax - this.params.xaxisLabel.dx,
             y: this.y.pixelVal(0) - this.params.xaxisLabel.dy,
@@ -488,7 +488,7 @@ export default class Axes {
           }, this.params.xaxisLabel.value)
         ),
         z.if(this.params.yaxisLabel, () =>
-          z('text.yaxisLabel', {
+          z('text.default-text', {
             'text-anchor': 'start',
             x: this.x.pixelVal(0) + this.params.yaxisLabel.dx,
             y: this.y.pixelMax + this.params.yaxisLabel.dy,
