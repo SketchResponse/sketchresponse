@@ -142,7 +142,6 @@ export default class VerticalLine extends BasePlugin {
             style: `
               fill: #333;
               font-size: 14px;
-              user-select: none;
               cursor: ${this.getTagCursor()};
             `,
             onmount: el => {

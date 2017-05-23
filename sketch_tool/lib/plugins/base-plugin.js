@@ -105,7 +105,7 @@ export default class BasePlugin {
 
   deactivate() {
     this.app.svg.removeEventListener('pointerdown', this.initDraw);
-    this.app.svg.style.cursor = null;
+    this.app.svg.style.cursor = 'default';
   }
 
   clampX(x) {
@@ -143,7 +143,7 @@ export default class BasePlugin {
   }
 
   getTagCursor() {
-    return this.params.readonly ? 'default' : (this.selectMode ? 'context-menu' : 'crosshair');
+    return this.params.readonly ? 'default' : (this.selectMode ? 'pointer' : 'crosshair');
   }
 
   computeDashArray(dashStyle, strokeWidth) {

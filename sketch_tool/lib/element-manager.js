@@ -65,6 +65,7 @@ export default class ElementManager {
     if (this.activePointerId !== null || event.buttons !== 1 ||
         !this.selectionManager.selectMode) return;
     event.stopPropagation();
+    event.preventDefault();
 
     this.addCaptureAndListeners(event);
     this.activePointerId = event.pointerId;
@@ -89,12 +90,12 @@ export default class ElementManager {
       this.isDragging = true;
     }
     this.dragManager.dragMove(event);
-    event.preventDefault();
   }
 
   onPointerUp(event) {
     if (event.pointerId !== this.activePointerId) return;
     event.stopPropagation();
+    event.preventDefault();
 
     const element = event.currentTarget;
     let className = element.getAttribute('class'), visibleElements;

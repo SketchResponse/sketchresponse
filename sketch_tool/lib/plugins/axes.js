@@ -335,7 +335,7 @@ export default class Axes {
                 shape-rendering: crispEdges;
               `,
             }),
-            z('text.ticLabel', {
+            z('text.default-text', {
               'text-anchor': 'middle',
               x: this.x.pixelVal(xval) + 0,
               y: this.y.pixelVal(0) + 15,
@@ -359,7 +359,7 @@ export default class Axes {
                 shape-rendering: crispEdges;
               `,
             }),
-            z('text.ticLabel', {
+            z('text.default-text', {
               'text-anchor': 'end',
               x: this.x.pixelVal(0) - 4,
               y: this.y.pixelVal(yval) + 5,
@@ -371,7 +371,7 @@ export default class Axes {
           )
         ),
         z.if(this.zeroLabel !== undefined && this.zeroLabel !== null, () =>
-          z('text.ticLabel', {
+          z('text.default-text', {
             'text-anchor': 'end',
             x: this.x.pixelVal(0) - 4,
             y: this.y.pixelVal(0) + 15,
