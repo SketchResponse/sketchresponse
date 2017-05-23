@@ -48,17 +48,23 @@ export function injectStyleSheet(innerHTML) {
   document.head.appendChild(styleElement);
 }
 
-export function injectSVGDefs(innerHTML) {
+// Setting innerHTML on an SVG element does not work on Edge
+// We parse our XML using DOMParser instead:
+// https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
+export function injectSVGDefs(xmlStr) {
   let canvas = document.getElementById('si-canvas'),
-      defs = canvas.getElementsByTagName('defs'), newDefs;
-  // defs is already defined, just add new definition
-  if (defs.length > 0) {
-    defs[0].innerHTML += innerHTML;
+      defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  xmlStr = '<svg xmlns=\'http://www.w3.org/2000/svg\'>' + xmlStr + '</svg>';
+  let svgDocElement = new DOMParser().parseFromString(xmlStr, 'text/xml').documentElement;
+  // Do not use svgDocElement.children, no support on Safari & Edge:
+  // https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children
+  // Loop through childNodes instead.
+  let childNode = svgDocElement.firstChild;
+  while(childNode) {
+    if (childNode.nodeType === 1) { // Only append Element nodes
+      defs.appendChild(canvas.ownerDocument.importNode(childNode, true));
+    }
+    childNode = childNode.nextSibling;
   }
-  // create a new defs element and then add new definition
-  else {
-    newDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-    newDefs.innerHTML = `${ innerHTML }`;
-    canvas.insertBefore(newDefs, canvas.firstChild);
-  }
+  canvas.insertBefore(defs, canvas.firstChild);
 }
