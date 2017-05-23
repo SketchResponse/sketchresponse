@@ -1,10 +1,12 @@
 from __future__ import division
 import Axis
+from Tag import Tagables
 
 
-class Gradeable():
+class Gradeable(Tagables, object):
 
     def __init__(self, gradeable_info, tolerance=dict()):
+        super(Gradeable, self).__init__()
         info = gradeable_info
         xaxis = Axis.Axis(info.params['xrange'], info.params['width'])
         yaxis = Axis.Axis(info.params['yrange'][::-1], info.params['height'])

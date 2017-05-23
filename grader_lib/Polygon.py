@@ -17,7 +17,12 @@ class Polygons(Gradeable.Gradeable):
         for spline in info:
             points = self.convertToRealPoints(spline['spline'])
             if len(points) > 0:
-                self.polygons.append(points)
+                self.polygons.append(Polygon(points))
+                if not spline['tag'] is None:
+                    self.polygons[-1].setTag(spline['tag'])
+
+        if len(self.polygons) > 0:
+            self.setTagables(self.polygons)
 
     def convertToRealPoints(self, points):
         # input is a list of points [[x1,y1], [x2,y2], ...]
@@ -52,7 +57,7 @@ class Polygons(Gradeable.Gradeable):
 
         for p in self.polygons:
             # sympy polygon does not take a list of points, stupidly
-            poly = Polygon(*p)
+            poly = Polygon(*p.points)
             isInside = poly.encloses_point(Point(*point))
             onBoundary = self.point_is_on_polygon_boundary(p, point,
                                                            tolerance=tolerance)
@@ -79,7 +84,7 @@ class Polygons(Gradeable.Gradeable):
         if isinstance(point, SR_Point):
             point = [point.x, point.y]
 
-        poly = Polygon(*polygon)
+        poly = Polygon(*polygon.points)
         isInside = poly.encloses_point(Point(*point))
         onBoundary = self.point_is_on_polygon_boundary(polygon, point,
                                                        tolerance=tolerance)
@@ -149,11 +154,11 @@ class Polygons(Gradeable.Gradeable):
             point = [point.x, point.y]
 
         for polygon in self.polygons:
-            for i, pt in enumerate(polygon):
-                if i < len(polygon) - 1:
-                    pt2 = polygon[i + 1]
+            for i, pt in enumerate(polygon.points):
+                if i < len(polygon.points) - 1:
+                    pt2 = polygon.points[i + 1]
                 else:
-                    pt2 = polygon[0]
+                    pt2 = polygon.points[0]
 
                 poly_seg = Segment(pt, pt2)
                 distance = poly_seg.distance(Point(*point))
@@ -182,11 +187,11 @@ class Polygons(Gradeable.Gradeable):
         if isinstance(point, SR_Point):
             point = [point.x, point.y]
 
-        for i, pt in enumerate(polygon):
-            if i < len(polygon) - 1:
-                pt2 = polygon[i + 1]
+        for i, pt in enumerate(polygon.points):
+            if i < len(polygon.points) - 1:
+                pt2 = polygon.points[i + 1]
             else:
-                pt2 = polygon[0]
+                pt2 = polygon.points[0]
 
             poly_seg = Segment(pt, pt2)
             distance = poly_seg.distance(Point(*point))
@@ -220,11 +225,11 @@ class Polygons(Gradeable.Gradeable):
 
         for polygon in self.polygons:
             p_intersections = []
-            for i, pt in enumerate(polygon):
-                if i < len(polygon) - 1:
-                    pt2 = polygon[i + 1]
+            for i, pt in enumerate(polygon.points):
+                if i < len(polygon.points) - 1:
+                    pt2 = polygon.points[i + 1]
                 else:
-                    pt2 = polygon[0]
+                    pt2 = polygon.points[0]
 
                 poly_seg = Segment(pt, pt2)
                 intersection_points = intersection(in_seg, poly_seg)
@@ -262,11 +267,11 @@ class Polygons(Gradeable.Gradeable):
 
         in_seg = Segment(Point(*point1), Point(*point2))
 
-        for i, pt in enumerate(polygon):
-            if i < len(polygon) - 1:
-                pt2 = polygon[i + 1]
+        for i, pt in enumerate(polygon.points):
+            if i < len(polygon.points) - 1:
+                pt2 = polygon.points[i + 1]
             else:
-                pt2 = polygon[0]
+                pt2 = polygon.points[0]
 
             poly_seg = Segment(pt, pt2)
             intersection_points = intersection(in_seg, poly_seg)
@@ -278,7 +283,6 @@ class Polygons(Gradeable.Gradeable):
                                                     tolerance=tolerance)
 
         return intersections
-
 
     ###################
     # Helper Functions
@@ -307,3 +311,13 @@ class Polygons(Gradeable.Gradeable):
                 filtered.append(i)
 
         return filtered
+
+
+from Tag import Tag
+
+
+class Polygon(Tag, object):
+
+    def __init__(self, points):
+        super(Polygon, self).__init__()
+        self.points = points

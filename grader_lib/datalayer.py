@@ -1,7 +1,7 @@
 # """Contains functions and classes for processing function data"""
 from __future__ import division
 import numpy as np
-from Tag import Tag
+from Tag import Tag, Tagables
 
 DEGREES = (3.142/180)
 
@@ -23,14 +23,14 @@ def abstractMethod(obj=None):
 
 
 # Function "interface"
-class Function(Tag):
+class Function(Tag, Tagables, object):
     """Base class for Functions."""
     # create the Function
     # establishes the axes, the size (from the axes), and the tolerance, with default tolerance of 20 pixels
     # Function info will be stored in terms of the function itself, not the pixel information
     # the actual path is yet to be specified
     def __init__(self, xaxis, yaxis, path_info = [], tolerance = dict()):
-        Tag.__init__(self)
+        super(Function, self).__init__()
         self.xaxis = xaxis
         self.yaxis = yaxis
         self.width = xaxis.pixels

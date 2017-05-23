@@ -2,9 +2,9 @@ import datalayer
 from Tag import Tag
 
 
-class Point(Tag):
+class Point(Tag, object):
     def __init__(self, parent_function, x, y, pixel=True):
-        Tag.__init__(self)
+        super(Point, self).__init__()
         if pixel:
             self.px = x
             self.py = y

@@ -2,6 +2,14 @@ import datalayer
 import Gradeable
 import numpy as np
 import Axis
+from Tag import Tag
+
+
+class Asymptote(Tag, object):
+
+    def __init__(self, value):
+        super(Asymptote, self).__init__()
+        self.value = value
 
 
 class Asymptotes(Gradeable.Gradeable):
@@ -27,10 +35,14 @@ class Asymptotes(Gradeable.Gradeable):
                 if abs(pxa - px) < self.tolerance['asym_same']:
                     include = False
             if include:
-                self.asyms.append(val)
+                self.asyms.append(Asymptote(val))
                 self.px_asyms.append(px)
+                if not spline['tag'] is None:
+                    self.asyms[-1].setTag(spline['tag'])
 
         self.scale = 1
+        if len(self.asyms) > 0:
+            self.setTagables(self.asyms)
 
 
     def value_from_spline(self, spline):
@@ -50,7 +62,8 @@ class Asymptotes(Gradeable.Gradeable):
         """
         minDistance = float('inf')
         closestAsym = None
-        for asym in self.asyms:
+        for a in self.asyms:
+            asym = a.value
             d = abs(asym - v)
             if d < minDistance:
                 minDistance = d
