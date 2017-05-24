@@ -37,10 +37,12 @@ export default class Polyline extends BasePlugin {
 
   getGradeable() {
     return this.state.map(spline => {
-      return {
-        spline: spline.map(point => [point.x, point.y]),
-        tag: spline[0].tag
-      };
+      if (spline.length > 0) {
+        return {
+          spline: spline.map(point => [point.x, point.y]),
+          tag: spline[0].tag
+        };
+      }
     });
   }
 

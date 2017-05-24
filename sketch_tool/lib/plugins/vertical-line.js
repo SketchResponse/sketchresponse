@@ -27,9 +27,10 @@ export default class VerticalLine extends BasePlugin {
       this.params.height,
     ];
 
-    return this.state.map(x => {
+    return this.state.map(position => {
       return {
-        spline: yvals.map(y => [x, y]),
+        spline: yvals.map(y => [position.x, y]),
+        tag: position.tag
       };
     });
   }
