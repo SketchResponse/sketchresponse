@@ -50,6 +50,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
                     self.points[-1].setTag(tag)
 
         # set the gradeable object list to the tagable list
+        self.setTagables(None)
         if len(self.functions) > 0:
             self.setTagables(self.functions)
         if len(self.points) > 0:

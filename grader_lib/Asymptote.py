@@ -41,6 +41,7 @@ class Asymptotes(Gradeable.Gradeable):
                     self.asyms[-1].setTag(spline['tag'])
 
         self.scale = 1
+        self.setTagables(None)
         if len(self.asyms) > 0:
             self.setTagables(self.asyms)
 

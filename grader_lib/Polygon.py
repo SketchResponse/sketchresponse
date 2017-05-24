@@ -21,6 +21,7 @@ class Polygons(Gradeable.Gradeable):
                 if 'tag' in spline:
                     self.polygons[-1].setTag(spline['tag'])
 
+        self.setTagables(None)
         if len(self.polygons) > 0:
             self.setTagables(self.polygons)
 

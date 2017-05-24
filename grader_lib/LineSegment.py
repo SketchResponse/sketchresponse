@@ -31,6 +31,7 @@ class LineSegments(Gradeable.Gradeable):
                 # TODO - through error if try to grade non line seg splines
                 raise ValueError("This spline does not appear to be a line segment: " + str(spline['spline']))
 
+        self.setTagables(None)
         if len(self.segments) > 0:
             self.setTagables(self.segments)
 
