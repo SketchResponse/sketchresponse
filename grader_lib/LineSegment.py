@@ -511,3 +511,9 @@ class LineSegment:
     def __init__(self, point1, point2):
         self.start = point1
         self.end = point2
+
+    def getStartPoint(self):
+        return [self.start.x, self.start.y]
+
+    def getEndPoint(self):
+        return [self.end.x, self.end.y]
