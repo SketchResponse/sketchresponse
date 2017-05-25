@@ -15,8 +15,11 @@ class PolyLines(Gradeable.Gradeable):
         self.polysplines = []
         for spline in info:
             segmentSplines = self.convertToSplineSegments(spline['spline'])
+            tag = None
+            if 'tag' in spline:
+                tag = spline['tag']
             if len(segmentSplines) > 0:
-                newinfo = self.newFunctionData(info, segmentSplines)
+                newinfo = self.newFunctionData(info, segmentSplines, tag)
                 self.polysegments.append(LineSegments(newinfo))
                 self.polysplines.append(GradeableFunction(newinfo))
 
@@ -35,7 +38,7 @@ class PolyLines(Gradeable.Gradeable):
 
         return splines
 
-    def newFunctionData(self, info, splines):
+    def newFunctionData(self, info, splines, tag):
         # replace the the transformed data in the gradeable data struct
         # this only works for freeform only inputs
         newinfo = deepcopy(info)
@@ -44,6 +47,8 @@ class PolyLines(Gradeable.Gradeable):
         for s in splines:
             splineDict = {}
             splineDict['spline'] = s
+            if not tag is None:
+                splineDict['tag'] = tag
             newinfo.append(splineDict)
 
         return newinfo
