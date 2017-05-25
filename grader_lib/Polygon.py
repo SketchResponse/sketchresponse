@@ -16,7 +16,7 @@ class Polygons(Gradeable.Gradeable):
         self.polygons = []
 
         for spline in info:
-            points = self.convertToRealPoints(spline['spline'])
+            points = self.convert_to_real_points(spline['spline'])
             if len(points) > 0:
                 self.polygons.append(Polygon(points))
                 if 'tag' in spline:
@@ -26,7 +26,7 @@ class Polygons(Gradeable.Gradeable):
         if len(self.polygons) > 0:
             self.setTagables(self.polygons)
 
-    def convertToRealPoints(self, points):
+    def convert_to_real_points(self, points):
         # input is a list of points [[x1,y1], [x2,y2], ...]
         # convert the points from pixel values to real values
         pointList = []
@@ -73,7 +73,8 @@ class Polygons(Gradeable.Gradeable):
            polygon, within tolerance.
 
         Args:
-            polygon: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon
+            polygon: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+                     or a Polygon object
             point: an list [x, y] defining a point, or
                    a Point object from a GradeableFunction grader
             tolerance: a pixel distance tolerance
@@ -86,7 +87,10 @@ class Polygons(Gradeable.Gradeable):
         if isinstance(point, SR_Point):
             point = [point.x, point.y]
 
-        poly = SymPyPolygon(*polygon.points)
+        if isinstance(polygon, Polygon):
+            polygon = polygon.points
+
+        poly = SymPyPolygon(*polygon)
         isInside = poly.encloses_point(Point(*point))
         onBoundary = self.point_is_on_polygon_boundary(polygon, point,
                                                        tolerance=tolerance)
@@ -97,13 +101,17 @@ class Polygons(Gradeable.Gradeable):
         """Return the polygon that contains the given polygon, within tolerance.
 
         Args:
-            polygon: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon
+            polygon: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+                     or a Polygon object
             tolerance: a pixel distance tolerance
         Returns:
             list:
             The first polygon, defined as a list of points, that contains
             the given polygon, or None.
         """
+        if isinstance(polygon, Polygon):
+            polygon = polygon.points
+            
         for p in self.polygons:
             contains = True
             for point in polygon:
@@ -120,14 +128,19 @@ class Polygons(Gradeable.Gradeable):
            contained polygon, within tolerance.
 
         Args:
-            container: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon
-            contained: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon
+            container: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+                     or a Polygon object
+            contained: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+                     or a Polygon object
             tolerance: a pixel distance tolerance
         Returns:
             list:
             True of the container polygon contains every point of the contained
             polygon, otherwise False.
         """
+        if isinstance(contained, Polygon):
+            contained = contained.points
+
         contains = True
         for point in contained:
             contains = contains and self.polygon_contains_point(container,
@@ -174,7 +187,8 @@ class Polygons(Gradeable.Gradeable):
            polygon, within tolerance.
 
         Args:
-            polygon: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon
+            polygon: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+                     or a Polygon object
             point: an list [x, y] defining a point, or
                    a Point object from a GradeableFunction grader
             tolerance: a pixel distance tolerance
@@ -189,11 +203,14 @@ class Polygons(Gradeable.Gradeable):
         if isinstance(point, SR_Point):
             point = [point.x, point.y]
 
-        for i, pt in enumerate(polygon.points):
-            if i < len(polygon.points) - 1:
-                pt2 = polygon.points[i + 1]
+        if isinstance(polygon, Polygon):
+            polygon = polygon.points
+
+        for i, pt in enumerate(polygon):
+            if i < len(polygon) - 1:
+                pt2 = polygon[i + 1]
             else:
-                pt2 = polygon.points[0]
+                pt2 = polygon[0]
 
             poly_seg = Segment(pt, pt2)
             distance = poly_seg.distance(Point(*point))
@@ -238,9 +255,9 @@ class Polygons(Gradeable.Gradeable):
                 for ip in intersection_points:
                     p_intersections.append([ip.x, ip.y])
 
-            p_intersections = self.filterIntersectionList(p_intersections,
-                                                          point1, point2,
-                                                          tolerance=tolerance)
+            p_intersections = self.filter_intersections_for_endpoints(p_intersections,
+                                                                      point1, point2,
+                                                                      tolerance=tolerance)
             intersections.append(p_intersections)
 
         return intersections
@@ -251,7 +268,8 @@ class Polygons(Gradeable.Gradeable):
            with the given polygon.
 
         Args:
-            polygon: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon
+            polygon: a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+                     or a Polygon object
             line_segment: an list of two points [[x1, y1], [x2,y2]], or
                           a LineSegment object from a LineSegment grader
             tolerance: a pixel distance tolerance
@@ -267,22 +285,25 @@ class Polygons(Gradeable.Gradeable):
             point1 = line_segment[0]
             point2 = line_segment[1]
 
+        if isinstance(polygon, Polygon):
+            polygon = polygon.points
+
         in_seg = Segment(Point(*point1), Point(*point2))
 
-        for i, pt in enumerate(polygon.points):
-            if i < len(polygon.points) - 1:
-                pt2 = polygon.points[i + 1]
+        for i, pt in enumerate(polygon):
+            if i < len(polygon) - 1:
+                pt2 = polygon[i + 1]
             else:
-                pt2 = polygon.points[0]
+                pt2 = polygon[0]
 
             poly_seg = Segment(pt, pt2)
             intersection_points = intersection(in_seg, poly_seg)
             for ip in intersection_points:
                 intersections.append([ip.x, ip.y])
 
-        intersections = self.filterIntersectionList(intersections,
-                                                    point1, point2,
-                                                    tolerance=tolerance)
+        intersections = self.filter_intersections_for_endpoints(intersections,
+                                                                point1, point2,
+                                                                tolerance=tolerance)
 
         return intersections
 
@@ -292,7 +313,7 @@ class Polygons(Gradeable.Gradeable):
 
     # Returns true of the two points are within the given distance tolerance
     # of each other.
-    def pointWithinTolerance(self, point1, point2, tolerance=None):
+    def point_within_tolerance(self, point1, point2, tolerance=None):
         if tolerance is None:
             tolerance = self.tolerance['point_distance'] / self.xscale
 
@@ -302,13 +323,14 @@ class Polygons(Gradeable.Gradeable):
     # Returns a list of intersections where all points that are within
     # tolerance of either end point of the intersecting line segment
     # are removed.
-    def filterIntersectionList(self, intersections, startPoint, endPoint,
-                               tolerance=None):
+    def filter_intersections_for_endpoints(self, intersections, start_point,
+                                           end_point, tolerance=None):
         filtered = []
         for i in intersections:
-            isStart = self.pointWithinTolerance(startPoint, i,
+            isStart = self.point_within_tolerance(start_point, i,
                                                 tolerance=tolerance)
-            isEnd = self.pointWithinTolerance(endPoint, i, tolerance=tolerance)
+            isEnd = self.point_within_tolerance(end_point, i,
+                                                tolerance=tolerance)
             if not isStart and not isEnd:
                 filtered.append(i)
 
