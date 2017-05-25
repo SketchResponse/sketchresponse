@@ -2,7 +2,8 @@ import Gradeable
 from copy import deepcopy
 from Point import Point as SR_Point
 from LineSegment import LineSegment
-from sympy.geometry import Polygon, Point, Segment, intersection
+from sympy.geometry import Polygon as SymPyPolygon
+from sympy.geometry import Point, Segment, intersection
 
 
 class Polygons(Gradeable.Gradeable):
@@ -17,7 +18,7 @@ class Polygons(Gradeable.Gradeable):
         for spline in info:
             points = self.convertToRealPoints(spline['spline'])
             if len(points) > 0:
-                self.polygons.append(TagablePolygon(points))
+                self.polygons.append(Polygon(points))
                 if 'tag' in spline:
                     self.polygons[-1].setTag(spline['tag'])
 
@@ -58,7 +59,7 @@ class Polygons(Gradeable.Gradeable):
 
         for p in self.polygons:
             # sympy polygon does not take a list of points, stupidly
-            poly = Polygon(*p.points)
+            poly = SymPyPolygon(*p.points)
             isInside = poly.encloses_point(Point(*point))
             onBoundary = self.point_is_on_polygon_boundary(p, point,
                                                            tolerance=tolerance)
@@ -85,7 +86,7 @@ class Polygons(Gradeable.Gradeable):
         if isinstance(point, SR_Point):
             point = [point.x, point.y]
 
-        poly = Polygon(*polygon.points)
+        poly = SymPyPolygon(*polygon.points)
         isInside = poly.encloses_point(Point(*point))
         onBoundary = self.point_is_on_polygon_boundary(polygon, point,
                                                        tolerance=tolerance)
@@ -317,8 +318,8 @@ class Polygons(Gradeable.Gradeable):
 from Tag import Tag
 
 
-class TagablePolygon(Tag, object):
+class Polygon(Tag, object):
 
     def __init__(self, points):
-        super(TagablePolygon, self).__init__()
+        super(Polygon, self).__init__()
         self.points = points
