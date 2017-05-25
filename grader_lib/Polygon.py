@@ -20,11 +20,11 @@ class Polygons(Gradeable.Gradeable):
             if len(points) > 0:
                 self.polygons.append(Polygon(points))
                 if 'tag' in spline:
-                    self.polygons[-1].setTag(spline['tag'])
+                    self.polygons[-1].set_tag(spline['tag'])
 
-        self.setTagables(None)
+        self.set_tagables(None)
         if len(self.polygons) > 0:
-            self.setTagables(self.polygons)
+            self.set_tagables(self.polygons)
 
     def convert_to_real_points(self, points):
         # input is a list of points [[x1,y1], [x2,y2], ...]

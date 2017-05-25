@@ -25,15 +25,15 @@ class LineSegments(Gradeable.Gradeable):
             if len(spline['spline']) == 4 and self.isALine(spline['spline']):
                 seg = self.value_from_spline(spline['spline'])
                 if 'tag' in spline:
-                    seg.setTag(spline['tag'])
+                    seg.set_tag(spline['tag'])
                 self.segments.append(seg)
             else:
                 # TODO - through error if try to grade non line seg splines
                 raise ValueError("This spline does not appear to be a line segment: " + str(spline['spline']))
 
-        self.setTagables(None)
+        self.set_tagables(None)
         if len(self.segments) > 0:
-            self.setTagables(self.segments)
+            self.set_tagables(self.segments)
 
     def isALine(self, spline):
         # compute R^2 fitness of a straight line return true if > .99

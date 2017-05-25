@@ -38,12 +38,12 @@ class Asymptotes(Gradeable.Gradeable):
                 self.asyms.append(Asymptote(val))
                 self.px_asyms.append(px)
                 if 'tag' in spline:
-                    self.asyms[-1].setTag(spline['tag'])
+                    self.asyms[-1].set_tag(spline['tag'])
 
         self.scale = 1
-        self.setTagables(None)
+        self.set_tagables(None)
         if len(self.asyms) > 0:
-            self.setTagables(self.asyms)
+            self.set_tagables(self.asyms)
 
 
     def value_from_spline(self, spline):

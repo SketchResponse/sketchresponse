@@ -3,27 +3,28 @@ class Tag(object):
     def __init__(self):
         self.tag = ""
 
-    def setTag(self, tag):
+    def set_tag(self, tag):
         self.tag = tag
 
-    def getTag(self):
+    def get_tag(self):
         return self.tag
 
-    def tagEquals(self, toCompare):
-        return self.tag == toCompare
+    def tag_equals(self, to_compare):
+        return self.tag == to_compare
+
 
 class Tagables(object):
 
     def __init__(self):
         self.tags = None
 
-    def setTagables(self, tags):
+    def set_tagables(self, tags):
         self.tags = tags
 
-    def containsTag(self, toCompare):
+    def contains_tag(self, to_compare):
         if not self.tags is None:
             for tag in self.tags:
-                if tag.tagEquals(toCompare):
+                if tag.tag_equals(to_compare):
                     return tag
 
         return None

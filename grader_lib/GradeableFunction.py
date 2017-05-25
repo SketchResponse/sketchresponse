@@ -45,16 +45,16 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             if 'tag' in path_info[i]:
                 tag = path_info[i]['tag']
                 if len(self.functions) > 0:
-                    self.functions[-1].setTag(tag)
+                    self.functions[-1].set_tag(tag)
                 elif len(self.points) > 0:
-                    self.points[-1].setTag(tag)
+                    self.points[-1].set_tag(tag)
 
         # set the gradeable object list to the tagable list
-        self.setTagables(None)
+        self.set_tagables(None)
         if len(self.functions) > 0:
-            self.setTagables(self.functions)
+            self.set_tagables(self.functions)
         if len(self.points) > 0:
-            self.setTagables(self.points)
+            self.set_tagables(self.points)
 ## for Points ##
 
     # returns the distance (squared) and the point
