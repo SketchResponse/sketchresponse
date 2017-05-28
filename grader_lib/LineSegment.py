@@ -522,7 +522,19 @@ class LineSegment(Tag, object):
         self.end = point2
 
     def getStartPoint(self):
+        """Return the start point of the line segment as an [x, y] pair.
+
+        Returns:
+            list:
+            the [x, y] pair of the start point.
+        """
         return [self.start.x, self.start.y]
 
     def getEndPoint(self):
+        """Return the end point of the line segment as an [x, y] pair.
+
+        Returns:
+            list:
+            the [x, y] pair of the end point.
+        """
         return [self.end.x, self.end.y]

@@ -341,6 +341,9 @@ from Tag import Tag
 
 
 class Polygon(Tag, object):
+    """A polygon wrapper class. Contains a list of [x, y] points defining the
+       vertices of the polygon.
+    """
 
     def __init__(self, points):
         super(Polygon, self).__init__()

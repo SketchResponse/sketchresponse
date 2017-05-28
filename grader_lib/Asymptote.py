@@ -6,20 +6,22 @@ from Tag import Tag
 
 
 class Asymptote(Tag, object):
-
+    """An asymptote wrapper class. Contains the x or y value that defines
+       the vertical or horizontal asymptote.
+    """
     def __init__(self, value):
         super(Asymptote, self).__init__()
         self.value = value
 
 
 class Asymptotes(Gradeable.Gradeable):
-    """Asymptote.
-
-    Note:
-        Asymptotes is a generic class. You must instantiate either the 
-        VerticalAsymptotes or the HorizontalAsymptotes class to use the
-        grading functions below.
-    """
+#    """Asymptote.
+#
+#    Note:
+#        Asymptotes is a generic class. You must instantiate either the 
+#        VerticalAsymptotes or the HorizontalAsymptotes class to use the
+#        grading functions below.
+#    """
     def __init__(self, info, tolerance = dict()):
         Gradeable.Gradeable.__init__(self, info, tolerance)
 
