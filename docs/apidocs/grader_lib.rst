@@ -18,6 +18,20 @@ grader_lib.LineSegment module
    :members:
    :show-inheritance:   
 
+grader_lib.PolyLine module
+---------------------------
+
+.. automodule:: grader_lib.PolyLine
+   :members:
+   :show-inheritance:   
+
+grader_lib.Polygon module
+---------------------------
+
+.. automodule:: grader_lib.Polygon
+   :members:
+   :show-inheritance:   
+
 grader_lib.GradeableFunction module
 -----------------------------------
 
