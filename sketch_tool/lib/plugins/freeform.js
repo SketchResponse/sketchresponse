@@ -34,7 +34,8 @@ export default class Freeform extends BasePlugin {
   getGradeable() {
     return this.state.map(spline => {
       return {
-        spline: spline.map(point => [point.x, point.y])
+        spline: spline.map(point => [point.x, point.y]),
+        tag: spline[0].tag
       };
     });
   }
@@ -129,6 +130,9 @@ export default class Freeform extends BasePlugin {
         point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
         point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
       });
+      if (this.hasTag) {
+        splineData[0].tag = this.tag.value;
+      }
       this.state.push(splineData);
       this.app.addUndoPoint();
     }
@@ -210,6 +214,38 @@ export default class Freeform extends BasePlugin {
           y2: this.pointerPosition.y,
           style: 'stroke: lightgray; stroke-width: 2px',
         })
+      ),
+      z.each(this.state, (spline, splineIndex) =>
+        z.if(this.hasTag, () =>
+          z('text.tag', {
+            'text-anchor': this.tag.align,
+            x: this.state[splineIndex][0].x + this.tag.xoffset,
+            y: this.state[splineIndex][0].y + this.tag.yoffset,
+            style: `
+              fill: #333;
+              font-size: 14px;
+              cursor: ${this.getTagCursor()};
+            `,
+            onmount: el => {
+              if (!this.params.readonly) {
+                el.addEventListener('dblclick', (event) => {
+                  if (this.selectMode) {
+                    let val = prompt('Enter tag value:');
+                    if (val === null) {
+                      return; // Happens when cancel button is pressed in prompt window
+                    }
+                    val.trim();
+                    if (val !== '') {
+                      this.state[splineIndex][0].tag = val;
+                      this.app.addUndoPoint();
+                      this.render();
+                    }
+                  }
+                });
+              }
+            }
+          }, this.state[splineIndex][0].tag)
+        )
       )
     );
   }
@@ -333,17 +369,4 @@ function getBoundingBox(x0, y0, x1, y1, x2, y2, x3, y3) {
     min: {x: Math.min.apply(0, bounds[0]), y: Math.min.apply(0, bounds[1])},
     max: {x: Math.max.apply(0, bounds[0]), y: Math.max.apply(0, bounds[1])}
   };
-}
-
-const strokeWidth = 2;  // TODO: pass in
-function computeDashArray(dashStyle) {
-  var scale = Math.pow(strokeWidth, 0.6); // seems about right perceptually
-  switch (dashStyle) {
-    case 'dashed': return 5*scale + ',' + 3*scale;
-    case 'longdashed': return 10*scale + ',' + 3*scale;
-    case 'dotted': return 2*scale + ',' + 2*scale;
-    case 'dashdotted': return 7*scale + ',' + 3*scale + ',' + 1.5*scale + ',' + 3*scale;
-    case 'solid':  // falls through
-    default: return '';
-  }
 }

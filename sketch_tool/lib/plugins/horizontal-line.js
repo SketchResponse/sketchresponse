@@ -27,9 +27,10 @@ export default class HorizontalLine extends BasePlugin {
       this.params.width,
     ];
 
-    return this.state.map(y => {
+    return this.state.map(position => {
       return {
-        spline: xvals.map(x => [x, y]),
+        spline: xvals.map(x => [x, position.y]),
+        tag: position.tag
       };
     });
   }
@@ -58,7 +59,12 @@ export default class HorizontalLine extends BasePlugin {
     document.addEventListener('pointermove', this.drawMove, true);
     document.addEventListener('pointerup', this.drawEnd, true);
     document.addEventListener('pointercancel', this.drawEnd, true);
-    this.currentPosition = event.clientY - this.params.top;
+    this.currentPosition = {
+      y: event.clientY - this.params.top
+    }
+    if (this.hasTag) {
+      this.currentPosition.tag = this.tag.value;
+    }
     this.state.push(this.currentPosition);
     this.render();
   }
@@ -66,7 +72,7 @@ export default class HorizontalLine extends BasePlugin {
   drawMove(event) {
     let y = event.clientY - this.params.top;
     y = this.clampY(y);
-    this.state[this.state.length-1] = y;
+    this.state[this.state.length-1].y = y;
     this.render();
     event.stopPropagation();
     event.preventDefault();
@@ -87,13 +93,13 @@ export default class HorizontalLine extends BasePlugin {
       z.each(this.state, (position, positionIndex) =>
         z('line.visible-' + positionIndex + '.horizontal-line' + '.plugin-id-' + this.id, {
           x1: 0,
-          y1: position,
+          y1: position.y,
           x2: this.params.width,
-          y2: position,
+          y2: position.y,
           style: `
             stroke: ${this.params.color};
             stroke-width: 2px;
-            stroke-dasharray: ${computeDashArray(this.params.dashStyle)};
+            stroke-dasharray: ${this.computeDashArray(this.params.dashStyle, 2)};
           `
         })
       ),
@@ -101,14 +107,13 @@ export default class HorizontalLine extends BasePlugin {
       z.each(this.state, (position, positionIndex) =>
         z('line.invisible-' + positionIndex + this.readOnlyClass(), {
           x1: 0,
-          y1: position,
+          y1: position.y,
           x2: this.params.width,
-          y2: position,
+          y2: position.y,
           style: `
             stroke: ${this.params.color};
             opacity: 0;
             stroke-width: 10px;
-            stroke-dasharray: solid;
           `,
           onmount: el => {
             this.app.registerElement({
@@ -116,18 +121,50 @@ export default class HorizontalLine extends BasePlugin {
               element: el,
               initialBehavior: 'none',
               onDrag: ({dx, dy}) => {
-                this.state[positionIndex] += dy;
+                this.state[positionIndex].y += dy;
                 this.render();
               },
               inBoundsX: (dx) => {
                 return true;
               },
               inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[positionIndex] + dy)
+                return this.inBoundsY(this.state[positionIndex].y + dy)
               },
             });
           }
         })
+      ),
+      z.each(this.state, (position, positionIndex) =>
+        z.if(this.hasTag, () =>
+          z('text.tag', {
+            'text-anchor': this.tag.align,
+            x: this.params.width/2 + this.tag.xoffset,
+            y: position.y + this.tag.yoffset,
+            style: `
+              fill: #333;
+              font-size: 14px;
+              cursor: ${this.getTagCursor()};
+            `,
+            onmount: el => {
+              if (!this.params.readonly) {
+                el.addEventListener('dblclick', (event) => {
+                  if (this.selectMode) {
+                    let val = prompt('Enter tag value:');
+                    if (val === null) {
+                      return; // Happens when cancel button is pressed in prompt window
+                    }
+                    val.trim();
+                    if (val !== '') {
+                      this.state[positionIndex].tag = val;
+                      this.app.addUndoPoint();
+                      this.render();
+                    }
+                  }
+                });
+              }
+            }
+          }, this.state[positionIndex].tag)
+        )
       )
     );
   }
@@ -138,18 +175,5 @@ export default class HorizontalLine extends BasePlugin {
 
   inBoundsY(y) {
     return y >= this.bounds.ymin && y <= this.bounds.ymax;
-  }
-}
-
-const strokeWidth = 2;  // TODO: pass in
-function computeDashArray(dashStyle) {
-  var scale = Math.pow(strokeWidth, 0.6); // seems about right perceptually
-  switch (dashStyle) {
-    case 'dashed': return 5*scale + ',' + 3*scale;
-    case 'longdashed': return 10*scale + ',' + 3*scale;
-    case 'dotted': return 2*scale + ',' + 2*scale;
-    case 'dashdotted': return 7*scale + ',' + 3*scale + ',' + 1.5*scale + ',' + 3*scale;
-    case 'solid':  // falls through
-    default: return '';
   }
 }

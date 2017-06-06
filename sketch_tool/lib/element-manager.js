@@ -1,6 +1,7 @@
 import PointerDownCache from './pointer-down-cache';
 import SelectionManager from './selection-manager';
 import DragManager from './drag-manager';
+import {getElementsByClassName} from './util/ms-polyfills'
 
 const MIN_DRAG_DISTANCE_SQUARED = 5**2;
 
@@ -64,6 +65,7 @@ export default class ElementManager {
     if (this.activePointerId !== null || event.buttons !== 1 ||
         !this.selectionManager.selectMode) return;
     event.stopPropagation();
+    event.preventDefault();
 
     this.addCaptureAndListeners(event);
     this.activePointerId = event.pointerId;
@@ -88,18 +90,19 @@ export default class ElementManager {
       this.isDragging = true;
     }
     this.dragManager.dragMove(event);
-    event.preventDefault();
   }
 
   onPointerUp(event) {
     if (event.pointerId !== this.activePointerId) return;
     event.stopPropagation();
+    event.preventDefault();
 
     const element = event.currentTarget;
-    let className = element.getAttribute('class'), visibleElement;
+    let className = element.getAttribute('class'), visibleElements;
     if (className && className.substring(0, 9) == 'invisible') {
       let classNamePrefix = className.substring(9);
-      visibleElement = element.parentNode.getElementsByClassName('visible'+classNamePrefix)[0];
+      // IE and Edge do not have getElementsByClassName on SVG elements, use polyfill instead
+      visibleElements = getElementsByClassName(element.parentNode, 'visible'+classNamePrefix);
     }
     if (this.isDragging) {
       this.dragManager.dragEnd();
@@ -108,26 +111,40 @@ export default class ElementManager {
     }
     else if (event.shiftKey || event.pointerType === 'touch') {
       this.selectionManager.toggleSelected(element);
-      if (visibleElement) {
-        // Only polyline has an opacity that needs to be overriden during selection
-        if (visibleElement.getAttribute('class').indexOf('polyline') != -1) {
-          this.selectionManager.toggleSelected(visibleElement, 'override');
+      if (visibleElements) {
+        // All plugins except spline
+        if (visibleElements.length === 1) {
+          // Only polyline has an opacity that needs to be overriden during selection
+          if (visibleElements[0].getAttribute('class').indexOf('polyline') != -1) {
+            this.selectionManager.toggleSelected(visibleElements[0], 'override');
+          }
+          else {
+            this.selectionManager.toggleSelected(visibleElements[0]);
+          }
         }
-        else {
-          this.selectionManager.toggleSelected(visibleElement);
+        else { // spline
+          // HTMLCollection is an 'array-like' object that needs to be spread into an array
+          [...visibleElements].forEach(el => this.selectionManager.toggleSelected(el));
         }
       }
     }
     else {
       this.selectionManager.deselectAll();
       this.selectionManager.select(element);
-      if (visibleElement) {
-        // Only polyline has an opacity that needs to be overriden during selection
-        if (visibleElement.getAttribute('class').indexOf('polyline') != -1) {
-          this.selectionManager.select(visibleElement, 'override');
+      if (visibleElements) {
+        // All plugins except spline
+        if (visibleElements.length === 1) {
+          // Only polyline has an opacity that needs to be overriden during selection
+          if (visibleElements[0].getAttribute('class').indexOf('polyline') != -1) {
+            this.selectionManager.select(visibleElements[0], 'override');
+          }
+          else {
+            this.selectionManager.select(visibleElements[0]);
+          }
         }
-        else {
-          this.selectionManager.select(visibleElement);
+        else { // spline
+          // HTMLCollection is an 'array-like' object that needs to be spread into an array
+          [...visibleElements].forEach(el => this.selectionManager.select(el));
         }
       }
     }

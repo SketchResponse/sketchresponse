@@ -152,7 +152,7 @@ export default class SketchInput {
           this.messageBus.emit('deselectAll');
         }
         this.app.svg.addEventListener('pointerdown', this.handlePointerDown);
-        this.app.svg.style.cursor = null;
+        this.app.svg.style.cursor = 'default';
       },
       deactivate: () => {
         this.app.svg.removeEventListener('pointerdown', this.handlePointerDown);

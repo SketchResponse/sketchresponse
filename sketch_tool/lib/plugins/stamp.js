@@ -28,9 +28,10 @@ export default class Stamp extends BasePlugin {
   }
 
   getGradeable() {
-    return this.state.map(point => {
+    return this.state.map(position => {
       return {
-        point: [point.x, point.y]
+        point: [position.x, position.y],
+        tag: position.tag
       };
     });
   }
@@ -63,6 +64,9 @@ export default class Stamp extends BasePlugin {
       x: event.clientX - this.params.left,
       y: event.clientY - this.params.top
     };
+    if (this.hasTag) {
+      this.currentPosition.tag = this.tag.value;
+    }
     this.state.push(this.currentPosition);
     this.render();
   }
@@ -127,6 +131,38 @@ export default class Stamp extends BasePlugin {
             });
           }
         })
+      ),
+      z.each(this.state, (position, positionIndex) =>
+        z.if(this.hasTag, () =>
+          z('text.tag', {
+            'text-anchor': this.tag.align,
+            x: position.x + this.tag.xoffset,
+            y: position.y + this.tag.yoffset,
+            style: `
+              fill: #333;
+              font-size: 14px;
+              cursor: ${this.getTagCursor()};
+            `,
+            onmount: el => {
+              if (!this.params.readonly) {
+                el.addEventListener('dblclick', (event) => {
+                  if (this.selectMode) {
+                    let val = prompt('Enter tag value:');
+                    if (val === null) {
+                      return; // Happens when cancel button is pressed in prompt window
+                    }
+                    val.trim();
+                    if (val !== '') {
+                      this.state[positionIndex].tag = val;
+                      this.app.addUndoPoint();
+                      this.render();
+                    }
+                  }
+                });
+              }
+            }
+          }, this.state[positionIndex].tag)
+        )
       )
     );
   }

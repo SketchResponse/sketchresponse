@@ -25,6 +25,15 @@ export default class BasePlugin {
 
     this.id = params.id;
 
+    // Tag related
+    this.hasTag = params.tag !== undefined && params.tag !== null;
+    if (this.hasTag) {
+      this.tag = params.tag;
+    }
+    this.selectMode = false;
+    this.app.__messageBus.on('enableSelectMode', () => this.setSelectMode(true));
+    this.app.__messageBus.on('disableSelectMode', () => this.setSelectMode(false));
+
     app.registerState({
       id: params.id,
       dataVersion: VERSION,
@@ -53,6 +62,7 @@ export default class BasePlugin {
       app.registerToolbarItem({
         type: 'button',
         id: params.id,
+        name: params.name,
         label: params.label,
         icon: {
           src: params.icon.src,
@@ -95,7 +105,7 @@ export default class BasePlugin {
 
   deactivate() {
     this.app.svg.removeEventListener('pointerdown', this.initDraw);
-    this.app.svg.style.cursor = null;
+    this.app.svg.style.cursor = 'default';
   }
 
   clampX(x) {
@@ -124,5 +134,27 @@ export default class BasePlugin {
 
   readOnlyClass() {
     return this.readonly ? '.readonly' : '';
+  }
+
+  // Tag related
+  setSelectMode(selectMode) {
+    this.selectMode = selectMode;
+    this.render(); // To change tag cursor
+  }
+
+  getTagCursor() {
+    return this.params.readonly ? 'default' : (this.selectMode ? 'pointer' : 'crosshair');
+  }
+
+  computeDashArray(dashStyle, strokeWidth) {
+    let scale = Math.pow(strokeWidth, 0.6); // seems about right perceptually
+    switch (dashStyle) {
+      case 'dashed': return 5*scale + ',' + 3*scale;
+      case 'longdashed': return 10*scale + ',' + 3*scale;
+      case 'dotted': return 2*scale + ',' + 2*scale;
+      case 'dashdotted': return 7*scale + ',' + 3*scale + ',' + 1.5*scale + ',' + 3*scale;
+      // 'solid' or anything else
+      default: return 'none';
+    }
   }
 }

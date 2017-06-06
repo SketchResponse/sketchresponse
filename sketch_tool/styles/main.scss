@@ -5,7 +5,7 @@ body {
   padding: 15px;
 }
 
-.ticLabel {
+.default-text, .tag {
   user-select: none;
 }
 
@@ -103,7 +103,6 @@ body {
   }
 }
 
-
 /******** Toolbar code begins here ********/
 
 #si-toolbar {
@@ -175,8 +174,10 @@ body {
   }
 
   .label {
+    @extend .default-text;
     padding: 0 5px;
     height: 32px;
+    cursor: default;
   }
 
   menu {
@@ -187,6 +188,4 @@ body {
 
     button:hover { background: none; }
   }
-
-
 }

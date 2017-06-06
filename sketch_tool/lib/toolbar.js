@@ -124,7 +124,10 @@ export default class Toolbar {
       this.selectedDropdownItemMap[item.id] = item.items[0].id;
     }
     if (item.type == 'button') {
-      item.icon.src = getBlobUrl(item.icon.src, item.icon.stroke, item.icon.fill);
+      // Do not color stamp icon as it would require an XHR with its potential SOP issues
+      if (item.name !== 'stamp') {
+        item.icon.src = getBlobUrl(item.icon.src, item.icon.stroke, item.icon.fill);
+      }
     }
     this.items.push(item);
     this.render();
