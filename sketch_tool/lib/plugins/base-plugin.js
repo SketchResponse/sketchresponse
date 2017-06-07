@@ -156,7 +156,7 @@ export default class BasePlugin {
         color: #333;
         font-size: 14px;
         cursor: ${this.getTagCursor()};
-        clip-path: url('#clip1');
+        overflow: visible;
       ` :
       `
         fill: #333;
@@ -167,8 +167,8 @@ export default class BasePlugin {
 
   renderKatex(el, index1, index2) {
     let stateEl = this.state[index1];
-    // Needed for polyline and spline plugins
-    if (index2) {
+    // Needed for freeform, polyline, and spline plugins
+    if (typeof index2 !== 'undefined') {
       stateEl = this.state[index1][index2];
     }
     try {
@@ -181,6 +181,7 @@ export default class BasePlugin {
       katex.render('\\text{\\color{red}{Error: invalid markup}}', el, {
         errorColor: '#0000ff'
       });
+      this.adjustBoundingBox(el);
     }
   }
 
@@ -188,8 +189,8 @@ export default class BasePlugin {
     el.addEventListener('dblclick', () => {
       if (this.selectMode) {
         let stateEl = this.state[index1];
-        // Needed for polyline and spline plugins
-        if (index2) {
+        // Needed for freeform, polyline, and spline plugins
+        if (typeof index2 !== 'undefined') {
           stateEl = this.state[index1][index2];
         }
         let val = prompt('Enter tag value:', stateEl.tag);
@@ -209,17 +210,8 @@ export default class BasePlugin {
   adjustBoundingBox(el) {
     let bRect = getElementsByClassName(el, 'katex-html')[0].getBoundingClientRect();
     // The foreignObject containing the Katex rendering needs a width and height in Firefox.
-    // Add a bit of padding.
-    el.setAttributeNS(null, 'width', bRect.width + 2);
-    el.setAttributeNS(null, 'height', bRect.height + 2);
-    if (this.tag.align !== 'left') {
-      if (this.tag.align === 'middle') {
-        el.setAttributeNS(null, 'x', position.x - 0.5*bRect.width);
-      }
-      else if (this.tag.align === 'right') {
-        el.setAttributeNS(null, 'x', position.x - bRect.width);
-      }
-    }
+    el.setAttributeNS(null, 'width', bRect.width);
+    el.setAttributeNS(null, 'height', bRect.height);
   }
 
   computeDashArray(dashStyle, strokeWidth) {

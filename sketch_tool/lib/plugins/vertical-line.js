@@ -134,36 +134,28 @@ export default class VerticalLine extends BasePlugin {
           }
         })
       ),
+      // Tags, regular or rendered by Katex
       z.each(this.state, (position, positionIndex) =>
         z.if(this.hasTag, () =>
-          z('text.tag', {
-            'text-anchor': this.tag.align,
+          z(this.latex ? 'foreignObject.tag' : 'text.tag', {
+            'text-anchor': (this.latex ? undefined : this.tag.align),
             x: position.x + this.tag.xoffset,
             y: this.params.height/2 + this.tag.yoffset,
-            style: `
-              fill: #333;
-              font-size: 14px;
-              cursor: ${this.getTagCursor()};
-            `,
+            style: this.getStyle(),
             onmount: el => {
+              if (this.latex) {
+                this.renderKatex(el, positionIndex);
+              }
               if (!this.params.readonly) {
-                el.addEventListener('dblclick', (event) => {
-                  if (this.selectMode) {
-                    let val = prompt('Enter tag value:');
-                    if (val === null) {
-                      return; // Happens when cancel button is pressed in prompt window
-                    }
-                    val.trim();
-                    if (val !== '') {
-                      this.state[positionIndex].tag = val;
-                      this.app.addUndoPoint();
-                      this.render();
-                    }
-                  }
-                });
+                this.addDoubleClickEventListener(el, positionIndex);
+              }
+            },
+            onupdate: el => {
+              if (this.latex) {
+                this.renderKatex(el, positionIndex);
               }
             }
-          }, this.state[positionIndex].tag)
+          }, this.latex ? '' : this.state[positionIndex].tag)
         )
       )
     );

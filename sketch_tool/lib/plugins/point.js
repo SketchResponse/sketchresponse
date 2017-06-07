@@ -127,10 +127,11 @@ export default class Point extends BasePlugin {
           }
         })
       ),
+      // Tags, regular or rendered by Katex
       z.each(this.state, (position, positionIndex) =>
         z.if(this.hasTag, () =>
           z(this.latex ? 'foreignObject.tag' : 'text.tag', {
-            'text-anchor': this.tag.align,
+            'text-anchor': (this.latex ? undefined : this.tag.align),
             x: position.x + this.tag.xoffset,
             y: position.y + this.tag.yoffset,
             style: this.getStyle(),
