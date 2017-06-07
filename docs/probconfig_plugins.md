@@ -22,6 +22,7 @@ is used.
 * [Image](#image)
 * [Stamp](#stamp)
 * [PolyLine](#polyline)
+* [Initial State](#initialstate)
 
 <div id=axes></div>
 ## Axes
@@ -106,13 +107,14 @@ front-end tool.
 * `'color': <a color string>` - the color key should be give a color string that
 javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
 
-It also has an optional parameter:
+It also has optional parameters:
 
 * `'tag': <object>` - the tag key must be an object containing the following keys:
   * `'value': <string>` - the intial value of the tag when the data is drawn on the canvas.
   * `'xoffset': <int>` - the pixel offset in the x direction.
   * `'yoffset': <int>` - the pixel offset in the y direction.
   * `'align': <string>` - a string defining the position of the tag from which the offsets are applied. May be 'start'|'middle'|'end'.
+* `'readonly': <True|False>` - if True marks the plugin as readonly and not available in the toolbar and any data in the initialstate from this plugin is drawn to the canvas in a non-editable form.
 
 E.g.
 
@@ -141,6 +143,7 @@ It also has an optional parameter:
   * `'xoffset': <int>` - the pixel offset in the x direction.
   * `'yoffset': <int>` - the pixel offset in the y direction.
   * `'align': <string>` - a string defining the position of the tag from which the offsets are applied. May be 'start'|'middle'|'end'.
+* `'readonly': <True|False>` - if True marks the plugin as readonly and not available in the toolbar and any data in the initialstate from this plugin is drawn to the canvas in a non-editable form.
 
 E.g.
 
@@ -173,6 +176,7 @@ It also has optional parameters:
   * `'xoffset': <int>` - the pixel offset in the x direction.
   * `'yoffset': <int>` - the pixel offset in the y direction.
   * `'align': <string>` - a string defining the position of the tag from which the offsets are applied. May be 'start'|'middle'|'end'.
+* `'readonly': <True|False>` - if True marks the plugin as readonly and not available in the toolbar and any data in the initialstate from this plugin is drawn to the canvas in a non-editable form.
 
 E.g.
 
@@ -223,6 +227,7 @@ maximum pixel length of the line segment drawn by the plugin.
   * `'yoffset': <int>` - the pixel offset in the y direction.
   * `'align': <string>` - a string defining the position of the tag from which the offsets are applied. May be 'start'|'middle'|'end'.
   * `'position': <string>` - a string defining where to draw the tag along the length of the line segment. May be 'start'|'middle'|'end'.
+* `'readonly': <True|False>` - if True marks the plugin as readonly and not available in the toolbar and any data in the initialstate from this plugin is drawn to the canvas in a non-editable form.
 
 E.g.
 
@@ -247,13 +252,14 @@ javascript recognizes. A listing of color names can be found [here](http://www.w
 * `'dashStyle': <line dash string>(default: 'solid')` - the dashStyle key should have a string
 description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'.
 
-It also has an optional parameter:
+It also has optional parameters:
 
 * `'tag': <object>` - the tag key must be an object containing the following keys:
   * `'value': <string>` - the intial value of the tag when the data is drawn on the canvas.
   * `'xoffset': <int>` - the pixel offset in the x direction.
   * `'yoffset': <int>` - the pixel offset in the y direction.
   * `'align': <string>` - a string defining the position of the tag from which the offsets are applied. May be 'start'|'middle'|'end'.
+* `'readonly': <True|False>` - if True marks the plugin as readonly and not available in the toolbar and any data in the initialstate from this plugin is drawn to the canvas in a non-editable form.
 
 E.g.
 
@@ -279,13 +285,14 @@ javascript recognizes. A listing of color names can be found [here](http://www.w
 * `'dashStyle': <line dash string>(default: 'solid')` - the dashStyle key should have a string
 description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'.
 
-It also has an optional parameter:
+It also has optional parameters:
 
 * `'tag': <object>` - the tag key must be an object containing the following keys:
   * `'value': <string>` - the intial value of the tag when the data is drawn on the canvas.
   * `'xoffset': <int>` - the pixel offset in the x direction.
   * `'yoffset': <int>` - the pixel offset in the y direction.
   * `'align': <string>` - a string defining the position of the tag from which the offsets are applied. May be 'start'|'middle'|'end'.
+* `'readonly': <True|False>` - if True marks the plugin as readonly and not available in the toolbar and any data in the initialstate from this plugin is drawn to the canvas in a non-editable form.
 
 E.g.
 
@@ -328,13 +335,14 @@ javascript recognizes. A listing of color names can be found [here](http://www.w
 * `'height': <number>(default: '100')` - the pixel height of the image.
 * `'src': <path to image file>` - the path to the image file to insert.
 
-It also has an optional parameter:
+It also has optional parameters:
 
 * `'tag': <object>` - the tag key must be an object containing the following keys:
   * `'value': <string>` - the intial value of the tag when the data is drawn on the canvas.
   * `'xoffset': <int>` - the pixel offset in the x direction.
   * `'yoffset': <int>` - the pixel offset in the y direction.
   * `'align': <string>` - a string defining the position of the tag from which the offsets are applied. May be 'start'|'middle'|'end'.
+* `'readonly': <True|False>` - if True marks the plugin as readonly and not available in the toolbar and any data in the initialstate from this plugin is drawn to the canvas in a non-editable form.
 
 E.g.
 
@@ -363,16 +371,41 @@ javascript recognizes. A listing of color names can be found [here](http://www.w
 * `'dashStyle': <line dash string>(default: 'solid')` - the dashStyle key should have a string
 description of the dash style to used for drawing the line. Possible values: 'dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'.
 
-It also has an optional parameter:
+It also has optional parameters:
 
 * `'tag': <object>` - the tag key must be an object containing the following keys:
   * `'value': <string>` - the intial value of the tag when the data is drawn on the canvas.
   * `'xoffset': <int>` - the pixel offset in the x direction.
   * `'yoffset': <int>` - the pixel offset in the y direction.
   * `'align': <string>` - a string defining the position of the tag from which the offsets are applied. May be 'start'|'middle'|'end'.
+* `'readonly': <True|False>` - if True marks the plugin as readonly and not available in the toolbar and any data in the initialstate from this plugin is drawn to the canvas in a non-editable form.
 
 E.g.
 
 ```python
 {'name': 'polyline', 'id': 'pl', 'label': 'PolyLine', 'closed': True, 'color': 'gray', 'fillColor': 'lightblue', 'dashStyle': 'dashdotted', 'tag': {'value': 'tag', 'xoffset': 15, 'yoffset': 15, 'align': 'start'}}
+```
+
+<div id=initialstate></div>
+## Initial State
+
+While not strictly a plugin, the initial state configuration parameter can be used to set data to predrawn to a canvas using declared plugins. In the problem configuration, it is declared at the same level as the 'plugins' tag.
+
+The initial state data can be automatically generated using the [local testing server](local_test.md), copying and pasting the output into the grader script after manually drawing the initial state data using the sketch tool. If you do not want initial state data to be editable after the fact, you can mark the plugins used to generate the intial state data as 'readonly' and they will not be accessible in the toolbar and the data drawn on the canvas will not be editable.
+
+E.g.
+The initial state configuration below uses a point plugin with id 'pt' to initial two points at the given pixel positions on the canvas.
+
+```python
+'initialstate': {
+  "pt": [
+    {
+      "x": 93,
+      "y": 41
+    },
+    {
+      "x": 563,
+      "y": 293
+    }
+  ]
 ```
