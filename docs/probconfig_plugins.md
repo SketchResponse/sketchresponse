@@ -394,7 +394,7 @@ While not strictly a plugin, the initial state configuration parameter can be us
 The initial state data can be automatically generated using the [local testing server](local_test.md), copying and pasting the output into the grader script after manually drawing the initial state data using the sketch tool. If you do not want initial state data to be editable after the fact, you can mark the plugins used to generate the intial state data as 'readonly' and they will not be accessible in the toolbar and the data drawn on the canvas will not be editable.
 
 E.g.
-The initial state configuration below uses a point plugin with id 'pt' to initial two points at the given pixel positions on the canvas.
+The initial state configuration below uses a point plugin with id 'pt' to initialize two points at the given pixel positions on the canvas.
 
 ```python
 'initialstate': {
