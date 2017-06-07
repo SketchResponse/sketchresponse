@@ -1,3 +1,6 @@
+import katex from 'katex';
+import {getElementsByClassName} from 'sketch2/util/ms-polyfills';
+
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 
@@ -145,6 +148,78 @@ export default class BasePlugin {
 
   getTagCursor() {
     return this.params.readonly ? 'default' : (this.selectMode ? 'pointer' : 'crosshair');
+  }
+
+  getStyle() {
+    return this.latex ?
+      `
+        color: #333;
+        font-size: 14px;
+        cursor: ${this.getTagCursor()};
+        clip-path: url('#clip1');
+      ` :
+      `
+        fill: #333;
+        font-size: 14px;
+        cursor: ${this.getTagCursor()};
+      `
+  }
+
+  renderKatex(el, index1, index2) {
+    let stateEl = this.state[index1];
+    // Needed for polyline and spline plugins
+    if (index2) {
+      stateEl = this.state[index1][index2];
+    }
+    try {
+      katex.render(stateEl.tag, el, {
+        errorColor: '#0000ff'
+      });
+      this.adjustBoundingBox(el);
+    }
+    catch(e) {
+      katex.render('\\text{\\color{red}{Error: invalid markup}}', el, {
+        errorColor: '#0000ff'
+      });
+    }
+  }
+
+  addDoubleClickEventListener(el, index1, index2) {
+    el.addEventListener('dblclick', () => {
+      if (this.selectMode) {
+        let stateEl = this.state[index1];
+        // Needed for polyline and spline plugins
+        if (index2) {
+          stateEl = this.state[index1][index2];
+        }
+        let val = prompt('Enter tag value:', stateEl.tag);
+        if (val === null) {
+          return; // Happens when cancel button is pressed in prompt window
+        }
+        val.trim();
+        if (val !== '' && val !== stateEl.tag) {
+          stateEl.tag = val;
+          this.app.addUndoPoint();
+          this.render();
+        }
+      }
+    });
+  }
+
+  adjustBoundingBox(el) {
+    let bRect = getElementsByClassName(el, 'katex-html')[0].getBoundingClientRect();
+    // The foreignObject containing the Katex rendering needs a width and height in Firefox.
+    // Add a bit of padding.
+    el.setAttributeNS(null, 'width', bRect.width + 2);
+    el.setAttributeNS(null, 'height', bRect.height + 2);
+    if (this.tag.align !== 'left') {
+      if (this.tag.align === 'middle') {
+        el.setAttributeNS(null, 'x', position.x - 0.5*bRect.width);
+      }
+      else if (this.tag.align === 'right') {
+        el.setAttributeNS(null, 'x', position.x - bRect.width);
+      }
+    }
   }
 
   computeDashArray(dashStyle, strokeWidth) {

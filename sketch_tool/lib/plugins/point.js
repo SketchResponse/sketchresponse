@@ -1,7 +1,5 @@
 import z from 'sketch2/util/zdom';
 import BasePlugin from './base-plugin';
-import {getElementsByClassName} from 'sketch2/util/ms-polyfills';
-import katex from 'katex';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -96,37 +94,6 @@ export default class Point extends BasePlugin {
     event.preventDefault();
   }
 
-  getStyle() {
-    return this.latex ?
-      `
-        color: #333;
-        font-size: 14px;
-        cursor: ${this.getTagCursor()};
-        clip-path: url('#clip1');
-      ` :
-      `
-        fill: #333;
-        font-size: 14px;
-        cursor: ${this.getTagCursor()};
-      `
-  }
-
-  adjustBoundingBox(el) {
-    let bRect = getElementsByClassName(el, 'katex-html')[0].getBoundingClientRect();
-    // The foreignObject containing the Katex rendering needs a width and height in Firefox.
-    // Add a bit of padding.
-    el.setAttributeNS(null, 'width', bRect.width + 2);
-    el.setAttributeNS(null, 'height', bRect.height + 2);
-    if (this.tag.align !== 'left') {
-      if (this.tag.align === 'middle') {
-        el.setAttributeNS(null, 'x', position.x - 0.5*bRect.width);
-      }
-      else if (this.tag.align === 'right') {
-        el.setAttributeNS(null, 'x', position.x - bRect.width);
-      }
-    }
-  }
-
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
@@ -169,48 +136,15 @@ export default class Point extends BasePlugin {
             style: this.getStyle(),
             onmount: el => {
               if (this.latex) {
-                try {
-                  katex.render(this.state[positionIndex].tag, el, {
-                    errorColor: '#0000ff'
-                  });
-                  this.adjustBoundingBox(el);
-                }
-                catch(e) {
-                  katex.render('\\text{\\color{red}{Error: invalid markup}}', el, {
-                    errorColor: '#0000ff'
-                  });
-                }
+                this.renderKatex(el, positionIndex);
               }
               if (!this.params.readonly) {
-                el.addEventListener('dblclick', (event) => {
-                  if (this.selectMode) {
-                    let val = prompt('Enter tag value:', this.state[positionIndex].tag);
-                    if (val === null) {
-                      return; // Happens when cancel button is pressed in prompt window
-                    }
-                    val.trim();
-                    if (val !== '' && val !== this.state[positionIndex].tag) {
-                      this.state[positionIndex].tag = val;
-                      this.app.addUndoPoint();
-                      this.render();
-                    }
-                  }
-                });
+                this.addDoubleClickEventListener(el, positionIndex);
               }
             },
             onupdate: el => {
               if (this.latex) {
-                try {
-                  katex.render(this.state[positionIndex].tag, el, {
-                    errorColor: '#0000ff'
-                  });
-                  this.adjustBoundingBox(el);
-                }
-                catch(e) {
-                  katex.render('\\text{\\color{red}{Error: invalid markup}}', el, {
-                    errorColor: '#0000ff'
-                  });
-                }
+                this.renderKatex(el, positionIndex);
               }
             }
           }, this.latex ? '' : this.state[positionIndex].tag)
