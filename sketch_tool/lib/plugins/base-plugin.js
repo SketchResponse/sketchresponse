@@ -29,6 +29,7 @@ export default class BasePlugin {
     this.hasTag = params.tag !== undefined && params.tag !== null;
     if (this.hasTag) {
       this.tag = params.tag;
+      this.latex = params.tag.latex;
     }
     this.selectMode = false;
     this.app.__messageBus.on('enableSelectMode', () => this.setSelectMode(true));

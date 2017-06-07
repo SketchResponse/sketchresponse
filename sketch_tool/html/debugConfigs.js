@@ -462,7 +462,35 @@ function loadConfig(configId) {
           }
         }
       ]
-    }
+    },
+    latex: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes'
+        },
+        {
+          name: 'point',
+          id: 'pt',
+          label: 'Point',
+          color: 'sienna',
+          size: 15,
+          tag: {
+            value : '\\displaystyle \\oint \\vec{F} \\cdot d\\vec{s}=0',
+            xoffset: 15,
+            yoffset: -50,
+            align: 'start',
+            latex: true
+          }
+        }
+      ]
+    },
   };
   if (configs.hasOwnProperty(configId)) {
     return configs[configId];
