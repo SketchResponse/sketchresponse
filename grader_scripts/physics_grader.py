@@ -99,15 +99,15 @@ def grader(pl, pg, pt, ls, c, cwm, ccwm):
     beam2 = beam.segments[1]
 
     if len(pg.get_intersections_with_polygon_boundary(beam1, poly)) > 0:
-        return False, "Isolation boundary should not cut vertical beam."
+        return False, "Isolation bubble should not cut vertical beam."
 
     if not len(pg.get_intersections_with_polygon_boundary(beam2, poly)) == 1:
-        return False, "Isolation boundary should only cut the horizontal beam once."
+        return False, "Isolation bubble should only cut the horizontal beam once."
 
     if pg.point_is_on_boundary([-2, -1]) == None:
-        return False, "Check where the isolation boundary cuts the horizontal beam."
+        return False, "Check where the isolation bubble cuts the horizontal beam."
 
     if pg.point_is_on_boundary([-3, 2]) == None and pg.point_is_on_boundary([2, -1]) == None:
-        return False, "Check the isolation boundary containment."
+        return False, "Check the isolation bubble containment."
 
     return True, "Good job!"
