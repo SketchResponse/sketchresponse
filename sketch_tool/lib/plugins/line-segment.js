@@ -426,36 +426,28 @@ export default class LineSegment extends BasePlugin {
           }
         })
       ),
+      // Tags, regular or rendered by Katex
       z.each(this.state, (pt, ptIndex) =>
         z.if(this.hasTag && ptIndex % 2 === 0, () =>
-          z('text.tag', {
-            'text-anchor': this.tag.align,
+          z(this.latex ? 'foreignObject.tag' : 'text.tag', {
+            'text-anchor': (this.latex ? undefined : this.tag.align),
             x: this.tagXPosition(ptIndex) + this.tag.xoffset,
             y: this.tagYPosition(ptIndex) + this.tag.yoffset,
-            style: `
-              fill: #333;
-              font-size: 14px;
-              cursor: ${this.getTagCursor()};
-            `,
+            style: this.getStyle(),
             onmount: el => {
+              if (this.latex) {
+                this.renderKatex(el, ptIndex);
+              }
               if (!this.params.readonly) {
-                el.addEventListener('dblclick', (event) => {
-                  if (this.selectMode) {
-                    let val = prompt('Enter tag value:');
-                    if (val === null) {
-                      return; // Happens when cancel button is pressed in prompt window
-                    }
-                    val.trim();
-                    if (val !== '') {
-                      this.state[ptIndex].tag = val;
-                      this.app.addUndoPoint();
-                      this.render();
-                    }
-                  }
-                });
+                this.addDoubleClickEventListener(el, ptIndex);
+              }
+            },
+            onupdate: el => {
+              if (this.latex) {
+                this.renderKatex(el, ptIndex);
               }
             }
-          }, this.state[ptIndex].tag)
+          }, this.latex ? '' : this.state[ptIndex].tag)
         )
       )
     );

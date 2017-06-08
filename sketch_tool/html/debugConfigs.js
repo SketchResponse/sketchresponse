@@ -462,6 +462,132 @@ function loadConfig(configId) {
           }
         }
       ]
+    },
+    allPluginsLatex: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes'
+        },
+        {
+          name: 'point',
+          id: 'pt',
+          label: 'Point',
+          color: 'sienna',
+          size: 15,
+          tag: {
+            latex: true,
+            value : '\\displaystyle \\oint \\vec{F} \\cdot d\\vec{s}=0',
+            xoffset: 5,
+            yoffset: 5
+          }
+        },
+        {
+          name: 'horizontal-line',
+          id: 'hl',
+          label: 'Horizontal line',
+          color: 'dimgray',
+          dashStyle: 'dashdotted',
+          tag: {
+            latex: true,
+            value : '\\displaystyle \\left.\\frac{x^3}{3}\\right|_0^1',
+            xoffset: 20,
+            yoffset: 5
+          }
+        },
+        {
+          name: 'vertical-line',
+          id: 'vl',
+          label: 'Vertical line',
+          color: 'dimgray',
+          dashStyle: 'dashdotted',
+          tag: {
+            latex: true,
+            value : '\\displaystyle {n \\choose k}',
+            xoffset: 5,
+            yoffset: 5
+          }
+        },
+        {
+          name: 'stamp',
+          id: 'st',
+          label: 'Stamp',
+          color: 'cornflowerblue',
+          imgwidth: 450,
+          imgheight: 100,
+          scale: 0.5,
+          tag: {
+            latex: true,
+            value : '\\displaystyle \\left(\\frac{x^2}{y^3}\\right)',
+            xoffset: -20,
+            yoffset: -75,
+          }
+        },
+        {
+          name: 'line-segment',
+          id: 'ar',
+          label: 'Arrow',
+          color: 'mediumseagreen',
+          dashStyle: 'solid',
+          arrowHead: {
+            length: 10,
+            base: 7
+          },
+          tag: {
+            latex: true,
+            value : '\\displaystyle \\vec{x}',
+            xoffset: 5,
+            yoffset: 5,
+            position: 'end'
+          }
+        },
+        {
+          name: 'polyline',
+          id: 'plg',
+          label: 'Polygon',
+          closed: true,
+          color: 'mediumseagreen',
+          fillColor: 'lightsteelblue',
+          dashStyle: 'solid',
+          opacity: 0.8,
+          tag: {
+            latex: true,
+            value : '\\displaystyle \\frac{n!}{k!(n-k)!} = {^n}C_k',
+            xoffset: 15,
+            yoffset: 15
+          }
+        },
+        {
+          name: 'spline',
+          id: 'spl',
+          label: 'Spline',
+          color: 'royalblue',
+          tag: {
+            latex: true,
+            value : '\\displaystyle f(x) \\sim x^2 \\quad (x\\to\\infty)',
+            xoffset: 15,
+            yoffset: 15
+          }
+        },
+        {
+          name: 'freeform',
+          id: 'f',
+          label: 'Freeform',
+          color: 'orange',
+          tag: {
+            latex: true,
+            value : '\\displaystyle \\sqrt[n]{1+x+x^2+x^3+\\ldots}',
+            xoffset: 15,
+            yoffset: 15
+          }
+        }
+      ]
     }
   };
   if (configs.hasOwnProperty(configId)) {

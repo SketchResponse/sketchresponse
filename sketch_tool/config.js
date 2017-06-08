@@ -25,6 +25,7 @@ System.config({
     "fastclick": "npm:fastclick@1.0.6",
     "jquery": "github:components/jquery@2.2.4",
     "jsondiffpatch": "npm:jsondiffpatch@0.1.43",
+    "katex": "npm:katex@0.7.1",
     "keymaster": "npm:keymaster@1.6.2",
     "pepjs": "github:jquery/pep@0.3.0",
     "simulant": "npm:simulant@0.1.5",
@@ -93,6 +94,10 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "chalk": "npm:chalk@0.5.1",
       "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:katex@0.7.1": {
+      "match-at": "npm:match-at@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:path-browserify@0.0.0": {

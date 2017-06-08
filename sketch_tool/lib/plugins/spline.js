@@ -203,36 +203,28 @@ export default class Spline extends BasePlugin {
           })
         )
       ),
+      // Tags, regular or rendered by Katex
       z.each(this.state, (spline, splineIndex) =>
         z.if(this.hasTag && this.state[splineIndex].length > 0 && this.state[splineIndex][0].tag, () =>
-          z('text.tag', {
-            'text-anchor': this.tag.align,
+          z(this.latex ? 'foreignObject.tag' : 'text.tag', {
+            'text-anchor': (this.latex ? undefined : this.tag.align),
             x: this.state[splineIndex][0].x + this.tag.xoffset,
             y: this.state[splineIndex][0].y + this.tag.yoffset,
-            style: `
-              fill: #333;
-              font-size: 14px;
-              cursor: ${this.getTagCursor()};
-            `,
+            style: this.getStyle(),
             onmount: el => {
+              if (this.latex) {
+                this.renderKatex(el, splineIndex, 0);
+              }
               if (!this.params.readonly) {
-                el.addEventListener('dblclick', (event) => {
-                  if (this.selectMode) {
-                    let val = prompt('Enter tag value:');
-                    if (val === null) {
-                      return; // Happens when cancel button is pressed in prompt window
-                    }
-                    val.trim();
-                    if (val !== '') {
-                      this.state[splineIndex][0].tag = val;
-                      this.app.addUndoPoint();
-                      this.render();
-                    }
-                  }
-                });
+                this.addDoubleClickEventListener(el, splineIndex, 0);
+              }
+            },
+            onupdate: el => {
+              if (this.latex) {
+                this.renderKatex(el, splineIndex, 0);
               }
             }
-          }, this.state[splineIndex][0].tag)
+          }, this.latex ? '' : this.state[splineIndex][0].tag)
         )
       )
     );
