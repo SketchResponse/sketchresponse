@@ -55,6 +55,11 @@ The following third-party code is used under the terms of the MIT license:
 
     fitCurves (Python implementation of original C code by Philip J. Schneider)
     Copyright (c) 2014 Volker Poplawski
+    
+    KaTeX
+    Copyright (c) 2015 Khan Academy
+    Includes portions of the underscore.js project, Copyright (c) 2009-2015
+    Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 
 The third-party JSChannel library is used under the terms of the LGPL 2.1
 License. The code was obtained along with the following copyright notice:
