@@ -24,10 +24,16 @@ class LineSegments(Gradeable.Gradeable):
         for spline in info:
             if len(spline['spline']) == 4 and self.isALine(spline['spline']):
                 seg = self.value_from_spline(spline['spline'])
+                if 'tag' in spline:
+                    seg.set_tag(spline['tag'])
                 self.segments.append(seg)
             else:
                 # TODO - through error if try to grade non line seg splines
                 raise ValueError("This spline does not appear to be a line segment: " + str(spline['spline']))
+
+        self.set_tagables(None)
+        if len(self.segments) > 0:
+            self.set_tagables(self.segments)
 
     def isALine(self, spline):
         # compute R^2 fitness of a straight line return true if > .99
@@ -502,18 +508,33 @@ class LineSegments(Gradeable.Gradeable):
 #  check end point
 #  get number of segments
 
+from Tag import Tag
 
-class LineSegment:
-    """A line segment wrapper class. Contains two Points defining the 
+
+class LineSegment(Tag, object):
+    """A line segment wrapper class. Contains two Points defining the
        start point and the end point of the segment.
     """
 
     def __init__(self, point1, point2):
+        super(LineSegment, self).__init__()
         self.start = point1
         self.end = point2
 
     def getStartPoint(self):
+        """Return the start point of the line segment as an [x, y] pair.
+
+        Returns:
+            list:
+            the [x, y] pair of the start point.
+        """
         return [self.start.x, self.start.y]
 
     def getEndPoint(self):
+        """Return the end point of the line segment as an [x, y] pair.
+
+        Returns:
+            list:
+            the [x, y] pair of the end point.
+        """
         return [self.end.x, self.end.y]

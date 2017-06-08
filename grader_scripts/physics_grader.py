@@ -12,11 +12,11 @@ problemconfig = sketchresponse.config({
         {'name': 'axes'},
         {'name': 'polyline', 'id': 'pl', 'label': 'Beam', 'closed': False, 'color': 'lightblue', 'readonly': True},
         {'name': 'polyline', 'id': 'pg', 'label': 'Isolation bubble', 'closed': True, 'color': 'gray', 'fillColor': 'lightblue'},
-        {'name': 'point', 'id': 'pt', 'label': 'Point', 'color': 'red', 'size': 5, 'hollow': False, 'readonly': True},
+        {'name': 'point', 'id': 'pt', 'label': 'Point', 'color': 'red', 'size': 5, 'hollow': False, 'readonly': True, 'tag': {'value': 'tag', 'xoffset': 5, 'yoffset': -5, 'align': 'start'}},
         {'name': 'line-segment', 'id': 'ls', 'label': 'Force', 'color': 'green', 'dashStyle': 'solid', 'lengthContraint': 50, 'arrowHead': {'length': 10, 'base': 7}, 'readonly': True},
-        {'name': 'line-segment', 'id': 'c', 'label': 'Segment', 'color': 'black', 'dashStyle': 'dashdotted', 'lengthContraint': 20, 'readonly': True},
-        {'name': 'stamp', 'id': 'cwm', 'label': 'CWM', 'scale': 0.5, 'src': '/static/simona_stamps/cw_moment.png', 'readonly': True},
-        {'name': 'stamp', 'id': 'ccwm', 'label': 'CCWM', 'scale': 0.5, 'src': '/static/simona_stamps/ccw_moment.png', 'readonly': True}
+        {'name': 'line-segment', 'id': 'c', 'label': 'Segment', 'color': 'black', 'dashStyle': 'dashdotted', 'lengthContraint': 20, 'readonly': True, 'tag': {'value': 'tag', 'xoffset': 5, 'yoffset': 5, 'align': 'start', 'position': 'middle'}},
+        {'name': 'stamp', 'id': 'cwm', 'label': 'CWM', 'scale': 0.5, 'src': '/static/examples/cw_moment.png', 'readonly': True},
+        {'name': 'stamp', 'id': 'ccwm', 'label': 'CCWM', 'scale': 0.5, 'src': '/static/examples/ccw_moment.png', 'readonly': True}
     ],
     'initialstate': {
   "pl": [
@@ -39,11 +39,13 @@ problemconfig = sketchresponse.config({
   "pt": [
     {
       "y": 41,
-      "x": 93
+      "x": 93,
+      "tag": "A"
     },
     {
       "y": 293,
-      "x": 563
+      "x": 563,
+      "tag": "B"
     }
   ],
   "ls": [
@@ -58,12 +60,13 @@ problemconfig = sketchresponse.config({
   ],
   "c": [
     {
+      "y": 256,
       "x": 187,
-      "y": 256
+      "tag": "C"
     },
     {
-      "x": 187,
-      "y": 345
+      "y": 345,
+      "x": 187
     }
   ],
   "cwm": [
@@ -99,15 +102,15 @@ def grader(pl, pg, pt, ls, c, cwm, ccwm):
     beam2 = beam.segments[1]
 
     if len(pg.get_intersections_with_polygon_boundary(beam1, poly)) > 0:
-        return False, "wrong 1"
+        return False, "Isolation bubble should not cut vertical beam."
 
-    if len(pg.get_intersections_with_polygon_boundary(beam2, poly)) > 1:
-        return False, "wrong 2"
+    if not len(pg.get_intersections_with_polygon_boundary(beam2, poly)) == 1:
+        return False, "Isolation bubble should only cut the horizontal beam once."
 
     if pg.point_is_on_boundary([-2, -1]) == None:
-        return False, "wrong 3"
+        return False, "Check where the isolation bubble cuts the horizontal beam."
 
     if pg.point_is_on_boundary([-3, 2]) == None and pg.point_is_on_boundary([2, -1]) == None:
-        return False, "wrong 4"
+        return False, "Check the isolation bubble containment."
 
     return True, "Good job!"
