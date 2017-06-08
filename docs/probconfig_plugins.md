@@ -136,7 +136,7 @@ front-end tool.
 * `'color': <a color string>` - the color key should be give a color string that
 javascript recognizes. A listing of color names can be found [here](http://www.w3schools.com/colors/colors_names.asp).
 
-It also has an optional parameter:
+It also has optional parameters:
 
 * `'tag': <object>` - the tag key must be an object containing the following keys:
   * `'value': <string>` - the intial value of the tag when the data is drawn on the canvas.

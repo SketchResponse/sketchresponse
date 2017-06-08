@@ -12,11 +12,11 @@ problemconfig = sketchresponse.config({
         {'name': 'axes'},
         {'name': 'polyline', 'id': 'pl', 'label': 'Beam', 'closed': False, 'color': 'lightblue', 'readonly': True},
         {'name': 'polyline', 'id': 'pg', 'label': 'Isolation bubble', 'closed': True, 'color': 'gray', 'fillColor': 'lightblue'},
-        {'name': 'point', 'id': 'pt', 'label': 'Point', 'color': 'red', 'size': 5, 'hollow': False, 'readonly': True},
+        {'name': 'point', 'id': 'pt', 'label': 'Point', 'color': 'red', 'size': 5, 'hollow': False, 'readonly': True, 'tag': {'value': 'tag', 'xoffset': 5, 'yoffset': -5, 'align': 'start'}},
         {'name': 'line-segment', 'id': 'ls', 'label': 'Force', 'color': 'green', 'dashStyle': 'solid', 'lengthContraint': 50, 'arrowHead': {'length': 10, 'base': 7}, 'readonly': True},
-        {'name': 'line-segment', 'id': 'c', 'label': 'Segment', 'color': 'black', 'dashStyle': 'dashdotted', 'lengthContraint': 20, 'readonly': True},
-        {'name': 'stamp', 'id': 'cwm', 'label': 'CWM', 'scale': 0.5, 'src': '/static/simona_stamps/cw_moment.png', 'readonly': True},
-        {'name': 'stamp', 'id': 'ccwm', 'label': 'CCWM', 'scale': 0.5, 'src': '/static/simona_stamps/ccw_moment.png', 'readonly': True}
+        {'name': 'line-segment', 'id': 'c', 'label': 'Segment', 'color': 'black', 'dashStyle': 'dashdotted', 'lengthContraint': 20, 'readonly': True, 'tag': {'value': 'tag', 'xoffset': 5, 'yoffset': 5, 'align': 'start', 'position': 'middle'}},
+        {'name': 'stamp', 'id': 'cwm', 'label': 'CWM', 'scale': 0.5, 'src': '/static/examples/cw_moment.png', 'readonly': True},
+        {'name': 'stamp', 'id': 'ccwm', 'label': 'CCWM', 'scale': 0.5, 'src': '/static/examples/ccw_moment.png', 'readonly': True}
     ],
     'initialstate': {
   "pl": [
@@ -39,11 +39,13 @@ problemconfig = sketchresponse.config({
   "pt": [
     {
       "y": 41,
-      "x": 93
+      "x": 93,
+      "tag": "A"
     },
     {
       "y": 293,
-      "x": 563
+      "x": 563,
+      "tag": "B"
     }
   ],
   "ls": [
@@ -58,12 +60,13 @@ problemconfig = sketchresponse.config({
   ],
   "c": [
     {
+      "y": 256,
       "x": 187,
-      "y": 256
+      "tag": "C"
     },
     {
-      "x": 187,
-      "y": 345
+      "y": 345,
+      "x": 187
     }
   ],
   "cwm": [

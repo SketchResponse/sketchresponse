@@ -59,6 +59,7 @@ The 'line-segment' plugin entry enables a drawing tool for line segments. In thi
 * `'lengthConstraint'` sets the maximum length of the segment in pixels.
 * `'readonly'` if True disables the plugin on the toolbar, but can still be used to draw initial state data.
 * `'arrowHead'` optionally sets the length and width of an arrowhead on one end of the line segment.
+* `'tag'` optionally enables a string label for each line segment drawn
 
 In this problem, we want to label clockwise and counter-clockwise moments in the initial state of the freebody diagram. To do this we can declare two instances of the 'stamp' plugin with different 'id' and 'label' values. The 'stamp' plugin has five configuration options to set:
 
@@ -69,6 +70,8 @@ In this problem, we want to label clockwise and counter-clockwise moments in the
 * `'readonly'` if True disables the plugin on the toolbar, but can still be used to draw initial state data.
 
 The final new feature introduced in this example is the `'initialstate'` configuration parameter. This parameter can be used to supply a set of data values to be drawn to the canvas automatically using any of the configured plugins. The data can be automatically generated using the [local testing server](local_test.md).
+
+This example uses the 'point' plugin, but introduces the 'tag' parameter, which can be optionally included with any plugin that draws to the canvas. It adds a string label to each point drawn.
 
 A listing of all the built-in plugins can be found at [SketchResponse Plugins](probconfig_plugins.md).
 
@@ -84,11 +87,11 @@ problemconfig = sketchresponse.config({
         {'name': 'axes'},
         {'name': 'polyline', 'id': 'pl', 'label': 'Beam', 'closed': False, 'color': 'lightblue', 'readonly': True},
         {'name': 'polyline', 'id': 'pg', 'label': 'Isolation bubble', 'closed': True, 'color': 'gray', 'fillColor': 'lightblue'},
-        {'name': 'point', 'id': 'pt', 'label': 'Point', 'color': 'red', 'size': 5, 'hollow': False, 'readonly': True},
+        {'name': 'point', 'id': 'pt', 'label': 'Point', 'color': 'red', 'size': 5, 'hollow': False, 'readonly': True, 'tag': {'value': 'tag', 'xoffset': 5, 'yoffset': -5, 'align': 'start'}},
         {'name': 'line-segment', 'id': 'ls', 'label': 'Force', 'color': 'green', 'dashStyle': 'solid', 'lengthContraint': 50, 'arrowHead': {'length': 10, 'base': 7}, 'readonly': True},
-        {'name': 'line-segment', 'id': 'c', 'label': 'Segment', 'color': 'black', 'dashStyle': 'dashdotted', 'lengthContraint': 20, 'readonly': True},
-        {'name': 'stamp', 'id': 'cwm', 'label': 'CWM', 'scale': 0.5, 'src': '/static/simona_stamps/cw_moment.png', 'readonly': True},
-        {'name': 'stamp', 'id': 'ccwm', 'label': 'CCWM', 'scale': 0.5, 'src': '/static/simona_stamps/ccw_moment.png', 'readonly': True}
+        {'name': 'line-segment', 'id': 'c', 'label': 'Segment', 'color': 'black', 'dashStyle': 'dashdotted', 'lengthContraint': 20, 'readonly': True, 'tag': {'value': 'tag', 'xoffset': 5, 'yoffset': 5, 'align': 'start', 'position': 'middle'}},
+        {'name': 'stamp', 'id': 'cwm', 'label': 'CWM', 'scale': 0.5, 'src': '/static/examples/cw_moment.png', 'readonly': True},
+        {'name': 'stamp', 'id': 'ccwm', 'label': 'CCWM', 'scale': 0.5, 'src': '/static/examples/ccw_moment.png', 'readonly': True}
     ],
     'initialstate': {
   "pl": [
@@ -111,11 +114,13 @@ problemconfig = sketchresponse.config({
   "pt": [
     {
       "y": 41,
-      "x": 93
+      "x": 93,
+      "tag": "A"
     },
     {
       "y": 293,
-      "x": 563
+      "x": 563,
+      "tag": "B"
     }
   ],
   "ls": [
@@ -130,12 +135,13 @@ problemconfig = sketchresponse.config({
   ],
   "c": [
     {
+      "y": 256,
       "x": 187,
-      "y": 256
+      "tag": "C"
     },
     {
-      "x": 187,
-      "y": 345
+      "y": 345,
+      "x": 187
     }
   ],
   "cwm": [
@@ -204,7 +210,7 @@ This first check verifies that there is only one isolation bubble drawn in the i
         return False, "Isolation bubble should only cut the horizontal beam once."
 ```
 
-There are two valid isolation bubbles that can be drawn for this problem. In both of them, the vertical beam should not be cut by the bubble and the horizontal beam should be cut at the point labeled with the vertical dashed line.
+There are two valid isolation bubbles that can be drawn for this problem. In both of them, the vertical beam should not be cut by the bubble and the horizontal beam should be cut at the point labeled C.
 
 ### Checking the beam points on the isolation bubble
 
@@ -216,7 +222,7 @@ There are two valid isolation bubbles that can be drawn for this problem. In bot
         return False, "Check the isolation bubble containment."
 ```
 
-The correct isolation bubbles will have the point on the horizontal beam marked by the vertical dashed line on the bubble. It will also have either the top endpoint of the vertical beam, or the right end point of the horizontal beam on its bubble.
+The correct isolation bubbles will have the point C on the horizontal beam on the boundary of the bubble. It will also have either the top endpoint of the vertical beam, A, or the right end point of the horizontal beam, B, on the bubble's boundary.
 
 ### All checks passed, so return True
 
@@ -225,7 +231,7 @@ The correct isolation bubbles will have the point on the horizontal beam marked 
 ```
 
 ### Putting it all together
-Combining all the code above into a single function gives us the following. You will notice that the error message variable `msg` is tested at multiple points during the evaluation and used as an early failure condition. If the numbers of expected labels are not correct, then future checks are likely to not be able to run on the data so returning early ensures the student gets good feedback.
+Combining all the code above into a single function gives us the following. You will notice that the error conditions are tested at multiple points during the evaluation and used as an early failure condition. If the numbers of expected bubbles is not correct, then future checks are likely to not be able to run on the data so returning early ensures the student gets meaningful feedback.
 
 ```python
 import sketchresponse
@@ -242,11 +248,11 @@ problemconfig = sketchresponse.config({
         {'name': 'axes'},
         {'name': 'polyline', 'id': 'pl', 'label': 'Beam', 'closed': False, 'color': 'lightblue', 'readonly': True},
         {'name': 'polyline', 'id': 'pg', 'label': 'Isolation bubble', 'closed': True, 'color': 'gray', 'fillColor': 'lightblue'},
-        {'name': 'point', 'id': 'pt', 'label': 'Point', 'color': 'red', 'size': 5, 'hollow': False, 'readonly': True},
+        {'name': 'point', 'id': 'pt', 'label': 'Point', 'color': 'red', 'size': 5, 'hollow': False, 'readonly': True, 'tag': {'value': 'tag', 'xoffset': 5, 'yoffset': -5, 'align': 'start'}},
         {'name': 'line-segment', 'id': 'ls', 'label': 'Force', 'color': 'green', 'dashStyle': 'solid', 'lengthContraint': 50, 'arrowHead': {'length': 10, 'base': 7}, 'readonly': True},
-        {'name': 'line-segment', 'id': 'c', 'label': 'Segment', 'color': 'black', 'dashStyle': 'dashdotted', 'lengthContraint': 20, 'readonly': True},
-        {'name': 'stamp', 'id': 'cwm', 'label': 'CWM', 'scale': 0.5, 'src': '/static/simona_stamps/cw_moment.png', 'readonly': True},
-        {'name': 'stamp', 'id': 'ccwm', 'label': 'CCWM', 'scale': 0.5, 'src': '/static/simona_stamps/ccw_moment.png', 'readonly': True}
+        {'name': 'line-segment', 'id': 'c', 'label': 'Segment', 'color': 'black', 'dashStyle': 'dashdotted', 'lengthContraint': 20, 'readonly': True, 'tag': {'value': 'tag', 'xoffset': 5, 'yoffset': 5, 'align': 'start', 'position': 'middle'}},
+        {'name': 'stamp', 'id': 'cwm', 'label': 'CWM', 'scale': 0.5, 'src': '/static/examples/cw_moment.png', 'readonly': True},
+        {'name': 'stamp', 'id': 'ccwm', 'label': 'CCWM', 'scale': 0.5, 'src': '/static/examples/ccw_moment.png', 'readonly': True}
     ],
     'initialstate': {
   "pl": [
@@ -269,11 +275,13 @@ problemconfig = sketchresponse.config({
   "pt": [
     {
       "y": 41,
-      "x": 93
+      "x": 93,
+      "tag": "A"
     },
     {
       "y": 293,
-      "x": 563
+      "x": 563,
+      "tag": "B"
     }
   ],
   "ls": [
@@ -288,12 +296,13 @@ problemconfig = sketchresponse.config({
   ],
   "c": [
     {
+      "y": 256,
       "x": 187,
-      "y": 256
+      "tag": "C"
     },
     {
-      "x": 187,
-      "y": 345
+      "y": 345,
+      "x": 187
     }
   ],
   "cwm": [
