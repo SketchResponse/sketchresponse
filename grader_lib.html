@@ -45,19 +45,61 @@
 <div class="section" id="module-grader_lib.Asymptote">
 <span id="grader-lib-asymptote-module"></span><h2>grader_lib.Asymptote module<a class="headerlink" href="#module-grader_lib.Asymptote" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="grader_lib.Asymptote.Asymptotes">
-<em class="property">class </em><code class="descclassname">grader_lib.Asymptote.</code><code class="descname">Asymptotes</code><span class="sig-paren">(</span><em>info</em>, <em>tolerance={}</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
-<p>Asymptote.</p>
+<dt id="grader_lib.Asymptote.Asymptote">
+<em class="property">class </em><code class="descclassname">grader_lib.Asymptote.</code><code class="descname">Asymptote</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>An asymptote wrapper class. Contains the x or y value that defines
+the vertical or horizontal asymptote.</p>
+<dl class="method">
+<dt id="grader_lib.Asymptote.Asymptote.get_tag">
+<code class="descname">get_tag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptote.get_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of the tag.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The tag string of this object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Asymptote.Asymptote.tag_equals">
+<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptote.tag_equals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the given string is the same as the object&#8217;s tag,
+otherwise False.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="grader_lib.Asymptote.HorizontalAsymptotes">
+<em class="property">class </em><code class="descclassname">grader_lib.Asymptote.</code><code class="descname">HorizontalAsymptotes</code><span class="sig-paren">(</span><em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.HorizontalAsymptotes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Asymptote.Asymptotes</span></code></p>
+<p>Horizontal Asymptote.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Asymptotes is a generic class. You must instantiate either the
-VerticalAsymptotes or the HorizontalAsymptotes class to use the
-grading functions below.</p>
+<p class="last">Use this class to interact with any horizontal asymptotes in the
+function you are grading.</p>
 </div>
 <dl class="method">
-<dt id="grader_lib.Asymptote.Asymptotes.closest_asym_to_value">
-<code class="descname">closest_asym_to_value</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.closest_asym_to_value" title="Permalink to this definition">¶</a></dt>
+<dt id="grader_lib.Asymptote.HorizontalAsymptotes.closest_asym_to_value">
+<code class="descname">closest_asym_to_value</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.HorizontalAsymptotes.closest_asym_to_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the absolute distance between v and the closest asymptote and the x or y axis value of that asymptote.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -80,8 +122,27 @@ grading functions below.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="grader_lib.Asymptote.Asymptotes.get_asym_at_value">
-<code class="descname">get_asym_at_value</code><span class="sig-paren">(</span><em>v</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.get_asym_at_value" title="Permalink to this definition">¶</a></dt>
+<dt id="grader_lib.Asymptote.HorizontalAsymptotes.contains_tag">
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.HorizontalAsymptotes.contains_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the first object found with the given tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Asymptote.HorizontalAsymptotes.get_asym_at_value">
+<code class="descname">get_asym_at_value</code><span class="sig-paren">(</span><em>v</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.HorizontalAsymptotes.get_asym_at_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the asymptote at the value v, or None.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -109,8 +170,8 @@ grading functions below.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="grader_lib.Asymptote.Asymptotes.get_number_of_asyms">
-<code class="descname">get_number_of_asyms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.get_number_of_asyms" title="Permalink to this definition">¶</a></dt>
+<dt id="grader_lib.Asymptote.HorizontalAsymptotes.get_number_of_asyms">
+<code class="descname">get_number_of_asyms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.HorizontalAsymptotes.get_number_of_asyms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of asymptotes declared in the function.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -125,8 +186,8 @@ grading functions below.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="grader_lib.Asymptote.Asymptotes.has_asym_at_value">
-<code class="descname">has_asym_at_value</code><span class="sig-paren">(</span><em>v</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.has_asym_at_value" title="Permalink to this definition">¶</a></dt>
+<dt id="grader_lib.Asymptote.HorizontalAsymptotes.has_asym_at_value">
+<code class="descname">has_asym_at_value</code><span class="sig-paren">(</span><em>v</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.HorizontalAsymptotes.has_asym_at_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether an asymtote is declared at the given value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -152,27 +213,128 @@ of the value v, or false otherwise.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="grader_lib.Asymptote.HorizontalAsymptotes">
-<em class="property">class </em><code class="descclassname">grader_lib.Asymptote.</code><code class="descname">HorizontalAsymptotes</code><span class="sig-paren">(</span><em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.HorizontalAsymptotes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#grader_lib.Asymptote.Asymptotes" title="grader_lib.Asymptote.Asymptotes"><code class="xref py py-class docutils literal"><span class="pre">grader_lib.Asymptote.Asymptotes</span></code></a></p>
-<p>Horizontal Asymptote.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Use this class to interact with any horizontal asymptotes in the
-function you are grading.</p>
-</div>
-</dd></dl>
-
-<dl class="class">
 <dt id="grader_lib.Asymptote.VerticalAsymptotes">
 <em class="property">class </em><code class="descclassname">grader_lib.Asymptote.</code><code class="descname">VerticalAsymptotes</code><span class="sig-paren">(</span><em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.VerticalAsymptotes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#grader_lib.Asymptote.Asymptotes" title="grader_lib.Asymptote.Asymptotes"><code class="xref py py-class docutils literal"><span class="pre">grader_lib.Asymptote.Asymptotes</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Asymptote.Asymptotes</span></code></p>
 <p>Vertical Asymptote.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Use this class to interact with any vertical asymptotes in the
 function you are grading.</p>
 </div>
+<dl class="method">
+<dt id="grader_lib.Asymptote.VerticalAsymptotes.closest_asym_to_value">
+<code class="descname">closest_asym_to_value</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.VerticalAsymptotes.closest_asym_to_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the absolute distance between v and the closest asymptote and the x or y axis value of that asymptote.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> &#8211; a value in the range of the x or y axis.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>minDistance: the absolute difference between v and the asymptote,</dt>
+<dd>or float(&#8216;inf&#8217;) if no asymptote exists.</dd>
+<dt>closestAsym: the value of the closest asymptote to the value v,</dt>
+<dd>or None if no asymptote exists.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float, float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Asymptote.VerticalAsymptotes.contains_tag">
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.VerticalAsymptotes.contains_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the first object found with the given tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Asymptote.VerticalAsymptotes.get_asym_at_value">
+<code class="descname">get_asym_at_value</code><span class="sig-paren">(</span><em>v</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.VerticalAsymptotes.get_asym_at_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the asymptote at the value v, or None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> &#8211; a value in the range of the x or y axis.</li>
+<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance, if None is given &#8216;asym_distance&#8217; constant is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>the value of an asymptote that is within tolerances of</dt>
+<dd><p class="first last">the value v, or None if no such asymptote exists.</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Asymptote.VerticalAsymptotes.get_number_of_asyms">
+<code class="descname">get_number_of_asyms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.VerticalAsymptotes.get_number_of_asyms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of asymptotes declared in the function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the number of asymptotes declared in the function.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Asymptote.VerticalAsymptotes.has_asym_at_value">
+<code class="descname">has_asym_at_value</code><span class="sig-paren">(</span><em>v</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.VerticalAsymptotes.has_asym_at_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether an asymtote is declared at the given value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> &#8211; a value in the range of the x or y axis.</li>
+<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance, if None is given &#8216;asym_distance&#8217; constant is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if there is an asymptote declared within tolerances
+of the value v, or false otherwise.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -181,8 +343,76 @@ function you are grading.</p>
 <span class="target" id="module-grader_lib.LineSegment"></span><dl class="class">
 <dt id="grader_lib.LineSegment.LineSegment">
 <em class="property">class </em><code class="descclassname">grader_lib.LineSegment.</code><code class="descname">LineSegment</code><span class="sig-paren">(</span><em>point1</em>, <em>point2</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegment" title="Permalink to this definition">¶</a></dt>
-<dd><p>A line segment wrapper class. Contains two Points defining the
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A line segment wrapper class. Contains two Points defining the
 start point and the end point of the segment.</p>
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegment.getEndPoint">
+<code class="descname">getEndPoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegment.getEndPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the end point of the line segment as an [x, y] pair.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the [x, y] pair of the end point.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegment.getStartPoint">
+<code class="descname">getStartPoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegment.getStartPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the start point of the line segment as an [x, y] pair.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the [x, y] pair of the start point.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegment.get_tag">
+<code class="descname">get_tag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegment.get_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of the tag.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The tag string of this object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegment.tag_equals">
+<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegment.tag_equals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the given string is the same as the object&#8217;s tag,
+otherwise False.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -266,6 +496,25 @@ otherwise false.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.contains_tag">
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.contains_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the first object found with the given tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
 </tr>
 </tbody>
 </table>
@@ -431,7 +680,7 @@ arguments, or None</td>
 
 <dl class="method">
 <dt id="grader_lib.LineSegment.LineSegments.has_angle_t_at_x">
-<code class="descname">has_angle_t_at_x</code><span class="sig-paren">(</span><em>t</em>, <em>x</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.has_angle_t_at_x" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_angle_t_at_x</code><span class="sig-paren">(</span><em>t</em>, <em>x</em>, <em>ignoreDirection=True</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.has_angle_t_at_x" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Return whether the line segment at position x has an angle of t</dt>
 <dd>wrt the x axis.</dd>
@@ -443,6 +692,7 @@ arguments, or None</td>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>t</strong> &#8211; the angle in radians</li>
 <li><strong>x</strong> &#8211; the position on the x-axis to test against.</li>
+<li><strong>(default</strong> (<em>ignoreDirection</em>) &#8211; true): ignore segment direction</li>
 <li><strong>tolerance</strong> &#8211; the angle tolerance in degrees</li>
 </ul>
 </td>
@@ -510,7 +760,7 @@ given position, otherwise false.</td>
 
 <dl class="method">
 <dt id="grader_lib.LineSegment.LineSegments.has_slope_m_at_x">
-<code class="descname">has_slope_m_at_x</code><span class="sig-paren">(</span><em>m</em>, <em>x</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.has_slope_m_at_x" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_slope_m_at_x</code><span class="sig-paren">(</span><em>m</em>, <em>x</em>, <em>ignoreDirection=True</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.has_slope_m_at_x" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return whether the function has slope m at the value x.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -519,6 +769,7 @@ given position, otherwise false.</td>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>m</strong> &#8211; the slope value to test against.</li>
 <li><strong>x</strong> &#8211; the position on the x-axis to test against.</li>
+<li><strong>(default</strong> (<em>ignoreDirection</em>) &#8211; true): ignore segment direction</li>
 <li><strong>tolerance</strong> &#8211; the angle tolerance in degrees</li>
 </ul>
 </td>
@@ -528,6 +779,388 @@ otherwise false.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-grader_lib.PolyLine">
+<span id="grader-lib-polyline-module"></span><h2>grader_lib.PolyLine module<a class="headerlink" href="#module-grader_lib.PolyLine" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="grader_lib.PolyLine.PolyLines">
+<em class="property">class </em><code class="descclassname">grader_lib.PolyLine.</code><code class="descname">PolyLines</code><span class="sig-paren">(</span><em>info</em>, <em>tolerance={}</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
+<p>PolyLines.</p>
+<dl class="method">
+<dt id="grader_lib.PolyLine.PolyLines.contains_tag">
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.contains_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the first object found with the given tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.PolyLine.PolyLines.get_polyline_as_segments">
+<code class="descname">get_polyline_as_segments</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.get_polyline_as_segments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the polyline at index as a LineSegments grader.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; an integer value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A LineSegment.LineSegments grader object.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#grader_lib.LineSegment.LineSegments" title="grader_lib.LineSegment.LineSegments">LineSegments</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.PolyLine.PolyLines.get_polyline_as_splines">
+<code class="descname">get_polyline_as_splines</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.get_polyline_as_splines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the polyline at index as a GradeableFunction grader.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; an integer value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A GradeableFunction.GradeableFunction grader object.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#module-grader_lib.GradeableFunction" title="grader_lib.GradeableFunction">GradeableFunction</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.PolyLine.PolyLines.get_polyline_count">
+<code class="descname">get_polyline_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.get_polyline_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of polylines defined in the function.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-grader_lib.Polygon">
+<span id="grader-lib-polygon-module"></span><h2>grader_lib.Polygon module<a class="headerlink" href="#module-grader_lib.Polygon" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="grader_lib.Polygon.Polygon">
+<em class="property">class </em><code class="descclassname">grader_lib.Polygon.</code><code class="descname">Polygon</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A polygon wrapper class. Contains a list of [x, y] points defining the
+vertices of the polygon.</p>
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygon.get_tag">
+<code class="descname">get_tag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygon.get_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of the tag.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The tag string of this object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygon.tag_equals">
+<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygon.tag_equals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the given string is the same as the object&#8217;s tag,
+otherwise False.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="grader_lib.Polygon.Polygons">
+<em class="property">class </em><code class="descclassname">grader_lib.Polygon.</code><code class="descname">Polygons</code><span class="sig-paren">(</span><em>info</em>, <em>tolerance={}</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
+<p>Polygons.</p>
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygons.contains_point">
+<code class="descname">contains_point</code><span class="sig-paren">(</span><em>point</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.contains_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the polygon that contains the given point, within tolerance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>point</strong> &#8211; an list [x, y] defining a point, or
+a Point object from a GradeableFunction grader</li>
+<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The first polygon, defined as a list of points, that contains
+the given point, or None.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygons.contains_polygon">
+<code class="descname">contains_polygon</code><span class="sig-paren">(</span><em>polygon</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.contains_polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the polygon that contains the given polygon, within tolerance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polygon</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+or a Polygon object</li>
+<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The first polygon, defined as a list of points, that contains
+the given polygon, or None.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygons.contains_tag">
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.contains_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the first object found with the given tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygons.get_intersections_with_boundary">
+<code class="descname">get_intersections_with_boundary</code><span class="sig-paren">(</span><em>line_segment</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.get_intersections_with_boundary" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return a list of lists of intersection points of the given</dt>
+<dd>line segment with the grader polygons.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>line_segment</strong> &#8211; an list of two points [[x1, y1], [x2,y2]], or
+a LineSegment object from a LineSegment grader</li>
+<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of lists of intersection points [x,y] for each polygon
+in the grader.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygons.get_intersections_with_polygon_boundary">
+<code class="descname">get_intersections_with_polygon_boundary</code><span class="sig-paren">(</span><em>polygon</em>, <em>line_segment</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.get_intersections_with_polygon_boundary" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return a list of intersection points of the given line segment</dt>
+<dd>with the given polygon.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polygon</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+or a Polygon object</li>
+<li><strong>line_segment</strong> &#8211; an list of two points [[x1, y1], [x2,y2]], or
+a LineSegment object from a LineSegment grader</li>
+<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of intersection points [x,y].</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygons.get_polygon_count">
+<code class="descname">get_polygon_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.get_polygon_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of polygons defined in the function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygons.point_is_on_boundary">
+<code class="descname">point_is_on_boundary</code><span class="sig-paren">(</span><em>point</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.point_is_on_boundary" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return the polygon on whose boundary the given point lies,</dt>
+<dd>within tolerance.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>point</strong> &#8211; an list [x, y] defining a point, or
+a Point object from a GradeableFunction grader</li>
+<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The first polygon, defined as a list of points, that contains
+the given point, or None.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygons.point_is_on_polygon_boundary">
+<code class="descname">point_is_on_polygon_boundary</code><span class="sig-paren">(</span><em>polygon</em>, <em>point</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.point_is_on_polygon_boundary" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return whether the given point lies on the boundary of the given</dt>
+<dd>polygon, within tolerance.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polygon</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+or a Polygon object</li>
+<li><strong>point</strong> &#8211; an list [x, y] defining a point, or
+a Point object from a GradeableFunction grader</li>
+<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the point lies on the polygon boundary within tolerance,
+otherwise False.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">boolean</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygons.polygon_contains_point">
+<code class="descname">polygon_contains_point</code><span class="sig-paren">(</span><em>polygon</em>, <em>point</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.polygon_contains_point" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return whether the given point is contained within the given</dt>
+<dd>polygon, within tolerance.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>polygon</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+or a Polygon object</li>
+<li><strong>point</strong> &#8211; an list [x, y] defining a point, or
+a Point object from a GradeableFunction grader</li>
+<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the point is contained within the polygon within tolerance,
+otherwise False.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">boolean</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Polygon.Polygons.polygon_contains_polygon">
+<code class="descname">polygon_contains_polygon</code><span class="sig-paren">(</span><em>container</em>, <em>contained</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.polygon_contains_polygon" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return whether the container polygon contains the entirety of the</dt>
+<dd>contained polygon, within tolerance.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>container</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+or a Polygon object</li>
+<li><strong>contained</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+or a Polygon object</li>
+<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True of the container polygon contains every point of the contained
+polygon, otherwise False.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
 </td>
 </tr>
 </tbody>
@@ -586,6 +1219,25 @@ point exists.</dd>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float, Point</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.GradeableFunction.GradeableFunction.contains_tag">
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.contains_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the first object found with the given tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
 </tr>
 </tbody>
 </table>
@@ -712,6 +1364,22 @@ is used.</li>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the first Point instance within tolerances of the given arguments, or None</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#module-grader_lib.Point" title="grader_lib.Point">Point</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.GradeableFunction.GradeableFunction.get_tag">
+<code class="descname">get_tag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.get_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of the tag.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The tag string of this object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 </tbody>
 </table>
@@ -1209,6 +1877,25 @@ tolerances, otherwise false</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="grader_lib.GradeableFunction.GradeableFunction.tag_equals">
+<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.tag_equals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the given string is the same as the object&#8217;s tag,
+otherwise False.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -1217,15 +1904,56 @@ tolerances, otherwise false</p>
 <dl class="class">
 <dt id="grader_lib.Point.Point">
 <em class="property">class </em><code class="descclassname">grader_lib.Point.</code><code class="descname">Point</code><span class="sig-paren">(</span><em>parent_function</em>, <em>x</em>, <em>y</em>, <em>pixel=True</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
 <dt id="grader_lib.Point.Point.get_px_distance_squared">
 <code class="descname">get_px_distance_squared</code><span class="sig-paren">(</span><em>point</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.get_px_distance_squared" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="grader_lib.Point.Point.get_tag">
+<code class="descname">get_tag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.get_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the value of the tag.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The tag string of this object.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="grader_lib.Point.Point.get_x_distance">
 <code class="descname">get_x_distance</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.get_x_distance" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Point.Point.set_tag">
+<code class="descname">set_tag</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.set_tag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Point.Point.tag_equals">
+<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.tag_equals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the given string is the same as the object&#8217;s tag,
+otherwise False.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -1244,6 +1972,8 @@ tolerances, otherwise false</p>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-grader_lib.Asymptote">grader_lib.Asymptote module</a></li>
 <li><a class="reference internal" href="#grader-lib-linesegment-module">grader_lib.LineSegment module</a></li>
+<li><a class="reference internal" href="#module-grader_lib.PolyLine">grader_lib.PolyLine module</a></li>
+<li><a class="reference internal" href="#module-grader_lib.Polygon">grader_lib.Polygon module</a></li>
 <li><a class="reference internal" href="#module-grader_lib.GradeableFunction">grader_lib.GradeableFunction module</a></li>
 <li><a class="reference internal" href="#module-grader_lib.Point">grader_lib.Point module</a></li>
 </ul>
@@ -1279,7 +2009,7 @@ tolerances, otherwise false</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2016.
+      &copy;2016 Massachusetts Institute of Technology.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
