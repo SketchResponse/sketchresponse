@@ -1,3 +1,6 @@
+import katex from 'katex';
+import {getElementsByClassName} from 'sketch2/util/ms-polyfills';
+
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 
@@ -29,6 +32,7 @@ export default class BasePlugin {
     this.hasTag = params.tag !== undefined && params.tag !== null;
     if (this.hasTag) {
       this.tag = params.tag;
+      this.latex = params.tag.latex;
     }
     this.selectMode = false;
     this.app.__messageBus.on('enableSelectMode', () => this.setSelectMode(true));
@@ -144,6 +148,70 @@ export default class BasePlugin {
 
   getTagCursor() {
     return this.params.readonly ? 'default' : (this.selectMode ? 'pointer' : 'crosshair');
+  }
+
+  getStyle() {
+    return this.latex ?
+      `
+        color: #333;
+        font-size: 14px;
+        cursor: ${this.getTagCursor()};
+        overflow: visible;
+      ` :
+      `
+        fill: #333;
+        font-size: 14px;
+        cursor: ${this.getTagCursor()};
+      `
+  }
+
+  renderKatex(el, index1, index2) {
+    let stateEl = this.state[index1];
+    // Needed for freeform, polyline, and spline plugins
+    if (typeof index2 !== 'undefined') {
+      stateEl = this.state[index1][index2];
+    }
+    try {
+      katex.render(stateEl.tag, el, {
+        errorColor: '#0000ff'
+      });
+      this.adjustBoundingBox(el);
+    }
+    catch(e) {
+      katex.render('\\text{\\color{red}{Error: invalid markup}}', el, {
+        errorColor: '#0000ff'
+      });
+      this.adjustBoundingBox(el);
+    }
+  }
+
+  addDoubleClickEventListener(el, index1, index2) {
+    el.addEventListener('dblclick', () => {
+      if (this.selectMode) {
+        let stateEl = this.state[index1];
+        // Needed for freeform, polyline, and spline plugins
+        if (typeof index2 !== 'undefined') {
+          stateEl = this.state[index1][index2];
+        }
+        let val = prompt('Enter tag value:', stateEl.tag);
+        if (val === null) {
+          return; // Happens when cancel button is pressed in prompt window
+        }
+        val.trim();
+        if (val !== '' && val !== stateEl.tag) {
+          stateEl.tag = val;
+          this.app.addUndoPoint();
+          this.render();
+        }
+      }
+    });
+  }
+
+  adjustBoundingBox(el) {
+    let bRect = getElementsByClassName(el, 'katex-html')[0].getBoundingClientRect();
+    // The foreignObject containing the Katex rendering needs a width and height in Firefox.
+    el.setAttributeNS(null, 'width', bRect.width);
+    el.setAttributeNS(null, 'height', bRect.height);
   }
 
   computeDashArray(dashStyle, strokeWidth) {

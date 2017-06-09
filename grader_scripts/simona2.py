@@ -1,5 +1,5 @@
 import sketchresponse
-from grader_lib import GradeableFunction, LineSegment, PolyLine, Point, Polygon
+from grader_lib import GradeableFunction, LineSegment, PolyLine, Polygon
 
 problemconfig = sketchresponse.config({
     'width': 750,
@@ -12,7 +12,6 @@ problemconfig = sketchresponse.config({
         {'name': 'axes'},
         {'name': 'polyline', 'id': 'pl', 'label': 'Beam', 'closed': False, 'color': 'lightblue', 'readonly': True},
         {'name': 'polyline', 'id': 'pg', 'label': 'Isolation bubble', 'closed': True, 'color': 'gray', 'fillColor': 'lightblue'},
-        {'name': 'polyline', 'id': 'pg2', 'label': 'Isolation bubble', 'closed': True, 'color': 'gray', 'fillColor': 'lightblue'},
         {'name': 'point', 'id': 'pt', 'label': 'Point', 'color': 'red', 'size': 5, 'hollow': False, 'readonly': True},
         {'name': 'line-segment', 'id': 'ls', 'label': 'Force', 'color': 'green', 'dashStyle': 'solid', 'lengthContraint': 50, 'arrowHead': {'length': 10, 'base': 7}, 'readonly': True},
         {'name': 'line-segment', 'id': 'c', 'label': 'Segment', 'color': 'black', 'dashStyle': 'dashdotted', 'lengthContraint': 20, 'readonly': True},
@@ -83,11 +82,10 @@ problemconfig = sketchresponse.config({
 })
 
 @sketchresponse.grader
-def grader(pl, pg, pg2, pt, ls, c, cwm, ccwm):
+def grader(pl, pg, pt, ls, c, cwm, ccwm):
 
     pl = PolyLine.PolyLines(pl)
     pg = Polygon.Polygons(pg)
-    pg2 = Polygon.Polygons(pg2)
     cls = LineSegment.LineSegments(c)
 
     beam = pl.get_polyline_as_segments(0)

@@ -31,13 +31,12 @@
   "jspm": {
     "dependencies": {
       "classnames": "npm:classnames@^2.2.5",
-      "d3": "github:d3/d3@^3.5.17",
       "deep-extend": "npm:deep-extend@^0.4.1",
       "dom-shims": "npm:dom-shims@^0.1.4",
       "events": "github:jspm/nodelibs-events@^0.1.1",
       "fastclick": "npm:fastclick@^1.0.6",
-      "jquery": "github:components/jquery@^2.2.4",
       "jsondiffpatch": "npm:jsondiffpatch@^0.1.43",
+      "katex": "npm:katex@^0.7.1",
       "keymaster": "npm:keymaster@^1.6.2",
       "pepjs": "github:jquery/pep@^0.3.0"
     },

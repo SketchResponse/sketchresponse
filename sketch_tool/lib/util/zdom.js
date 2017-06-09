@@ -166,6 +166,8 @@ class ZElement extends ZNode {
     // childCollection should use refEl = null since it's the only thing inside of this.el
     this.childCollection.update(next.childCollection, null);
     super.update(refEl);
+
+    if (this.props.onupdate) this.props.onupdate(this.el);
   }
 
   _syncDOMProps(oldProps, newProps) {
@@ -174,6 +176,7 @@ class ZElement extends ZNode {
       .filter(propName => oldProps[propName] !== newProps[propName])
       .forEach(propName => {
         if (['key', 'onmount'].indexOf(propName) >= 0) return;
+        if (['key', 'onupdate'].indexOf(propName) >= 0) return;
 
         const {namespaceURI, localName} = qualify(propName);
         if (localName.slice(0,2) === 'on' && namespaceURI === null) {
@@ -194,6 +197,7 @@ class ZElement extends ZNode {
       .filter(propName => !newProps.hasOwnProperty(propName))
       .forEach(propName => {
         if (['key', 'onmount'].indexOf(propName) >= 0) return;  // TODO: eliminate code duplication
+        if (['key', 'onupdate'].indexOf(propName) >= 0) return;
 
         const {namespaceURI, localName} = qualify(propName);
         if (localName.slice(0,2) === 'on' && namespaceURI === null) {

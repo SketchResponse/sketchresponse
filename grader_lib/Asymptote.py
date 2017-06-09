@@ -2,16 +2,26 @@ import datalayer
 import Gradeable
 import numpy as np
 import Axis
+from Tag import Tag
+
+
+class Asymptote(Tag, object):
+    """An asymptote wrapper class. Contains the x or y value that defines
+       the vertical or horizontal asymptote.
+    """
+    def __init__(self, value):
+        super(Asymptote, self).__init__()
+        self.value = value
 
 
 class Asymptotes(Gradeable.Gradeable):
-    """Asymptote.
-
-    Note:
-        Asymptotes is a generic class. You must instantiate either the 
-        VerticalAsymptotes or the HorizontalAsymptotes class to use the
-        grading functions below.
-    """
+#    """Asymptote.
+#
+#    Note:
+#        Asymptotes is a generic class. You must instantiate either the 
+#        VerticalAsymptotes or the HorizontalAsymptotes class to use the
+#        grading functions below.
+#    """
     def __init__(self, info, tolerance = dict()):
         Gradeable.Gradeable.__init__(self, info, tolerance)
 
@@ -27,10 +37,15 @@ class Asymptotes(Gradeable.Gradeable):
                 if abs(pxa - px) < self.tolerance['asym_same']:
                     include = False
             if include:
-                self.asyms.append(val)
+                self.asyms.append(Asymptote(val))
                 self.px_asyms.append(px)
+                if 'tag' in spline:
+                    self.asyms[-1].set_tag(spline['tag'])
 
         self.scale = 1
+        self.set_tagables(None)
+        if len(self.asyms) > 0:
+            self.set_tagables(self.asyms)
 
 
     def value_from_spline(self, spline):
@@ -50,7 +65,8 @@ class Asymptotes(Gradeable.Gradeable):
         """
         minDistance = float('inf')
         closestAsym = None
-        for asym in self.asyms:
+        for a in self.asyms:
+            asym = a.value
             d = abs(asym - v)
             if d < minDistance:
                 minDistance = d

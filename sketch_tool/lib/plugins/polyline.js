@@ -205,36 +205,28 @@ export default class Polyline extends BasePlugin {
           })
         )
       ),
+      // Tags, regular or rendered by Katex
       z.each(this.state, (polyline, polylineIndex) =>
         z.if(this.hasTag && this.state[polylineIndex].length > 0 && this.state[polylineIndex][0].tag, () =>
-          z('text.tag', {
-            'text-anchor': this.tag.align,
+          z(this.latex ? 'foreignObject.tag' : 'text.tag', {
+            'text-anchor': (this.latex ? undefined : this.tag.align),
             x: this.state[polylineIndex][0].x + this.tag.xoffset,
             y: this.state[polylineIndex][0].y + this.tag.yoffset,
-            style: `
-              fill: #333;
-              font-size: 14px;
-              cursor: ${this.getTagCursor()};
-            `,
+            style: this.getStyle(),
             onmount: el => {
+              if (this.latex) {
+                this.renderKatex(el, polylineIndex, 0);
+              }
               if (!this.params.readonly) {
-                el.addEventListener('dblclick', (event) => {
-                  if (this.selectMode) {
-                    let val = prompt('Enter tag value:');
-                    if (val === null) {
-                      return; // Happens when cancel button is pressed in prompt window
-                    }
-                    val.trim();
-                    if (val !== '') {
-                      this.state[polylineIndex][0].tag = val;
-                      this.app.addUndoPoint();
-                      this.render();
-                    }
-                  }
-                });
+                this.addDoubleClickEventListener(el, polylineIndex, 0);
+              }
+            },
+            onupdate: el => {
+              if (this.latex) {
+                this.renderKatex(el, polylineIndex, 0);
               }
             }
-          }, this.state[polylineIndex][0].tag)
+          }, this.latex ? '' : this.state[polylineIndex][0].tag)
         )
       )
     );
