@@ -80,9 +80,10 @@ $ git pull
 $ cd ../sketchresponse
 $ rsync -a _book/ ../SketchResponse.github.io/
 ```
-7. Change directory to the github.io reponsitory, commit and push all changes.
+7. Change directory to the github.io reponsitory, add any new files that were not a part of an older version of the document, commit and push all changes.
 ```sh
 $ cd ../SketchResponse.github.io
+$ git add <list of files that are new>
 $ git commit -a -m "informative commit message here"
 $ git push
 8. That's it. You are done.

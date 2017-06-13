@@ -10,6 +10,8 @@ The Grader Library API is also hosted separately with a searchable index [here](
 
 * [Asymptote](http://sketchresponse.github.io/sketchresponse/grader_lib.html#module-grader_lib.Asymptote)
 * [LineSegment](http://sketchresponse.github.io/sketchresponse/grader_lib.html#module-grader_lib.LineSegment)
+* [PolyLine](https://sketchresponse.github.io/sketchresponse/grader_lib.html#module-grader_lib.PolyLine)
+* [Polygon](https://sketchresponse.github.io/sketchresponse/grader_lib.html#module-grader_lib.Polygon)
 * [GradeableFunction](http://sketchresponse.github.io/sketchresponse/grader_lib.html#module-grader_lib.GradeableFunction)
 * [Point](http://sketchresponse.github.io/sketchresponse/grader_lib.html#module-grader_lib.Point)
 
