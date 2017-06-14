@@ -1,18 +1,33 @@
 import z from 'sketch2/util/zdom';
 import BasePlugin from './base-plugin';
+import deepExtend from 'deep-extend';
+import {validate} from 'sketch2/config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 
+const DEFAULT_PARAMS = {
+  label: 'Vertical line',
+  color: 'dimgray',
+  dashStyle: 'solid'
+}
+
 export default class VerticalLine extends BasePlugin {
   constructor(params, app) {
+    let vlParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    if (!app.debug || validate(params, 'vertical-line')) {
+      deepExtend(vlParams, params);
+    }
+    else {
+      console.log('The verticalLine config has errors, using default values instead');
+    }
     // Add params that are specific to this plugin
-    params.icon = {
+    vlParams.icon = {
       src: './plugins/vertical-line/vertical-line-icon.svg',
       alt: 'Vertical line tool',
-      color: params.color
+      color: vlParams.color
     };
-    super(params, app);
+    super(vlParams, app);
     // Message listeners
     this.app.__messageBus.on('addVerticalLine', (id, index) => {this.addVerticalLine(id, index)});
     this.app.__messageBus.on('deleteVerticalLines', () => {this.deleteVerticalLines()});

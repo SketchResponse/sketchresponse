@@ -270,6 +270,7 @@ function loadConfig(configId) {
       ]
     },
     allPlugins: {
+      debug: true,
       width: 750,
       height: 420,
       xrange: [-4.5, 4.5],
@@ -588,7 +589,166 @@ function loadConfig(configId) {
           }
         }
       ]
-    }
+    },
+    invalidConfig: {
+      debug: true,                    // Enables validation of config
+      width: '750',                   // Incorrect type
+      // height: 420,                 // Missing mandatory key
+      xrange: [-4.5, '4.5', 3],       // Extra element and incorrect type
+      yrange: [-2.5, 2.5],
+      xscale: 'not linear',           // Only linear is valid
+      yscale: 'linear',
+      coordinates: 'spheric',         // Only cartesian or polar
+      plugins: [
+        {
+          name: 'axes',
+          xmajor: [3, 4],             // Wrong type
+          // xminor: 2,               // Missing optional, won't report
+          ymajor: 3,
+          yminor: 2,
+          wrongkey: 'wrong',          // Wrong key
+          colors: {
+            // Cartesian coordinates
+            xmajor:     2,            // Wrong type
+            ymajor:     '#f0f0f0',
+            xminor:     '#f6f6f6',
+            yminor:     '#f6f6f6',
+            xaxis:      '#333',
+            yaxis:      '#333',
+            xlabels:     '#333',
+            ylabels:     '#333',
+            zeroLabel:  '#333',
+            // Polar coordinates
+            circle:     '#f0f0f0',
+            ray:        '#f0f0f0',
+            // Both
+            xaxisLabel: '#333',
+            yaxisLabel: '#333'
+          }
+        },
+        {
+          name: 'point',
+          id: 'pt',
+          label: 'Point',
+          color: 'sienna',
+          size: '15',       // Wrong type
+          tag: {
+            value : 'tag',
+            xoffset: [15],  // Wrong type
+            yoffset: 15,
+            align: 'start'
+          },
+          wrongkey: 2       // Wrong key
+        },
+        {
+          name: 'horizontal-line',
+          id: 'hl',
+          label: 'Horizontal line',
+          color: 2,                   // wrong type
+          dashStyle: 'wrong',         // wrong value
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'wrong',           // wrong value
+            wrongkey: 2               // Wrong key
+          },
+          wrongkey: 2                 // Wrong key
+        },
+        {
+          name: 'vertical-line',
+          id: 'vl',
+          label: 'Vertical line',
+          color: 'dimgray',
+          dashStyle: 'dashdotted',
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: -15,
+            align: 'wrong',           // Wrong value
+            wrongkey: 2               // Wrong key
+          }
+        },
+        {
+          name: 'stamp',
+          id: 'st',
+          label: 'Stamp',
+          color: 'cornflowerblue',
+          imgwidth: 450,
+          imgheight: 100,
+          scale: 'wrong',            // Wrong value
+          tag: {
+            value : 'tag',
+            xoffset: 0,
+            yoffset: -35,
+            align: 'middle'
+          },
+          wrongkey: 2                 // Wrong key
+        },
+        {
+          name: 'line-segment',
+          id: 'ar',
+          label: 'Arrow',
+          color: 'mediumseagreen',
+          dashStyle: 'wrong',        // Wrong value
+          arrowHead: {
+            length: '10',            // Wrong value
+            base: 7,
+            wrongkey: 2              // Wrong key
+          },
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'middle',
+            position: 'end'
+          }
+        },
+        {
+          name: 'polyline',
+          id: 'plg',
+          label: 'Polygon',
+          closed: true,
+          color: 'mediumseagreen',
+          fillColor: 1,             // Wrong value
+          dashStyle: 'solid',
+          opacity: 0.8,
+          wrongkey: 2,              // Wrong key
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        },
+        {
+          name: 'spline',
+          id: 'spl',
+          label: 1,                   // wrong value
+          color: 'royalblue',
+          wrongkey: 2 ,               // Wrong key
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          }
+        },
+        {
+          name: 'freeform',
+          id: 'f',
+          label: 1,                   // Wrong value
+          color: 'orange',
+          tag: {
+            value : 'tag',
+            xoffset: 15,
+            yoffset: 15,
+            align: 'start'
+          },
+          wrongkey: 2                 // Wrong key
+        }
+      ]
+    },
   };
   if (configs.hasOwnProperty(configId)) {
     return configs[configId];

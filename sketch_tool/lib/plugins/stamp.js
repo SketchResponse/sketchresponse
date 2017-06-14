@@ -1,26 +1,35 @@
 import z from 'sketch2/util/zdom';
 import BasePlugin from './base-plugin';
+import deepExtend from 'deep-extend';
+import {validate} from 'sketch2/config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
-export const DEFAULTS = {
-  width: 100,
-  height: 100,
-  scale: 1
+
+const DEFAULT_PARAMS = {
+  label: 'Stamp',
+  imgwidth: 100,
+  imgheight: 100,
+  scale: 1,
+  src: './plugins/stamp/stamp.svg',
+  iconSrc: './plugins/stamp/stamp-icon.svg'
 };
 
 export default class Stamp extends BasePlugin {
   constructor(params, app) {
+    let sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    if (!app.debug || validate(params, 'stamp')) {
+      deepExtend(sParams, params);
+    }
+    else {
+      console.log('The stamp config has errors, using default values instead');
+    }
     // Add params that are specific to this plugin
-    params.icon = {
-      src: params.iconSrc ? params.iconSrc : './plugins/stamp/stamp-icon.svg',
+    sParams.icon = {
+      src: sParams.iconSrc,
       alt: 'Stamp tool'
     };
-    super(params, app);
-    this.src = params.src ? params.src : './plugins/stamp/stamp.svg';
-    this.scale = (params.scale !== undefined) ? params.scale : DEFAULTS.scale;
-    this.width = (params.imgwidth !== undefined) ? params.imgwidth : DEFAULTS.width;
-    this.height = (params.imgheight !== undefined) ? params.imgheight : DEFAULTS.height;
+    super(sParams, app);
     // Message listeners
     this.app.__messageBus.on('addStamp', (id, index) => {this.addStamp(id, index)});
     this.app.__messageBus.on('deleteStamps', () => {this.deleteStamps()});
@@ -97,9 +106,9 @@ export default class Stamp extends BasePlugin {
   // We first scale our image.
   // Then translate so that the image is centered on mouse click.
   getTransform(x, y) {
-    let xt = x - 0.5*this.scale*this.width,
-        yt = y - 0.5*this.scale*this.height;
-    return `translate(${xt}, ${yt}) scale(${this.scale})`;
+    let xt = x - 0.5*this.params.scale*this.params.imgwidth,
+        yt = y - 0.5*this.params.scale*this.params.imgheight;
+    return `translate(${xt}, ${yt}) scale(${this.params.scale})`;
   }
 
   render() {
@@ -108,10 +117,10 @@ export default class Stamp extends BasePlugin {
         z('image.stamp' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex + this.readOnlyClass(), {
           x: 0,
           y: 0,
-          width: this.width,
-          height: this.height,
+          width: this.params.imgwidth,
+          height: this.params.imgheight,
           transform: this.getTransform(position.x, position.y),
-          'xlink:href': this.src,
+          'xlink:href': this.params.src,
           onmount: el => {
             this.app.registerElement({
               ownerID: this.params.id,

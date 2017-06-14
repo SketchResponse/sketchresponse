@@ -10,11 +10,24 @@ import GradeableManager from './gradeable-manager';
 import StateManager from './state-manager';
 import HistoryManager from './history-manager';
 import ElementManager from './element-manager';
+import {validate} from './config-validator';
+import deepCopy from 'sketch2/util/deep-copy';
+import deepExtend from 'deep-extend';
 
 import Toolbar from './toolbar';
 
 
 import * as attrCache from './util/dom-attr-cache';
+
+const DEFAULT_CONFIG = {
+  width: 750,
+  height: 420,
+  xrange: [-4.5, 4.5],
+  yrange: [-2.5, 2.5],
+  xscale: 'linear',
+  yscale: 'linear',
+  coordinates: 'cartesian'
+}
 
 
 export default class SketchInput {
@@ -25,12 +38,24 @@ export default class SketchInput {
 
     this.el = el;
     if (config.initialstate) {
-      // Deep copy initial state
-      this.initialState = JSON.parse(JSON.stringify(config.initialstate));
+      this.initialState = deepCopy(config.initialstate);
       delete config.initialstate;
     }
-    this.config = config;
-    this.params = createInheritingObjectTree(config);
+    // Check if we are in debug mode
+    this.debug = typeof config.debug === 'boolean' ? config.debug : false;
+    // Load default config
+    this.config = DEFAULT_CONFIG;
+    // If in debug mode, validate config except plugins array entries that will be validated by each plugin
+    // If we are not in debug mode or have a valid config, overwrite default keys/values
+    if (!this.debug || validate(config, 'main')) {
+      deepExtend(this.config, config);
+    }
+    // Otherwise use default values and add plugins array to the config
+    else {
+      this.config.plugins = deepExtend(config.plugins);
+      console.log('The main config has errors, using default values instead');
+    }
+    this.params = createInheritingObjectTree(this.config);
     this.messageBus = new EventEmitter();
 
     Promise.all(
@@ -110,6 +135,7 @@ export default class SketchInput {
       addUndoPoint: () => this.messageBus.emit('addUndoPoint'),
       __messageBus: this.messageBus,
       svg: document.getElementById('si-canvas'),
+      debug: this.debug
     }
 
     // Prevent default on dragstart to keep Firefox from dragging the SVG
@@ -117,14 +143,6 @@ export default class SketchInput {
     // NOTE: Cannot use mousedown here since that also prevents mouse move/up
     // from being captured when the mouse leaves the window/iframe (in Chrome at least)
     this.app.svg.addEventListener('dragstart', event => event.preventDefault(), true);
-
-    Object.defineProperty(this.params, 'left', {
-      get: () => { return this.app.svg.getBoundingClientRect().left; }
-    });
-
-    Object.defineProperty(this.params, 'top', {
-      get: () => { return this.app.svg.getBoundingClientRect().top; }
-    });
 
     this.toolbar = new Toolbar(this.params, this.app);
     this.elementManager = new ElementManager(this.app);

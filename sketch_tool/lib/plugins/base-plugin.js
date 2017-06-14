@@ -1,12 +1,13 @@
 import katex from 'katex';
 import {getElementsByClassName} from 'sketch2/util/ms-polyfills';
+import deepCopy from 'sketch2/util/deep-copy';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 
 export default class BasePlugin {
   constructor(params, app) {
-    this.params = params;
+    this.params = deepCopy(params);
     this.app = app;
     this.bounds = {
       xmin: 0,
@@ -20,33 +21,40 @@ export default class BasePlugin {
 
     this.state = [];
     this.delIndices = [];
-    this.readonly = params.readonly;
+    this.readonly = this.params.readonly;
 
     if(!this.readonly) {
       this.bindEventHandlers();
     }
 
-    this.id = params.id;
+    this.id = this.params.id;
 
     // Tag related
-    this.hasTag = params.tag !== undefined && params.tag !== null;
+    this.hasTag = this.params.tag !== undefined && this.params.tag !== null;
     if (this.hasTag) {
-      this.tag = params.tag;
-      this.latex = params.tag.latex;
+      this.tag = this.params.tag;
+      // A tag object that gets here has a valid value for any of its defined key
+      // as it has been checked by config-validator
+      // So we only check for the existence of a key and fill out defaults if necessary
+      this.tag.value = this.tag.value ? this.tag.value : 'tag';
+      this.tag.xoffset = this.tag.xoffset ? this.tag.xoffset : 0;
+      this.tag.yoffset = this.tag.yoffset ? this.tag.yoffset : 0;
+      this.tag.align = this.tag.align ? this.tag.align : 'left';
+      this.latex = this.tag.latex ? this.tag.latex : false;
     }
     this.selectMode = false;
     this.app.__messageBus.on('enableSelectMode', () => this.setSelectMode(true));
     this.app.__messageBus.on('disableSelectMode', () => this.setSelectMode(false));
 
     app.registerState({
-      id: params.id,
+      id: this.params.id,
       dataVersion: VERSION,
       getState: () => this.state,
       setState: state => { this.state = state; this.render(); },
     });
 
     app.registerGradeable({
-      id: params.id,
+      id: this.params.id,
       version: GRADEABLE_VERSION,
       getGradeable: () => this.getGradeable(),
     });
@@ -54,23 +62,24 @@ export default class BasePlugin {
     if (!this.readonly) {
       // Most icons look better if only fill is  used.
       // Stroke and fill are needed for polyline plugin.
-      let strokeColor, fillColor;
-      if (params.fillColor) {
-        strokeColor = params.icon.color;
-        fillColor = params.icon.fillColor;
+      let strokeColor = 'none', fillColor = 'none';
+      // Closed polyline
+      if (this.params.fillColor  && this.params.fillColor !== 'none') {
+        strokeColor = this.params.icon.color;
+        fillColor = this.params.icon.fillColor;
       }
-      else {
-        strokeColor = 'none';
-        fillColor = params.icon.color;
+      // Other plugins except stamp
+      else if (this.params.icon.color) {
+        fillColor = this.params.icon.color;
       }
       app.registerToolbarItem({
         type: 'button',
-        id: params.id,
-        name: params.name,
-        label: params.label,
+        id: this.params.id,
+        name: this.params.name,
+        label: this.params.label,
         icon: {
-          src: params.icon.src,
-          alt: params.icon.alt,
+          src: this.params.icon.src,
+          alt: this.params.icon.alt,
           stroke: strokeColor,
           fill: fillColor
         },
@@ -88,6 +97,24 @@ export default class BasePlugin {
         throw new TypeError(this.getTypeErrorStr(fnStr));
       }
     });
+
+    Object.defineProperty(this.params, 'left', {
+      get: () => { return this.app.svg.getBoundingClientRect().left; }
+    });
+
+    Object.defineProperty(this.params, 'top', {
+      get: () => { return this.app.svg.getBoundingClientRect().top; }
+    });
+  }
+
+  static generateDefaultParams(defaultParams, params) {
+    let keys = [
+      'id', 'name', 'width', 'height', 'xrange', 'yrange', 'xscale', 'yscale', 'coordinates'];
+    let allDefaultParams = deepCopy(defaultParams);
+    for (let key of keys) {
+      allDefaultParams[key] = params[key];
+    }
+    return allDefaultParams;
   }
 
   bindEventHandlers() {

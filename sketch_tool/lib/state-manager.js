@@ -1,8 +1,6 @@
-export const VERSION = '0.1';
+import deepCopy from 'sketch2/util/deep-copy';
 
-function deepCopy(serializableObj) {
-  return JSON.parse(JSON.stringify(serializableObj));
-}
+export const VERSION = '0.1';
 
 export default class StateManager {
   constructor(config, messageBus, initialState) {
