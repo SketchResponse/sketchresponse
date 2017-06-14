@@ -23,6 +23,7 @@ System.config({
     "dom-shims": "npm:dom-shims@0.1.4",
     "events": "github:jspm/nodelibs-events@0.1.1",
     "fastclick": "npm:fastclick@1.0.6",
+    "is-my-json-valid": "npm:is-my-json-valid@2.16.0",
     "jquery": "github:components/jquery@2.2.4",
     "jsondiffpatch": "npm:jsondiffpatch@0.1.43",
     "katex": "npm:katex@0.7.1",
@@ -82,6 +83,12 @@ System.config({
     "npm:deep-extend@0.4.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
     },
+    "npm:generate-function@2.0.0": {
+      "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:generate-object-property@1.2.0": {
+      "is-property": "npm:is-property@1.0.2"
+    },
     "npm:has-ansi@0.1.0": {
       "ansi-regex": "npm:ansi-regex@0.2.1",
       "process": "github:jspm/nodelibs-process@0.1.2",
@@ -89,6 +96,14 @@ System.config({
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
+    },
+    "npm:is-my-json-valid@2.16.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "generate-function": "npm:generate-function@2.0.0",
+      "generate-object-property": "npm:generate-object-property@1.2.0",
+      "jsonpointer": "npm:jsonpointer@4.0.1",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "xtend": "npm:xtend@4.0.1"
     },
     "npm:jsondiffpatch@0.1.43": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
