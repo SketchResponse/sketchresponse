@@ -4,7 +4,7 @@ This document will walk through the implementation of a grader script for
 a more complicated problem than the [Simple Grader Tutorial](simple_grader.md) tutorial. The
 problem description for this grader script is below.
 
-<p>Sketch the function <i>f(x)</i> = <i>2x</i><sup>2</sup> / <i>x</i><sup>2</sup> - 1.</p> 
+<p>Sketch the function <i>f(x)</i> = <i>2x</i><sup>2</sup> / <i>x</i><sup>2</sup> - 1.</p>
 <p>Label vertical and horizontal asymptotes, extrema, and inflection points.</p>
 
 This problem will introduce new javascript drawing plugins to handle labeling
@@ -39,6 +39,10 @@ In the example configuration below, the first seven key/value pairs are required
 * `'coordinates': 'cartesian' or 'polar'` sets the coordinate system used by the axes plugin to either cartesian or polar
 
 The last entry `'plugins'` takes a list of dicts that enable the specific javascript plugins that are available to the user. All plugins are declared by 'name'.
+
+One key is optional:
+
+* `'debug': <True|False>(default: False)` sets debug mode where the current configuration will be validated. If errors are found, information about these will ouput to the browser console and defaults will be loaded instead
 
 The 'axes' and 'freeform' plugin usage here is identical to the [Simple Grader Tutorial](simple_grader.md) and is explained there as well as on the [Plugin Description Page](probconfig_plugins.md).
 
@@ -93,7 +97,7 @@ The above problem configuration settings will create a javascript tool that look
 ```python
 @sketchresponse.grader
 def grader(f,cp,ip,va,ha):
-    
+
     f = GradeableFunction.GradeableFunction(f)
     cp = GradeableFunction.GradeableFunction(cp)
     va = Asymptote.VerticalAsymptotes(va)
@@ -137,7 +141,7 @@ This particular function does not have any inflection points so this check verif
 ```python
 if va.get_number_of_asyms() != 2:
    msg += '<font color="blue"> Are you sure about the number of vertical asymptotes?</font><br />'
-        
+
 
 if ha.get_number_of_asyms() != 1:
    msg += '<font color="blue"> Are you sure about the number of horizontal asymptotes?</font><br />'
@@ -258,18 +262,18 @@ def grader(f,cp,ip,va,ha):
             msg += '<font color="blue">Are you sure about the number of extrema? (note that you should not label the endpoints of your function)</font><br />'
         else:
             msg += '<font color="blue">Are you sure about the number of extrema?</font><br />'
-            
+
 
     if ip.get_number_of_points() != 0:
         msg += '<font color="blue">Are you sure about the number of extrema?</font><br />'
 
     if va.get_number_of_asyms() != 2:
         msg += '<font color="blue"> Are you sure about the number of vertical asymptotes?</font><br />'
-        
+
 
     if ha.get_number_of_asyms() != 1:
         msg += '<font color="blue"> Are you sure about the number of horizontal asymptotes?</font><br />'
-        
+
     if msg != '':
         return False, msg
     else:
@@ -293,7 +297,7 @@ def grader(f,cp,ip,va,ha):
         decreasing_ok = f.is_decreasing_between(0, 1) and f.is_decreasing_between(1, 4)
         curvature_up_ok = f.has_positive_curvature_between(-4, -1) and f.has_positive_curvature_between(1, 4)
         curvature_down_ok= f.has_negative_curvature_between(-1,1)
-     
+
 
         if not (increasing_ok and decreasing_ok):
             msg += '<font color="blue"> Where should the graph be increasing and decreasing?</font><br />'
@@ -307,7 +311,7 @@ def grader(f,cp,ip,va,ha):
         if not f.is_less_than_y_between(0,-1,1):
             msg += '<font color="blue"> Your function seems to be in the wrong region on the interval (-1,1)</font><br />'
 
-        
+
         if not (curvature_up_ok and curvature_down_ok):
             msg += '<font color="blue"> Where is the function convave up and concave down?</font><br />'
 
