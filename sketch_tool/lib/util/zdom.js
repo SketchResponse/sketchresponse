@@ -268,11 +268,11 @@ function renderCallback(targetEl) {
   if (!targetEl.__zRoot__) {
     // mount
     targetEl.__zRoot__ = targetEl.__zPending__;
-    targetEl.__zRoot__.mount(targetEl);
+    targetEl.__zRoot__.mount(targetEl, null);
   }
   else {
     // update
-    targetEl.__zRoot__.update(targetEl.__zPending__);
+    targetEl.__zRoot__.update(targetEl.__zPending__, null);
   }
 
   targetEl.__zPending__ = null;
