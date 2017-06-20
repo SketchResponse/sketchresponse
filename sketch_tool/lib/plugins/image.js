@@ -1,14 +1,22 @@
-export const DEFAULTS = {
+import deepExtend from 'deep-extend';
+import {validate} from 'sketch2/config-validator';
+
+export const DEFAULT_PARAMS = {
   scale: 1,
   align: '',
   offset: [0, 0],
+  src: '' // Put a default image?
 };
 
 export default class Image {
   constructor(params, app) {
-    const scale = (params.scale !== undefined) ? params.scale : DEFAULTS.scale;
-    const align = (params.align !== undefined) ? params.align.toLowerCase() : DEFAULTS.align;
-    const offset = params.offset || DEFAULTS.offset;
+    this.params = DEFAULT_PARAMS;
+    if (!app.debug || validate(params, 'image')) {
+      deepExtend(this.params, params);
+    }
+    const scale = this.params.scale;
+    const align = this.params.align; // Note: params.align.toLowerCase() was removed
+    const offset = this.params.offset;
 
     const x = (offset[0] / 100 + (
       (align.match('left')) ? 0 :
@@ -23,7 +31,7 @@ export default class Image {
     )) / scale;
 
     this.el = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-    this.el.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', params.src);
+    this.el.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.params.src);
     this.el.setAttributeNS(null, 'x', `${x * 100}%`);
     this.el.setAttributeNS(null, 'y', `${y * 100}%`);
     this.el.setAttributeNS(null, 'width', '100%');

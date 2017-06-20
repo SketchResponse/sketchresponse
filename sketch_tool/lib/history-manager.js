@@ -1,10 +1,7 @@
 import jsondiffpatch from 'jsondiffpatch';
+import deepCopy from 'sketch2/util/deep-copy';
 
 export const VERSION = '0.1';
-
-function deepCopy(serializableObj) {
-  return JSON.parse(JSON.stringify(serializableObj));
-}
 
 export default class HistoryManager {
   constructor(config, messageBus, stateManager) {
