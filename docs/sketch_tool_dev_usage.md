@@ -22,7 +22,7 @@
   * coordinates: cartesian or polar.
   * plugins: modules that extend drawing functionality either automatically (for example axes and image) or are placed in the top toolbar (freeform, horizontal and vertical lines) and let the user draw the corresponding shape on the canvas.
 
-  You can also load these additional configuation which show various features of the tool:
+  You can also load these additional configurations which show various features of the tool:
   * http://localhost:4567/#debug:allPluginsLatex
   * http://localhost:4567/#debug:initialState
   * http://localhost:4567/#debug:axesParams
