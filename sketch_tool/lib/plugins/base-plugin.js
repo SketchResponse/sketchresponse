@@ -1,6 +1,6 @@
 import katex from 'katex';
-import {getElementsByClassName} from 'sketch2/util/ms-polyfills';
-import deepCopy from 'sketch2/util/deep-copy';
+import {getElementsByClassName} from 'sketch/util/ms-polyfills';
+import deepCopy from 'sketch/util/deep-copy';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';

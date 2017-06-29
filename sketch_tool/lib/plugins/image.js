@@ -1,5 +1,5 @@
 import deepExtend from 'deep-extend';
-import {validate} from 'sketch2/config-validator';
+import {validate} from 'sketch/config-validator';
 
 export const DEFAULT_PARAMS = {
   scale: 1,

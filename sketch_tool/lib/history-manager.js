@@ -1,5 +1,5 @@
 import jsondiffpatch from 'jsondiffpatch';
-import deepCopy from 'sketch2/util/deep-copy';
+import deepCopy from 'sketch/util/deep-copy';
 
 export const VERSION = '0.1';
 

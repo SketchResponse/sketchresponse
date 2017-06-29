@@ -11,7 +11,7 @@ import StateManager from './state-manager';
 import HistoryManager from './history-manager';
 import ElementManager from './element-manager';
 import {validate} from './config-validator';
-import deepCopy from 'sketch2/util/deep-copy';
+import deepCopy from 'sketch/util/deep-copy';
 import deepExtend from 'deep-extend';
 
 import Toolbar from './toolbar';

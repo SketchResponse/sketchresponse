@@ -32,7 +32,6 @@
     "dependencies": {
       "classnames": "npm:classnames@^2.2.5",
       "deep-extend": "npm:deep-extend@^0.4.1",
-      "dom-shims": "npm:dom-shims@^0.1.4",
       "events": "github:jspm/nodelibs-events@^0.1.1",
       "fastclick": "npm:fastclick@^1.0.6",
       "is-my-json-valid": "npm:is-my-json-valid@^2.16.0",

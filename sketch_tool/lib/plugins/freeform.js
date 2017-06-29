@@ -1,8 +1,8 @@
-import z from 'sketch2/util/zdom';
+import z from 'sketch/util/zdom';
 import BasePlugin from './base-plugin';
 import fitCurve from './freeform/fitcurve';
 import deepExtend from 'deep-extend';
-import {validate} from 'sketch2/config-validator';
+import {validate} from 'sketch/config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
