@@ -1,6 +1,7 @@
 import katex from 'katex';
 import {getElementsByClassName} from 'sketch/util/ms-polyfills';
 import deepCopy from 'sketch/util/deep-copy';
+import swal from 'sweetalert2';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -220,16 +221,24 @@ export default class BasePlugin {
         if (typeof index2 !== 'undefined') {
           stateEl = this.state[index1][index2];
         }
-        let val = prompt('Enter tag value:', stateEl.tag);
-        if (val === null) {
-          return; // Happens when cancel button is pressed in prompt window
-        }
-        val.trim();
-        if (val !== '' && val !== stateEl.tag) {
-          stateEl.tag = val;
-          this.app.addUndoPoint();
-          this.render();
-        }
+        swal({
+          title: 'Enter tag value',
+          input: 'text',
+          inputValue: stateEl.tag,
+          showCancelButton: true,
+        }).then(val => {
+          val.trim();
+          if (val !== '' && val !== stateEl.tag) {
+            stateEl.tag = val;
+            this.app.addUndoPoint();
+            this.render();
+          }
+          else {
+            console.warn('Tag value has not been changed');
+          }
+        }, dismiss => {
+          console.warn('Tag value has not been changed');
+        });
       }
     });
   }
