@@ -26,6 +26,7 @@ System.config({
     "katex": "npm:katex@0.7.1",
     "keymaster": "npm:keymaster@1.6.2",
     "pepjs": "github:jquery/pep@0.3.0",
+    "sweetalert2": "npm:sweetalert2@6.6.5",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
     },

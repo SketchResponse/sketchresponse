@@ -38,7 +38,8 @@
       "jsondiffpatch": "npm:jsondiffpatch@^0.1.43",
       "katex": "npm:katex@^0.7.1",
       "keymaster": "npm:keymaster@^1.6.2",
-      "pepjs": "github:jquery/pep@^0.3.0"
+      "pepjs": "github:jquery/pep@^0.3.0",
+      "sweetalert2": "npm:sweetalert2@^6.6.5"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.38",
