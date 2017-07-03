@@ -73,6 +73,16 @@ class MultiFunction(datalayer.Function):
         return [np.min(xvals), np.max(xvals)]
 
     def get_min_value_between(self, xmin, xmax):
+        """Return the minimum value of the function in the domain [xmin, xmax].
+
+        Args:
+            xmin: the minimum x-axis value.
+            xmax: the maximum x-axis value.
+        Returns:
+            [float|bool]:
+            the minimum function value in the domain [xmin, xmax], or False if
+            the function is not defined in that range.
+        """
         functions = self.find_functions_between(xmin, xmax)
         minVals = []
         for function in functions:
@@ -86,6 +96,16 @@ class MultiFunction(datalayer.Function):
             return False
 
     def get_max_value_between(self, xmin, xmax):
+        """Return the maximum value of the function in the domain [xmin, xmax].
+
+        Args:
+            xmin: the minimum x-axis value.
+            xmax: the maximum x-axis value.
+        Returns:
+            [float|bool]:
+            the maximum function value in the domain [xmin, xmax], or False if
+            the function is not defined in that range.
+        """
         functions = self.find_functions_between(xmin, xmax)
         maxVals = []
         for function in functions:
@@ -155,6 +175,9 @@ class MultiFunction(datalayer.Function):
             true if the function is straight within tolerances between xmin and xmax,
             otherwise false
         """
+        if self.does_not_exist_between(xmin, xmax):
+            return False
+
         # Apply tolerances at boundaries:
         xmin = self.px_to_xval(self.xval_to_px(xmin) + self.tolerance['point_distance'])
         xmax = self.px_to_xval(self.xval_to_px(xmax) - self.tolerance['point_distance'])
