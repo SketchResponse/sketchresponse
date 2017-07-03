@@ -78,6 +78,7 @@ Usage Guides
 - [Testing a Grading Script on a Local Server](docs/local_test.md)
 - Tutorial - [Create a Simple Grading Script](docs/simple_grader.md)
 - Tutorial - [Create a Complex Grading Script](docs/complex_grader.md)
+- Tutorial - [Create a Physics Problem Grading Script](docs/physics_grader.md)
 - Tutorial - [edX Quick Start Deployment Guide](docs/edx_quickstart.md)
 
 ### Reference Information
