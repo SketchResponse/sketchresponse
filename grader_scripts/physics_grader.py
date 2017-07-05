@@ -91,7 +91,7 @@ def grader(pl, pg, pt, ls, c, cwm, ccwm):
     pg = Polygon.Polygons(pg)
     cls = LineSegment.LineSegments(c)
 
-    beam = pl.get_polyline_as_segments(0)
+    beam = pl.get_polyline_as_linesegments()
 
     if not pg.get_polygon_count() == 1:
         return False, "Did you forget the isolation bubble?"
@@ -99,12 +99,13 @@ def grader(pl, pg, pt, ls, c, cwm, ccwm):
     poly = pg.polygons[0]
 
     beam1 = beam.segments[0]
+    print isinstance(beam1, LineSegment.LineSegment)
     beam2 = beam.segments[1]
 
-    if len(pg.get_intersections_with_polygon_boundary(beam1, poly)) > 0:
+    if len(pg.get_intersections_with_polygon_boundary(poly, beam1)) > 0:
         return False, "Isolation bubble should not cut vertical beam."
 
-    if not len(pg.get_intersections_with_polygon_boundary(beam2, poly)) == 1:
+    if not len(pg.get_intersections_with_polygon_boundary(poly, beam2)) == 1:
         return False, "Isolation bubble should only cut the horizontal beam once."
 
     if pg.point_is_on_boundary([-2, -1]) == None:

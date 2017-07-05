@@ -11,17 +11,23 @@ class PolyLines(Gradeable.Gradeable):
     def __init__(self, info, tolerance=dict()):
         Gradeable.Gradeable.__init__(self, info, tolerance)
 
-        self.polysegments = []
-        self.polysplines = []
+        self.polyline_count = 0
+        self.polysegments = None
+        self.polysplines = None
+        segmentSplines = []
+        tag = []
         for spline in info:
-            segmentSplines = self.convertToSplineSegments(spline['spline'])
-            tag = None
-            if 'tag' in spline:
-                tag = spline['tag']
-            if len(segmentSplines) > 0:
-                newinfo = self.newFunctionData(info, segmentSplines, tag)
-                self.polysegments.append(LineSegments(newinfo))
-                self.polysplines.append(GradeableFunction(newinfo))
+            if not spline is None:
+                self.polyline_count += 1
+                segmentSplines.append(self.convertToSplineSegments(spline['spline']))
+                if 'tag' in spline:
+                    tag.append(spline['tag'])
+                else:
+                    tag.append("")
+        if len(segmentSplines) > 0:
+            newinfo = self.newFunctionData(info, segmentSplines, tag)
+            self.polysegments = LineSegments(newinfo)
+            self.polysplines = GradeableFunction(newinfo)
 
     def convertToSplineSegments(self, points):
         # input is a list of points [[x1,y1], [x2,y2], ...]
@@ -38,49 +44,44 @@ class PolyLines(Gradeable.Gradeable):
 
         return splines
 
-    def newFunctionData(self, info, splines, tag):
+    def newFunctionData(self, info, splines, tags):
         # replace the the transformed data in the gradeable data struct
         # this only works for freeform only inputs
         newinfo = deepcopy(info)
         del newinfo[:]
 
-        for s in splines:
-            splineDict = {}
-            splineDict['spline'] = s
-            if not tag is None:
-                splineDict['tag'] = tag
-            newinfo.append(splineDict)
+        for i, spline in enumerate(splines):
+            for s in spline:
+                splineDict = {}
+                splineDict['spline'] = s
+                if len(tags) > i:
+                    tag = tags[i]
+                    splineDict['tag'] = tag
+
+                newinfo.append(splineDict)
 
         return newinfo
 
     def get_polyline_count(self):
         """Returns the number of polylines defined in the function."""
-        return len(self.polysegments)
+        return self.polyline_count
 
-    def get_polyline_as_segments(self, index):
-        """Return the polyline at index as a LineSegments grader.
+    def get_polyline_as_linesegments(self):
+        """Return the polyline as a LineSegments grader.
 
-        Args:
-            index: an integer value
         Returns:
             LineSegments:
-            A LineSegment.LineSegments grader object.
+            A LineSegment.LineSegments grader object, or None if no
+            polyline data exists.
         """
-        if index >= 0 and index < len(self.polysegments):
-            return self.polysegments[index]
-        else:
-            return None
+        return self.polysegments
 
-    def get_polyline_as_splines(self, index):
-        """Return the polyline at index as a GradeableFunction grader.
+    def get_polyline_as_gradeablefunction(self):
+        """Return the polyline as a GradeableFunction grader.
 
-        Args:
-            index: an integer value
         Returns:
             GradeableFunction:
-            A GradeableFunction.GradeableFunction grader object.
+            A GradeableFunction.GradeableFunction grader object, or None if no
+            polyline data exists.
         """
-        if index >= 0 and index < len(self.polysplines):
-            return self.polysplines[index]
-        else:
-            return None
+        return self.polysplines
