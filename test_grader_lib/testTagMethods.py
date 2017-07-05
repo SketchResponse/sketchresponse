@@ -167,25 +167,25 @@ class TestTagMethods(TestData.TestData):
         data = self.load_as_gradeable_collections('tag_data')
         d = data[0]
         pl = PolyLine.PolyLines(d['pl'])
-        self.assertTrue(pl.get_polyline_as_segments(0).segments[0].tag_equals('tag'))
+        self.assertTrue(pl.get_polyline_as_linesegments().segments[0].tag_equals('tag'))
 
     def test_polyline_segment_has_tag_false(self):
         data = self.load_as_gradeable_collections('tag_data')
         d = data[0]
         pl = PolyLine.PolyLines(d['pl'])
-        self.assertFalse(pl.get_polyline_as_segments(0).segments[0].tag_equals('somethingelse'))
+        self.assertFalse(pl.get_polyline_as_linesegments().segments[0].tag_equals('somethingelse'))
 
     def test_polyline_segment_contains_tag_true(self):
         data = self.load_as_gradeable_collections('tag_data')
         d = data[0]
         pl = PolyLine.PolyLines(d['pl'])
-        self.assertIsNotNone(pl.get_polyline_as_segments(0).contains_tag('tag'))
+        self.assertIsNotNone(pl.get_polyline_as_linesegments().contains_tag('tag'))
 
     def test_polyline_segment_contains_tag_false(self):
         data = self.load_as_gradeable_collections('tag_data')
         d = data[0]
         pl = PolyLine.PolyLines(d['pl'])
-        self.assertIsNone(pl.get_polyline_as_segments(0).contains_tag('somethingelse'))
+        self.assertIsNone(pl.get_polyline_as_linesegments().contains_tag('somethingelse'))
 
 #    def test_polyline_segment_no_tags(self):
 #        data = self.load_as_gradeable_collections('tag_none')
@@ -198,25 +198,25 @@ class TestTagMethods(TestData.TestData):
         data = self.load_as_gradeable_collections('tag_data')
         d = data[0]
         pl = PolyLine.PolyLines(d['pl'])
-        self.assertTrue(pl.get_polyline_as_splines(0).functions[0].tag_equals('tag'))
+        self.assertTrue(pl.get_polyline_as_gradeablefunction().functions[0].tag_equals('tag'))
 
     def test_polyline_spline_has_tag_false(self):
         data = self.load_as_gradeable_collections('tag_data')
         d = data[0]
         pl = PolyLine.PolyLines(d['pl'])
-        self.assertFalse(pl.get_polyline_as_splines(0).functions[0].tag_equals('somethingelse'))
+        self.assertFalse(pl.get_polyline_as_gradeablefunction().functions[0].tag_equals('somethingelse'))
 
     def test_polyline_spline_contains_tag_true(self):
         data = self.load_as_gradeable_collections('tag_data')
         d = data[0]
         pl = PolyLine.PolyLines(d['pl'])
-        self.assertIsNotNone(pl.get_polyline_as_splines(0).contains_tag('tag'))
+        self.assertIsNotNone(pl.get_polyline_as_gradeablefunction().contains_tag('tag'))
 
     def test_polyline_spline_contains_tag_false(self):
         data = self.load_as_gradeable_collections('tag_data')
         d = data[0]
         pl = PolyLine.PolyLines(d['pl'])
-        self.assertIsNone(pl.get_polyline_as_splines(0).contains_tag('somethingelse'))
+        self.assertIsNone(pl.get_polyline_as_gradeablefunction().contains_tag('somethingelse'))
 
 #    def test_polyline_spline_no_tags(self):
 #        data = self.load_as_gradeable_collections('tag_none')
