@@ -815,36 +815,34 @@ are no matching tags, returns None.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="grader_lib.PolyLine.PolyLines.get_polyline_as_segments">
-<code class="descname">get_polyline_as_segments</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.get_polyline_as_segments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the polyline at index as a LineSegments grader.</p>
+<dt id="grader_lib.PolyLine.PolyLines.get_polyline_as_gradeablefunction">
+<code class="descname">get_polyline_as_gradeablefunction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.get_polyline_as_gradeablefunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the polyline as a GradeableFunction grader.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; an integer value</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A GradeableFunction.GradeableFunction grader object, or None if no
+polyline data exists.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A LineSegment.LineSegments grader object.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#grader_lib.LineSegment.LineSegments" title="grader_lib.LineSegment.LineSegments">LineSegments</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#module-grader_lib.GradeableFunction" title="grader_lib.GradeableFunction">GradeableFunction</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="grader_lib.PolyLine.PolyLines.get_polyline_as_splines">
-<code class="descname">get_polyline_as_splines</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.get_polyline_as_splines" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the polyline at index as a GradeableFunction grader.</p>
+<dt id="grader_lib.PolyLine.PolyLines.get_polyline_as_linesegments">
+<code class="descname">get_polyline_as_linesegments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.get_polyline_as_linesegments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the polyline as a LineSegments grader.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> &#8211; an integer value</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A LineSegment.LineSegments grader object, or None if no
+polyline data exists.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A GradeableFunction.GradeableFunction grader object.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#module-grader_lib.GradeableFunction" title="grader_lib.GradeableFunction">GradeableFunction</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#grader_lib.LineSegment.LineSegments" title="grader_lib.LineSegment.LineSegments">LineSegments</a></td>
 </tr>
 </tbody>
 </table>
