@@ -16,11 +16,12 @@ class Polygons(Gradeable.Gradeable):
         self.polygons = []
 
         for spline in info:
-            points = self.convert_to_real_points(spline['spline'])
-            if len(points) > 0:
-                self.polygons.append(Polygon(points))
-                if 'tag' in spline:
-                    self.polygons[-1].set_tag(spline['tag'])
+            if not spline is None:
+                points = self.convert_to_real_points(spline['spline'])
+                if len(points) > 0:
+                    self.polygons.append(Polygon(points))
+                    if 'tag' in spline:
+                        self.polygons[-1].set_tag(spline['tag'])
 
         self.set_tagables(None)
         if len(self.polygons) > 0:
