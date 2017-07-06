@@ -44,14 +44,16 @@ export default class Polyline extends BasePlugin {
   }
 
   getGradeable() {
-    return this.state.map(spline => {
-      if (spline.length > 0) {
+    return this.state
+      .filter(spline => {
+        return spline.length > 0;
+      })
+      .map(spline => {
         return {
           spline: spline.map(point => [point.x, point.y]),
           tag: spline[0].tag
         };
-      }
-    });
+      });
   }
 
   addPolyline(id, index) {
@@ -122,7 +124,7 @@ export default class Polyline extends BasePlugin {
     return this.state[polylineIndex].length === 1 ? '' : 0;
   }
 
-  render() {
+  render() {console.log('g', JSON.stringify(this.getGradeable()));
     z.render(this.el,
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw visible polyline under invisible polyline
