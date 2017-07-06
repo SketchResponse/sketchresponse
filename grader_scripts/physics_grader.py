@@ -99,7 +99,6 @@ def grader(pl, pg, pt, ls, c, cwm, ccwm):
     poly = pg.polygons[0]
 
     beam1 = beam.segments[0]
-    print isinstance(beam1, LineSegment.LineSegment)
     beam2 = beam.segments[1]
 
     if len(pg.get_intersections_with_polygon_boundary(poly, beam1)) > 0:
