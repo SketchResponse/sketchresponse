@@ -124,7 +124,7 @@ export default class Polyline extends BasePlugin {
     return this.state[polylineIndex].length === 1 ? '' : 0;
   }
 
-  render() {console.log('g', JSON.stringify(this.getGradeable()));
+  render() {
     z.render(this.el,
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw visible polyline under invisible polyline
