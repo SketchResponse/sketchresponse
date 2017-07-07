@@ -23,7 +23,8 @@ class TestPolyLineMethods(TestData.TestData):
         data = self.load_as_gradeable_collections('polyline')
         d = data[0]
         poly = PolyLine.PolyLines(d['pl'])
-        self.assertIsNone(poly.get_polyline_as_linesegments())
+        segs = poly.get_polyline_as_linesegments().segments
+        self.assertTrue(len(segs) == 0)
 
     def test_polyline_splines_true(self):
         data = self.load_as_gradeable_collections('polyline')
@@ -42,7 +43,8 @@ class TestPolyLineMethods(TestData.TestData):
         data = self.load_as_gradeable_collections('polyline')
         d = data[0]
         poly = PolyLine.PolyLines(d['pl'])
-        self.assertIsNone(poly.get_polyline_as_gradeablefunction())
+        funcs = poly.get_polyline_as_gradeablefunction().functions
+        self.assertTrue(len(funcs) == 0)
 
     def test_polyline_count(self):
         data = self.load_as_gradeable_collections('polyline')
