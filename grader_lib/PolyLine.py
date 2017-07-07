@@ -24,10 +24,10 @@ class PolyLines(Gradeable.Gradeable):
                     tag.append(spline['tag'])
                 else:
                     tag.append("")
-        if len(segmentSplines) > 0:
-            newinfo = self.newFunctionData(info, segmentSplines, tag)
-            self.polysegments = LineSegments(newinfo)
-            self.polysplines = GradeableFunction(newinfo)
+
+        newinfo = self.newFunctionData(info, segmentSplines, tag)
+        self.polysegments = LineSegments(newinfo)
+        self.polysplines = GradeableFunction(newinfo)
 
     def convertToSplineSegments(self, points):
         # input is a list of points [[x1,y1], [x2,y2], ...]
