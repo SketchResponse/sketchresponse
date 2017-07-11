@@ -61,6 +61,9 @@ The following third-party code is used under the terms of the MIT license:
     Includes portions of the underscore.js project, Copyright (c) 2009-2015
     Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 
+    SweetAlert2
+    Copyright (c) 2014 Tristan Edwards & Limon Monte
+
 The third-party JSChannel library is used under the terms of the LGPL 2.1
 License. The code was obtained along with the following copyright notice:
 
