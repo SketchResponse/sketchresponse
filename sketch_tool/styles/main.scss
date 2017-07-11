@@ -185,11 +185,16 @@ body {
   }
 
   menu {
-    width: 100%;
     top: calc(100% + 5px);
     position: absolute;
     display: block;
+    z-index: 9999;
+    background: #eee;
+    border: 1px solid gray;
 
-    button:hover { background: none; }
+    button:hover {
+      opacity: 1;
+      background: hsla(0,0,0,0.05);
+    }
   }
 }

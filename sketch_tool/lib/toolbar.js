@@ -15,27 +15,6 @@ function renderIcon(id, src, alt) {
   });
 }
 
-function getBlobUrl(src, stroke, fill) {
-  let ajax = new XMLHttpRequest(), div, svg, svgData, blob;
-  ajax.open('GET', src, false); // For the time being, use a deprecated synchronous request
-  ajax.send(null);
-  div = document.createElement('div');
-  div.innerHTML = ajax.responseText;
-  svg = div.children[0];
-  svg.setAttribute('width', 35);
-  svg.setAttribute('height', 35);
-  svg.setAttribute('stroke', stroke);
-  svg.setAttribute('fill', fill);
-  // Convert colored svg to an image
-  // http://www.timvasil.com/blog14/post/2014/02/06/How-to-convert-an-SVG-image-into-a-static-image-with-only-JavaScript.aspx
-  // Without the charset part or it will fail in Safari
-  // http://stackoverflow.com/questions/23114686/safari-image-onload-event-not-firing-with-blob-url
-  svgData = new XMLSerializer().serializeToString(svg);
-  blob = new Blob([svgData], { type: "image/svg+xml" });
-  // Return the blob's URL
-  return (self.URL || self.webkitURL || self).createObjectURL(blob);
-}
-
 function renderLabel(id, text, hasDropdown) {
   return z('div.label',
     z('span', {id: id}, text),
@@ -102,8 +81,19 @@ export default class Toolbar {
   activateItem(id) {
     if (id === this.activeItemID) return;
     try {
-      const oldActiveItem = this.items.find(item => item.id === this.activeItemID);
-      const newActiveItem = this.items.find(item => item.id === id);
+      let allItems = [];
+      this.items.forEach(item => {
+        if (item.name === 'group') {
+          item.items.forEach(item => {
+            allItems.push(item);
+          })
+        }
+        else {
+          allItems.push(item);
+        }
+      });
+      let oldActiveItem = allItems.find(item => item.id === this.activeItemID);
+      let newActiveItem = allItems.find(item => item.id === id);
 
       oldActiveItem && oldActiveItem.deactivate();
       newActiveItem && newActiveItem.activate();
@@ -123,13 +113,19 @@ export default class Toolbar {
       }
       this.selectedDropdownItemMap[item.id] = item.items[0].id;
     }
-    if (item.type == 'button') {
-      // Do not color stamp icon as it would require an XHR with its potential SOP issues
-      if (item.name !== 'stamp') {
-        item.icon.src = getBlobUrl(item.icon.src, item.icon.stroke, item.icon.fill);
-      }
-    }
     this.items.push(item);
+    this.render();
+  }
+
+  openDropdown(id) {
+    this.openDropdownID = id;
+    this.render();
+  }
+
+  selectDropdownItem(id, itemId) {
+    this.openDropdownID = null;
+    this.selectedDropdownItemMap[id] = itemId;
+    this.app.__messageBus.emit('activateItem', itemId);
     this.render();
   }
 
@@ -140,22 +136,24 @@ export default class Toolbar {
     z.render(this.el,
       z.each(renderableItems, ({type, id, icon, label, items, action}) => {
         if (type === 'separator') return z('hr');
-
+        let selectedItem, isActive;
         if (type === 'splitbutton') {
-          const selectedItem = items.find(item => item.id === this.selectedDropdownItemMap[id]);
+          selectedItem = items.find(item => item.id === this.selectedDropdownItemMap[id]);
           icon = selectedItem.icon;
+          isActive = (selectedItem.id === this.activeItemID);
+        }
+        else if (type === 'button') {
+          isActive = (id === this.activeItemID);
         }
 
         const hasDropdown = (items && items.length);
         const isOpen = (id === this.openDropdownID);
-        const isActive = (id === this.activeItemID);
 
         return z('div.item', {
             id: id,
             'data-is-open': isOpen,
             'data-is-active': isActive,
           },
-
           z.if(type === 'button',
             z('button', {
                 onclick: e => {
@@ -168,37 +166,40 @@ export default class Toolbar {
               renderIcon(`${id}-icon`, icon.src, icon.alt),
               renderLabel(`${id}-label`, label, hasDropdown)
             )
+          ),
+          z.if(type === 'splitbutton',
+            z('button.split-button-main', {
+                onclick: e => {
+                  // Finalize any shape that isn't
+                  this.app.__messageBus.emit('finalizeShapes', this.selectedDropdownItemMap[id]);
+                  this.app.__messageBus.emit('activateItem', this.selectedDropdownItemMap[id])
+                },
+                'aria-labelledby': `${id}-label ${id}-icon`,
+              },
+              renderIcon(`${id}-icon`, icon.src, icon.alt),  // TODO: title
+            ),
+            z('button.split-button-aux', {
+                onclick: e => this.openDropdown(id),
+                'aria-haspopup': 'true',
+              },
+              renderLabel(`${id}-label`, label, hasDropdown)
+            )
+          ),
+          z.if(hasDropdown,
+            z('menu.dropdown',
+              z.each(items, item =>
+                z('div.dropdown-item',
+                  z('button.dropdown-button', {
+                      id: item.id,
+                      onclick: e => this.selectDropdownItem(id, item.id)
+                    },
+                    renderIcon(`${id}-icon`, item.icon.src, item.icon.alt),  // TODO: title
+                    renderLabel(`${id}-label`, item.label, false)
+                  )
+                )
+              )
+            )
           )
-
-          // z.if(type === 'splitbutton',
-          //   z('button.split-button-main', {
-          //       onclick: e => this.app.__messageBus.emit('activateItem', id),
-          //       'aria-labelledby': `${id}-label ${id}-icon`,
-          //     },
-          //     renderIcon(`${id}-icon`, icon, '')  // TODO: title
-          //   ),
-          //   z('button.split-button-aux', {
-          //       onclick: e => this.app.dispatch('dropdown-open', id),
-          //       'aria-haspopup': 'true',
-          //     },
-          //     renderLabel(`${id}-label`, label, hasDropdown)
-          //   )
-          // ),
-
-          // z.if(hasDropdown,
-          //   z('menu.dropdown',
-          //     z.each(items, item =>
-          //       z('div.dropdown-item',
-          //         z('button.dropdown-button', {
-          //             id: item.id,
-          //             onclick: e => this.app.dispatch('dropdown-clicked', id, item.id)
-          //           },
-          //           renderIcon(`${id}-icon`, item.icon, '')  // TODO: title
-          //         )
-          //       )
-          //     )
-          //   )
-          // )
         )
       })
     );

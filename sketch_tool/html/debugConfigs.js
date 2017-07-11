@@ -749,6 +749,91 @@ function loadConfig(configId) {
         }
       ]
     },
+    pluginGroup: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes'
+        },
+        {
+          name: 'freeform',
+          id: 'f',
+          label: 'Freeform',
+          color:'cornflowerblue'
+        },
+        {
+          name: 'group',
+          id: 'lines',
+          label: 'Lines',
+          color: 'red',
+          plugins: [
+            {
+              name: 'vertical-line',
+              id: 'vl',
+              color: 'dimgray'
+            },
+            {
+              name: 'horizontal-line',
+              id: 'hl',
+              color: 'dimgray'
+            },
+            {
+              name: 'line-segment',
+              id: 'ls',
+              label: 'Line segment',
+              color: 'cornflowerblue',
+              dashStyle: 'solid'
+            },
+            {
+              name: 'line-segment',
+              id: 'ar',
+              label: 'Arrow',
+              color: 'mediumseagreen',
+              dashStyle: 'solid',
+              arrowHead: {
+                length: 10,
+                base: 7
+              }
+            }
+          ]
+        },
+        {
+          name: 'group',
+          id: 'points',
+          label: 'Points',
+          color: 'blue',
+          plugins: [
+            {
+              name: 'point',
+              id: 'cp',
+              label: 'Point',
+              color: 'orange',
+              size: 15
+            },
+            {
+              name: 'point',
+              id: 'ip',
+              label: 'Hollow point',
+              color: 'mediumseagreen',
+              size: 15,
+              hollow: true
+            }
+          ]
+        },
+        {
+          name: 'spline',
+          id: 'spl',
+          label: 'Spline',
+          color: 'mediumseagreen'
+        }
+      ]
+    }
   };
   if (configs.hasOwnProperty(configId)) {
     return configs[configId];
