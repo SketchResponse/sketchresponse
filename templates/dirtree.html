@@ -1,0 +1,19 @@
+<!doctype html>
+<title>Path: {{ tree.name }}</title>
+<h1>Grader Scripts</h1>
+<ul>
+    {%- for item in tree.children recursive %}
+
+{%- if item.name.endswith("__init__.py") %}
+    {% elif item.name.endswith(".py") %}
+    <li><a href="/{{ item.name.replace(".py", "") }}">{{ item.name }}</a></li>
+    {% elif item.name.endswith(".pyc") %}
+    {% elif item.name.endswith(".py~") %}
+    {% else %}
+    <li>{{ item.name }}
+    {%- if item.children -%}
+        <ul><a href="/{{ loop(item.children) }}">{{ loop(item.children) }}</a></ul>
+    {%- endif %}</li>
+    {% endif %}
+{%- endfor %}
+</ul>
