@@ -1,6 +1,6 @@
 # Problem Configuration Plugins
 
-This document provides a description of all the SketchResponse plugins and how
+This document provides a description of all the SketchResponse problem configuration parameters and how
 to declare them. Declaring any plugin in a grader's problem configuration
 enables the selection of that plugin in the javascript front-end tool.
 
@@ -11,6 +11,7 @@ is used.
 
 ## Table of Contents
 
+* [Main](#main)
 * [Axes](#axes)
 * [Background](#background)
 * [Freeform](#freeform)
@@ -23,6 +24,23 @@ is used.
 * [Stamp](#stamp)
 * [Vertical Line](#vert-line)
 * [Initial State](#initialstate)
+
+<div id=main></div>
+## Main
+The main section of the problem configuration contains parameters that affect the
+overall look of the sketch tool. The main section should only be declared once
+per problem configuration, unlike plugins, which can be declared mulitple times.
+
+* `'width': <integer>` - The width of the drawing canvas in pixels.
+* `'height': <integer>` - The height of the drawing canvas in pixels.
+* `'xrange': [<number>, <number>]` - The numerical range of the x axis.
+* `'yrange': [<number>, <number>]` - The numerical range of the y axis.
+* `'xscale': 'linear'` - Currently only linear. 
+* `'yscale': 'linear'` - Currently only linear.
+* `'coordinates': <'cartesians'|'polar'>` - The type of axes to draw.
+* `'debug': <True|False>` - If true prints debug information about the
+  	    		    problem configuration to your browser's
+			    developer console.
 
 <div id=axes></div>
 ## Axes

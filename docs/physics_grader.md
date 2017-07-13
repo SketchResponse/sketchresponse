@@ -34,6 +34,7 @@ In the example configuration below, the first seven key/value pairs are required
 * `'xscale': 'linear'` sets the scale of the x axis to linear (only option currently implemented)
 * `'yscale': 'linear'` sets the scale of the y axis to linear (only option currently implemented)
 * `'coordinates': 'cartesian' or 'polar'` sets the coordinate system used by the axes plugin to either cartesian or polar. It defaults to 'cartesian'.
+* `'debug': True or False if True prints configuration debug information to the developer console
 
 The last entry `'plugins'` takes a list of dicts that enable the specific javascript plugins that are available to the user. All plugins are declared by 'name'.
 
@@ -83,6 +84,8 @@ problemconfig = sketchresponse.config({
     'yrange': [-2.5, 2.5],
     'xscale': 'linear',
     'yscale': 'linear',
+    'coordinates': 'cartesian',
+    'debug': False,
     'plugins': [
         {'name': 'axes'},
         {'name': 'polyline', 'id': 'pl', 'label': 'Beam', 'closed': False, 'color': 'lightblue', 'readonly': True},
@@ -244,6 +247,8 @@ problemconfig = sketchresponse.config({
     'yrange': [-2.5, 2.5],
     'xscale': 'linear',
     'yscale': 'linear',
+    'coordinates': 'cartesian',
+    'debug': False,
     'plugins': [
         {'name': 'axes'},
         {'name': 'polyline', 'id': 'pl', 'label': 'Beam', 'closed': False, 'color': 'lightblue', 'readonly': True},
