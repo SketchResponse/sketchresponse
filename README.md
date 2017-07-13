@@ -54,6 +54,12 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
   ```
   [JSPM](http://jspm.io) will pull in additional dependencies automatically on a post-install script.
 
+* Build a local distribution of the *sketch_tool*:
+
+  ```sh
+  $ npm run build
+  ```
+
 ## Grader Back-End
 
 The SketchResponse grader backend has only two third party package requirements:

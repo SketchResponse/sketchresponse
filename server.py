@@ -28,7 +28,13 @@ def check():
 
 
 @app.route('/<grader_module_name>')
-def new_local_frontend(grader_module_name):
+@app.route('/<path:path>/<grader_module_name>')
+def new_local_frontend(path=None, grader_module_name=None):
+    if not path is None:
+        path = path.replace("/", ".")
+        if not path.endswith("."):
+            path = path + "."
+        grader_module_name =  path + grader_module_name
     grader_module = importlib.import_module('grader_scripts.' + grader_module_name)
     reload(grader_module)
 
@@ -36,7 +42,13 @@ def new_local_frontend(grader_module_name):
 
 
 @app.route('/<grader_module_name>/check', methods=['POST'])
-def check_local(grader_module_name):
+@app.route('/<path:path>/<grader_module_name>/check', methods=['POST'])
+def check_local(path=None, grader_module_name=None):
+    if not path is None:
+        path = path.replace("/", ".")
+        if not path.endswith("."):
+            path = path + "."
+        grader_module_name =  path + grader_module_name
     grader_module = importlib.import_module('grader_scripts.' + grader_module_name)
     reload(grader_module)
 
