@@ -46,4 +46,4 @@ If you want to see a listing of the grading scripts in your `grading_scripts` di
 http://localhost:5000
 ```
 
-![Listing of available grading scripts](imgs/grading_script_listing.png "Grading Script Listing")
+![Listing of available grading scripts](imgs/grading_scripts_listing.png "Grading Script Listing")
