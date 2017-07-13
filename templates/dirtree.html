@@ -6,13 +6,13 @@
 
 {%- if item.name.endswith("__init__.py") %}
     {% elif item.name.endswith(".py") %}
-    <li><a href="/{{ item.name.replace(".py", "") }}">{{ item.name }}</a></li>
+    <li><a href="{{ item.name.replace('.py', '') }}">{{ item.name }}</a></li>
     {% elif item.name.endswith(".pyc") %}
     {% elif item.name.endswith(".py~") %}
     {% else %}
     <li>{{ item.name }}
     {%- if item.children -%}
-        <ul><a href="/{{ loop(item.children) }}">{{ loop(item.children) }}</a></ul>
+        <ul>{{ loop(item.children) }}</ul>
     {%- endif %}</li>
     {% endif %}
 {%- endfor %}

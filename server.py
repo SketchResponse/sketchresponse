@@ -1,30 +1,16 @@
-import sys, importlib
+import sys
+import importlib
 from flask import Flask, render_template, request, json
 from proto2prod import convert_ans_dict
 import os
 
 app = Flask(__name__)
 
+
 @app.route('/')
-def hello_world():
-    #return render_template('index.html')
+def list_grader_scripts():
     path = "grader_scripts/"  # os.path.expanduser(u'~')
     return render_template('dirtree.html', tree=make_tree(path))
-
-@app.route('/check', methods=['POST'])
-def check():
-    submitted_data = request.get_json()
-    submitted_data = convert_ans_dict(submitted_data)  # Fake the production API
-
-    # Dispatch to grader in the required format
-    # Assume no 'expect' value for now
-    grader_response = gradefn(None, json.dumps(submitted_data))
-
-    # Allow boolean grader return values instead of dicts
-    if type(grader_response) == bool:
-        grader_response = {'ok': grader_response, 'msg': ''}
-
-    return json.dumps(grader_response)
 
 
 @app.route('/<grader_module_name>')
@@ -34,11 +20,14 @@ def new_local_frontend(path=None, grader_module_name=None):
         path = path.replace("/", ".")
         if not path.endswith("."):
             path = path + "."
-        grader_module_name =  path + grader_module_name
-    grader_module = importlib.import_module('grader_scripts.' + grader_module_name)
+        grader_module_name = path + grader_module_name
+
+    module_path = 'grader_scripts.' + grader_module_name
+    grader_module = importlib.import_module(module_path)
     reload(grader_module)
 
-    return render_template('index_sketch_tool.html', hash=grader_module.problemconfig)
+    return render_template('index_sketch_tool.html',
+                           hash=grader_module.problemconfig)
 
 
 @app.route('/<grader_module_name>/check', methods=['POST'])
@@ -48,8 +37,10 @@ def check_local(path=None, grader_module_name=None):
         path = path.replace("/", ".")
         if not path.endswith("."):
             path = path + "."
-        grader_module_name =  path + grader_module_name
-    grader_module = importlib.import_module('grader_scripts.' + grader_module_name)
+        grader_module_name = path + grader_module_name
+
+    module_path = 'grader_scripts.' + grader_module_name
+    grader_module = importlib.import_module(module_path)
     reload(grader_module)
 
     submitted_data = request.get_json()
@@ -103,7 +94,7 @@ def make_tree(path):
             if os.path.isdir(fn):
                 tree['children'].append(make_tree(fn))
             else:
-                tree['children'].append(dict(name=name))
+                tree['children'].append(dict(name=fn.replace('grader_scripts/', '')))
     return tree
 
 if __name__ == '__main__':
