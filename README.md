@@ -90,7 +90,7 @@ Usage Guides
 ### Reference Information
 - [Sketch-Tool Plugin Configuration](docs/probconfig_plugins.md)
 - [Grader-Library API](https://SketchResponse.github.io/sketchresponse)
-
+- [Gradeable Data Format](docs/gradeable_data_format.md)
 
 Contribute
 ----------
