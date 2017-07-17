@@ -84,9 +84,11 @@ defines either a polyline with 6 segments, or a polygon with 7 sides.
 
 The data returned by the freeform or spline plugin is a list of dictionary objects containing lists of at least four points. The freeform/spline line is fit to a set of four point splines. The format of the point data for a line fit to two spline segments would look like: start point, control point, control point, end/start point, control point, control point, end point. Each dictionary object defines a unbroken line drawn by the plugin.
 
+```sh
 {... "data": [{u'spline': [[6, 110], [62.4, 111.61], [122.03, 114.16], [174.42, 93.23], [214.4, 77.26], [246.23, 40.2], [265.57, 1.73]]}, {u'spline': [[492, 6], [508.96, 39.92], [539.76, 70.49], [575.44, 83.32], [618.54, 98.82], [666.46, 95.68], [712.25, 95.88]]}, {u'spline': [[302, 395], [317.22, 339.83], [336.76, 231.33], [391.37, 248.42], [449.46, 266.59], [453.09, 358.46], [455.78, 419.27]]}]}
+```
 
-## Tag Data
+### Tag Data
 
 Tag data behaves slightly differently compared to line and point data. Each tag
 has to be associated with either line or point data. If a piece of data has an
