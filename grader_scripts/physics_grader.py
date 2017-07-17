@@ -92,6 +92,7 @@ def grader(pl, pg, pt, ls, c, cwm, ccwm):
     pl = PolyLine.PolyLines(pl)
     pg = Polygon.Polygons(pg)
     cls = LineSegment.LineSegments(c)
+    points = GradeableFunction.GradeableFunction(pt)
 
     beam = pl.get_polyline_as_linesegments()
 
@@ -103,6 +104,15 @@ def grader(pl, pg, pt, ls, c, cwm, ccwm):
     beam1 = beam.segments[0]
     beam2 = beam.segments[1]
 
+    pointA = None
+    pointB = None
+    if points.get_number_of_points() > 0:
+        for point in points.points:
+            if point.tag_equals('A'):
+                pointA = point
+            if point.tag_equals('B'):
+                pointB = point
+
     if len(pg.get_intersections_with_polygon_boundary(poly, beam1)) > 0:
         return False, "Isolation bubble should not cut vertical beam."
 
@@ -112,7 +122,7 @@ def grader(pl, pg, pt, ls, c, cwm, ccwm):
     if pg.point_is_on_boundary([-2, -1]) == None:
         return False, "Check where the isolation bubble cuts the horizontal beam."
 
-    if pg.point_is_on_boundary([-3, 2]) == None and pg.point_is_on_boundary([2, -1]) == None:
+    if pg.point_is_on_boundary(pointA) == None and pg.point_is_on_boundary(pointB) == None:
         return False, "Check the isolation bubble containment."
 
     return True, "Good job!"
