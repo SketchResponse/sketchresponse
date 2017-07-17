@@ -23,7 +23,7 @@ key contains a list of version numbers for each plugin used, in case different p
 are updated at different rates.
 
 ```sh
-{"apiVersion":"0.1","meta":{"config":{"width":420,"coords":"polar","yrange":[-4,4],"yscale":"linear","xscale":"linear","xrange":[-4,4],"plugins":[{"name":"axes"},{"color":"blue","label":"Function f(x)","name":"freeform","id":"f"},{"color":"blue","label":"Line Segment","name":"line-segment","id":"ls"}],"height":420},"dataVersions":{"f":"0.1","ls":"0.1"}}, "data": ...}
+{"apiVersion":"0.1","meta":{"config":{"width":420,"coordinates":"polar","yrange":[-4,4],"yscale":"linear","xscale":"linear","xrange":[-4,4],"plugins":[{"name":"axes"},{"color":"blue","label":"Function f(x)","name":"freeform","id":"f"},{"color":"blue","label":"Line Segment","name":"line-segment","id":"ls"}],"height":420},"dataVersions":{"f":"0.1","ls":"0.1"}}, "data": ...}
 ```
 
 ## Plugin Specfic Part
