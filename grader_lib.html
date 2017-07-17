@@ -68,18 +68,24 @@ the vertical or horizontal asymptote.</p>
 
 <dl class="method">
 <dt id="grader_lib.Asymptote.Asymptote.tag_equals">
-<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptote.tag_equals" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptote.tag_equals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the given string is the same as the object&#8217;s tag,
-otherwise False.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object&#8217;s tag,
+otherwise False.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -123,18 +129,24 @@ function you are grading.</p>
 
 <dl class="method">
 <dt id="grader_lib.Asymptote.HorizontalAsymptotes.contains_tag">
-<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.HorizontalAsymptotes.contains_tag" title="Permalink to this definition">¶</a></dt>
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.HorizontalAsymptotes.contains_tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a reference to the first object found with the given tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
-are no matching tags, returns None.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Tag</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -248,18 +260,24 @@ function you are grading.</p>
 
 <dl class="method">
 <dt id="grader_lib.Asymptote.VerticalAsymptotes.contains_tag">
-<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.VerticalAsymptotes.contains_tag" title="Permalink to this definition">¶</a></dt>
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.VerticalAsymptotes.contains_tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a reference to the first object found with the given tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
-are no matching tags, returns None.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Tag</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -396,18 +414,24 @@ start point and the end point of the segment.</p>
 
 <dl class="method">
 <dt id="grader_lib.LineSegment.LineSegment.tag_equals">
-<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegment.tag_equals" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegment.tag_equals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the given string is the same as the object&#8217;s tag,
-otherwise False.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object&#8217;s tag,
+otherwise False.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -503,18 +527,24 @@ otherwise false.</p>
 
 <dl class="method">
 <dt id="grader_lib.LineSegment.LineSegments.contains_tag">
-<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.contains_tag" title="Permalink to this definition">¶</a></dt>
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.contains_tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a reference to the first object found with the given tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
-are no matching tags, returns None.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Tag</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -797,18 +827,24 @@ otherwise false.</p>
 <p>PolyLines.</p>
 <dl class="method">
 <dt id="grader_lib.PolyLine.PolyLines.contains_tag">
-<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.contains_tag" title="Permalink to this definition">¶</a></dt>
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.contains_tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a reference to the first object found with the given tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
-are no matching tags, returns None.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Tag</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -883,18 +919,24 @@ vertices of the polygon.</p>
 
 <dl class="method">
 <dt id="grader_lib.Polygon.Polygon.tag_equals">
-<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygon.tag_equals" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygon.tag_equals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the given string is the same as the object&#8217;s tag,
-otherwise False.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object&#8217;s tag,
+otherwise False.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -961,18 +1003,24 @@ the given polygon, or None.</p>
 
 <dl class="method">
 <dt id="grader_lib.Polygon.Polygons.contains_tag">
-<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.contains_tag" title="Permalink to this definition">¶</a></dt>
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons.contains_tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a reference to the first object found with the given tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
-are no matching tags, returns None.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Tag</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1224,18 +1272,24 @@ point exists.</dd>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.contains_tag">
-<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.contains_tag" title="Permalink to this definition">¶</a></dt>
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.contains_tag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a reference to the first object found with the given tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The first Tag object with a tag value of to_compare, if there
-are no matching tags, returns None.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Tag</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Tag</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1927,18 +1981,24 @@ tolerances, otherwise false</p>
 
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.tag_equals">
-<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.tag_equals" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.tag_equals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the given string is the same as the object&#8217;s tag,
-otherwise False.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object&#8217;s tag,
+otherwise False.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1986,18 +2046,24 @@ otherwise False.</td>
 
 <dl class="method">
 <dt id="grader_lib.Point.Point.tag_equals">
-<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.tag_equals" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.tag_equals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>to_compare</strong> &#8211; an string value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> &#8211; an string value</li>
+<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the given string is the same as the object&#8217;s tag,
-otherwise False.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object&#8217;s tag,
+otherwise False.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
