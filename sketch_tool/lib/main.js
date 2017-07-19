@@ -152,6 +152,8 @@ export default class SketchInput {
       new Plugin(this.params.plugins[idx], this.app);
     });
 
+    document.addEventListener('pointerdown', () => this.messageBus.emit('closeDropdown'), true);
+
     // TODO: factor into... something
     this.app.registerToolbarItem({type: 'separator'});
     this.app.registerToolbarItem({

@@ -50,6 +50,7 @@ export default class Toolbar {
 
     app.__messageBus.on('registerToolbarItem', this.registerToolbarItem.bind(this));
     app.__messageBus.on('activateItem', this.activateItem.bind(this));
+    app.__messageBus.on('closeDropdown', this.closeDropdown.bind(this));
   }
 
   // Called when the toolbar plugin itself is activated
@@ -122,9 +123,15 @@ export default class Toolbar {
     this.render();
   }
 
+  closeDropdown() {
+    this.openDropdownID = null;
+    this.render();
+  }
+
   selectDropdownItem(id, itemId) {
     this.openDropdownID = null;
     this.selectedDropdownItemMap[id] = itemId;
+    this.app.__messageBus.emit('finalizeShapes', itemId);
     this.app.__messageBus.emit('activateItem', itemId);
     this.render();
   }
@@ -159,7 +166,7 @@ export default class Toolbar {
                 onclick: e => {
                   // Finalize any shape that isn't
                   this.app.__messageBus.emit('finalizeShapes', id);
-                  action ? action() : this.app.__messageBus.emit('activateItem', id);
+                  action ? action() : this.activateItem(id);
                 },
                 'aria-labelledby': `${id}-label ${id}-icon`,
               },
@@ -172,14 +179,19 @@ export default class Toolbar {
                 onclick: e => {
                   // Finalize any shape that isn't
                   this.app.__messageBus.emit('finalizeShapes', this.selectedDropdownItemMap[id]);
-                  this.app.__messageBus.emit('activateItem', this.selectedDropdownItemMap[id])
+                  this.activateItem(this.selectedDropdownItemMap[id]);
                 },
                 'aria-labelledby': `${id}-label ${id}-icon`,
               },
               renderIcon(`${id}-icon`, icon.src, icon.alt),  // TODO: title
             ),
             z('button.split-button-aux', {
-                onclick: e => this.openDropdown(id),
+                onclick: e => {
+                  // Finalize any shape that isn't
+                  this.app.__messageBus.emit('finalizeShapes', this.selectedDropdownItemMap[id]);
+                  this.activateItem(this.selectedDropdownItemMap[id]);
+                  this.openDropdown(id);
+                },
                 'aria-haspopup': 'true',
               },
               renderLabel(`${id}-label`, label, hasDropdown)
@@ -191,7 +203,7 @@ export default class Toolbar {
                 z('div.dropdown-item',
                   z('button.dropdown-button', {
                       id: item.id,
-                      onclick: e => this.selectDropdownItem(id, item.id)
+                      onpointerdown: e => this.selectDropdownItem(id, item.id)
                     },
                     renderIcon(`${id}-icon`, item.icon.src, item.icon.alt),  // TODO: title
                     renderLabel(`${id}-label`, item.label, false)
