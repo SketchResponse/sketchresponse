@@ -325,7 +325,6 @@ function loadConfig(configId) {
           name: 'stamp',
           id: 'st',
           label: 'Stamp',
-          color: 'cornflowerblue',
           imgwidth: 450,
           imgheight: 100,
           scale: 0.5,
@@ -519,7 +518,6 @@ function loadConfig(configId) {
           name: 'stamp',
           id: 'st',
           label: 'Stamp',
-          color: 'cornflowerblue',
           imgwidth: 450,
           imgheight: 100,
           scale: 0.5,
@@ -673,7 +671,6 @@ function loadConfig(configId) {
           name: 'stamp',
           id: 'st',
           label: 'Stamp',
-          color: 'cornflowerblue',
           imgwidth: 450,
           imgheight: 100,
           scale: 'wrong',            // Wrong value
@@ -771,7 +768,6 @@ function loadConfig(configId) {
           name: 'group',
           id: 'lines',
           label: 'Lines',
-          color: 'red',
           plugins: [
             {
               name: 'vertical-line',
@@ -807,7 +803,6 @@ function loadConfig(configId) {
           name: 'group',
           id: 'points',
           label: 'Points',
-          color: 'blue',
           plugins: [
             {
               name: 'point',

@@ -141,12 +141,13 @@ export default class Toolbar {
       ['separator', 'button', 'splitbutton'].indexOf(item.type) >= 0);
 
     z.render(this.el,
-      z.each(renderableItems, ({type, id, icon, label, items, action}) => {
+      z.each(renderableItems, ({type, id, icon, label, color, items, action}) => {
         if (type === 'separator') return z('hr');
         let selectedItem, isActive;
         if (type === 'splitbutton') {
           selectedItem = items.find(item => item.id === this.selectedDropdownItemMap[id]);
           icon = selectedItem.icon;
+          color = selectedItem.color;
           isActive = (selectedItem.id === this.activeItemID);
         }
         else if (type === 'button') {
@@ -160,6 +161,7 @@ export default class Toolbar {
             id: id,
             'data-is-open': isOpen,
             'data-is-active': isActive,
+            style: isActive ? `border-bottom-color: ${color};` : ''
           },
           z.if(type === 'button',
             z('button', {

@@ -166,6 +166,7 @@ export default class SketchInput {
         fill: 'black',
         alt: 'Select',
       },
+      color: 'black',
       activate: () => {
         // Temporarily hold a reference for ulterior removal
         this.handlePointerDown = () => {

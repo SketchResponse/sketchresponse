@@ -88,6 +88,7 @@ export default class BasePlugin {
         name: this.params.name,
         label: this.params.label,
         icon: icon,
+        color: this.params.color ? this.params.color : 'black',
         activate: this.activate.bind(this),
         deactivate: this.deactivate.bind(this)
       };

@@ -135,12 +135,12 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    border-bottom: 3px solid transparent;
+    border-bottom: 4px solid transparent;
 
     &:hover { border-bottom-color: hsla(0,0,0,0.2); }
 
     &[data-is-active="true"] {
-      border-bottom-color: hsla(0,0,0,0.6);
+      background: hsla(0,0,0,0.1);
       button:not(.dropdown-button) { opacity: 1; }
     }
 
@@ -185,7 +185,7 @@ body {
   }
 
   menu {
-    top: calc(100% + 5px);
+    top: calc(100% + 4px);
     position: absolute;
     display: block;
     z-index: 9999;
