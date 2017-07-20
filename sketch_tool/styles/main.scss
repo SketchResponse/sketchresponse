@@ -117,17 +117,15 @@ body {
   border-bottom: 1px solid hsla(0,0,0,0.03);
   user-select: none;
 
-  hr:last-of-type { margin-left: auto; } // Push last group to the right
-
   hr {
     border: none;
     margin: 0;
     width: 2px;
+    height: initial;
     margin: 4px 7px;
-    background: hsla(0,0,100%,0.5);
+    background: hsla(0,0,0,0.125);
+    &:last-of-type { margin-left: auto; } // Push last group to the right
   }
-
-  hr {width: 2px; background: hsla(0,0,100%,0.7); }
 
   .item {
     min-width: 55px;

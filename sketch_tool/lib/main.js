@@ -148,14 +148,7 @@ export default class SketchInput {
     this.elementManager = new ElementManager(this.app);
     this.app.registerElement = this.elementManager.registerElement.bind(this.elementManager);
 
-    plugins.forEach((Plugin, idx) => {
-      new Plugin(this.params.plugins[idx], this.app);
-    });
-
-    document.addEventListener('pointerdown', () => this.messageBus.emit('closeDropdown'), true);
-
-    // TODO: factor into... something
-    this.app.registerToolbarItem({type: 'separator'});
+    // Add stateful buttons (Select and plugins) to the left of the toolbar
     this.app.registerToolbarItem({
       type: 'button',
       id: 'select',
@@ -185,6 +178,16 @@ export default class SketchInput {
         this.messageBus.emit('activateItem', 'select');
       }
     });
+
+    plugins.forEach((Plugin, idx) => {
+      new Plugin(this.params.plugins[idx], this.app);
+    });
+
+    document.addEventListener('pointerdown', () => this.messageBus.emit('closeDropdown'), true);
+
+    // Add action buttons (Delete, Undo, and Redo) to the right of the toolbar
+    // TODO: factor into... something
+    this.app.registerToolbarItem({type: 'separator'});
     this.app.registerToolbarItem({
       type: 'button',
       id: 'delete',
