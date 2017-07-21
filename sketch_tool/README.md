@@ -54,6 +54,7 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
   * http://localhost:4567/#debug:tagPosition
   * http://localhost:4567/#debug:newPlugins
   * http://localhost:4567/#debug:invalidConfig
+  * http://localhost:4567/#debug:pluginGroup
 
 
 * To build the *sketchresponse/static/sketch_tool_dist* directory:
