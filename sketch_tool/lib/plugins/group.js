@@ -6,11 +6,20 @@ import Polyline from './polyline';
 import Spline from './spline';
 import Stamp from './stamp';
 import VerticalLine from './vertical-line';
+import {validate} from 'sketch/config-validator';
 
 export const VERSION = '0.1';
 
 export default class Group {
   constructor(params, app) {
+    if (app.debug) {
+      if (typeof params.label !== 'string') {
+        params.label = 'Group'; // Default value
+      }
+      if (!validate(params, 'group')) {
+        console.log('The group config has errors, using default values instead');
+      }
+    }
     this.params = params;
     this.app = app;
     let items = [];

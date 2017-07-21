@@ -123,6 +123,9 @@ export default class BasePlugin {
     for (let key of keys) {
       allDefaultParams[key] = params[key];
     }
+    if (params.isSubItem) {
+      allDefaultParams.isSubItem = true;
+    }
     return allDefaultParams;
   }
 

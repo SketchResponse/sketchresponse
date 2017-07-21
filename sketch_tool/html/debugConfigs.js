@@ -639,35 +639,6 @@ function loadConfig(configId) {
           wrongkey: 2       // Wrong key
         },
         {
-          name: 'horizontal-line',
-          id: 'hl',
-          label: 'Horizontal line',
-          color: 2,                   // wrong type
-          dashStyle: 'wrong',         // wrong value
-          tag: {
-            value : 'tag',
-            xoffset: 15,
-            yoffset: 15,
-            align: 'wrong',           // wrong value
-            wrongkey: 2               // Wrong key
-          },
-          wrongkey: 2                 // Wrong key
-        },
-        {
-          name: 'vertical-line',
-          id: 'vl',
-          label: 'Vertical line',
-          color: 'dimgray',
-          dashStyle: 'dashdotted',
-          tag: {
-            value : 'tag',
-            xoffset: 15,
-            yoffset: -15,
-            align: 'wrong',           // Wrong value
-            wrongkey: 2               // Wrong key
-          }
-        },
-        {
           name: 'stamp',
           id: 'st',
           label: 'Stamp',
@@ -743,6 +714,42 @@ function loadConfig(configId) {
             align: 'start'
           },
           wrongkey: 2                 // Wrong key
+        },
+        {
+          name: 'group',
+          id: 'lns',
+          // label: 'Lines',              // Missing optional, won't report
+          plugins: [
+            {
+              name: 'horizontal-line',
+              id: 'hl',
+              label: 'Horizontal line',
+              color: 2,                   // wrong type
+              dashStyle: 'wrong',         // wrong value
+              tag: {
+                value : 'tag',
+                xoffset: 15,
+                yoffset: 15,
+                align: 'wrong',           // wrong value
+                wrongkey: 2               // Wrong key
+              },
+              wrongkey: 2                 // Wrong key
+            },
+            {
+              name: 'vertical-line',
+              id: 'vl',
+              label: 'Vertical line',
+              color: 'dimgray',
+              dashStyle: 'dashdotted',
+              tag: {
+                value : 'tag',
+                xoffset: 15,
+                yoffset: -15,
+                align: 'wrong',           // Wrong value
+                wrongkey: 2               // Wrong key
+              }
+            }
+          ]
         }
       ]
     },
