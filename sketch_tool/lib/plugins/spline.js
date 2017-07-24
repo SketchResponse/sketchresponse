@@ -1,7 +1,9 @@
-import z from 'sketch2/util/zdom';
+import z from 'sketch/util/zdom';
 import BasePlugin from './base-plugin';
 import fitCurve from './freeform/fitcurve';
-import { injectStyleSheet, injectSVGDefs } from 'sketch2/util/dom-style-helpers';
+import { injectStyleSheet, injectSVGDefs } from 'sketch/util/dom-style-helpers';
+import deepExtend from 'deep-extend';
+import {validate} from 'sketch/config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -9,17 +11,28 @@ export const GRADEABLE_VERSION = '0.1';
 const FIT_TOLERANCE = 0;
 const ROUNDING_PRESCALER = 100;
 
-export default class Spline extends BasePlugin {
+const DEFAULT_PARAMS = {
+  label: 'Spline',
+  color: 'dimgray'
+}
 
+export default class Spline extends BasePlugin {
   constructor(params, app) {
+    let sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    if (!app.debug || validate(params, 'spline')) {
+      deepExtend(sParams, params);
+    }
+    else {
+      console.log('The spline config has errors, using default values instead');
+    }
     let iconSrc = './plugins/spline/spline-icon.svg';
     // Add params that are specific to this plugin
-    params.icon = {
+    sParams.icon = {
       src: iconSrc,
       alt: 'Spline tool',
-      color: params.color
+      color: sParams.color
     };
-    super(params, app);
+    super(sParams, app);
     // Message listeners
     this.app.__messageBus.on('addSpline', (id, index) => {this.addSpline(id, index)});
     this.app.__messageBus.on('deleteSplines', () => {this.deleteSplines()});

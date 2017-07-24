@@ -8,6 +8,8 @@ problemconfig = sketchresponse.config({
     'yrange': [-4.5, 4.5],
     'xscale': 'linear',
     'yscale': 'linear',
+    'coordinates': 'cartesian',
+    'debug': False,
     'plugins': [
         {'name': 'axes'},
         {'name': 'freeform', 'id': 'f', 'label': 'Function f(x)', 'color':'blue'},

@@ -1,18 +1,33 @@
-import z from 'sketch2/util/zdom';
+import z from 'sketch/util/zdom';
 import BasePlugin from './base-plugin';
+import deepExtend from 'deep-extend';
+import {validate} from 'sketch/config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 
+const DEFAULT_PARAMS = {
+  label: 'Horizontal line',
+  color: 'dimgray',
+  dashStyle: 'solid'
+}
+
 export default class HorizontalLine extends BasePlugin {
   constructor(params, app) {
+    let hlParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    if (!app.debug || validate(params, 'horizontal-line')) {
+      deepExtend(hlParams, params);
+    }
+    else {
+      console.log('The horizontalLine config has errors, using default values instead');
+    }
     // Add params that are specific to this plugin
-    params.icon = {
+    hlParams.icon = {
       src: './plugins/horizontal-line/horizontal-line-icon.svg',
       alt: 'Horizontal line tool',
-      color: params.color
+      color: hlParams.color
     };
-    super(params, app);
+    super(hlParams, app);
     // Message listeners
     this.app.__messageBus.on('addHorizontalLine', (id, index) => {this.addHorizontalLine(id, index)});
     this.app.__messageBus.on('deleteHorizontalLines', () => {this.deleteHorizontalLines()});

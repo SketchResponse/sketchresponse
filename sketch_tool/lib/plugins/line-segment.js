@@ -1,18 +1,32 @@
-import z from 'sketch2/util/zdom';
+import z from 'sketch/util/zdom';
 import BasePlugin from './base-plugin';
-import { injectStyleSheet, injectSVGDefs } from 'sketch2/util/dom-style-helpers';
+import { injectStyleSheet, injectSVGDefs } from 'sketch/util/dom-style-helpers';
+import deepExtend from 'deep-extend';
+import {validate} from 'sketch/config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 
-export default class LineSegment extends BasePlugin {
+const DEFAULT_PARAMS = {
+  label: 'Line segment',
+  color: 'dimgray',
+  dashStyle: 'solid'
+}
 
+export default class LineSegment extends BasePlugin {
   constructor(params, app) {
+    let lsParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    if (!app.debug || validate(params, 'line-segment')) {
+      deepExtend(lsParams, params);
+    }
+    else {
+      console.log('The lineSegment config has errors, using default values instead');
+    }
     let iconSrc;
     // Add params that are specific to this plugin
-    if (params.arrowHead) {
-      let length = params.arrowHead.length,
-          base = params.arrowHead.base,
+    if (lsParams.arrowHead) {
+      let length = lsParams.arrowHead.length,
+          base = lsParams.arrowHead.base,
           refY = base/2;
       injectSVGDefs(`
         <marker id="arrowhead-${params.id}" markerWidth="${length}" markerHeight="${base}" refX="${length}" refY="${refY}" orient="auto">
@@ -24,12 +38,12 @@ export default class LineSegment extends BasePlugin {
     else {
       iconSrc = './plugins/line-segment/line-icon.svg';
     }
-    params.icon = {
+    lsParams.icon = {
       src: iconSrc,
       alt: 'Line segment tool',
-      color: params.color
+      color: lsParams.color
     };
-    super(params, app);
+    super(lsParams, app);
     // Message listeners
     this.app.__messageBus.on('addLineSegment', (id, index) => {this.addLineSegment(id, index)});
     this.app.__messageBus.on('addLineSegmentPoint', (id, index) => {this.addLineSegmentPoint(id, index)});
@@ -39,13 +53,13 @@ export default class LineSegment extends BasePlugin {
     this.vConstraint = false;
     this.rConstraint = false;
 
-    if (params.directionConstraint) {
-      this.hConstraint = params.directionConstraint === 'horizontal' ? true : false;
-      this.vConstraint = params.directionConstraint === 'vertical' ? true : false;
+    if (lsParams.directionConstraint) {
+      this.hConstraint = lsParams.directionConstraint === 'horizontal' ? true : false;
+      this.vConstraint = lsParams.directionConstraint === 'vertical' ? true : false;
     }
-    if (params.lengthConstraint) {
+    if (lsParams.lengthConstraint) {
       this.rConstraint = true;
-      this.rConstraintValue = params.lengthConstraint;
+      this.rConstraintValue = lsParams.lengthConstraint;
     }
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
     this.wasDragged = false;

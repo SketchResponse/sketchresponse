@@ -16,7 +16,7 @@ $ pip install -r requirements.txt
 
 Before you can run the local server, you need to build a local copy of the sketch tool. If you
 have already done this and you have not modified the sketch tool in the interim you can skip
-this step. Otherwise, follow the instructions [here](sketch_tool_dev_usage.md) for details on building the sketch tool distribution.
+this step. Otherwise, follow the instructions [here](sketch_tool_dev_usage.md) or [here](getting_started.md) for details on building the sketch tool distribution.
 
 ### Start the grader local server
 
@@ -33,9 +33,17 @@ You should see a message telling you that the server is running on `http://local
 Open your web browser of choice and put the following in the url bar, where <grader script name> is the filename of your grader script (leaving the .py extension off):
 
 ```sh
-$ http://localhost:5000/<grader script name>
+http://localhost:5000/<grader script name>
 ```
 
 You will now see a locally running copy of the SketchResponse Sketch Tool using the configuration options you defined in your grading script. You can use it to draw test input for your grader script and press the 'Check' button in the bottom left corner to run your grader on the functions you have drawn.
 
 ![Locally running Sketch Tool](imgs/complex_grader.png "Local Sketch Tool")
+
+If you want to see a listing of the grading scripts in your `grading_scripts` directory, you can leave off the script name. To launch a script from the listing, you can just click on the link for the script you want.
+
+```sh
+http://localhost:5000
+```
+
+![Listing of available grading scripts](imgs/grading_scripts_listing.png "Grading Script Listing")

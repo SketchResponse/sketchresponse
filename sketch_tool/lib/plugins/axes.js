@@ -1,5 +1,6 @@
-import z from 'sketch2/util/zdom';
+import z from 'sketch/util/zdom';
 import deepExtend from 'deep-extend';
+import {validate} from 'sketch/config-validator';
 
 export const VERSION = '0.1';
 
@@ -11,37 +12,51 @@ const ONE_EIGHTY_DIV_PI = 180 / Math.PI;
 const PI_DIV_ONE_EIGHTY = Math.PI / 180;
 
 const DEFAULT_PARAMS = {
+  // The default of these is calculated
+  // xmajor, xminor, xlabels
+  // ymajor, yminor, ylabels
+  // major,  minor,  labels
+  rrange:     10,
+  rmajor:     1,
+  thetamajor: 30,
   colors: {
-    xmajor: '#f0f0f0',
-    ymajor: '#f0f0f0',
-    xminor: '#f6f6f6',
-    yminor: '#f6f6f6',
-    xaxis: '#333',
-    yaxis: '#333',
+    // Cartesian coordinates
+    xmajor:     '#f0f0f0',
+    ymajor:     '#f0f0f0',
+    xminor:     '#f6f6f6',
+    yminor:     '#f6f6f6',
+    xaxis:      '#333',
+    yaxis:      '#333',
+    xlabels:     '#333',
+    ylabels:     '#333',
+    zeroLabel:  '#333',
+    // Polar coordinates
+    circle:     '#f0f0f0',
+    ray:        '#f0f0f0',
+    // Both
     xaxisLabel: '#333',
-    yaxisLabel: '#333',
-    xlabel: '#333',
-    ylabel: '#333',
-    zeroLabel: '#333',
-    circle: '#f0f0f0',
-    ray: '#f0f0f0'
+    yaxisLabel: '#333'
+  },
+  fontSize: {
+    // Cartesian coordinates
+    xlabels:     14,
+    ylabels:     14,
+    zeroLabel:  14,
+    // Both
+    xaxisLabel: 14,
+    yaxisLabel: 14
   },
   strokeWidth: {
+    // Cartesian coordinates
     xmajor: 2,
     ymajor: 2,
     xminor: 1,
     yminor: 1,
-    xaxis: 1,
-    yaxis: 1,
+    xaxis:  1,
+    yaxis:  1,
+    // Polar coordinates
     circle: 2,
-    ray: 2
-  },
-  fontSize: {
-    xlabel:    14,
-    ylabel:    14,
-    xaxisLabel: 14,
-    yaxisLabel: 14,
-    zeroLabel: 14
+    ray:    2
   }
 };
 
@@ -74,7 +89,6 @@ function generateUniformTicks(spacing, extent) {
   return ticks;
 }
 
-
 // Rounds a number to the geometrically-nearest value in the 1-2-5 series (preserving sign)
 // Returns 0 if the input is 0.
 // The general idea for this alorithm was taken from d3.js's linear scales
@@ -94,42 +108,42 @@ function nearestNiceNumber(number) {
   else return 10 * nextLowestPowerOf10;
 }
 
-
 export default class Axes {
   constructor(params, app) {
-    if (params.xscale !== 'linear' || params.yscale !== 'linear') {
-      throw new Error('Only linear axis scales are supported in this release.');
+    this.generateDefaultParams(params);
+    if (!app.debug || validate(params, 'axes')) {
+      deepExtend(this.params, params);
     }
-
-    this.params = DEFAULT_PARAMS;
-    deepExtend(this.params, params);
-
-    this.coordinates = (params.coordinates === undefined) ? 'cartesian' : params.coordinates;
-
-    if (this.coordinates !== 'cartesian' && this.coordinates !== 'polar') {
-      throw new Error('Only cartesian or polar axes are supported.');
+    else {
+      console.log('The axes config has errors, using default values instead');
     }
 
     this.el = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     app.svg.appendChild(this.el);
 
-    this.x = new LinearScale([0, params.width], params.xrange);
-    this.y = new LinearScale([params.height, 0], params.yrange);
+    this.x = new LinearScale([0, this.params.width], this.params.xrange);
+    this.y = new LinearScale([this.params.height, 0], this.params.yrange);
 
-    if (this.coordinates === 'cartesian') {
-      this.initCartesian(params);
+    if (this.params.coordinates === 'cartesian') {
+      this.initCartesian();
     }
     else {
-      this.initPolar(params);
+      this.initPolar();
     }
 
     this.render();
   }
 
-  initCartesian(params) {
-    this.zeroLabel = params.zerolabel;
+  generateDefaultParams(params) {
+    this.params = DEFAULT_PARAMS;
+    let keys = ['name', 'width', 'height', 'xrange', 'yrange', 'xscale', 'yscale', 'coordinates'];
+    for (let key of keys) {
+      this.params[key] = params[key];
+    }
+  }
 
-    const approxMajorPixelSpacing = params.width / DEFAULTS.targetXMajorTicks;
+  initCartesian() {
+    const approxMajorPixelSpacing = this.params.width / DEFAULTS.targetXMajorTicks;
 
     const defaultMajorXSpacing = nearestNiceNumber(Math.abs(
       this.x.mathDelta / this.x.pixelDelta * approxMajorPixelSpacing));
@@ -145,8 +159,8 @@ export default class Axes {
 
 
     // Note: can't use `||` since 0 and null are falsy
-    this.xMajor = (params.xmajor !== undefined) ? params.xmajor
-      : (params.major !== undefined) ? params.major
+    this.xMajor = (this.params.xmajor !== undefined) ? this.params.xmajor
+      : (this.params.major !== undefined) ? this.params.major
       : defaultMajorXSpacing;
 
     if (this.xMajor === null) this.xMajor = [];
@@ -154,7 +168,7 @@ export default class Axes {
     else if (typeof this.xMajor === 'number') {
       // xMajor is a tick spacing
       defaultMinorXSpacing = nearestNiceNumber(this.xMajor / DEFAULTS.targetMinorMajorTickRatio);
-      this.xMajor = generateUniformTicks(this.xMajor, params.xrange);
+      this.xMajor = generateUniformTicks(this.xMajor, this.params.xrange);
     }
     else {
       // Custom tick array; disable default minor ticks in this case
@@ -162,14 +176,14 @@ export default class Axes {
     }
 
 
-    this.xLabels = (params.xlabels !== undefined) ? params.xlabels
-      : (params.labels !== undefined) ? params.labels
+    this.xLabels = (this.params.xlabels !== undefined) ? this.params.xlabels
+      : (this.params.labels !== undefined) ? this.params.labels
       : this.xMajor;
 
     if (this.xLabels === null) this.xLabels = this.xMajor.map(() => '');
 
-    if (this.zeroLabel === undefined) {
-      this.zeroLabel = this.xLabels[this.xMajor.indexOf(0)];
+    if (this.params.zerolabel === undefined) {
+      this.params.zerolabel = this.xLabels[this.xMajor.indexOf(0)];
     }
 
     this.xLabels = this.xLabels.filter((_, idx) => this.xMajor[idx] !== 0);
@@ -177,8 +191,8 @@ export default class Axes {
 
 
     // Note: can't use `||` since 0 and null are falsy
-    this.yMajor = (params.ymajor !== undefined) ? params.ymajor
-      : (params.major !== undefined) ? params.major
+    this.yMajor = (this.params.ymajor !== undefined) ? this.params.ymajor
+      : (this.params.major !== undefined) ? this.params.major
       : defaultMajorYSpacing;
 
     if (this.yMajor === null) this.yMajor = [];
@@ -186,7 +200,7 @@ export default class Axes {
     else if (typeof this.yMajor === 'number') {
       // yMajor is a tick spacing
       defaultMinorYSpacing = nearestNiceNumber(this.yMajor / DEFAULTS.targetMinorMajorTickRatio);
-      this.yMajor = generateUniformTicks(this.yMajor, params.yrange);
+      this.yMajor = generateUniformTicks(this.yMajor, this.params.yrange);
     }
     else {
       // Custom tick array; disable default minor ticks in this case
@@ -194,14 +208,14 @@ export default class Axes {
     }
 
 
-    this.yLabels = (params.ylabels !== undefined) ? params.ylabels
-      : (params.labels !== undefined) ? params.labels
+    this.yLabels = (this.params.ylabels !== undefined) ? this.params.ylabels
+      : (this.params.labels !== undefined) ? this.params.labels
       : this.yMajor;
 
     if (this.yLabels === null) this.yLabels = this.yMajor.map(() => '');
 
-    if (this.zeroLabel === undefined) {
-      this.zeroLabel = this.yLabels[this.yMajor.indexOf(0)];
+    if (this.params.zerolabel === undefined) {
+      this.params.zerolabel = this.yLabels[this.yMajor.indexOf(0)];
     }
 
     this.yLabels = this.yLabels.filter((_, idx) => this.yMajor[idx] !== 0);
@@ -209,39 +223,39 @@ export default class Axes {
 
 
     // Note: can't use `||` since 0 and null are falsy
-    this.xMinor = (params.xminor !== undefined) ? params.xminor
-      : (params.minor !== undefined) ? params.minor
+    this.xMinor = (this.params.xminor !== undefined) ? this.params.xminor
+      : (this.params.minor !== undefined) ? this.params.minor
       : defaultMinorXSpacing;
 
     if (this.xMinor === null) this.xMinor = [];
     else if (this.xMinor === 0) this.xMinor = [0];  // Avoids an infinite loop with spacing = 0
     else if (typeof this.xMinor === 'number') {
       // xMinor is a tick spacing
-      this.xMinor = generateUniformTicks(this.xMinor, params.xrange);
+      this.xMinor = generateUniformTicks(this.xMinor, this.params.xrange);
     }
 
     this.xMinor = this.xMinor.filter(val => !(this.xMajor.indexOf(val) >= 0));  // Exclude values in xMajor
 
 
     // Note: can't use `||` since 0 and null are falsy
-    this.yMinor = (params.yminor !== undefined) ? params.yminor
-      : (params.minor !== undefined) ? params.minor
+    this.yMinor = (this.params.yminor !== undefined) ? this.params.yminor
+      : (this.params.minor !== undefined) ? this.params.minor
       : defaultMinorYSpacing;
 
     if (this.yMinor === null) this.yMinor = [];
     else if (this.yMinor === 0) this.yMinor = [0];  // Avoids an infinite loop with spacing = 0
     else if (typeof this.yMinor === 'number') {
       // yMinor is a tick spacing
-      this.yMinor = generateUniformTicks(this.yMinor, params.yrange);
+      this.yMinor = generateUniformTicks(this.yMinor, this.params.yrange);
     }
 
     this.yMinor = this.yMinor.filter(val => !(this.yMajor.indexOf(val) >= 0));  // Exclude values in xMajor
   }
 
-  initPolar(params) {
-    this.rRange = (params.rrange !== undefined) ? params.rrange : 10;
-    this.rMajor = (params.rmajor !== undefined) ? params.rmajor : 1;
-    this.thetaMajor = (params.thetamajor !== undefined) ? params.thetamajor : 30;
+  initPolar() {
+    this.rRange = (this.params.rrange !== undefined) ? this.params.rrange : 10;
+    this.rMajor = (this.params.rmajor !== undefined) ? this.params.rmajor : 1;
+    this.thetaMajor = (this.params.thetamajor !== undefined) ? this.params.thetamajor : 30;
     this.thetaMajor = degToRad(this.thetaMajor);
     this.circles = this.generateCircles(this.rMajor, this.rRange);
     this.rays = this.generateRays(this.thetaMajor);
@@ -294,7 +308,7 @@ export default class Axes {
   }
 
   render() {
-    if (this.coordinates === 'cartesian') {
+    if (this.params.coordinates === 'cartesian') {
       z.render(this.el,
         z.each(this.xMinor, xval =>
           z('line.xminor', {
@@ -340,8 +354,8 @@ export default class Axes {
               x: this.x.pixelVal(xval) + 0,
               y: this.y.pixelVal(0) + 15,
               style: `
-                fill: ${this.params.colors.xlabel};
-                font-size: ${this.params.fontSize.xlabel}px;
+                fill: ${this.params.colors.xlabels};
+                font-size: ${this.params.fontSize.xlabels}px;
               `,
             }, String(this.xLabels[idx]))
           )
@@ -364,13 +378,13 @@ export default class Axes {
               x: this.x.pixelVal(0) - 4,
               y: this.y.pixelVal(yval) + 5,
               style: `
-                fill: ${this.params.colors.ylabel};
-                font-size: ${this.params.fontSize.ylabel}px;
+                fill: ${this.params.colors.ylabels};
+                font-size: ${this.params.fontSize.ylabels}px;
               `,
             }, String(this.yLabels[idx]))
           )
         ),
-        z.if(this.zeroLabel !== undefined && this.zeroLabel !== null, () =>
+        z.if(this.params.zerolabel !== undefined && this.params.zerolabel !== null, () =>
           z('text.default-text', {
             'text-anchor': 'end',
             x: this.x.pixelVal(0) - 4,
@@ -379,7 +393,7 @@ export default class Axes {
               fill: ${this.params.colors.zeroLabel};
               font-size: ${this.params.fontSize.zeroLabel}px;
             `,
-          }, String(this.zeroLabel))
+          }, String(this.params.zerolabel))
         ),
         z('line.xaxis', {
           x1: this.x.pixelMin,

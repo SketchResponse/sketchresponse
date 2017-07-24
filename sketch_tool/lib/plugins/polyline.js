@@ -1,49 +1,59 @@
-import z from 'sketch2/util/zdom';
+import z from 'sketch/util/zdom';
 import BasePlugin from './base-plugin';
-import { injectStyleSheet, injectSVGDefs } from 'sketch2/util/dom-style-helpers';
+import { injectStyleSheet, injectSVGDefs } from 'sketch/util/dom-style-helpers';
+import deepExtend from 'deep-extend';
+import {validate} from 'sketch/config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 
-export default class Polyline extends BasePlugin {
+const DEFAULT_PARAMS = {
+  label: 'Polyline',
+  color: 'dimgray',
+  dashStyle: 'solid',
+  closed: false,
+  fillColor: 'none',
+  opacity: 1
+}
 
+export default class Polyline extends BasePlugin {
   constructor(params, app) {
-    let iconSrc = params.closed ? './plugins/polyline/polyline-closed-icon.svg'
-                                : './plugins/polyline/polyline-open-icon.svg';
+    let plParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    if (!app.debug || validate(params, 'polyline')) {
+      deepExtend(plParams, params);
+    }
+    else {
+      console.log('The polyline config has errors, using default values instead');
+    }
+    let iconSrc = plParams.closed ? './plugins/polyline/polyline-closed-icon.svg'
+                                  : './plugins/polyline/polyline-open-icon.svg';
     // Add params that are specific to this plugin
-    params.icon = {
+    plParams.icon = {
       src: iconSrc,
       alt: 'Polyline tool',
-      color: params.color
+      color: plParams.color
     };
-    if (params.closed && params.fillColor) {
-        params.icon.fillColor = params.fillColor;
+    if (plParams.closed && plParams.fillColor !== 'none') {
+        plParams.icon.fillColor = plParams.fillColor;
     }
-    super(params, app);
+    super(plParams, app);
     // Message listeners
     this.app.__messageBus.on('addPolyline', (id, index) => {this.addPolyline(id, index)});
     this.app.__messageBus.on('deletePolylines', () => {this.deletePolylines()});
     this.app.__messageBus.on('finalizeShapes', (id) => {this.drawEnd(id)});
-    this.closed = false;
-    this.fillColor = 'none';
-    if (params.closed) {
-      this.closed = params.closed;
-    }
-    if (params.fillColor) {
-      this.fillColor = params.fillColor;
-    }
-    this.opacity = params.opacity ? params.opacity : 1;
   }
 
   getGradeable() {
-    return this.state.map(spline => {
-      if (spline.length > 0) {
+    return this.state
+      .filter(spline => {
+        return spline.length > 0;
+      })
+      .map(spline => {
         return {
           spline: spline.map(point => [point.x, point.y]),
           tag: spline[0].tag
         };
-      }
-    });
+      });
   }
 
   addPolyline(id, index) {
@@ -119,13 +129,13 @@ export default class Polyline extends BasePlugin {
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw visible polyline under invisible polyline
           z('path.visible-' + polylineIndex + '.polyline' + '.plugin-id-' + this.id, {
-            d: polylinePathData(this.state[polylineIndex], this.closed),
+            d: polylinePathData(this.state[polylineIndex], this.params.closed),
             style: `
                 stroke: ${this.params.color};
                 stroke-width: ${this.polylineStrokeWidth(polylineIndex)};
                 stroke-dasharray: ${this.computeDashArray(this.params.dashStyle, this.polylineStrokeWidth(polylineIndex))};
-                fill: ${this.fillColor};
-                opacity: ${this.opacity};
+                fill: ${this.params.fillColor};
+                opacity: ${this.params.opacity};
               `
           })
 
@@ -133,11 +143,11 @@ export default class Polyline extends BasePlugin {
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw invisible and selectable polyline under invisible points
         z('path.invisible-' + polylineIndex + this.readOnlyClass(), {
-          d: polylinePathData(this.state[polylineIndex], this.closed),
+          d: polylinePathData(this.state[polylineIndex], this.params.closed),
           style: `
               stroke: ${this.params.color};
               stroke-width: 10px;
-              fill: ${this.fillColor};
+              fill: ${this.params.fillColor};
               opacity: 0;
             `,
           onmount: el => {

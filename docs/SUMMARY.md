@@ -12,4 +12,5 @@
   * [edX](edx_quickstart.md)
 * [Sketch Tool Configuration Reference](probconfig_plugins.md)
 * [Grader Library API Reference](api/README.md)
+* [Gradeable Data Format](gradeable_data_format.md)
 * [Offline Documentation](offline_docs.md)

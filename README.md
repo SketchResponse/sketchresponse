@@ -54,6 +54,12 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
   ```
   [JSPM](http://jspm.io) will pull in additional dependencies automatically on a post-install script.
 
+* Build a local distribution of the *sketch_tool*:
+
+  ```sh
+  $ npm run build
+  ```
+
 ## Grader Back-End
 
 The SketchResponse grader backend has only two third party package requirements:
@@ -78,12 +84,13 @@ Usage Guides
 - [Testing a Grading Script on a Local Server](docs/local_test.md)
 - Tutorial - [Create a Simple Grading Script](docs/simple_grader.md)
 - Tutorial - [Create a Complex Grading Script](docs/complex_grader.md)
+- Tutorial - [Create a Physics Problem Grading Script](docs/physics_grader.md)
 - Tutorial - [edX Quick Start Deployment Guide](docs/edx_quickstart.md)
 
 ### Reference Information
 - [Sketch-Tool Plugin Configuration](docs/probconfig_plugins.md)
 - [Grader-Library API](https://SketchResponse.github.io/sketchresponse)
-
+- [Gradeable Data Format](docs/gradeable_data_format.md)
 
 Contribute
 ----------

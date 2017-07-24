@@ -1,6 +1,8 @@
-import z from 'sketch2/util/zdom';
+import z from 'sketch/util/zdom';
 import BasePlugin from './base-plugin';
 import fitCurve from './freeform/fitcurve';
+import deepExtend from 'deep-extend';
+import {validate} from 'sketch/config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -12,16 +14,27 @@ const MIN_POINT_SPACING = 3;
 const MAX_POINT_SPACING = 3;
 const ROUNDING_PRESCALER = 100;  // e.g., Math.round(value * ROUNDING_PRESCALER) / ROUNDING_PRESCALER
 
-export default class Freeform extends BasePlugin {
+const DEFAULT_PARAMS = {
+  label: 'Freeform',
+  color: 'dimgray'
+}
 
+export default class Freeform extends BasePlugin {
   constructor(params, app) {
+    let fParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    if (!app.debug || validate(params, 'freeform')) {
+      deepExtend(fParams, params);
+    }
+    else {
+      console.log('The freeform config has errors, using default values instead');
+    }
     // Add params that are specific to this plugin
-    params.icon = {
+    fParams.icon = {
       src: './plugins/freeform/freeform-icon.svg',
       alt: 'Freeform tool',
-      color: params.color
+      color: fParams.color
     };
-    super(params, app);
+    super(fParams, app);
     // Message listeners
     this.app.__messageBus.on('addFreeform', (id, index) => {this.addFreeform(id, index)});
     this.app.__messageBus.on('deleteFreeforms', (id, index) => {this.deleteFreeforms(id, index)});

@@ -1,9 +1,11 @@
 @import "vendor/normalize";
 @import "vendor/katex";
+@import "vendor/sweetalert2";
 
 body {
   background: none transparent;
-  padding: 15px;
+  padding: 15px 0px 15px 0px;
+  text-align: center;
 }
 
 .default-text, .tag {

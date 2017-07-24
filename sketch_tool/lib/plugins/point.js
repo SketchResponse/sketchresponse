@@ -1,26 +1,42 @@
-import z from 'sketch2/util/zdom';
+import z from 'sketch/util/zdom';
 import BasePlugin from './base-plugin';
+import deepExtend from 'deep-extend';
+import {validate} from 'sketch/config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
 
+const DEFAULT_PARAMS = {
+  label: 'Point',
+  color: 'dimgray',
+  size: 15,
+  hollow: false
+}
+
 export default class Point extends BasePlugin {
   constructor(params, app) {
     let iconSrc, strokeColor, fillColor;
+    let pParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    if (!app.debug || validate(params, 'point')) {
+      deepExtend(pParams, params);
+    }
+    else {
+      console.log('The point config has errors, using default values instead');
+    }
     // Add params that are specific to this plugin
-    iconSrc = params.hollow ? './plugins/point/point-hollow-icon.svg'
-                            : './plugins/point/point-icon.svg';
-    params.icon = {
+    iconSrc = pParams.hollow ? './plugins/point/point-hollow-icon.svg'
+                             : './plugins/point/point-icon.svg';
+    pParams.icon = {
       src: iconSrc,
       alt: 'Point tool',
-      color: params.color
+      color: pParams.color
     };
-    super(params, app);
-    this.strokeWidth = params.hollow ? 2 : 0;
-    this.fillOpacity = params.hollow ? 0 : 1;
+    super(pParams, app);
+    this.strokeWidth = pParams.hollow ? 2 : 0;
+    this.fillOpacity = pParams.hollow ? 0 : 1;
     // Given a params.size, to have identical visible radiuses in both cases, we need to shrink
     // the hollow point to take in account the 2px width of the stroke
-    this.radius = params.hollow ? (params.size/2)-1 : params.size/2;
+    this.radius = pParams.hollow ? (pParams.size/2)-1 : pParams.size/2;
     // Message listeners
     this.app.__messageBus.on('addPoint', (id, index) => this.addPoint(id, index));
     this.app.__messageBus.on('deletePoints', () => this.deletePoints());

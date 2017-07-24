@@ -214,6 +214,9 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
         if failureTolerance is None:
             failureTolerance = self.tolerance['inc_dec_failure']
 
+        if self.does_not_exist_between(xmin, xmax):
+            return False
+
         [xleft, xright] = self.get_between_vals(xmin, xmax)
         if (xleft > xright):
             return False
@@ -249,6 +252,9 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
         """
         if failureTolerance is None:
             failureTolerance = self.tolerance['inc_dec_failure']
+
+        if self.does_not_exist_between(xmin, xmax):
+            return False
 
         [xleft, xright] = self.get_between_vals(xmin, xmax)
         if (xleft > xright):
