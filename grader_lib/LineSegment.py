@@ -27,6 +27,13 @@ class LineSegments(Gradeable.Gradeable):
                 if 'tag' in spline:
                     seg.set_tag(spline['tag'])
                 self.segments.append(seg)
+            elif len(spline['spline']) > 4:
+                # polyline data
+                segs = self.value_from_polyline(spline['spline'])
+                for seg in segs:
+                    if 'tag' in spline:
+                        seg.set_tag(spline['tag'])
+                self.segments.extend(segs)
             else:
                 # TODO - through error if try to grade non line seg splines
                 raise ValueError("This spline does not appear to be a line segment: " + str(spline['spline']))
@@ -59,6 +66,19 @@ class LineSegments(Gradeable.Gradeable):
         point2 = Point.Point(self, spline[3][0], spline[3][1])
 
         return LineSegment(point1, point2)
+
+    def value_from_polyline(self, spline):
+        segs = []
+        points = []
+        while len(spline):
+            p = spline.pop(0)
+            points.append(p)
+            if len(points) == 4:
+                p1 = Point.Point(self, points[0][0], points[0][1])
+                p2 = Point.Point(self, points[3][0], points[3][1])
+                segs.append(LineSegment(p1, p2))
+                points = [points[-1]]
+        return segs
 
     def swap(self, x1, x2):
         if x1 > x2:

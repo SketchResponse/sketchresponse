@@ -32,9 +32,11 @@ class Polygons(Gradeable.Gradeable):
         # convert the points from pixel values to real values
         pointList = []
 
-        for px_x, px_y in points:
-            point = SR_Point(self, px_x, px_y)
-            pointList.append((point.x, point.y))
+        for i, (px_x, px_y) in enumerate(points):
+            # every 3rd point is a vertex of the polygon
+            if i % 3 == 0:
+                point = SR_Point(self, px_x, px_y)
+                pointList.append((point.x, point.y))
 
         return pointList
 
