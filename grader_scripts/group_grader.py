@@ -8,6 +8,8 @@ problemconfig = sketchresponse.config({
     'yrange': [-2.5, 2.5],
     'xscale': 'linear',
     'yscale': 'linear',
+    'coordinates': 'cartesian',
+    'debug': False,
     'plugins': [
         {'name': 'axes'},
         {'name': 'group', 'id': 'grp', 'label': 'Lines', 'plugins': [
