@@ -2,6 +2,7 @@ from __future__ import division
 import inspect
 import json
 import base64
+from copy import deepcopy
 
 
 class GradeableCollection(list):
@@ -46,7 +47,7 @@ def grader(func):
                 identifier = plugin['id']
                 config = answer['meta']['config']
                 for p in plugin['plugins']:
-                    data.extend(answer['data'][p['id']])
+                    data.extend(deepcopy(answer['data'][p['id']]))
                 all_gradeables[identifier] = GradeableCollection(identifier,
                                                                  config, data)
 
