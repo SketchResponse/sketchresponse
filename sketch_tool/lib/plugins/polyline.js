@@ -11,6 +11,9 @@ export const GRADEABLE_VERSION = '0.2';
 const FIT_TOLERANCE = 0;
 const ROUNDING_PRESCALER = 100;
 
+const FIT_TOLERANCE = 0;
+const ROUNDING_PRESCALER = 100;
+
 const DEFAULT_PARAMS = {
   label: 'Polyline',
   color: 'dimgray',
