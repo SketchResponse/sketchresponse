@@ -1,5 +1,6 @@
 import katex from 'katex';
 import {getElementsByClassName} from 'sketch/util/ms-polyfills';
+import colorIcon from 'sketch/util/color-icon';
 import deepCopy from 'sketch/util/deep-copy';
 import swal from 'sweetalert2';
 
@@ -73,20 +74,27 @@ export default class BasePlugin {
       else if (this.params.icon.color) {
         fillColor = this.params.icon.color;
       }
-      app.registerToolbarItem({
+      let icon = {
+        src: this.params.icon.src,
+        alt: this.params.icon.alt,
+      }
+      // Do not color stamp icon as it would require an XHR with its potential SOP issues
+      if (this.params.name !== 'stamp') {
+        icon.src = colorIcon(icon.src, strokeColor, fillColor);
+      }
+      this.menuItem = {
         type: 'button',
         id: this.params.id,
         name: this.params.name,
         label: this.params.label,
-        icon: {
-          src: this.params.icon.src,
-          alt: this.params.icon.alt,
-          stroke: strokeColor,
-          fill: fillColor
-        },
+        icon: icon,
+        color: this.params.color ? this.params.color : 'black',
         activate: this.activate.bind(this),
-        deactivate: this.deactivate.bind(this),
-      });
+        deactivate: this.deactivate.bind(this)
+      };
+      if (!this.params.isSubItem) {
+        app.registerToolbarItem(this.menuItem);
+      }
     }
     /*
       Check if all the methods that must be implemented in extended classes are
@@ -114,6 +122,9 @@ export default class BasePlugin {
     let allDefaultParams = deepCopy(defaultParams);
     for (let key of keys) {
       allDefaultParams[key] = params[key];
+    }
+    if (params.isSubItem) {
+      allDefaultParams.isSubItem = true;
     }
     return allDefaultParams;
   }
