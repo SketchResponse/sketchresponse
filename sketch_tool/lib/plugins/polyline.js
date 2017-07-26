@@ -1,11 +1,15 @@
 import z from 'sketch/util/zdom';
 import BasePlugin from './base-plugin';
+import fitCurve from './freeform/fitcurve';
 import { injectStyleSheet, injectSVGDefs } from 'sketch/util/dom-style-helpers';
 import deepExtend from 'deep-extend';
 import {validate} from 'sketch/config-validator';
 
 export const VERSION = '0.1';
-export const GRADEABLE_VERSION = '0.1';
+export const GRADEABLE_VERSION = '0.2';
+
+const FIT_TOLERANCE = 0;
+const ROUNDING_PRESCALER = 100;
 
 const DEFAULT_PARAMS = {
   label: 'Polyline',
@@ -49,11 +53,11 @@ export default class Polyline extends BasePlugin {
   getGradeable() {
     return this.state
       .filter(spline => {
-        return spline.length > 0;
+        return spline.length > 1;
       })
       .map(spline => {
         return {
-          spline: spline.map(point => [point.x, point.y]),
+          spline: splineData(spline).map(point => [point.x, point.y]),
           tag: spline[0].tag
         };
       });
@@ -268,4 +272,13 @@ function polylinePathData(points, closed) {
   const coords = points.map(p => `${p.x},${p.y}`);
   result = `M${coords[0]} L${coords.splice(1).join(' L')}`;
   return closed ? result + ` L${coords[0]}` : result;
+}
+
+function splineData(points) {
+  let splineData = fitCurve(points, FIT_TOLERANCE);
+  splineData.forEach(point => {
+    point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
+    point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
+  });
+  return splineData;
 }
