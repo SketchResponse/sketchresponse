@@ -57,6 +57,11 @@ export default class SketchInput {
     }
     this.params = createInheritingObjectTree(this.config);
     this.messageBus = new EventEmitter();
+    this.oldTime = Date.now();
+    this.oldPt = {
+      x: 0,
+      y: 0
+    }
 
     Promise.all(
       this.params.plugins.map(pluginParams =>
@@ -147,6 +152,28 @@ export default class SketchInput {
     this.toolbar = new Toolbar(this.params, this.app);
     this.elementManager = new ElementManager(this.app);
     this.app.registerElement = this.elementManager.registerElement.bind(this.elementManager);
+
+    // Disable multiple pointerdown events if the events are close together in time and distance:
+    // Less than 500 ms and less than 5 px.
+    // Double clicks are still enabled though when they happen on a label element.
+    document.addEventListener('pointerdown', event => {
+      let newTime = Date.now(),
+          deltaT = newTime - this.oldTime,
+          newPt = {
+            x: event.clientX,
+            y: event.clientY
+          },
+          dist = Math.sqrt(
+            (newPt.x - this.oldPt.x)*(newPt.x - this.oldPt.x) +
+            (newPt.y - this.oldPt.y)*(newPt.y - this.oldPt.y)
+          );
+      if (deltaT < 500 && dist < 5) {
+        event.stopPropagation();
+      }
+      this.oldTime = newTime;
+      this.oldPt.x = newPt.x;
+      this.oldPt.y = newPt.y;
+    }, true);
 
     // Add stateful buttons (Select and plugins) to the left of the toolbar
     this.app.registerToolbarItem({
