@@ -49,6 +49,7 @@ export default class LineSegment extends BasePlugin {
     this.app.__messageBus.on('addLineSegmentPoint', (id, index) => {this.addLineSegmentPoint(id, index)});
     this.app.__messageBus.on('deleteLineSegments', () => {this.deleteLineSegments()});
     this.app.__messageBus.on('deleteLineSegmentPoints', () => {this.deleteLineSegmentPoints()});
+    this.app.__messageBus.on('finalizeShapes', (id) => {this.finalizeShape(id)});
     this.hConstraint = false;
     this.vConstraint = false;
     this.rConstraint = false;
@@ -209,6 +210,19 @@ export default class LineSegment extends BasePlugin {
     this.wasDragged = false;
     event.stopPropagation();
     event.preventDefault();
+  }
+
+  finalizeShape(id) {
+    let len = this.state.length;
+    // Remove any dangling point except when associated plugin button is clicked
+    // or undo/redo
+    if (id !== this.id && id !== 'undo' && id !== 'redo' && len > 0) {
+      if (len % 2 !== 0) {
+        this.state.pop();
+        this.app.addUndoPoint();
+      }
+    }
+    this.render();
   }
 
   hConstrained(y, index) {

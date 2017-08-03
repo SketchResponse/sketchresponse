@@ -103,9 +103,17 @@ export default class Polyline extends BasePlugin {
   }
 
   drawEnd(id) {
-    // To signal that a polyline has been completed, push an empty array
+    let len;
+    // To signal that a polyline has been completed, push an empty array except when
+    // associated plugin button is clicked or undo/redo
     if (id !== this.id && id !== 'undo' && id !== 'redo' &&
         this.state.length > 0 && this.state[this.state.length-1].length > 0) {
+      // Remove any dangling point for a polyline or polygon
+      // Remove any line segment for a polygon
+      len = this.state[this.state.length-1].length;
+      if ((!this.params.closed && len < 2) || (this.params.closed && len < 3)) {
+        this.state.pop();
+      }
       this.state.push([]);
       this.app.addUndoPoint();
     }
