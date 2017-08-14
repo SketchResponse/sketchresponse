@@ -11,6 +11,8 @@ export default class GradeableManager {
 
   getGradeable() {
     try {
+      // Finalize all shapes before returning response
+      this.messageBus.emit('finalizeShapes');
       const response = {
         apiVersion: VERSION,  // TODO: Important: better version handling
         meta: {
