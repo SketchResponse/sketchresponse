@@ -77,6 +77,9 @@ export default class BasePlugin {
         activate: this.activate.bind(this),
         deactivate: this.deactivate.bind(this),
       });
+      // Double click/tap related
+      this.oldTime = Date.now();
+      this.pointerDownNbr = 0;
     }
     /*
       Check if all the methods that must be implemented in extended classes are
@@ -185,23 +188,31 @@ export default class BasePlugin {
     }
   }
 
+  // We do not have a dblclick event for touch devices and have to implement one using pointerdown
   addDoubleClickEventListener(el, index1, index2) {
-    el.addEventListener('dblclick', () => {
-      if (this.selectMode) {
-        let stateEl = this.state[index1];
-        // Needed for freeform, polyline, and spline plugins
-        if (typeof index2 !== 'undefined') {
-          stateEl = this.state[index1][index2];
-        }
-        let val = prompt('Enter tag value:', stateEl.tag);
-        if (val === null) {
-          return; // Happens when cancel button is pressed in prompt window
-        }
-        val.trim();
-        if (val !== '' && val !== stateEl.tag) {
-          stateEl.tag = val;
-          this.app.addUndoPoint();
-          this.render();
+    el.addEventListener('pointerdown', () => {
+      let newTime = Date.now(), deltaT = newTime - this.oldTime;
+      this.oldTime = newTime;
+      this.pointerDownNbr++;
+      this.pointerDownNbr = this.pointerDownNbr > 2 ? 1 : this.pointerDownNbr;
+      // Double click/tap
+      if (this.pointerDownNbr === 2 && deltaT <= 500) {
+        if (this.selectMode) {
+          let stateEl = this.state[index1];
+          // Needed for freeform, polyline, and spline plugins
+          if (typeof index2 !== 'undefined') {
+            stateEl = this.state[index1][index2];
+          }
+          let val = prompt('Enter tag value:', stateEl.tag);
+          if (val === null) {
+            return; // Happens when cancel button is pressed in prompt window
+          }
+          val.trim();
+          if (val !== '' && val !== stateEl.tag) {
+            stateEl.tag = val;
+            this.app.addUndoPoint();
+            this.render();
+          }
         }
       }
     });
