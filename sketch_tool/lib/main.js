@@ -154,7 +154,7 @@ export default class SketchInput {
     this.app.registerElement = this.elementManager.registerElement.bind(this.elementManager);
 
     // Disable multiple pointerdown events if the events are close together in time and distance:
-    // Less than 500 ms and less than 5 px.
+    // Less or equal to 500 ms and less or equal to 5 px.
     // Double clicks are still enabled though when they happen on a label element.
     document.addEventListener('pointerdown', event => {
       let newTime = Date.now(),
@@ -167,8 +167,14 @@ export default class SketchInput {
             (newPt.x - this.oldPt.x)*(newPt.x - this.oldPt.x) +
             (newPt.y - this.oldPt.y)*(newPt.y - this.oldPt.y)
           );
-      if (deltaT < 500 && dist < 5) {
-        event.stopPropagation();
+      if (deltaT <= 500 && dist <= 5) {
+        // Stop event propagation except when it happens on a tag where a double click
+        // will open a SweetAlert2 window for editing.
+        // Tags are either a text node with a 'tag' class name. Or a Katex foreignElement, also
+        // with a 'tag' class name, containing span children.
+        if (event.target.getAttribute('class') !== 'tag' && event.target.tagName !== 'SPAN') {
+          event.stopPropagation();
+        }
       }
       this.oldTime = newTime;
       this.oldPt.x = newPt.x;

@@ -95,6 +95,9 @@ export default class BasePlugin {
       if (!this.params.isSubItem) {
         app.registerToolbarItem(this.menuItem);
       }
+      // Double click/tap related
+      this.oldTime = Date.now();
+      this.pointerDownNbr = 0;
     }
     /*
       Check if all the methods that must be implemented in extended classes are
@@ -224,32 +227,40 @@ export default class BasePlugin {
     }
   }
 
+  // We do not have a dblclick event for touch devices and have to implement one using pointerdown
   addDoubleClickEventListener(el, index1, index2) {
-    el.addEventListener('dblclick', () => {
-      if (this.selectMode) {
-        let stateEl = this.state[index1];
-        // Needed for freeform, polyline, and spline plugins
-        if (typeof index2 !== 'undefined') {
-          stateEl = this.state[index1][index2];
-        }
-        swal({
-          title: 'Enter tag value',
-          input: 'text',
-          inputValue: stateEl.tag,
-          showCancelButton: true,
-        }).then(val => {
-          val.trim();
-          if (val !== '' && val !== stateEl.tag) {
-            stateEl.tag = val;
-            this.app.addUndoPoint();
-            this.render();
+    el.addEventListener('pointerdown', () => {
+      let newTime = Date.now(), deltaT = newTime - this.oldTime;
+      this.oldTime = newTime;
+      this.pointerDownNbr++;
+      this.pointerDownNbr = this.pointerDownNbr > 2 ? 1 : this.pointerDownNbr;
+      // Double click/tap
+      if (this.pointerDownNbr === 2 && deltaT <= 500) {
+        if (this.selectMode) {
+          let stateEl = this.state[index1];
+          // Needed for freeform, polyline, and spline plugins
+          if (typeof index2 !== 'undefined') {
+            stateEl = this.state[index1][index2];
           }
-          else {
+          swal({
+            title: 'Enter tag value',
+            input: 'text',
+            inputValue: stateEl.tag,
+            showCancelButton: true,
+          }).then(val => {
+            val.trim();
+            if (val !== '' && val !== stateEl.tag) {
+              stateEl.tag = val;
+              this.app.addUndoPoint();
+              this.render();
+            }
+            else {
+              console.warn('Tag value has not been changed');
+            }
+          }, dismiss => {
             console.warn('Tag value has not been changed');
-          }
-        }, dismiss => {
-          console.warn('Tag value has not been changed');
-        });
+          });
+        }
       }
     });
   }
