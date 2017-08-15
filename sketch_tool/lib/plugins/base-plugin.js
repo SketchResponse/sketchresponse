@@ -5,7 +5,6 @@ import deepCopy from 'sketch/util/deep-copy';
 import swal from 'sweetalert2';
 
 export const VERSION = '0.1';
-export const GRADEABLE_VERSION = '0.1';
 
 export default class BasePlugin {
   constructor(params, app) {
@@ -50,14 +49,14 @@ export default class BasePlugin {
 
     app.registerState({
       id: this.params.id,
-      dataVersion: VERSION,
+      dataVersion: this.params.version,
       getState: () => this.state,
       setState: state => { this.state = state; this.render(); },
     });
 
     app.registerGradeable({
       id: this.params.id,
-      version: GRADEABLE_VERSION,
+      version: this.params.gradeableVersion,
       getGradeable: () => this.getGradeable(),
     });
     // Only add a button to toolbar is the plugin is not readonly

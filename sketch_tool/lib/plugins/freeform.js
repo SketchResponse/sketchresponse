@@ -34,6 +34,9 @@ export default class Freeform extends BasePlugin {
       alt: 'Freeform tool',
       color: fParams.color
     };
+    // Add versions
+    fParams.version = VERSION;
+    fParams.gradeableVersion = GRADEABLE_VERSION;
     super(fParams, app);
     // Message listeners
     this.app.__messageBus.on('addFreeform', (id, index) => {this.addFreeform(id, index)});

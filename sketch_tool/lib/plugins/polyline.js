@@ -36,6 +36,9 @@ export default class Polyline extends BasePlugin {
     if (plParams.closed && plParams.fillColor !== 'none') {
         plParams.icon.fillColor = plParams.fillColor;
     }
+    // Add versions
+    plParams.version = VERSION;
+    plParams.gradeableVersion = GRADEABLE_VERSION;
     super(plParams, app);
     // Message listeners
     this.app.__messageBus.on('addPolyline', (id, index) => {this.addPolyline(id, index)});

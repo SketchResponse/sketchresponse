@@ -32,6 +32,9 @@ export default class Spline extends BasePlugin {
       alt: 'Spline tool',
       color: sParams.color
     };
+    // Add versions
+    sParams.version = VERSION;
+    sParams.gradeableVersion = GRADEABLE_VERSION;
     super(sParams, app);
     // Message listeners
     this.app.__messageBus.on('addSpline', (id, index) => {this.addSpline(id, index)});

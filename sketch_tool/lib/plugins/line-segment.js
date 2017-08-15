@@ -43,6 +43,9 @@ export default class LineSegment extends BasePlugin {
       alt: 'Line segment tool',
       color: lsParams.color
     };
+    // Add versions
+    lsParams.version = VERSION;
+    lsParams.gradeableVersion = GRADEABLE_VERSION;
     super(lsParams, app);
     // Message listeners
     this.app.__messageBus.on('addLineSegment', (id, index) => {this.addLineSegment(id, index)});

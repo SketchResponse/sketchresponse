@@ -29,6 +29,9 @@ export default class Stamp extends BasePlugin {
       src: sParams.iconSrc,
       alt: 'Stamp tool'
     };
+    // Add versions
+    sParams.version = VERSION;
+    sParams.gradeableVersion = GRADEABLE_VERSION;
     super(sParams, app);
     // Message listeners
     this.app.__messageBus.on('addStamp', (id, index) => {this.addStamp(id, index)});

@@ -27,6 +27,9 @@ export default class HorizontalLine extends BasePlugin {
       alt: 'Horizontal line tool',
       color: hlParams.color
     };
+    // Add versions
+    hlParams.version = VERSION;
+    hlParams.gradeableVersion = GRADEABLE_VERSION;
     super(hlParams, app);
     // Message listeners
     this.app.__messageBus.on('addHorizontalLine', (id, index) => {this.addHorizontalLine(id, index)});

@@ -31,6 +31,9 @@ export default class Point extends BasePlugin {
       alt: 'Point tool',
       color: pParams.color
     };
+    // Add versions
+    pParams.version = VERSION;
+    pParams.gradeableVersion = GRADEABLE_VERSION;
     super(pParams, app);
     this.strokeWidth = pParams.hollow ? 2 : 0;
     this.fillOpacity = pParams.hollow ? 0 : 1;
