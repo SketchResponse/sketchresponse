@@ -31,7 +31,11 @@ class Polygons(Gradeable.Gradeable):
 
     def get_plugin_version(self, info):
         plugin_id = info.params['id']
-        return info.params['dataVersions'][plugin_id]
+        if 'dataVersions' in info.params:
+            return info.params['dataVersions'][plugin_id]
+        else:
+            # old data didn't include version info in the config
+            return "0.1"
 
     def convert_to_real_points(self, points):
         # input is a list of points [[x1,y1], [x2,y2], ...]
