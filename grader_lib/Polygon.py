@@ -41,7 +41,7 @@ class Polygons(Gradeable.Gradeable):
         for i, (px_x, px_y) in enumerate(points):
             # every 3rd point is a vertex of the polygon
             # version 0.1 is just the polygon vertices
-            if i % 3 == 0 or self.version is "0.1":
+            if i % 3 == 0 or self.version == "0.1":
                 point = SR_Point(self, px_x, px_y)
                 pointList.append((point.x, point.y))
 
