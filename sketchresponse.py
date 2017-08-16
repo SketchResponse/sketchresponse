@@ -35,6 +35,12 @@ def grader(func):
         if answer['apiVersion'] != '0.1':
             raise TypeError('Unsupported API version: ' + answer['apiVersion'])
 
+        # have to add the data versions to the config dict so they are
+        # accessible in a grader
+        data_versions = {}
+        data_versions['dataVersions'] = answer['meta']['dataVersions']
+        answer['meta']['config'].update(data_versions)
+
         all_gradeables = {identifier: GradeableCollection(
             identifier, answer['meta']['config'], gradeable_list)
             for identifier, gradeable_list in answer['data'].items()}

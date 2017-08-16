@@ -15,6 +15,8 @@ class Polygons(Gradeable.Gradeable):
         self.set_default_tolerance('point_distance', 10) # threshold for finding a point close to an x value
         self.polygons = []
 
+        self.version = self.get_plugin_version(info)
+
         for spline in info:
             if not spline is None:
                 points = self.convert_to_real_points(spline['spline'])
@@ -27,14 +29,25 @@ class Polygons(Gradeable.Gradeable):
         if len(self.polygons) > 0:
             self.set_tagables(self.polygons)
 
+    def get_plugin_version(self, info):
+        plugin_id = info.params['id']
+        if 'dataVersions' in info.params:
+            return info.params['dataVersions'][plugin_id]
+        else:
+            # old data didn't include version info in the config
+            return "0.1"
+
     def convert_to_real_points(self, points):
         # input is a list of points [[x1,y1], [x2,y2], ...]
         # convert the points from pixel values to real values
         pointList = []
 
-        for px_x, px_y in points:
-            point = SR_Point(self, px_x, px_y)
-            pointList.append((point.x, point.y))
+        for i, (px_x, px_y) in enumerate(points):
+            # every 3rd point is a vertex of the polygon
+            # version 0.1 is just the polygon vertices
+            if i % 3 == 0 or self.version == "0.1":
+                point = SR_Point(self, px_x, px_y)
+                pointList.append((point.x, point.y))
 
         return pointList
 
