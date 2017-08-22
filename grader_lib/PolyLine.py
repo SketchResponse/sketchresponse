@@ -7,6 +7,11 @@ from GradeableFunction import GradeableFunction
 class PolyLines(Gradeable.Gradeable):
     """
     PolyLines.
+
+    ---DEPRECATED--- Only use this module if you are handling polyline
+    data from SketchResponse version 1.4 or earlier. For later version,
+    polyline data can be directly parsed with the GradeableFunction and
+    LineSegments graders.
     """
     def __init__(self, info, tolerance=dict()):
         Gradeable.Gradeable.__init__(self, info, tolerance)

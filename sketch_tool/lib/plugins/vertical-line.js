@@ -27,6 +27,9 @@ export default class VerticalLine extends BasePlugin {
       alt: 'Vertical line tool',
       color: vlParams.color
     };
+    // Add versions
+    vlParams.version = VERSION;
+    vlParams.gradeableVersion = GRADEABLE_VERSION;
     super(vlParams, app);
     // Message listeners
     this.app.__messageBus.on('addVerticalLine', (id, index) => {this.addVerticalLine(id, index)});

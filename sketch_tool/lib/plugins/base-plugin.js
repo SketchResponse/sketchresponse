@@ -1,10 +1,10 @@
 import katex from 'katex';
 import {getElementsByClassName} from 'sketch/util/ms-polyfills';
+import colorIcon from 'sketch/util/color-icon';
 import deepCopy from 'sketch/util/deep-copy';
 import swal from 'sweetalert2';
 
 export const VERSION = '0.1';
-export const GRADEABLE_VERSION = '0.1';
 
 export default class BasePlugin {
   constructor(params, app) {
@@ -49,14 +49,14 @@ export default class BasePlugin {
 
     app.registerState({
       id: this.params.id,
-      dataVersion: VERSION,
+      dataVersion: this.params.version,
       getState: () => this.state,
       setState: state => { this.state = state; this.render(); },
     });
 
     app.registerGradeable({
       id: this.params.id,
-      version: GRADEABLE_VERSION,
+      version: this.params.gradeableVersion,
       getGradeable: () => this.getGradeable(),
     });
     // Only add a button to toolbar is the plugin is not readonly
@@ -73,20 +73,29 @@ export default class BasePlugin {
       else if (this.params.icon.color) {
         fillColor = this.params.icon.color;
       }
-      app.registerToolbarItem({
+      let icon = {
+        src: this.params.icon.src,
+        alt: this.params.icon.alt,
+      }
+      // Do not color stamp icon as it would require an XHR with its potential SOP issues
+      if (this.params.name !== 'stamp') {
+        icon.src = colorIcon(icon.src, strokeColor, fillColor);
+      }
+      this.menuItem = {
         type: 'button',
         id: this.params.id,
         name: this.params.name,
         label: this.params.label,
-        icon: {
-          src: this.params.icon.src,
-          alt: this.params.icon.alt,
-          stroke: strokeColor,
-          fill: fillColor
-        },
+        icon: icon,
+        color: this.params.color ? this.params.color : 'black',
         activate: this.activate.bind(this),
-        deactivate: this.deactivate.bind(this),
-      });
+        deactivate: this.deactivate.bind(this)
+      };
+      if (!this.params.isSubItem) {
+        app.registerToolbarItem(this.menuItem);
+      }
+      // Double click/tap related
+      this.oldTime = Date.now();
     }
     /*
       Check if all the methods that must be implemented in extended classes are
@@ -114,6 +123,9 @@ export default class BasePlugin {
     let allDefaultParams = deepCopy(defaultParams);
     for (let key of keys) {
       allDefaultParams[key] = params[key];
+    }
+    if (params.isSubItem) {
+      allDefaultParams.isSubItem = true;
     }
     return allDefaultParams;
   }
@@ -213,32 +225,38 @@ export default class BasePlugin {
     }
   }
 
+  // We do not have a dblclick event for touch devices and have to implement one using pointerdown
   addDoubleClickEventListener(el, index1, index2) {
-    el.addEventListener('dblclick', () => {
-      if (this.selectMode) {
-        let stateEl = this.state[index1];
-        // Needed for freeform, polyline, and spline plugins
-        if (typeof index2 !== 'undefined') {
-          stateEl = this.state[index1][index2];
-        }
-        swal({
-          title: 'Enter tag value',
-          input: 'text',
-          inputValue: stateEl.tag,
-          showCancelButton: true,
-        }).then(val => {
-          val.trim();
-          if (val !== '' && val !== stateEl.tag) {
-            stateEl.tag = val;
-            this.app.addUndoPoint();
-            this.render();
+    el.addEventListener('pointerdown', () => {
+      let newTime = Date.now(), deltaT = newTime - this.oldTime;
+      this.oldTime = newTime;
+      // Double click/tap
+      if (deltaT <= 1000) {
+        if (this.selectMode) {
+          let stateEl = this.state[index1];
+          // Needed for freeform, polyline, and spline plugins
+          if (typeof index2 !== 'undefined') {
+            stateEl = this.state[index1][index2];
           }
-          else {
+          swal({
+            title: 'Enter tag value',
+            input: 'text',
+            inputValue: stateEl.tag,
+            showCancelButton: true,
+          }).then(val => {
+            val.trim();
+            if (val !== '' && val !== stateEl.tag) {
+              stateEl.tag = val;
+              this.app.addUndoPoint();
+              this.render();
+            }
+            else {
+              console.warn('Tag value has not been changed');
+            }
+          }, dismiss => {
             console.warn('Tag value has not been changed');
-          }
-        }, dismiss => {
-          console.warn('Tag value has not been changed');
-        });
+          });
+        }
       }
     });
   }

@@ -325,7 +325,6 @@ function loadConfig(configId) {
           name: 'stamp',
           id: 'st',
           label: 'Stamp',
-          color: 'cornflowerblue',
           imgwidth: 450,
           imgheight: 100,
           scale: 0.5,
@@ -519,7 +518,6 @@ function loadConfig(configId) {
           name: 'stamp',
           id: 'st',
           label: 'Stamp',
-          color: 'cornflowerblue',
           imgwidth: 450,
           imgheight: 100,
           scale: 0.5,
@@ -641,39 +639,9 @@ function loadConfig(configId) {
           wrongkey: 2       // Wrong key
         },
         {
-          name: 'horizontal-line',
-          id: 'hl',
-          label: 'Horizontal line',
-          color: 2,                   // wrong type
-          dashStyle: 'wrong',         // wrong value
-          tag: {
-            value : 'tag',
-            xoffset: 15,
-            yoffset: 15,
-            align: 'wrong',           // wrong value
-            wrongkey: 2               // Wrong key
-          },
-          wrongkey: 2                 // Wrong key
-        },
-        {
-          name: 'vertical-line',
-          id: 'vl',
-          label: 'Vertical line',
-          color: 'dimgray',
-          dashStyle: 'dashdotted',
-          tag: {
-            value : 'tag',
-            xoffset: 15,
-            yoffset: -15,
-            align: 'wrong',           // Wrong value
-            wrongkey: 2               // Wrong key
-          }
-        },
-        {
           name: 'stamp',
           id: 'st',
           label: 'Stamp',
-          color: 'cornflowerblue',
           imgwidth: 450,
           imgheight: 100,
           scale: 'wrong',            // Wrong value
@@ -746,9 +714,128 @@ function loadConfig(configId) {
             align: 'start'
           },
           wrongkey: 2                 // Wrong key
+        },
+        {
+          name: 'group',
+          id: 'lns',
+          // label: 'Lines',              // Missing optional, won't report
+          plugins: [
+            {
+              name: 'horizontal-line',
+              id: 'hl',
+              label: 'Horizontal line',
+              color: 2,                   // wrong type
+              dashStyle: 'wrong',         // wrong value
+              tag: {
+                value : 'tag',
+                xoffset: 15,
+                yoffset: 15,
+                align: 'wrong',           // wrong value
+                wrongkey: 2               // Wrong key
+              },
+              wrongkey: 2                 // Wrong key
+            },
+            {
+              name: 'vertical-line',
+              id: 'vl',
+              label: 'Vertical line',
+              color: 'dimgray',
+              dashStyle: 'dashdotted',
+              tag: {
+                value : 'tag',
+                xoffset: 15,
+                yoffset: -15,
+                align: 'wrong',           // Wrong value
+                wrongkey: 2               // Wrong key
+              }
+            }
+          ]
         }
       ]
     },
+    pluginGroup: {
+      width: 750,
+      height: 420,
+      xrange: [-4.5, 4.5],
+      yrange: [-2.5, 2.5],
+      xscale: 'linear',
+      yscale: 'linear',
+      coordinates: 'cartesian',
+      plugins: [
+        {
+          name: 'axes'
+        },
+        {
+          name: 'freeform',
+          id: 'f',
+          label: 'Freeform',
+          color:'cornflowerblue'
+        },
+        {
+          name: 'group',
+          id: 'lines',
+          label: 'Lines',
+          plugins: [
+            {
+              name: 'vertical-line',
+              id: 'vl',
+              color: 'dimgray'
+            },
+            {
+              name: 'horizontal-line',
+              id: 'hl',
+              color: 'dimgray'
+            },
+            {
+              name: 'line-segment',
+              id: 'ls',
+              label: 'Line segment',
+              color: 'cornflowerblue',
+              dashStyle: 'solid'
+            },
+            {
+              name: 'line-segment',
+              id: 'ar',
+              label: 'Arrow',
+              color: 'mediumseagreen',
+              dashStyle: 'solid',
+              arrowHead: {
+                length: 10,
+                base: 7
+              }
+            }
+          ]
+        },
+        {
+          name: 'group',
+          id: 'points',
+          label: 'Points',
+          plugins: [
+            {
+              name: 'point',
+              id: 'cp',
+              label: 'Point',
+              color: 'orange',
+              size: 15
+            },
+            {
+              name: 'point',
+              id: 'ip',
+              label: 'Hollow point',
+              color: 'mediumseagreen',
+              size: 15,
+              hollow: true
+            }
+          ]
+        },
+        {
+          name: 'spline',
+          id: 'spl',
+          label: 'Spline',
+          color: 'mediumseagreen'
+        }
+      ]
+    }
   };
   if (configs.hasOwnProperty(configId)) {
     return configs[configId];

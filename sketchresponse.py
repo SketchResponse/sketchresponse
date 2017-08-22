@@ -1,5 +1,8 @@
 from __future__ import division
-import json, base64
+import inspect
+import json
+import base64
+from copy import deepcopy
 
 
 class GradeableCollection(list):
@@ -19,6 +22,7 @@ class GradeableCollection(list):
 
         return resolved if resolved.get('id', None) == identifier else {}
 
+
 def grader(func):
     def jsinput_grader(expect, ans):
         try:
@@ -31,9 +35,31 @@ def grader(func):
         if answer['apiVersion'] != '0.1':
             raise TypeError('Unsupported API version: ' + answer['apiVersion'])
 
-        gradeables = {identifier: GradeableCollection(
+        # have to add the data versions to the config dict so they are
+        # accessible in a grader
+        data_versions = {}
+        data_versions['dataVersions'] = answer['meta']['dataVersions']
+        answer['meta']['config'].update(data_versions)
+
+        all_gradeables = {identifier: GradeableCollection(
             identifier, answer['meta']['config'], gradeable_list)
             for identifier, gradeable_list in answer['data'].items()}
+
+        # create new gradeables for group plugins in the config data
+        plugins = answer['meta']['config']['plugins']
+        for plugin in plugins:
+            if plugin['name'] == 'group':
+                data = []
+                identifier = plugin['id']
+                config = answer['meta']['config']
+                for p in plugin['plugins']:
+                    data.extend(deepcopy(answer['data'][p['id']]))
+                all_gradeables[identifier] = GradeableCollection(identifier,
+                                                                 config, data)
+
+        # filter gradeables for what the grader script is expecting
+        (args, varargs, keywords, defaults) = inspect.getargspec(func)
+        gradeables = {validkey: all_gradeables[validkey] for validkey in args}
 
         result = func(**gradeables)  # run the user-provided grading function
 

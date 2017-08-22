@@ -59,7 +59,10 @@ let main = {
       type: 'string',
       enum: ['cartesian', 'polar']
     },
-    plugins: {type: 'array'}
+    plugins: {
+      type:     'array',
+      minItems: 1
+    }
   },
   required: ['width', 'height', 'xrange', 'yrange', 'xscale', 'yscale', 'coordinates', 'plugins'],
   additionalProperties: false
@@ -155,18 +158,33 @@ let baseRequired = ['name', 'id'];
 let basePlugin = {
   type: 'object',
   properties: {
-    name:     {type: 'string'},
-    id:       {type: 'string'},
-    label:    {type: 'string'},
-    color:    {type: 'string'},
-    readonly: {type: 'boolean'},
-    tag:      tag
+    name:      {type: 'string'},
+    id:        {type: 'string'},
+    label:     {type: 'string'},
+    color:     {type: 'string'},
+    readonly:  {type: 'boolean'},
+    tag:       tag,
+    isSubItem: {type: 'boolean'}
   },
   required: baseRequired,
   additionalProperties: false
 };
 
 let freeform = deepCopy(basePlugin);
+
+let group = {
+  type: 'object',
+  properties: {
+    name:    {type: 'string'},
+    id:      {type: 'string'},
+    label:   {type: 'string'},
+    plugins: {
+      type:     'array',
+      minItems: 1
+    }
+  },
+  required: ['name', 'id', 'plugins']
+};
 
 let horizontalLine = deepCopy(basePlugin);
 deepExtend(horizontalLine, {
@@ -269,6 +287,7 @@ let schemas = {
   'main': main,
   'axes': axes,
   'freeform': freeform,
+  'group': group,
   'horizontal-line': horizontalLine,
   'image': image,
   'line-segment': lineSegment,

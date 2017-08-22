@@ -32,6 +32,9 @@ export default class Spline extends BasePlugin {
       alt: 'Spline tool',
       color: sParams.color
     };
+    // Add versions
+    sParams.version = VERSION;
+    sParams.gradeableVersion = GRADEABLE_VERSION;
     super(sParams, app);
     // Message listeners
     this.app.__messageBus.on('addSpline', (id, index) => {this.addSpline(id, index)});
@@ -99,9 +102,14 @@ export default class Spline extends BasePlugin {
   }
 
   drawEnd(id) {
-    // To signal that a spline has been completed, push an empty array
+    // To signal that a spline has been completed, push an empty array except when
+    // associated plugin button is clicked or undo/redo
     if (id !== this.id && id !== 'undo' && id !== 'redo' &&
         this.state.length > 0 && this.state[this.state.length-1].length > 0) {
+      // Remove any dangling point
+      if (this.state[this.state.length-1].length < 2) {
+        this.state.pop();
+      }
       this.state.push([]);
       this.app.addUndoPoint();
     }

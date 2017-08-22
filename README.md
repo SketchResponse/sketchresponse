@@ -85,6 +85,7 @@ Usage Guides
 - Tutorial - [Create a Simple Grading Script](docs/simple_grader.md)
 - Tutorial - [Create a Complex Grading Script](docs/complex_grader.md)
 - Tutorial - [Create a Physics Problem Grading Script](docs/physics_grader.md)
+- Tutorial - [Using Groups to Grade Plugins](docs/groups_grader.md)
 - Tutorial - [edX Quick Start Deployment Guide](docs/edx_quickstart.md)
 
 ### Reference Information

@@ -57,6 +57,11 @@ export default class SketchInput {
     }
     this.params = createInheritingObjectTree(this.config);
     this.messageBus = new EventEmitter();
+    this.oldTime = Date.now();
+    this.oldPt = {
+      x: 0,
+      y: 0
+    }
 
     Promise.all(
       this.params.plugins.map(pluginParams =>
@@ -148,12 +153,35 @@ export default class SketchInput {
     this.elementManager = new ElementManager(this.app);
     this.app.registerElement = this.elementManager.registerElement.bind(this.elementManager);
 
-    plugins.forEach((Plugin, idx) => {
-      new Plugin(this.params.plugins[idx], this.app);
-    });
+    // Disable multiple pointerdown events if the events are close together in time and distance:
+    // Less or equal to 500 ms and less or equal to 10 px.
+    // Double clicks are still enabled though when they happen on a label element.
+    document.addEventListener('pointerdown', event => {
+      let newTime = Date.now(),
+          deltaT = newTime - this.oldTime,
+          newPt = {
+            x: event.clientX,
+            y: event.clientY
+          },
+          dist = Math.sqrt(
+            (newPt.x - this.oldPt.x)*(newPt.x - this.oldPt.x) +
+            (newPt.y - this.oldPt.y)*(newPt.y - this.oldPt.y)
+          );
+      if (deltaT <= 500 && dist <= 10) {
+        // Stop event propagation except when it happens on a tag where a double click
+        // will open a SweetAlert2 window for editing.
+        // Tags are either a text node with a 'tag' class name. Or a Katex foreignElement, also
+        // with a 'tag' class name, containing span children.
+        if (event.target.getAttribute('class') !== 'tag' && event.target.tagName !== 'SPAN') {
+          event.stopPropagation();
+        }
+      }
+      this.oldTime = newTime;
+      this.oldPt.x = newPt.x;
+      this.oldPt.y = newPt.y;
+    }, true);
 
-    // TODO: factor into... something
-    this.app.registerToolbarItem({type: 'separator'});
+    // Add stateful buttons (Select and plugins) to the left of the toolbar
     this.app.registerToolbarItem({
       type: 'button',
       id: 'select',
@@ -164,6 +192,7 @@ export default class SketchInput {
         fill: 'black',
         alt: 'Select',
       },
+      color: 'black',
       activate: () => {
         // Temporarily hold a reference for ulterior removal
         this.handlePointerDown = () => {
@@ -182,6 +211,16 @@ export default class SketchInput {
         this.messageBus.emit('activateItem', 'select');
       }
     });
+
+    plugins.forEach((Plugin, idx) => {
+      new Plugin(this.params.plugins[idx], this.app);
+    });
+
+    document.addEventListener('pointerdown', () => this.messageBus.emit('closeDropdown'), true);
+
+    // Add action buttons (Delete, Undo, and Redo) to the right of the toolbar
+    // TODO: factor into... something
+    this.app.registerToolbarItem({type: 'separator'});
     this.app.registerToolbarItem({
       type: 'button',
       id: 'delete',
