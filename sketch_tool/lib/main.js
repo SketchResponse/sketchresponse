@@ -268,12 +268,9 @@ export default class SketchInput {
     // }
 
     //////////// END TEMPORARY TEST CODE FOR ELEMENT MANAGER //////////////
-    if (this.initialState) {
-      this.messageBus.emit('loadInitialState');
-    }
-    else {
-      this.messageBus.emit('ready');
-    }
+    if (this.initialState) this.messageBus.emit('loadInitialState');
+
+    this.messageBus.emit('ready');
   }
 
   setState(state) { return this.stateManager.setState(state); }
