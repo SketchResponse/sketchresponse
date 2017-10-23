@@ -1,0 +1,4 @@
+.git
+sketch_tool/node_modules
+sketch_tool/jspm_packages
+**/__pycache__
