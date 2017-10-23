@@ -1,0 +1,9 @@
+version: "2.2"
+services:
+  server:
+    build: .
+    init: true
+    ports:
+      - 5000:5000
+    volumes:
+      - ./grader_scripts:/app/grader_scripts
