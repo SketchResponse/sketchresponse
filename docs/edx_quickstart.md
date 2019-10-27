@@ -38,7 +38,7 @@ If your workflow involves importing an XML course, you may still need to follow 
     ]]></script>
 
     <customresponse cfn="grader" expect="See solution.">
-        <jsinput width="800" height="550" gradefn="getGrade" get_statefn="getState" set_statefn="setState" html_file="https://sketch-response.surge.sh/sketch-tool/v1/index.html#$problemconfig" sop="false"/>
+        <jsinput width="800" height="550" gradefn="getGrade" get_statefn="getState" set_statefn="setState" html_file="https://sketch-response.now.sh/sketch-tool/v1/index.html#$problemconfig" sop="false"/>
     </customresponse>
 
 
