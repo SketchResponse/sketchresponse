@@ -21,18 +21,18 @@ const DEFAULT_PARAMS = {
   thetamajor: 30,
   colors: {
     // Cartesian coordinates
-    xmajor:     '#f0f0f0',
-    ymajor:     '#f0f0f0',
-    xminor:     '#f6f6f6',
-    yminor:     '#f6f6f6',
+    xmajor:     '#d8d8d8',
+    ymajor:     '#d8d8d8',
+    xminor:     '#dddddd',
+    yminor:     '#dddddd',
     xaxis:      '#333',
     yaxis:      '#333',
-    xlabels:     '#333',
-    ylabels:     '#333',
+    xlabels:    '#333',
+    ylabels:    '#333',
     zeroLabel:  '#333',
     // Polar coordinates
-    circle:     '#f0f0f0',
-    ray:        '#f0f0f0',
+    circle:     '#d8d8d8',
+    ray:        '#d8d8d8',
     // Both
     xaxisLabel: '#333',
     yaxisLabel: '#333'
