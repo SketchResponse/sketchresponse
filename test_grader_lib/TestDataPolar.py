@@ -17,18 +17,17 @@ class TestDataPolar(unittest.TestCase):
         # with a correct answer
         csv_dir = './'
         data = load_csv_data(csv_dir + filename, [], [])
+        answers = []
+        for d in data:
+            answer = json.loads(d['gradeable'])
+            answers.append(self.load_as_gradeable_collections(answer))
 
-        return data
+        return answers
 
 
     def load_as_gradeable_collections(self, source):
         #answers = self.get_data(source)
-        rawdata = json.load(source)
-        data = rawdata['student_answers'].value()[0]
-        data = json.load(data)
-        source = data['answer']
-
-        source['meta']['config']['coords'] = 'polar'
+        source['meta']['config']['coordinates'] = 'polar'
         answers = [source]
         #answers = self.data[source]
         list_of_gradeables = []
