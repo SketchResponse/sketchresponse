@@ -7,7 +7,6 @@ from math import pi, sqrt
 
 class TestPolarTransform(TestDataPolar.TestDataPolar):
 
-    @unittest.expectedFailure
     def test_polar_transform_points_true(self):
         
         data = self.loadData('test_grader_lib/polar_points_true.csv')
@@ -16,7 +15,7 @@ class TestPolarTransform(TestDataPolar.TestDataPolar):
             pt2 = GradeableFunction.GradeableFunction(answer['pt2'])
             pt3 = GradeableFunction.GradeableFunction(answer['pt3'])
 
-            self.assertFalse(pt1.has_point_at(x=11 * pi / 6, y=2))
+            self.assertTrue(pt1.has_point_at(x=11 * pi / 6, y=2))
             self.assertTrue(pt2.has_point_at(x=5 * pi / 4, y=sqrt(2)))
             self.assertTrue(pt3.has_point_at(x=2 * pi / 3, y=2))
 
