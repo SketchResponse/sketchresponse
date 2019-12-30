@@ -103,10 +103,11 @@ Contributions to this project are very welcome! If you'd like to contribute, ple
 
 ## Running tests for the Grader Library Back-end
 
-The grader library has a collection of tests to validate the functioning of API functions. Those tests can be run from the root directory of the sketchresponse repository with the command below.
+The grader library has a collection of tests to validate the API functions. Those tests can be run from the root directory of the sketchresponse repository with the command below. If you haven't already done so, install the additional packages needed only for the unittest modules.
 
 ```sh
-$ python -m unittest discover test_grader_lib/
+$ pip install -r test_requirements.txt
+$ python -m unittest discover -t . test_grader_lib/
 ```
 
 ## Rebuilding the documentation
