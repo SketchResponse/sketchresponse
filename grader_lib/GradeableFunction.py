@@ -25,6 +25,45 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             MultipleSplinesFunction.MultipleSplinesFunction.__init__(self, xaxis, yaxis, path_info = f, tolerance = tolerance)
             self.pt.resampleNewSplines()
 
+    def samplePoints(self):
+        spline_samples = []
+        
+        for f in self.functions:
+            print("number of functions: " + str(len(f.functions)))
+            curve_samples = []
+            # these are the spline function objects
+            for curve in f.functions:
+                # these are the curve function objects
+                curve_samples.extend(self.sample_x_and_y(curve, 0.02))
+
+            curve_samples.append(self.sample_last_t_1(f.functions[-1]))
+
+            spline_samples.append(curve_samples)
+
+        return spline_samples
+
+    def sample_x_and_y(self, curve, step):
+
+        samples = []
+        x_t = curve.x
+        y_t = curve.y
+
+        for t in np.arange(0, 1, step):
+            # interpolate the x and y values
+            x = np.polyval(x_t, t)
+            y = np.polyval(y_t, t)
+
+            samples.append([x, y])
+
+        return samples
+
+    def sample_last_t_1(self, curve):
+        x = np.polyval(curve.x, 1)
+        y = np.polyval(curve.y, 1)
+
+        return [x, y]
+
+            
     def create_from_path_info(self, path_info):
         dtol = 100
         self.functions = []
