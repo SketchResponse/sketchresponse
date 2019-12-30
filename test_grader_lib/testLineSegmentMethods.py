@@ -1,4 +1,6 @@
 from __future__ import absolute_import
+from __future__ import division
+from past.utils import old_div
 import unittest
 from . import TestData
 from grader_lib import LineSegment
@@ -172,14 +174,14 @@ class TestAsymptoteMethods(TestData.TestData):
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
             seg = ls.get_segments_at(x=1, y=1)[0]
-            self.assertEqual(ls.get_segment_angle(seg), math.pi / 4)
+            self.assertEqual(ls.get_segment_angle(seg), old_div(math.pi, 4))
 
     def test_false_get_segment_angle(self):
         data = self.load_as_gradeable_collections('ls-segs')
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
             seg = ls.get_segments_at(x=1, y=1)[0]
-            self.assertNotEqual(ls.get_segment_angle(seg), math.pi / 2)
+            self.assertNotEqual(ls.get_segment_angle(seg), old_div(math.pi, 2))
 
     def test_true_get_number_of_segments(self):
         data = self.load_as_gradeable_collections('ls-segs')

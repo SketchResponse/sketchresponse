@@ -1,5 +1,9 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from builtins import str
+from builtins import range
+from past.utils import old_div
 from . import MultipleSplinesFunction
 from . import SplineFunction
 from . import Point
@@ -170,7 +174,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             the first Point instance within tolerances of the given arguments, or None
         """
         if distTolerance is None:
-            distTolerance = self.tolerance['point_distance'] / self.xscale
+            distTolerance = old_div(self.tolerance['point_distance'], self.xscale)
         else:
             distTolerance /= self.xscale
 

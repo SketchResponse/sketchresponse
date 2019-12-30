@@ -1,4 +1,6 @@
 from __future__ import absolute_import
+from __future__ import division
+from past.utils import old_div
 from . import Gradeable
 from copy import deepcopy
 from .LineSegment import LineSegments
@@ -44,8 +46,8 @@ class PolyLines(Gradeable.Gradeable):
                 pt4 = points[i + 1]
                 ydiff = pt4[1] - (pt1[1] * 1.0)
                 xdiff = pt4[0] - (pt1[0] * 1.0)
-                pt2 = [pt1[0] + xdiff / 3, pt1[1] + ydiff / 3]
-                pt3 = [pt4[0] - xdiff / 3, pt4[1] - ydiff / 3]
+                pt2 = [pt1[0] + old_div(xdiff, 3), pt1[1] + old_div(ydiff, 3)]
+                pt3 = [pt4[0] - old_div(xdiff, 3), pt4[1] - old_div(ydiff, 3)]
                 splines.append([pt1, pt2, pt3, pt4])
 
         return splines

@@ -35,7 +35,7 @@ class TestDataPolar(unittest.TestCase):
         for answer in answers:
             gradeables = {identifier: GradeableCollection(
                 identifier, answer['meta']['config'], gradeable_list)
-                for identifier, gradeable_list in answer['data'].items()}
+                for identifier, gradeable_list in list(answer['data'].items())}
             list_of_gradeables.append(gradeables)
 
         return list_of_gradeables[0]

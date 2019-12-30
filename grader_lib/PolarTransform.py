@@ -1,5 +1,9 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from builtins import map
+from builtins import object
+from past.utils import old_div
 from . import GradeableFunction
 from . import MultipleSplinesFunction
 from . import SplineFunction
@@ -11,7 +15,7 @@ from .fitCurves import fitCurves
 import copy
 
 
-class PolarTransform():
+class PolarTransform(object):
 
     FIT_TOLERANCE = 5
     STEP = 0.02
@@ -23,8 +27,8 @@ class PolarTransform():
         # compute new axes for the [r, theta] space transform
         self.f = functionData
         self.g = gradeableFunction
-        absx = map(abs, self.f.params['xrange'])
-        absy = map(abs, self.f.params['yrange'])
+        absx = list(map(abs, self.f.params['xrange']))
+        absy = list(map(abs, self.f.params['yrange']))
         rmax = math.sqrt(max(absx) ** 2 + max(absy) ** 2)
         self.raxis = Axis.Axis([0, rmax], self.f.params['height'])
         self.thetaaxis = Axis.Axis([0, 2 * math.pi], self.f.params['width'])
@@ -215,9 +219,9 @@ class PolarTransform():
 
         # now segment any curves that wrap around theta=0/2pi boundary
         width = self.f.params['width']
-        minTen = width / 10
+        minTen = old_div(width, 10)
         maxTen = 9 * minTen
-        center = width / 2
+        center = old_div(width, 2)
         wrap_segmented = []
         for curve in curves:
             minTheta, maxTheta = self.getThetaRange(curve)
@@ -393,11 +397,11 @@ class PolarTransform():
             for i, (theta, r) in enumerate(ps):
                 if i < len(ps) - 1:
                     theta_n, r_n = ps[i + 1]
-                    rmean = (r + r_n) / 2
+                    rmean = old_div((r + r_n), 2)
                     rdiff = r - r_n
                     tdiff = theta - theta_n
                     #print rdiff / tdiff
-                    if not abs(rdiff / tdiff) > 60 * (1 + rmean / rmax):
+                    if not abs(old_div(rdiff, tdiff)) > 60 * (1 + old_div(rmean, rmax)):
                         subfiltered.append([theta, r])
 #                    else:
 #                        print 't = ' + str(theta) + " tn = " + str(theta_n)
