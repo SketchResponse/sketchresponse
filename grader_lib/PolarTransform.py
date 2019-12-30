@@ -1,11 +1,13 @@
-import GradeableFunction
-import MultipleSplinesFunction
-import SplineFunction
-import Point
-import Axis
+from __future__ import print_function
+from __future__ import absolute_import
+from . import GradeableFunction
+from . import MultipleSplinesFunction
+from . import SplineFunction
+from . import Point
+from . import Axis
 import numpy as np
 import math
-from fitCurves import fitCurves
+from .fitCurves import fitCurves
 import copy
 
 
@@ -372,7 +374,7 @@ class PolarTransform():
         for ps in points:
             #print self.findMinima(ps)
             maxVal = self.findMaximumValue(ps)
-            print maxVal
+            print(maxVal)
             subfiltered = []
             for theta, r in ps:
                 #print r

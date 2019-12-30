@@ -1,7 +1,8 @@
-import Gradeable
+from __future__ import absolute_import
+from . import Gradeable
 from copy import deepcopy
-from Point import Point as SR_Point
-from LineSegment import LineSegment
+from .Point import Point as SR_Point
+from .LineSegment import LineSegment
 from sympy.geometry import Polygon as SymPyPolygon
 from sympy.geometry import Point, Segment, intersection
 
@@ -351,7 +352,7 @@ class Polygons(Gradeable.Gradeable):
         return filtered
 
 
-from Tag import Tag
+from .Tag import Tag
 
 
 class Polygon(Tag, object):

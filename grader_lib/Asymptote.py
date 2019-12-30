@@ -1,8 +1,9 @@
-import datalayer
-import Gradeable
+from __future__ import absolute_import
+from . import datalayer
+from . import Gradeable
 import numpy as np
-import Axis
-from Tag import Tag
+from . import Axis
+from .Tag import Tag
 
 
 class Asymptote(Tag, object):

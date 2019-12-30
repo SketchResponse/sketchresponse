@@ -1,7 +1,8 @@
-import Gradeable
+from __future__ import absolute_import
+from . import Gradeable
 from copy import deepcopy
-from LineSegment import LineSegments
-from GradeableFunction import GradeableFunction
+from .LineSegment import LineSegments
+from .GradeableFunction import GradeableFunction
 
 
 class PolyLines(Gradeable.Gradeable):

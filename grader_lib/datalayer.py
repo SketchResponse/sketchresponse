@@ -1,12 +1,13 @@
 # """Contains functions and classes for processing function data"""
 from __future__ import division
+from __future__ import absolute_import
 import numpy as np
-from Tag import Tag, Tagables
+from .Tag import Tag, Tagables
 
 DEGREES = (3.142/180)
 
 import sys
-import Gradeable
+from . import Gradeable
 
 
 

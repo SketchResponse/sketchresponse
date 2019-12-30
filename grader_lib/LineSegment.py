@@ -1,8 +1,9 @@
-import datalayer
-import Gradeable
-import Point
+from __future__ import absolute_import
+from . import datalayer
+from . import Gradeable
+from . import Point
 import numpy as np
-import Axis
+from . import Axis
 from math import sqrt
 
 
@@ -528,7 +529,7 @@ class LineSegments(Gradeable.Gradeable):
 #  check end point
 #  get number of segments
 
-from Tag import Tag
+from .Tag import Tag
 
 
 class LineSegment(Tag, object):

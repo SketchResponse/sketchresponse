@@ -1,8 +1,9 @@
-import datalayer
+from __future__ import absolute_import
+from . import datalayer
 import numpy as np
 import math
-import MultipleSplinesFunction
-import GradeableFunction
+#from . import MultipleSplinesFunction
+#from . import GradeableFunction
 
 # "interface" for Functions that are composed of multiple Functions
 # i.e. MultipleSplinesFunction is composed of multiple SplineFunctions

@@ -1,6 +1,7 @@
 from __future__ import division
-import Axis
-from Tag import Tagables
+from __future__ import absolute_import
+from . import Axis
+from .Tag import Tagables
 
 
 class Gradeable(Tagables, object):
