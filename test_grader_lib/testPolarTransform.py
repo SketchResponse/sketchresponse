@@ -1,5 +1,6 @@
+from __future__ import absolute_import
 import unittest
-import TestDataPolar
+from . import TestDataPolar
 from grader_lib import GradeableFunction
 from grader_lib import Point
 from math import pi, sqrt

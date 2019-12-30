@@ -1,6 +1,7 @@
+from __future__ import absolute_import
 import copy
 import unittest
-from GradeableCollection import GradeableCollection
+from .GradeableCollection import GradeableCollection
 
 
 class TestData(unittest.TestCase):
