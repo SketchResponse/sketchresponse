@@ -1,5 +1,6 @@
-import sketchinput
-from draft_code import GradeableFunction, Asymptote
+from .. import sketchinput
+from ..grader_lib import GradeableFunction
+from ..grader_lib import Asymptote
 
 problemconfig = sketchinput.config({
     'width': 750,  # set the pixel width of the front-end interface
