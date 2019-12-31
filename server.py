@@ -29,7 +29,6 @@ def new_local_frontend(path=None, grader_module_name=None):
         grader_module_name = path + grader_module_name
 
     module_path = PACKAGE + grader_module_name
-    #module_path = module_path.encode(encoding='UTF-8')
     grader_module = importlib.import_module(module_path)
     #importlib.reload(grader_module)
 
@@ -47,7 +46,6 @@ def check_local(path=None, grader_module_name=None):
         grader_module_name = path + grader_module_name
 
     module_path = PACKAGE + grader_module_name
-    #module_path = module_path.encode(encoding='UTF-8')
     grader_module = importlib.import_module(module_path)
     #importlib.reload(grader_module)
 
