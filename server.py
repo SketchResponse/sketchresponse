@@ -3,13 +3,13 @@ import sys
 import importlib
 from flask import Flask, render_template, request, json
 from .proto2prod import convert_ans_dict
-from imp import reload
+#from imp import reload
 import os
 
 app = Flask(__name__)
 
-SCRIPT_PATH = "sketchresponse/grader_scripts/"
-PACKAGE = "sketchresponse.grader_scripts."
+SCRIPT_PATH = 'sketchresponse/grader_scripts/'
+PACKAGE = 'sketchresponse.grader_scripts.'
 
 @app.route('/')
 def list_grader_scripts():
@@ -20,15 +20,18 @@ def list_grader_scripts():
 @app.route('/<grader_module_name>')
 @app.route('/<path:path>/<grader_module_name>')
 def new_local_frontend(path=None, grader_module_name=None):
+    
+    print(type(grader_module_name))
     if not path is None:
-        path = path.replace("/", ".")
-        if not path.endswith("."):
-            path = path + "."
+        path = path.replace('/', '.')
+        if not path.endswith('.'):
+            path = path + '.'
         grader_module_name = path + grader_module_name
 
     module_path = PACKAGE + grader_module_name
+    #module_path = module_path.encode(encoding='UTF-8')
     grader_module = importlib.import_module(module_path)
-    reload(grader_module)
+    #importlib.reload(grader_module)
 
     return render_template('index_sketch_tool.html',
                            hash=grader_module.problemconfig)
@@ -38,14 +41,15 @@ def new_local_frontend(path=None, grader_module_name=None):
 @app.route('/<path:path>/<grader_module_name>/check', methods=['POST'])
 def check_local(path=None, grader_module_name=None):
     if not path is None:
-        path = path.replace("/", ".")
-        if not path.endswith("."):
-            path = path + "."
+        path = path.replace('/', '.')
+        if not path.endswith('.'):
+            path = path + '.'
         grader_module_name = path + grader_module_name
 
     module_path = PACKAGE + grader_module_name
+    #module_path = module_path.encode(encoding='UTF-8')
     grader_module = importlib.import_module(module_path)
-    reload(grader_module)
+    #importlib.reload(grader_module)
 
     submitted_data = request.get_json()
 
@@ -62,16 +66,18 @@ def check_local(path=None, grader_module_name=None):
 
 @app.route('/aws/<grader_module_name>')
 def new_frontend(grader_module_name):
-    grader_module = importlib.import_module(PACKAGE + grader_module_name)
-    reload(grader_module)
+    module_path = PACKAGE + grader_module_name
+    grader_module = importlib.import_module(module_path)
+    #importlib.reload(grader_module)
 
     return render_template('index_aws.html', hash=grader_module.problemconfig)
 
 
 @app.route('/aws/<grader_module_name>/check', methods=['POST'])
 def check_aws(grader_module_name):
-    grader_module = importlib.import_module(PACKAGE + grader_module_name)
-    reload(grader_module)
+    module_path = PACKAGE + grader_module_name
+    grader_module = importlib.import_module(module_path)
+    #importlib.reload(grader_module)
 
     submitted_data = request.get_json()
 
