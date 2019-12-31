@@ -88,4 +88,4 @@ def grader(func):
 #
 
 def config(configDict):
-    return base64.b64encode(json.dumps(configDict).encode(), altchars=b'-_').replace(b'=', b'')
+    return base64.b64encode(json.dumps(configDict).encode(), altchars=b'-_').replace(b'=', b'').decode()
