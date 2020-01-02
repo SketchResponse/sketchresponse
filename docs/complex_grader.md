@@ -17,8 +17,9 @@ There are three SketchResponse python modules that must be imported for this sim
 to support the asymptote labeling task.
 
 ```python
-import sketchresponse
-from grader_lib import GradeableFunction, Asymptote
+from .. import sketchresponse
+from ..grader_lib import GradeableFunction
+from ..grader_lib import Asymptote
 ```
 
 ## Problem configuration
@@ -229,8 +230,9 @@ The final checks we will perform make sure that the freeform line has the expect
 Combining all the code above into a single function gives us the following. You will notice that the error message variable `msg` is tested at multiple points during the evaluation and used as an early failure condition. If the numbers of expected labels are not correct, then future checks are likely to not be able to run on the data so returning early ensures the student gets good feedback.
 
 ```python
-import sketchresponse
-from grader_lib import GradeableFunction, Asymptote
+from .. import sketchresponse
+from ..grader_lib import GradeableFunction
+from ..grader_lib import Asymptote
 
 problemconfig = sketchresponse.config({
     'width': 750,

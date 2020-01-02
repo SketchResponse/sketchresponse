@@ -10,8 +10,8 @@ The details of each of these components are examined in greater detail in the [s
 You can also find a copy in */grader_scripts/grader_template.py*.
 
 ```python
-import sketchinput
-from draft_code import GradeableFunction, Asymptote
+from .. import sketchresponse
+from ..grader_lib import GradeableFunction
 
 problemconfig = sketchinput.config({
     'width': 750,  # set the pixel width of the front-end interface

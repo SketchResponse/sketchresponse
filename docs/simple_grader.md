@@ -14,8 +14,9 @@ Each grader script at its base is composed of two components
 There are two SketchResponse python modules that must be imported for this simple example. All grader scripts must import the `sketchresponse` module. There are two other modules that provide different grading helper functions. In this case, we only need to input the `GradeableFunction` module from `grader_lib`.
 
 ```python
-import sketchresponse
-from grader_lib import GradeableFunction
+from .. import sketchresponse
+from ..grader_lib import GradeableFunction
+from ..grader_lib import Asymptote
 ```
 
 ## Problem configuration
