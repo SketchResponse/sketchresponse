@@ -39,7 +39,7 @@ class LineSegments(Gradeable.Gradeable):
                         seg.set_tag(spline['tag'])
                 self.segments.extend(segs)
             else:
-                # TODO - through error if try to grade non line seg splines
+                # TODO - throw error if try to grade non line seg splines
                 raise ValueError("This spline does not appear to be a line segment: " + str(spline['spline']))
 
         self.set_tagables(None)
