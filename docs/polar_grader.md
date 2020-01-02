@@ -84,7 +84,7 @@ def grader(f, p):
     if not gf.is_straight():
         return False, 'Not straight'
 
-    if not p.has_point_at(x=pi / 4):
+    if not gp.has_point_at(x=pi / 4):
         return False, 'Missing point at PI/4'
 
     return True, 'Good Job'
@@ -131,4 +131,4 @@ There is already a copy of this grader script in the `grader_scripts` directory 
 http://localhost:5000/polar_grader
 ```
 
-You should see the configured Sketch Tool. If you draw a straight(ish) line and press the check button you will get accept message. If the line is not straight enough, you will get a reject message.
+You should see the configured Sketch Tool. If you draw a circular(ish) line, place a point with an angular coordinate of PI/4(ish) and press the check button you will get accept message. If the line is not circular enough, or the point is too far off angle you will get a reject message.
