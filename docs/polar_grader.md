@@ -1,8 +1,8 @@
-# A simple grader script
+# A polar-coordinates grader script
 
 This document will walk through the implementation of a grader script for
-a simple problem. All this grader will do is test whether the input function
-is of a straight line.
+a simple problem using polar coordinates. All this grader will do is test whether the
+input function is of a straight line and a point has been place on the correct angle.
 
 Each grader script at its base is composed of two components
 
@@ -11,11 +11,13 @@ Each grader script at its base is composed of two components
 
 ## Imports
 
-There are two SketchResponse python modules that must be imported for this simple example. All grader scripts must import the `sketchresponse` module. There are two other modules that provide different grading helper functions. In this case, we only need to input the `GradeableFunction` module from `grader_lib`.
+There are two SketchResponse python modules that must be imported for this simple example. All grader scripts must import the `sketchresponse` module. There are two other modules that provide different grading helper functions. In this case, we only need to input the `GradeableFunction` module from `grader_lib`. Because we are dealing with polar coordinates, we also want to import `pi` from the
+standard python `math` module.
 
 ```python
 from .. import sketchresponse
 from ..grader_lib import GradeableFunction
+from math import pi
 ```
 
 ## Problem configuration
@@ -50,35 +52,40 @@ A listing of all the built-in plugins can be found at [SketchResponse Plugins](p
 
 ```python
 problemconfig = sketchresponse.config({
-    'width': 750,
+    'width': 420,
     'height': 420,
-    'xrange': [-2.35, 2.35],
-    'yrange': [-1.15, 1.15],
+    'xrange': [-pi, pi],
+    'yrange': [-pi, pi],
     'xscale': 'linear',
     'yscale': 'linear',
-    'coordinates': 'cartesian',
+    **'coordinates': 'polar'**,
     'debug': False,
     'plugins': [
         {'name': 'axes'},
-	    {'name': 'freeform', 'id': 'f', 'label': 'Function f(x)', 'color':'blue'},
+	{'name': 'freeform', 'id': 'f', 'label': 'Function f(x)', 'color':'blue'},
+	{'name': 'point', 'id': 'p', 'label': 'Point', 'color': 'red', 'size': 15},
     ]
 })
 ```
 
-The above problem configuration settings will create a javascript tool that looks something like the image below.
+The above problem configuration settings will create a javascript tool that looks something like the image below. Note that setting the coordinates parameter to 'polar' changes the background axes.
 
-![What the user will see](imgs/simple_config.png "Simple Config")
+![What the user will see](imgs/polar_config.png "Polar Config")
 
 ## Define the grader callback function
 <div id=grader></div>
 
 ```python
 @sketchresponse.grader
-def grader(f):
+def grader(f, p):
     gf = GradeableFunction.GradeableFunction(f)
-
+    gp = GradeableFunction.GradeableFunction(p)
+    
     if not gf.is_straight():
         return False, 'Not straight'
+
+    if not p.has_point_at(x=pi / 4):
+        return False, 'Missing point at PI/4'
 
     return True, 'Good Job'
 ```
@@ -88,21 +95,31 @@ grader to evaluate the data sent from the javascript tool.
 
 The arguments of the grader function are the `'id'` values as defined in the
 problem configuration above. E.g. in our problem configuration we enabled the
-freeform drawing tool with id 'f' and we have a corresponding argument f in
-the signature of the function that will be automatically unpacked.
+freeform drawing tool with id 'f' and the point drawing tool with id 'p'.
+Therefore, we have a corresponding arguments f and p in the grader function
+signature that will be automatically unpacked.
 
 Before we can execute any grading helper functions on the data, we must
-instantiate the data as a `GradeableFunction`.
+instantiate the data as a `GradeableFunction`. When you instantiate polar
+coordinate data as a GradeableFunction, the data is automatically transformed
+from a polar coordinate space to a cartesian coordinate space. The data is also
+duplicated over the full range [-2PI, 2PI]. This allows us
+to use all of the existing grading functionality that we would have access to
+in a cartesian space problem.
 
-In this simple example all we are checking is that the submitted function
-defines a straight line over its entire domain. We are not checking for slope
-of the line. To do this we call the grader helper function `gf.is_straight()`.
+In this example all we only making two checks. First, that the submitted function
+defines a straight line over its entire domain, which corresponds to a circle
+in the polar coordinate space. We are not checking for slope of the line, though it should be horizontal in cartesian space.
+To do this we call the grader helper function `gf.is_straight()`.
 `is_straight()` returns a boolean value. The full API documentation for the
 grader helper functions can be found at [SketchResponse API](https://SketchResponse.github.io/sketchresponse).
 
-And that's it! Those two simple blocks of code complete our first grader script.
-Admittedly this particular script doesn't do much. Check out the [Complex Grader](complex_grader.md) example for a more realistic grader tutorial on an
-example math problem.
+Second, we are testing that there is a point drawn with an
+x coordinate equal to PI/4, which corresponds to a point being placed with an angular
+coordinate of PI/4 in the polar coordiante space. To do this we call the grader helper
+function `gp.has_point_at(x=pi / 4)`. This function also returns a boolean value.
+
+And that's it! Those two simple blocks of code complete our first polar coordinate grader script.
 
 ## Testing the script
 
@@ -111,7 +128,7 @@ Once the script is written, you can run the script in the local testing server. 
 There is already a copy of this grader script in the `grader_scripts` directory so all you need to do is start the server and point your browser of choice at the url:
 
 ```
-http://localhost:5000/simple_grader
+http://localhost:5000/polar_grader
 ```
 
 You should see the configured Sketch Tool. If you draw a straight(ish) line and press the check button you will get accept message. If the line is not straight enough, you will get a reject message.
