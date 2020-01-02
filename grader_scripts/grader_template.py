@@ -1,5 +1,5 @@
-from .. import sketchinput
-from ..grader_lib import GradeableFunction
+from sketchresponse import sketchinput
+from sketchresponse.grader_lib import GradeableFunction
 
 problemconfig = sketchinput.config({
     'width': 750,  # set the pixel width of the front-end interface

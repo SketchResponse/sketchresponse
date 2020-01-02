@@ -15,8 +15,8 @@ There are two SketchResponse python modules that must be imported for this simpl
 standard python `math` module.
 
 ```python
-from .. import sketchresponse
-from ..grader_lib import GradeableFunction
+from sketchresponse import sketchresponse
+from sketchresponse.grader_lib import GradeableFunction
 from math import pi
 ```
 
