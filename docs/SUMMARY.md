@@ -9,6 +9,7 @@
   * [A physics grading script](physics_grader.md)
   * [Grading Grouped Plugins](groups_grader.md)
   * [A polar coordinates grading script](polar_grader.md)
+  * [A line segment grading script](linesegment_grader.md)
   * [Testing your script](local_test.md)
 * [Deployment](deployment.md)
   * [edX](edx_quickstart.md)
