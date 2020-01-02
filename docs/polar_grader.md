@@ -58,7 +58,7 @@ problemconfig = sketchresponse.config({
     'yrange': [-pi, pi],
     'xscale': 'linear',
     'yscale': 'linear',
-    **'coordinates': 'polar'**,
+    `**`'coordinates': 'polar'`**`,
     'debug': False,
     'plugins': [
         {'name': 'axes'},
