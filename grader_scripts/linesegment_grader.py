@@ -21,14 +21,23 @@ problemconfig = sketchresponse.config({
 def grader(ls1, ls2):
 
     gls = GradeableFunction.GradeableFunction(ls1)
+    
+    if not gls.is_straight():
+        return False, "not straight"
+
+
     ls = LineSegment.LineSegments(ls2)
 
-    if gls.is_straight():
-        return True, "works"
-    
-    if ls.has_slope_m_at_x(2, -2, ignoreDirection=True):
-        if ls.has_slope_m_at_x(2, 2, ignoreDirection=True):
-            return True, "Works"
+    if not ls.get_number_of_segments() == 1:
+       return False, "ls2 doesn't have 1 segment"
 
-    return False, "no works"
+    segment = ls.segments[0]
+
+    if not ls.check_segment_startpoint(segment, (-2,-2)) or not ls.check_segment_endpoint(segment, (2,2)):
+        return False, "start and/or end point is wrong"
+
+    if not ls.has_slope_m_at_x(1, 0, ignoreDirection=False):
+        return False, "slopes are wrong"
+
+    return True, "Works"
 

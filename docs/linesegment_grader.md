@@ -1,8 +1,9 @@
 # A simple grader script
 
 This document will walk through the implementation of a grader script for
-a simple problem. All this grader will do is test whether the input function
-is of a straight line.
+a line segment problem. Unlike other input types, Line Segements can be graded
+as a spline like any other freeform drawn input, or with the `LineSegment` module,
+which provides API functions for interacting with end points among other things.
 
 Each grader script at its base is composed of two components
 
@@ -11,11 +12,12 @@ Each grader script at its base is composed of two components
 
 ## Imports
 
-There are two SketchResponse python modules that must be imported for this simple example. All grader scripts must import the `sketchresponse` module. There are two other modules that provide different grading helper functions. In this case, we only need to input the `GradeableFunction` module from `grader_lib`.
+There are three SketchResponse python modules that must be imported for this simple example. All grader scripts must import the `sketchresponse` module. There are two other modules that provide different grading helper functions. In this case, we only need to input the `GradeableFunction` and the `LineSegment` modules from `grader_lib`.
 
 ```python
-from .. import sketchresponse
-from ..grader_lib import GradeableFunction
+from sketchresponse import sketchresponse
+from sketchresponse.grader_lib import GradeableFunction
+from sketchresponse.grader_lib import LineSegment
 ```
 
 ## Problem configuration
@@ -50,59 +52,76 @@ A listing of all the built-in plugins can be found at [SketchResponse Plugins](p
 
 ```python
 problemconfig = sketchresponse.config({
-    'width': 750,
+    'width': 420,
     'height': 420,
-    'xrange': [-2.35, 2.35],
-    'yrange': [-1.15, 1.15],
+    'xrange': [-4, 4],
+    'yrange': [-4, 4],
     'xscale': 'linear',
     'yscale': 'linear',
     'coordinates': 'cartesian',
-    'debug': False,
     'plugins': [
         {'name': 'axes'},
-	    {'name': 'freeform', 'id': 'f', 'label': 'Function f(x)', 'color':'blue'},
+        {'name': 'line-segment', 'id': 'ls1', 'label': 'Line Segment 1', 'color':'blue'},
+        {'name': 'line-segment', 'id': 'ls2', 'label': 'Line Segment 2', 'color':'green'},
     ]
 })
 ```
 
 The above problem configuration settings will create a javascript tool that looks something like the image below.
 
-![What the user will see](imgs/simple_config.png "Simple Config")
+![What the user will see](imgs/linesegment_config.png "Line Segment Config")
 
 ## Define the grader callback function
 <div id=grader></div>
 
 ```python
 @sketchresponse.grader
-def grader(f):
-    gf = GradeableFunction.GradeableFunction(f)
+def grader(ls1, ls2):
 
-    if not gf.is_straight():
-        return False, 'Not straight'
+    gls = GradeableFunction.GradeableFunction(ls1)
+    
+    if not gls.is_straight():
+        return False, "not straight"
 
-    return True, 'Good Job'
+
+    ls = LineSegment.LineSegments(ls2)
+
+    if not ls.get_number_of_segments() == 1:
+       return False, "ls2 doesn't have 1 segment"
+
+    segment = ls.segments[0]
+
+    if not ls.check_segment_startpoint(segment, (-2,-2)) or not ls.check_segment_endpoint(segment, (2,2)):
+        return False, "start and/or end point is wrong"
+
+    if not ls.has_slope_m_at_x(1, 0, ignoreDirection=True):
+        return False, "slopes are wrong"
+
+    return True, "Works"
 ```
 
 The grader callback function implements the function passed to the sketchinput
 grader to evaluate the data sent from the javascript tool.
 
 The arguments of the grader function are the `'id'` values as defined in the
-problem configuration above. E.g. in our problem configuration we enabled the
-freeform drawing tool with id 'f' and we have a corresponding argument f in
-the signature of the function that will be automatically unpacked.
+problem configuration above. E.g. in our problem configuration we enabled two
+line segment drawing tools with ids 'ls1' and 'ls2' and we have a corresponding arguments
+ls1 and ls2 in the function signature that will be automatically unpacked.
 
-Before we can execute any grading helper functions on the data, we must
-instantiate the data as a `GradeableFunction`.
+There are two different ways to evaluate the input data. We can either use the `GradeableFunction` module similar to any freeform spline function. Alternatively, we can use the `LineSegment` module, which contains a small collection of helper functions that assume the input is specifically a line segment defined by only two points.
+
+First we use `GradeableFunction` to evaluate the ls1 input data.
 
 In this simple example all we are checking is that the submitted function
-defines a straight line over its entire domain. We are not checking for slope
-of the line. To do this we call the grader helper function `gf.is_straight()`.
-`is_straight()` returns a boolean value. The full API documentation for the
-grader helper functions can be found at [SketchResponse API](https://SketchResponse.github.io/sketchresponse).
+defines a straight line over its entire domain. However, any `GradeableFunction` grader
+functions can be called on this data since it is represented internally as a spline.
+The full API documentation for the grader helper functions can be found at [SketchResponse API](https://SketchResponse.github.io/sketchresponse).
 
-And that's it! Those two simple blocks of code complete our first grader script.
-Admittedly this particular script doesn't do much. Check out the [Complex Grader](complex_grader.md) example for a more realistic grader tutorial on an
-example math problem.
+Second, we use the `LineSegment` module to evaluate the ls2 input data.
+
+In this example, we check that there is a single line segment drawn using the `get_number_of_segments` function. Then we check that the start and end points of that line segment are in expected locations with the `check_segment_startpoint` and `check_segment_endpoint` functions. Finally we check the slope use the `has_slope_m_at_x` function. Note: the slope function for line segments has an optional parameter `ignoreDirection` that can be set to true if you don't care which endpoint is the first drawn.
+
+And that's it! Those two simple blocks of code complete our line segment grader script.
 
 ## Testing the script
 
@@ -111,7 +130,7 @@ Once the script is written, you can run the script in the local testing server. 
 There is already a copy of this grader script in the `grader_scripts` directory so all you need to do is start the server and point your browser of choice at the url:
 
 ```
-http://localhost:5000/simple_grader
+http://localhost:5000/linesegment_grader
 ```
 
-You should see the configured Sketch Tool. If you draw a straight(ish) line and press the check button you will get accept message. If the line is not straight enough, you will get a reject message.
+You should see the configured Sketch Tool. If you draw a any line segment(s) with the blue line segment tool and a single line segment with the green line segment tool from [-2, -2] to [2, 2] it will pass. 
