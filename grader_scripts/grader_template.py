@@ -1,4 +1,4 @@
-from sketchresponse import sketchinput
+from sketchresponse import sketchresponse
 from sketchresponse.grader_lib import GradeableFunction
 
 problemconfig = sketchinput.config({

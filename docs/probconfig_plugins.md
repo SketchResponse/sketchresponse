@@ -344,7 +344,7 @@ E.g.
 
 The Spline plugin adds a button to the tool to draw a sequence of points between which a spline is interpolated. It has two parameters that must be defined:
 
-* `'name': 'freeform'` - the name key *must* have the value 'freeform'
+* `'name': 'spline'` - the name key *must* have the value 'spline'
 * `'id': <unique identifier string>` - the id key *must* have a *unique* value.
 This value is used as the key for the data created by this plugin in the JSON
 string returned to the grader function.
