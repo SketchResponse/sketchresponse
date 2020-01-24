@@ -23,6 +23,7 @@ class LineSegments(Gradeable.Gradeable):
         self.set_default_tolerance('line_distance', 20) # consider an line segment to be at a value if it is within 20 pixels
         self.set_default_tolerance('line_distance_squared', 400)
         self.set_default_tolerance('line_angle', 10)
+        self.set_default_tolerance('pixel', 20)
 
         self.segments = []
         for spline in info:
@@ -97,14 +98,25 @@ class LineSegments(Gradeable.Gradeable):
 
         return x >= xmin and x <= xmax
 
+    def get_percent_overlap_of_range(self, segment, xmin, xmax):
+        # make sure start and min are less than end and max
+        xmin, xmax = self.swap(xmin, xmax)
+
+        if (xmax - xmin == 0.0):
+            return 0.0
+
+        range_length = xmax - xmin
+        overlap = self.get_overlap_length(segment, xmin, xmax)
+        return overlap / range_length
+        
     def get_overlap_length(self, segment, xmin, xmax):
         x1 = segment.start.x
         x2 = segment.end.x
         x1, x2 = self.swap(x1, x2)
 
         overlap = min(x2, xmax) - max(x1, xmin)
-        if overlap < 0:
-            overlap = 0
+        if overlap < 0.0:
+            overlap = 0.0
 
         return overlap
 
@@ -299,11 +311,11 @@ class LineSegments(Gradeable.Gradeable):
         if len(segments) == 0:
             return False
 
-        hasValue = True
-        for segment in segments:
-            hasValue = hasValue and self.segment_has_constant_value_y(segment, y)
-        
-        return hasValue
+        percentOfRangeWithValueY = 0.0
+        for index, segment in enumerate(segments):
+            if (self.segment_has_constant_value_y(segment, y)):
+                percentOfRangeWithValueY += self.get_percent_overlap_of_range(segment, xmin, xmax)
+        return percentOfRangeWithValueY > 0.95
 
     def has_value_y_at_x(self, y, x, yTolerance=None, xTolerance=None):
         """Return whether the function has the value y at x.
@@ -398,21 +410,21 @@ class LineSegments(Gradeable.Gradeable):
     def get_segments_between(self, xmin, xmax):
          """ Return a list of line segments that exist between the given x values.
 
-        Args:
+         Args:
             xmin: the minimum x coordinate of interest.
             xmax: the maximum x coordinate of interest.
-        """
-        tolerance = self.tolerance['pixel'] / self.xscale
+         """
+         tolerance = self.tolerance['pixel'] / self.xscale
          
-        segmentsBetween = []
-        for segment in self.segments:
-            x0 = segment.start.x
-            x1 = segment.end.x
-            x0, x1 = self.swap(x0, x1)
-            if self.x_is_between(xmin, x0, x1, tolerance) or self.x_is_between(xmax, x0, x1, tolerance):
-                segmentsBetween.append(segment)
+         segmentsBetween = []
+         for segment in self.segments:
+             x0 = segment.start.x
+             x1 = segment.end.x
+             x0, x1 = self.swap(x0, x1)
+             if self.x_is_between(xmin, x0, x1, tolerance) or self.x_is_between(xmax, x0, x1, tolerance):
+                 segmentsBetween.append(segment)
 
-        return segmentsBetween
+         return segmentsBetween
 
     def get_segments_at(self, point=False, x=False, y=False, distTolerance=None,
                         squareDistTolerance=None):
