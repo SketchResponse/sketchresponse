@@ -165,8 +165,8 @@ class LineSegments(Gradeable.Gradeable):
         endX = segment.end.x
         endY = segment.end.y
 
-        segSlope = slope(startX, startY, endX, endY)
-        segInt = intercept(startX, startY, segSlope)
+        segSlope = self.slope(startX, startY, endX, endY)
+        segInt = self.intercept(startX, startY, segSlope)
 
         return (segSlope * x) + segInt
 
