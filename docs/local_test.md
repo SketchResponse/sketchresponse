@@ -20,10 +20,10 @@ this step. Otherwise, follow the instructions [here](sketch_tool_dev_usage.md) o
 
 ### Start the grader local server
 
-To run the local server, make sure the grading script you are testing is in the `grading_scripts` directory. Then run the following command from the repository root directory. *If you are in Windows you may need to run the Git Bash shell as Administrator to interact with the local server.*
+To run the local server, make sure the grading script you are testing is in the `grading_scripts` directory. Then run the following command from outside the repository root directory (the command below assumes the SketchResponse package is in a directory called 'sketchresponse'). *If you are in Windows you may need to run the Git Bash shell as Administrator to interact with the local server.*
 
 ```sh
-$ python server.py
+$ python -m sketchresponse.server
 ```
 
 You should see a message telling you that the server is running on `http://localhost:5000`.

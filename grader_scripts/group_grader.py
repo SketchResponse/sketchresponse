@@ -1,5 +1,5 @@
-import sketchresponse
-from grader_lib import GradeableFunction
+from sketchresponse import sketchresponse
+from sketchresponse.grader_lib import GradeableFunction
 
 problemconfig = sketchresponse.config({
     'width': 750,

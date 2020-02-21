@@ -1,5 +1,6 @@
 from __future__ import division
 
+from builtins import object
 class Axis(object):
     def __init__(self, domain, pixels): # TODO: support non-linear axis types
         self.domain = domain

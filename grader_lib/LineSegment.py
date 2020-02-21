@@ -1,8 +1,12 @@
-import datalayer
-import Gradeable
-import Point
+from __future__ import absolute_import
+from __future__ import division
+from builtins import str
+from past.utils import old_div
+from . import datalayer
+from . import Gradeable
+from . import Point
 import numpy as np
-import Axis
+from . import Axis
 from math import sqrt
 
 
@@ -19,6 +23,7 @@ class LineSegments(Gradeable.Gradeable):
         self.set_default_tolerance('line_distance', 20) # consider an line segment to be at a value if it is within 20 pixels
         self.set_default_tolerance('line_distance_squared', 400)
         self.set_default_tolerance('line_angle', 10)
+        self.set_default_tolerance('pixel', 20)
 
         self.segments = []
         for spline in info:
@@ -35,7 +40,7 @@ class LineSegments(Gradeable.Gradeable):
                         seg.set_tag(spline['tag'])
                 self.segments.extend(segs)
             else:
-                # TODO - through error if try to grade non line seg splines
+                # TODO - throw error if try to grade non line seg splines
                 raise ValueError("This spline does not appear to be a line segment: " + str(spline['spline']))
 
         self.set_tagables(None)
@@ -49,13 +54,13 @@ class LineSegments(Gradeable.Gradeable):
 
         coeffs, res, _, _, _ = np.polyfit(xs, ys, 1, full=True)
 
-        ybar = np.sum(ys) / len(ys)
+        ybar = old_div(np.sum(ys), len(ys))
         sstot = np.sum((ys - ybar) ** 2)
         if sstot == 0 or len(res) == 0:
             # sstot == 0 means horizontal line, len(res) == 0 means vertical line
             return True
         else:
-            r2 = (sstot - res) / sstot
+            r2 = old_div((sstot - res), sstot)
 
         #print r2[0] > 0.99
         return r2[0] > 0.99
@@ -93,14 +98,25 @@ class LineSegments(Gradeable.Gradeable):
 
         return x >= xmin and x <= xmax
 
+    def get_percent_overlap_of_range(self, segment, xmin, xmax):
+        # make sure start and min are less than end and max
+        xmin, xmax = self.swap(xmin, xmax)
+
+        if (xmax - xmin == 0.0):
+            return 0.0
+
+        range_length = xmax - xmin
+        overlap = self.get_overlap_length(segment, xmin, xmax)
+        return overlap / range_length
+        
     def get_overlap_length(self, segment, xmin, xmax):
         x1 = segment.start.x
         x2 = segment.end.x
         x1, x2 = self.swap(x1, x2)
 
         overlap = min(x2, xmax) - max(x1, xmin)
-        if overlap < 0:
-            overlap = 0
+        if overlap < 0.0:
+            overlap = 0.0
 
         return overlap
 
@@ -122,7 +138,7 @@ class LineSegments(Gradeable.Gradeable):
     def unit(self, v):
         x, y = v
         mag = self.length(v)
-        return (x / mag, y / mag)
+        return (old_div(x, mag), old_div(y, mag))
 
     def distance(self, p0, p1):
         return self.length(self.vector(p0, p1))
@@ -135,6 +151,24 @@ class LineSegments(Gradeable.Gradeable):
         x, y = v
         X, Y = w
         return (x + X, y + Y)
+
+    def slope(self, x0, y0, x1, y1):
+        return (y1 - y0) / (x1 - x0)
+
+    def intercept(self, x, y, m):
+        return y - (m * x)
+
+    def get_y_value_at_x(self, segment, x):
+        # get the y value of the given segment at the given x position
+        startX = segment.start.x
+        startY = segment.start.y
+        endX = segment.end.x
+        endY = segment.end.y
+
+        segSlope = self.slope(startX, startY, endX, endY)
+        segInt = self.intercept(startX, startY, segSlope)
+
+        return (segSlope * x) + segInt
 
     def has_slope_m_at_x(self, m, x, ignoreDirection=True, tolerance=None):
         """Return whether the function has slope m at the value x.
@@ -154,10 +188,10 @@ class LineSegments(Gradeable.Gradeable):
         else:
             tolerance = tolerance * self.DEGREES
 
-        dist_tolerance = self.tolerance['line_distance'] / self.xscale
+        dist_tolerance = old_div(self.tolerance['line_distance'], self.xscale)
 
         if ignoreDirection:
-            expectedAngle = np.arctan(self.yscale * m / self.xscale)
+            expectedAngle = np.arctan(old_div(self.yscale * m, self.xscale))
         else:
             expectedAngle = np.arctan2(self.yscale * m, self.xscale * 1)
         for segment in self.segments:
@@ -171,7 +205,7 @@ class LineSegments(Gradeable.Gradeable):
                 ydiff = pt2.y - pt1.y
                 xdiff = pt2.x - pt1.x
                 if ignoreDirection:
-                    actualAngle = np.arctan(ydiff / xdiff)
+                    actualAngle = np.arctan(old_div(ydiff, xdiff))
                 else:
                     actualAngle = np.arctan2(ydiff, xdiff)
                 return abs(expectedAngle - actualAngle) < tolerance
@@ -195,7 +229,7 @@ class LineSegments(Gradeable.Gradeable):
         if tolerance == None:
             tolerance = self.tolerance['line_angle'] * self.DEGREES
 
-        dist_tolerance = self.tolerance['line_distance'] / self.xscale
+        dist_tolerance = old_div(self.tolerance['line_distance'], self.xscale)
 
         for segment in self.segments:
             pt1 = segment.start
@@ -208,7 +242,7 @@ class LineSegments(Gradeable.Gradeable):
                 ydiff = pt2.y - pt1.y
                 xdiff = pt2.x - pt1.x
                 if ignoreDirection:
-                    actualAngle = np.arctan(ydiff / xdiff)
+                    actualAngle = np.arctan(old_div(ydiff, xdiff))
                 else:
                     actualAngle = np.arctan2(ydiff, xdiff)
 
@@ -229,7 +263,7 @@ class LineSegments(Gradeable.Gradeable):
             within tolerances, otherwise false.
         """
         # tolerances should shrink the range slightly so make it negative
-        dist_tolerance = self.tolerance['line_distance'] / self.xscale
+        dist_tolerance = old_div(self.tolerance['line_distance'], self.xscale)
 
         for segment in self.segments:
 
@@ -252,7 +286,7 @@ class LineSegments(Gradeable.Gradeable):
             to xmax within tolerances, otherwise false.
         """
         # tolerances should shrink the range slightly so make it negative
-        dist_tolerance = self.tolerance['line_distance'] / self.xscale
+        dist_tolerance = old_div(self.tolerance['line_distance'], self.xscale)
 
         for segment in self.segments:
             overlap = self.get_overlap_length(segment, xmin, xmax)
@@ -261,6 +295,93 @@ class LineSegments(Gradeable.Gradeable):
 
         return False
 
+    def has_constant_value_y_between(self, y, xmin, xmax):
+        """Return whether the function has a constant value y over the range xmin to xmax.
+
+        Args:
+            y: the constant value to check.
+            xmin: the minimum x-axis value of the range to test.
+            xmax: the maximum x-axis value of the range to test.
+        Returns:
+            bool:
+            true if the function has the value y at both xmin and xmax and the function
+            is straight in the range xmin to xmax, otherwise false.
+        """
+        segments = self.get_segments_between(xmin, xmax)
+        if len(segments) == 0:
+            return False
+
+        percentOfRangeWithValueY = 0.0
+        for index, segment in enumerate(segments):
+            if (self.segment_has_constant_value_y(segment, y)):
+                percentOfRangeWithValueY += self.get_percent_overlap_of_range(segment, xmin, xmax)
+        return percentOfRangeWithValueY > 0.95
+
+    def has_value_y_at_x(self, y, x, yTolerance=None, xTolerance=None):
+        """Return whether the function has the value y at x.
+
+        Args:
+            y: the target y value.
+            x: the x value.
+            yTolerance(default:None): the y-axis pixel distance within which
+                                       the function value is accepted.
+            xTolerance(default:None): the x-axis pixel distance within which
+                                       the function value is accepted.
+        Returns:
+            bool:
+            true if the function value at x is y within tolerances, otherwise
+            false
+        """
+        if yTolerance is None:
+            yTolerance = self.tolerance['pixel'] / self.yscale
+        else:
+            yTolerance /= self.yscale
+        if xTolerance is None:
+            xTolerance = self.tolerance['pixel'] / self.xscale
+        else:
+            xTolerance /= self.xscale
+
+        # if the min value of the function around the desired x is higher than the desired y
+        # or if the max value of the function around the desired x is lower
+        # then it fails
+        # note that if the function is defined above and below the function, no matter how far apart, this will allow it
+
+        segments = self.get_segments_at(x=x)
+
+        for segment in segments:
+            # check if any of the returned segments has the give y value within tolerances
+            # if yes, return true else return false
+            ymax = self.get_y_value_at_x(segment, x + xTolerance)
+            ymin = self.get_y_value_at_x(segment, x - xTolerance)
+
+            if (ymax > y - yTolerance) and (ymin < y + yTolerance):
+                return True
+
+        return False
+
+    def segment_has_constant_value_y(self, segment, y):
+        """Return whether the line segment has the constant value of y
+
+        Args:
+            segment: the line segment to check
+            y: the y value to check against
+        Returns:
+            bool:
+            true if the line segment has the constant value y within tolerances
+            otherwise false
+        """
+
+        yTolerance = self.tolerance['pixel'] / self.yscale
+
+        startY = segment.start.y
+        endY = segment.end.y
+
+        start_within_tolerance = (y < startY + yTolerance) and (y > startY - yTolerance)
+        end_within_tolerance = (y < endY + yTolerance) and (y > endY - yTolerance)
+
+        return start_within_tolerance and end_within_tolerance
+
+        
     def segments_distances_to_point(self, point):
         # helper function computes the distances of each line segment to a give
         # point based on tutorial published at:
@@ -285,6 +406,25 @@ class LineSegments(Gradeable.Gradeable):
             distances.append(self.distance(nearest_pnt, pnt_vector) ** 2)
 
         return distances
+
+    def get_segments_between(self, xmin, xmax):
+         """ Return a list of line segments that exist between the given x values.
+
+         Args:
+            xmin: the minimum x coordinate of interest.
+            xmax: the maximum x coordinate of interest.
+         """
+         tolerance = self.tolerance['pixel'] / self.xscale
+         
+         segmentsBetween = []
+         for segment in self.segments:
+             x0 = segment.start.x
+             x1 = segment.end.x
+             x0, x1 = self.swap(x0, x1)
+             if self.x_is_between(xmin, x0, x1, tolerance) or self.x_is_between(xmax, x0, x1, tolerance):
+                 segmentsBetween.append(segment)
+
+         return segmentsBetween
 
     def get_segments_at(self, point=False, x=False, y=False, distTolerance=None,
                         squareDistTolerance=None):
@@ -315,9 +455,9 @@ class LineSegments(Gradeable.Gradeable):
         """
         if distTolerance is None:
             if x is not False:
-                distTolerance = self.tolerance['line_distance'] / self.xscale
+                distTolerance = old_div(self.tolerance['line_distance'], self.xscale)
             else:
-                distTolerance = self.tolerance['line_distance'] / self.yscale
+                distTolerance = old_div(self.tolerance['line_distance'], self.yscale)
         else:
             if x is not False:
                 distTolerance /= self.xscale
@@ -528,7 +668,7 @@ class LineSegments(Gradeable.Gradeable):
 #  check end point
 #  get number of segments
 
-from Tag import Tag
+from .Tag import Tag
 
 
 class LineSegment(Tag, object):

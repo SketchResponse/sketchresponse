@@ -1,8 +1,9 @@
+from __future__ import absolute_import
 import copy
 import unittest
 import json
-from GradeableCollection import GradeableCollection
-from csv_to_data_new import load_csv_data
+from .GradeableCollection import GradeableCollection
+from .csv_to_data_new import load_csv_data
 
 class TestDataPolar(unittest.TestCase):
     # extracted ## examples of correct/incorrect data from the following csv files
@@ -34,7 +35,7 @@ class TestDataPolar(unittest.TestCase):
         for answer in answers:
             gradeables = {identifier: GradeableCollection(
                 identifier, answer['meta']['config'], gradeable_list)
-                for identifier, gradeable_list in answer['data'].items()}
+                for identifier, gradeable_list in list(answer['data'].items())}
             list_of_gradeables.append(gradeables)
 
         return list_of_gradeables[0]

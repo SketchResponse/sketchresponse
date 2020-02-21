@@ -1,7 +1,10 @@
-import Gradeable
+from __future__ import absolute_import
+from __future__ import division
+from past.utils import old_div
+from . import Gradeable
 from copy import deepcopy
-from Point import Point as SR_Point
-from LineSegment import LineSegment
+from .Point import Point as SR_Point
+from .LineSegment import LineSegment
 from sympy.geometry import Polygon as SymPyPolygon
 from sympy.geometry import Point, Segment, intersection
 
@@ -177,7 +180,7 @@ class Polygons(Gradeable.Gradeable):
             the given point, or None.
         """
         if tolerance is None:
-            tolerance = self.tolerance['point_distance'] / self.xscale
+            tolerance = old_div(self.tolerance['point_distance'], self.xscale)
 
         if isinstance(point, SR_Point):
             point = [point.x, point.y]
@@ -212,7 +215,7 @@ class Polygons(Gradeable.Gradeable):
             otherwise False.
         """
         if tolerance is None:
-            tolerance = self.tolerance['point_distance'] / self.xscale
+            tolerance = old_div(self.tolerance['point_distance'], self.xscale)
 
         if isinstance(point, SR_Point):
             point = [point.x, point.y]
@@ -329,7 +332,7 @@ class Polygons(Gradeable.Gradeable):
     # of each other.
     def point_within_tolerance(self, point1, point2, tolerance=None):
         if tolerance is None:
-            tolerance = self.tolerance['point_distance'] / self.xscale
+            tolerance = old_div(self.tolerance['point_distance'], self.xscale)
 
         p1 = Point(*point1)
         return p1.distance(Point(*point2)) < tolerance
@@ -351,7 +354,7 @@ class Polygons(Gradeable.Gradeable):
         return filtered
 
 
-from Tag import Tag
+from .Tag import Tag
 
 
 class Polygon(Tag, object):

@@ -1,5 +1,6 @@
-import datalayer
-from Tag import Tag
+from __future__ import absolute_import
+from . import datalayer
+from .Tag import Tag
 
 
 class Point(Tag, object):

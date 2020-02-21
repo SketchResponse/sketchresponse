@@ -43,7 +43,7 @@ def grader(func):
 
         all_gradeables = {identifier: GradeableCollection(
             identifier, answer['meta']['config'], gradeable_list)
-            for identifier, gradeable_list in answer['data'].items()}
+            for identifier, gradeable_list in list(answer['data'].items())}
 
         # create new gradeables for group plugins in the config data
         plugins = answer['meta']['config']['plugins']
@@ -88,4 +88,4 @@ def grader(func):
 #
 
 def config(configDict):
-    return base64.b64encode(json.dumps(configDict), altchars='-_').replace('=', '')
+    return base64.b64encode(json.dumps(configDict).encode(), altchars=b'-_').replace(b'=', b'').decode()

@@ -1,6 +1,7 @@
+from __future__ import absolute_import
 import copy
 import unittest
-from GradeableCollection import GradeableCollection
+from .GradeableCollection import GradeableCollection
 
 
 class TestData(unittest.TestCase):
@@ -98,7 +99,7 @@ class TestData(unittest.TestCase):
         for answer in answers:
             gradeables = {identifier: GradeableCollection(
                 identifier, answer['meta']['config'], gradeable_list)
-                for identifier, gradeable_list in answer['data'].items()}
+                for identifier, gradeable_list in list(answer['data'].items())}
             list_of_gradeables.append(gradeables)
 
         return list_of_gradeables

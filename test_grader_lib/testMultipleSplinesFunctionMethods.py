@@ -1,5 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
 import unittest
-import TestData
+from . import TestData
 from grader_lib import GradeableFunction
 
 
@@ -24,7 +26,7 @@ class TestMultipleSplinesFunctionMethods(TestData.TestData):
         data = self.load_as_gradeable_collections('slope')
         for d in data:
             f = GradeableFunction.GradeableFunction(d['f'])
-            print 'true slope'
+            print('true slope')
             self.assertTrue(f.has_slope_m_at_x(1, 0))
 
 #    @unittest.skip('No data for this test yet')
@@ -32,7 +34,7 @@ class TestMultipleSplinesFunctionMethods(TestData.TestData):
         data = self.load_as_gradeable_collections('slope')
         for d in data:
             f = GradeableFunction.GradeableFunction(d['f'])
-            print 'false slope'
+            print('false slope')
             self.assertFalse(f.has_slope_m_at_x(-1, 0))
 
 #    @unittest.skip('No data for this test yet')

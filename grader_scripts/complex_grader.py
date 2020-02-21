@@ -1,5 +1,6 @@
-import sketchresponse
-from grader_lib import GradeableFunction, Asymptote
+from sketchresponse import sketchresponse
+from sketchresponse.grader_lib import GradeableFunction
+from sketchresponse.grader_lib import Asymptote
 
 problemconfig = sketchresponse.config({
     'width': 750,

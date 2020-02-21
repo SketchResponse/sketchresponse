@@ -1,4 +1,6 @@
-import datalayer
+from __future__ import absolute_import
+from builtins import range
+from . import datalayer
 import numpy as np
 # from numpy.polynomial.polynomial import polyval
 

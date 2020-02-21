@@ -1,7 +1,7 @@
 SketchResponse
 ==============
 
-SketchResponse is a Javascript/Python(2.5-2.7) tool for drawing and evaluating
+SketchResponse is a Javascript/Python(2.7-3.x) tool for drawing and evaluating
 mathematical functions. It was designed for use with the edX online
 courseware platform. However, it is a self-contained application that can be
 integrated into other web platforms.

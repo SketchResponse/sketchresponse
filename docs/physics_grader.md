@@ -14,8 +14,11 @@ evaluate these new sources of data.
 There are five SketchResponse python modules that must be imported for this example. As you saw in the [Simple Grader Tutorial](simple_grader.md) all grader scripts must import the `sketchresponse` module. We again need to input the `GradeableFunction` module from `grader_lib`, but also need to import the `LineSegment`, `PolyLine`, and `Polygon` modules.
 
 ```python
-import sketchresponse
-from grader_lib import GradeableFunction, LineSegment, PolyLine, Polygon
+from sketchresponse import sketchresponse
+from sketchresponse.grader_lib import GradeableFunction
+from sketchresponse.grader_lib import LineSegment
+from sketchresponse.grader_lib import PolyLine
+from sketchresponse.grader_lib import Polygon
 ```
 
 ## Problem configuration
@@ -237,8 +240,11 @@ The correct isolation bubbles will have the point C on the horizontal beam on th
 Combining all the code above into a single function gives us the following. You will notice that the error conditions are tested at multiple points during the evaluation and used as an early failure condition. If the numbers of expected bubbles is not correct, then future checks are likely to not be able to run on the data so returning early ensures the student gets meaningful feedback.
 
 ```python
-import sketchresponse
-from grader_lib import GradeableFunction, LineSegment, PolyLine, Polygon
+from sketchresponse import sketchresponse
+from sketchresponse.grader_lib import GradeableFunction
+from sketchresponse.grader_lib import LineSegment
+from sketchresponse.grader_lib import PolyLine
+from sketchresponse.grader_lib import Polygon
 
 problemconfig = sketchresponse.config({
     'width': 750,

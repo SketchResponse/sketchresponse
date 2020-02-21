@@ -1,28 +1,32 @@
 from sketchresponse import sketchresponse
 from sketchresponse.grader_lib import GradeableFunction
+from math import pi
 
 problemconfig = sketchresponse.config({
-    'width': 750,
+    'width': 420,
     'height': 420,
-    'xrange': [-2.35, 2.35],
-    'yrange': [-1.15, 1.15],
+    'xrange': [-pi, pi],
+    'yrange': [-pi, pi],
     'xscale': 'linear',
     'yscale': 'linear',
-    'coordinates': 'cartesian',
+    'coordinates': 'polar',
     'debug': False,
     'plugins': [
         {'name': 'axes'},
         {'name': 'freeform', 'id': 'f', 'label': 'Function f(x)', 'color':'blue'},
+        {'name': 'point', 'id': 'p', 'label': 'Point', 'color': 'red', 'size': 15},
     ]
 })
 
 @sketchresponse.grader
-def grader(f):
-    f = GradeableFunction.GradeableFunction(f)
- 
-    if not f.is_straight_between(-1, 1):
+def grader(f, p):
+    gf = GradeableFunction.GradeableFunction(f)
+    gp = GradeableFunction.GradeableFunction(p)
+
+    if not gf.is_straight():
         return False, 'Not straight'
+    
+    if not gp.has_point_at(x=pi / 4):
+        return False, 'Missing point at PI/4'
 
     return True, 'Good Job'
-    
-   

@@ -1,8 +1,11 @@
-import datalayer
-import Gradeable
+from __future__ import absolute_import
+from __future__ import division
+from past.utils import old_div
+from . import datalayer
+from . import Gradeable
 import numpy as np
-import Axis
-from Tag import Tag
+from . import Axis
+from .Tag import Tag
 
 
 class Asymptote(Tag, object):
@@ -85,7 +88,7 @@ class Asymptotes(Gradeable.Gradeable):
                    the value v, or None if no such asymptote exists.
         """
         if tolerance is None:
-            tolerance = self.tolerance['asym_distance'] / (1.0 * self.scale)
+            tolerance = old_div(self.tolerance['asym_distance'], (1.0 * self.scale))
         else:
             tolerance /= (1.0 * self.scale)
 

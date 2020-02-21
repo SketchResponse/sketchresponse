@@ -1,7 +1,10 @@
 from __future__ import division
-import datalayer
-import SplineFunction
-import MultiFunction
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import range
+from . import datalayer
+from . import SplineFunction
+from . import MultiFunction
 import numpy as np
 import math
 
@@ -117,7 +120,7 @@ class MultipleSplinesFunction(MultiFunction.MultiFunction):
         for i in range(n-1):
             f = comparer(values[i], values[i+1], delta[i] * scale)
             if f > 0:
-                print 'f', failureTolerance, f
+                print('f', failureTolerance, f)
                 newFailureTolerance = failureTolerance - f
                 if newFailureTolerance < 0:
                     return False

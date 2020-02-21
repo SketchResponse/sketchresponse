@@ -4,8 +4,13 @@
     "Graphics Gems", Academic Press, 1990
 """
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+from builtins import zip
+from builtins import range
+from past.utils import old_div
 from numpy import *
-import bezier
+from . import bezier
 
 
 # Fit one (ore more) Bezier curves to a set of points
@@ -79,8 +84,8 @@ def generateBezier(points, parameters, leftTangent, rightTangent):
     det_X_C1  = X[0] * C[1][1] - X[1] * C[0][1]
 
     # Finally, derive alpha values
-    alpha_l = 0.0 if det_C0_C1 == 0 else det_X_C1 / det_C0_C1
-    alpha_r = 0.0 if det_C0_C1 == 0 else det_C0_X / det_C0_C1
+    alpha_l = 0.0 if det_C0_C1 == 0 else old_div(det_X_C1, det_C0_C1)
+    alpha_r = 0.0 if det_C0_C1 == 0 else old_div(det_C0_X, det_C0_C1)
 
     # If alpha negative, use the Wu/Barsky heuristic (see text) */
     # (if alpha is 0, you get coincident control points that lead to
@@ -130,7 +135,7 @@ def newtonRaphsonRootFind(bez, point, u):
     if denominator == 0.0:
         return u
     else:
-        return u - numerator/denominator
+        return u - old_div(numerator,denominator)
 
 
 def chordLengthParameterize(points):
@@ -139,14 +144,14 @@ def chordLengthParameterize(points):
         u.append(u[i-1] + linalg.norm(points[i] - points[i-1]))
 
     for i, _ in enumerate(u):
-        u[i] = u[i] / u[-1]
+        u[i] = old_div(u[i], u[-1])
 
     return u
 
 
 def computeMaxError(points, bez, parameters):
     maxDist = 0.0
-    splitPoint = len(points)/2
+    splitPoint = old_div(len(points),2)
     for i, (point, u) in enumerate(zip(points, parameters)):
         dist = linalg.norm(bezier.q(bez, u)-point)**2
         if dist > maxDist:
@@ -157,5 +162,5 @@ def computeMaxError(points, bez, parameters):
 
 
 def normalize(v):
-    return v / linalg.norm(v)
+    return old_div(v, linalg.norm(v))
 

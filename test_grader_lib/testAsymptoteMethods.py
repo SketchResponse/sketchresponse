@@ -1,5 +1,6 @@
+from __future__ import absolute_import
 import unittest
-import TestData
+from . import TestData
 from grader_lib import Asymptote
 
 

@@ -1,5 +1,6 @@
+from __future__ import absolute_import
 import unittest
-import TestData
+from . import TestData
 from grader_lib import GradeableFunction
 from grader_lib import Point
 
@@ -8,7 +9,7 @@ class TestGradeableFunctionMethods(TestData.TestData):
 
 #    Test the methods in the GradeableFunction class
 #    @unittest.skip("Don't know how to test this yet")
-    @unittest.expectedFailure
+#    @unittest.expectedFailure
     def test_closest_point_to_point(self):
         # test using data from the app2-17-1 csv
         data = self.load_as_gradeable_collections('hw4A-tab4-problem1.anon.csv')

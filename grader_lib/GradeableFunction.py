@@ -1,7 +1,13 @@
-import MultipleSplinesFunction
-import SplineFunction
-import Point
-import Axis
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+from builtins import str
+from builtins import range
+from past.utils import old_div
+from . import MultipleSplinesFunction
+from . import SplineFunction
+from . import Point
+from . import Axis
 import numpy as np
 
 class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
@@ -17,7 +23,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
         # transform from polar
         #if f.params['xscale'] == 'polar' and f.params['yscale'] == 'polar':
         if 'coordinates' in f.params and f.params['coordinates'] == 'polar':
-            from PolarTransform import PolarTransform
+            from .PolarTransform import PolarTransform
             self.pt = PolarTransform(gradeable, self)
             f = self.pt.getTransformedFunctionData()
             xaxis = Axis.Axis(f.params['xrange'], f.params['width'])
@@ -168,7 +174,7 @@ class GradeableFunction(MultipleSplinesFunction.MultipleSplinesFunction):
             the first Point instance within tolerances of the given arguments, or None
         """
         if distTolerance is None:
-            distTolerance = self.tolerance['point_distance'] / self.xscale
+            distTolerance = old_div(self.tolerance['point_distance'], self.xscale)
         else:
             distTolerance /= self.xscale
 

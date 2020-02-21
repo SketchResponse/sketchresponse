@@ -1,6 +1,9 @@
-import datalayer
-import MultiFunction
-import CurveFunction
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import range
+from . import datalayer
+from . import MultiFunction
+from . import CurveFunction
 import numpy as np
 import math
 
@@ -62,7 +65,7 @@ class SplineFunction(MultiFunction.MultiFunction):
     # first xmin is the given parameter xmin, likewise for last xmax
     def find_curves_between(self, xmin, xmax):
         if xmax < xmin:
-            print "xmax must be greater than xmin!"
+            print("xmax must be greater than xmin!")
         else:
             a = self.find_curve(xmin)
             b = self.find_curve(xmax)

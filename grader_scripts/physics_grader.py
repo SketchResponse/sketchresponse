@@ -1,5 +1,8 @@
-import sketchresponse
-from grader_lib import GradeableFunction, LineSegment, PolyLine, Polygon
+from sketchresponse import sketchresponse
+from sketchresponse.grader_lib import GradeableFunction
+from sketchresponse.grader_lib import LineSegment
+from sketchresponse.grader_lib import PolyLine
+from sketchresponse.grader_lib import Polygon
 
 problemconfig = sketchresponse.config({
     'width': 750,
