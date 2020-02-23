@@ -38,7 +38,6 @@ per problem configuration, unlike plugins, which can be declared mulitple times.
 * `'xscale': 'linear'` - Currently only linear. 
 * `'yscale': 'linear'` - Currently only linear.
 * `'coordinates': <'cartesians'|'polar'>` - The type of axes to draw.
-* `'debug': <True|False>` - If true prints debug information about the problem configuration to your browser's developer console.
 
 <div id=axes></div>
 ## Axes

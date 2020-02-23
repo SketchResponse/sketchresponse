@@ -37,7 +37,7 @@ Installation
 
 ### Prerequisites
 
-You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged with Node) to be installed on your system.
+You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged with Node) to be installed on your system. *Note: This currently only works with Node version 7.10.1*
 
 ### Installation
 

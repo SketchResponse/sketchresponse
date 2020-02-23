@@ -38,13 +38,8 @@ In the example configuration below, the first seven key/value pairs are required
 * `'xscale': 'linear'` sets the scale of the x axis to linear (only option currently implemented)
 * `'yscale': 'linear'` sets the scale of the y axis to linear (only option currently implemented)
 * `'coordinates': 'cartesian' or 'polar'` sets the coordinate system used by the axes plugin to either cartesian or polar
-* `'debug': True or False if True prints configuration debug information to the developer console
 
 The last entry `'plugins'` takes a list of dicts that enable the specific javascript plugins that are available to the user. All plugins are declared by 'name'.
-
-One key is optional:
-
-* `'debug': <True|False>(default: False)` sets debug mode where the current configuration will be validated. If errors are found, information about these will ouput to the browser console and defaults will be loaded instead
 
 The 'axes' and 'freeform' plugin usage here is identical to the [Simple Grader Tutorial](simple_grader.md) and is explained there as well as on the [Plugin Description Page](probconfig_plugins.md).
 
@@ -77,7 +72,6 @@ problemconfig = sketchresponse.config({
     'xscale': 'linear',
     'yscale': 'linear',
     'coordinates': 'cartesian',
-    'debug': False,
     'plugins': [
         {'name': 'axes'},
         {'name': 'freeform', 'id': 'f', 'label': 'Function f(x)', 'color':'blue'},
@@ -242,7 +236,6 @@ problemconfig = sketchresponse.config({
     'xscale': 'linear',
     'yscale': 'linear',
     'coordinates': 'cartesian',
-    'debug': False,
     'plugins': [
         {'name': 'axes'},
         {'name': 'freeform', 'id': 'f', 'label': 'Function f(x)', 'color':'blue'},
