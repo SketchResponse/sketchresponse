@@ -21,18 +21,25 @@ module.exports = {
         ],
       },
       {
-        test: /.js/,
+        test: /\.js$/,
+        exclude: /node_modules/,
         use: [
           {
-            loader: `expose-loader`,
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env']
+            },
+          },
+          {
+            loader: 'expose-loader',
             options: 'SketchInput'
-          }
+          },
         ]
       },
       {
         test: /\.(ttf|eot|woff|woff2)$/,
         use: {
-          loader: "file-loader",
+          loader: 'file-loader',
         },
       },
       {
