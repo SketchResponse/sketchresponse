@@ -1,7 +1,7 @@
-import z from 'sketch/util/zdom';
-import BasePlugin from './base-plugin';
 import deepExtend from 'deep-extend';
-import {validate} from 'sketch/config-validator';
+import z from '../util/zdom';
+import BasePlugin from './base-plugin';
+import { validate } from '../config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -23,7 +23,7 @@ export default class HorizontalLine extends BasePlugin {
     }
     // Add params that are specific to this plugin
     hlParams.icon = {
-      src: './plugins/horizontal-line/horizontal-line-icon.svg',
+      src: './lib/plugins/horizontal-line/horizontal-line-icon.svg',
       alt: 'Horizontal line tool',
       color: hlParams.color
     };

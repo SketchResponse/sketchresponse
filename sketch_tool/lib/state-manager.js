@@ -1,4 +1,4 @@
-import deepCopy from 'sketch/util/deep-copy';
+import deepCopy from './util/deep-copy';
 
 export const VERSION = '0.1';
 

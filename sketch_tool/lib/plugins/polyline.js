@@ -1,9 +1,9 @@
-import z from 'sketch/util/zdom';
+import deepExtend from 'deep-extend';
+import z from '../util/zdom';
 import BasePlugin from './base-plugin';
 import fitCurve from './freeform/fitcurve';
-import { injectStyleSheet, injectSVGDefs } from 'sketch/util/dom-style-helpers';
-import deepExtend from 'deep-extend';
-import {validate} from 'sketch/config-validator';
+import { injectStyleSheet, injectSVGDefs } from '../util/dom-style-helpers';
+import { validate } from '../config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.2';
@@ -29,8 +29,8 @@ export default class Polyline extends BasePlugin {
     else {
       console.log('The polyline config has errors, using default values instead');
     }
-    let iconSrc = plParams.closed ? './plugins/polyline/polyline-closed-icon.svg'
-                                  : './plugins/polyline/polyline-open-icon.svg';
+    let iconSrc = plParams.closed ? './lib/plugins/polyline/polyline-closed-icon.svg'
+                                  : './lib/plugins/polyline/polyline-open-icon.svg';
     // Add params that are specific to this plugin
     plParams.icon = {
       src: iconSrc,

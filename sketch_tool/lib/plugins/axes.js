@@ -1,6 +1,6 @@
-import z from 'sketch/util/zdom';
 import deepExtend from 'deep-extend';
-import {validate} from 'sketch/config-validator';
+import z from '../util/zdom';
+import { validate } from '../config-validator';
 
 export const VERSION = '0.1';
 

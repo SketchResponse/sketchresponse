@@ -1,7 +1,7 @@
-import z from 'sketch/util/zdom';
-import BasePlugin from './base-plugin';
 import deepExtend from 'deep-extend';
-import {validate} from 'sketch/config-validator';
+import z from '../util/zdom';
+import BasePlugin from './base-plugin';
+import { validate } from '../config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -11,8 +11,8 @@ const DEFAULT_PARAMS = {
   imgwidth: 100,
   imgheight: 100,
   scale: 1,
-  src: './plugins/stamp/stamp.svg',
-  iconSrc: './plugins/stamp/stamp-icon.svg'
+  src: './lib/plugins/stamp/stamp.svg',
+  iconSrc: './lib/plugins/stamp/stamp-icon.svg'
 };
 
 export default class Stamp extends BasePlugin {

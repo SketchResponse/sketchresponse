@@ -1,8 +1,8 @@
-import z from 'sketch/util/zdom';
+import deepExtend from 'deep-extend';
+import z from '../util/zdom';
 import BasePlugin from './base-plugin';
 import fitCurve from './freeform/fitcurve';
-import deepExtend from 'deep-extend';
-import {validate} from 'sketch/config-validator';
+import { validate } from '../config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -30,7 +30,7 @@ export default class Freeform extends BasePlugin {
     }
     // Add params that are specific to this plugin
     fParams.icon = {
-      src: './plugins/freeform/freeform-icon.svg',
+      src: './lib/plugins/freeform/freeform-icon.svg',
       alt: 'Freeform tool',
       color: fParams.color
     };

@@ -1,5 +1,5 @@
 import validator from 'is-my-json-valid';
-import deepCopy from 'sketch/util/deep-copy';
+import deepCopy from './util/deep-copy';
 import deepExtend from 'deep-extend';
 
 // Schemas

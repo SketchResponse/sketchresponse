@@ -1,8 +1,8 @@
-import z from 'sketch/util/zdom';
-import BasePlugin from './base-plugin';
-import { injectStyleSheet, injectSVGDefs } from 'sketch/util/dom-style-helpers';
 import deepExtend from 'deep-extend';
-import {validate} from 'sketch/config-validator';
+import z from '../util/zdom';
+import BasePlugin from './base-plugin';
+import { injectStyleSheet, injectSVGDefs } from '../util/dom-style-helpers';
+import { validate } from '../config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -33,10 +33,10 @@ export default class LineSegment extends BasePlugin {
           <polygon points="0 0, ${length} ${refY}, 0 ${base}" style="fill: ${params.color}; stroke: ${params.color}; stroke-width: 1;"/>
         </marker>`
       );
-      iconSrc = './plugins/line-segment/arrow-icon.svg';
+      iconSrc = './lib/plugins/line-segment/arrow-icon.svg';
     }
     else {
-      iconSrc = './plugins/line-segment/line-icon.svg';
+      iconSrc = './lib/plugins/line-segment/line-icon.svg';
     }
     lsParams.icon = {
       src: iconSrc,

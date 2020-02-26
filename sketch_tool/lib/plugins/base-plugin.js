@@ -1,8 +1,8 @@
 import katex from 'katex';
-import {getElementsByClassName} from 'sketch/util/ms-polyfills';
-import colorIcon from 'sketch/util/color-icon';
-import deepCopy from 'sketch/util/deep-copy';
-import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
+import { getElementsByClassName } from '../util/ms-polyfills';
+import colorIcon from '../util/color-icon';
+import deepCopy from '../util/deep-copy';
 
 export const VERSION = '0.1';
 
@@ -212,9 +212,13 @@ export default class BasePlugin {
       stateEl = this.state[index1][index2];
     }
     try {
+      // The foreignObject containing the Katex rendering needs an initial width and height.
+      el.setAttributeNS(null, 'width', '100%');
+      el.setAttributeNS(null, 'height', '100%');
       katex.render(stateEl.tag, el, {
         errorColor: '#0000ff'
       });
+      // Set the foreignObject bounding box to match the Katex rendering
       this.adjustBoundingBox(el);
     }
     catch(e) {
@@ -238,23 +242,27 @@ export default class BasePlugin {
           if (typeof index2 !== 'undefined') {
             stateEl = this.state[index1][index2];
           }
-          swal({
+          Swal.fire({
             title: 'Enter tag value',
             input: 'text',
             inputValue: stateEl.tag,
             showCancelButton: true,
-          }).then(val => {
-            val.trim();
-            if (val !== '' && val !== stateEl.tag) {
-              stateEl.tag = val;
-              this.app.addUndoPoint();
-              this.render();
-            }
-            else {
-              console.warn('Tag value has not been changed');
-            }
-          }, dismiss => {
-            console.warn('Tag value has not been changed');
+            inputValidator: (val) => {
+              val.trim();
+              return new Promise(resolve => {
+                if (val === '') {
+                  resolve('Tag value is an empty string');
+                } else if (val === stateEl.tag) {
+                  resolve('Tag value has not been changed');
+                }
+                else  {
+                  stateEl.tag = val;
+                  this.app.addUndoPoint();
+                  this.render();
+                  resolve();
+                }
+              });
+            },
           });
         }
       }
@@ -263,9 +271,8 @@ export default class BasePlugin {
 
   adjustBoundingBox(el) {
     let bRect = getElementsByClassName(el, 'katex-html')[0].getBoundingClientRect();
-    // The foreignObject containing the Katex rendering needs a width and height in Firefox.
-    el.setAttributeNS(null, 'width', bRect.width);
-    el.setAttributeNS(null, 'height', bRect.height);
+    el.setAttributeNS(null, 'width', bRect.width.toString());
+    el.setAttributeNS(null, 'height', bRect.height.toString());
   }
 
   computeDashArray(dashStyle, strokeWidth) {

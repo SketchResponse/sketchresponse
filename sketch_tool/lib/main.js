@@ -10,14 +10,20 @@ import GradeableManager from './gradeable-manager';
 import StateManager from './state-manager';
 import HistoryManager from './history-manager';
 import ElementManager from './element-manager';
-import {validate} from './config-validator';
-import deepCopy from 'sketch/util/deep-copy';
+import { validate } from './config-validator';
+import deepCopy from './util/deep-copy';
 import deepExtend from 'deep-extend';
 
 import Toolbar from './toolbar';
 
 
 import * as attrCache from './util/dom-attr-cache';
+
+// Load all CSS
+import 'normalize-css';
+import 'typeface-noto-sans';
+import 'katex/dist/katex.css';
+import '../styles/main.scss';
 
 const DEFAULT_CONFIG = {
   width: 750,
@@ -65,7 +71,7 @@ export default class SketchInput {
 
     Promise.all(
       this.params.plugins.map(pluginParams =>
-        System.import(`plugins/${pluginParams.name}`).then(module => module.default)
+        import(`./plugins/${pluginParams.name}`).then(module => module.default)
       )
     ).then(plugins => this.init(plugins));
   }
