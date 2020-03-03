@@ -136,8 +136,8 @@ export default class Axes {
 
   generateDefaultParams(params) {
     this.params = DEFAULT_PARAMS;
-    let keys = ['name', 'width', 'height', 'xrange', 'yrange', 'xscale', 'yscale', 'coordinates'];
-    for (let key of keys) {
+    const keys = ['name', 'width', 'height', 'xrange', 'yrange', 'xscale', 'yscale', 'coordinates'];
+    for (const key of keys) {
       this.params[key] = params[key];
     }
   }
@@ -279,7 +279,8 @@ export default class Axes {
   generateCircles(rSpacing, rMax) {
     rSpacing = Math.abs(rSpacing);  // Being defensive
 
-    let circles = [], r = 0;
+    const circles = [];
+    let r = 0;
 
     while (r < rMax) {
       r += rSpacing;
@@ -292,7 +293,9 @@ export default class Axes {
   generateRays(angleSpacing) {
     angleSpacing = Math.abs(angleSpacing);  // Being defensive
 
-    let rays = [], angle = 0, radius = this.rRange + 0.25;
+    const rays = [];
+    let angle = 0;
+    const radius = this.rRange + 0.25;
 
     while (angle < TWO_PI) {
       angle += angleSpacing;

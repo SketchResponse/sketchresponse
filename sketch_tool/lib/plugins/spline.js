@@ -44,7 +44,7 @@ export default class Spline extends BasePlugin {
 
   getGradeable() {
     // Do not take in account single points
-    let result = this.state.filter(spline => spline.length >= 2);
+    const result = this.state.filter(spline => spline.length >= 2);
     // State contains arrays of points of user clicks.
     // Convert these to spline data.
     return result.map(spline => {
@@ -75,7 +75,7 @@ export default class Spline extends BasePlugin {
   // This will be called when clicking on the SVG canvas after having
   // selected the line segment shape
   initDraw(event) {
-    let currentPosition = {
+    const currentPosition = {
       x: event.clientX - this.params.left,
       y: event.clientY - this.params.top
     };
@@ -261,15 +261,14 @@ export default class Spline extends BasePlugin {
 }
 
 function splinePathData(points) {
-  let coords;
   if (points.length < 2) return '';
 
-  coords = splineData(points).map(p => `${p.x},${p.y}`);
+  const coords = splineData(points).map(p => `${p.x},${p.y}`);
   return `M${ coords[0] }C${ coords.splice(1).join(' ') }`;
 }
 
 function splineData(points) {
-  let splineData = fitCurve(points, FIT_TOLERANCE);
+  const splineData = fitCurve(points, FIT_TOLERANCE);
   splineData.forEach(point => {
     point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
     point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;

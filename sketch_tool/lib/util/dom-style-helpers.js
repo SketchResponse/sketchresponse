@@ -52,8 +52,8 @@ export function injectStyleSheet(innerHTML) {
 // We parse our XML using DOMParser instead:
 // https://developer.mozilla.org/en-US/docs/Web/API/DOMParser
 export function injectSVGDefs(xmlStr) {
-  let canvas = document.getElementById('si-canvas'),
-      defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  const canvas = document.getElementById('si-canvas');
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
   xmlStr = '<svg xmlns=\'http://www.w3.org/2000/svg\'>' + xmlStr + '</svg>';
   let svgDocElement = new DOMParser().parseFromString(xmlStr, 'text/xml').documentElement;
   // Do not use svgDocElement.children, no support on Safari & Edge:

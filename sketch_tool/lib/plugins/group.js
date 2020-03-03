@@ -22,11 +22,11 @@ export default class Group {
     }
     this.params = params;
     this.app = app;
-    let items = [];
-    let plugins = this.params.plugins.map(pluginParams => pluginParams.name);
+    const items = [];
+    const plugins = this.params.plugins.map(pluginParams => pluginParams.name);
     plugins.forEach((name, index) => {
       this.params.plugins[index].isSubItem = true;
-      let plugin = this.createPlugin(name, this.params.plugins[index], this.app);
+      const plugin = this.createPlugin(name, this.params.plugins[index], this.app);
       items.push(plugin.menuItem);
     });
     this.menuItem = {

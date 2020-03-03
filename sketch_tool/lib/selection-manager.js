@@ -50,7 +50,7 @@ export default class SelectionManager {
   isSelected(element) {return attrCache.getAttributeNS(element, null, SELECTED_ATTR) !== null; }
 
   toggleSelected(element, mode) {
-    let condition = !this.isSelected(element);  // toggle current value
+    const condition = !this.isSelected(element);  // toggle current value
     if (condition) this.select(element, mode);
     else this.deselect(element);
   }

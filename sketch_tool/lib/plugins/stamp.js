@@ -84,9 +84,9 @@ export default class Stamp extends BasePlugin {
   }
 
   drawMove(event) {
-    let x = event.clientX - this.params.left,
-        y = event.clientY - this.params.top,
-        lastPosition = this.state[this.state.length-1];
+    let x = event.clientX - this.params.left;
+    let y = event.clientY - this.params.top;
+    let lastPosition = this.state[this.state.length-1];
 
     x = this.clampX(x);
     y = this.clampY(y);
@@ -109,8 +109,8 @@ export default class Stamp extends BasePlugin {
   // We first scale our image.
   // Then translate so that the image is centered on mouse click.
   getTransform(x, y) {
-    let xt = x - 0.5*this.params.scale*this.params.imgwidth,
-        yt = y - 0.5*this.params.scale*this.params.imgheight;
+    const xt = x - 0.5*this.params.scale*this.params.imgwidth;
+    const yt = y - 0.5*this.params.scale*this.params.imgheight;
     return `translate(${xt}, ${yt}) scale(${this.params.scale})`;
   }
 

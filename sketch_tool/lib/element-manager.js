@@ -54,7 +54,7 @@ export default class ElementManager {
   }
 
   onPointerDown(event) {
-    let className = event.currentTarget.getAttribute('class');
+    const className = event.currentTarget.getAttribute('class');
     // Readonly elements cannot be selected or dragged
     if (className.indexOf('readonly') !== -1) {
       return;
@@ -98,9 +98,10 @@ export default class ElementManager {
     event.preventDefault();
 
     const element = event.currentTarget;
-    let className = element.getAttribute('class'), visibleElements;
+    const className = element.getAttribute('class')
+    let visibleElements;
     if (className && className.substring(0, 9) == 'invisible') {
-      let classNamePrefix = className.substring(9);
+      const classNamePrefix = className.substring(9);
       // IE and Edge do not have getElementsByClassName on SVG elements, use polyfill instead
       visibleElements = getElementsByClassName(element.parentNode, 'visible'+classNamePrefix);
     }

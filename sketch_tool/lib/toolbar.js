@@ -82,7 +82,7 @@ export default class Toolbar {
   activateItem(id) {
     if (id === this.activeItemID) return;
     try {
-      let allItems = [];
+      const allItems = [];
       this.items.forEach(item => {
         if (item.name === 'group') {
           item.items.forEach(item => {
@@ -93,8 +93,8 @@ export default class Toolbar {
           allItems.push(item);
         }
       });
-      let oldActiveItem = allItems.find(item => item.id === this.activeItemID);
-      let newActiveItem = allItems.find(item => item.id === id);
+      const oldActiveItem = allItems.find(item => item.id === this.activeItemID);
+      const newActiveItem = allItems.find(item => item.id === id);
 
       oldActiveItem && oldActiveItem.deactivate();
       newActiveItem && newActiveItem.activate();
@@ -143,7 +143,8 @@ export default class Toolbar {
     z.render(this.el,
       z.each(renderableItems, ({type, id, icon, label, color, items, action}) => {
         if (type === 'separator') return z('hr');
-        let selectedItem, isActive;
+        let selectedItem;
+        let isActive;
         if (type === 'splitbutton') {
           selectedItem = items.find(item => item.id === this.selectedDropdownItemMap[id]);
           icon = selectedItem.icon;

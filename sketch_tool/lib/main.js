@@ -163,16 +163,16 @@ export default class SketchInput {
     // Less or equal to 500 ms and less or equal to 10 px.
     // Double clicks are still enabled though when they happen on a label element.
     document.addEventListener('pointerdown', event => {
-      let newTime = Date.now(),
-          deltaT = newTime - this.oldTime,
-          newPt = {
-            x: event.clientX,
-            y: event.clientY
-          },
-          dist = Math.sqrt(
-            (newPt.x - this.oldPt.x)*(newPt.x - this.oldPt.x) +
-            (newPt.y - this.oldPt.y)*(newPt.y - this.oldPt.y)
-          );
+      const newTime = Date.now();
+      const deltaT = newTime - this.oldTime;
+      const newPt = {
+        x: event.clientX,
+        y: event.clientY
+      };
+      const dist = Math.sqrt(
+        (newPt.x - this.oldPt.x)*(newPt.x - this.oldPt.x) +
+        (newPt.y - this.oldPt.y)*(newPt.y - this.oldPt.y)
+      );
       if (deltaT <= 500 && dist <= 10) {
         // Stop event propagation except when it happens on a tag where a double click
         // will open a SweetAlert2 window for editing.

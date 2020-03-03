@@ -3,7 +3,7 @@ import deepCopy from './util/deep-copy';
 import deepExtend from 'deep-extend';
 
 // Schemas
-let tag = {
+const tag = {
   type: 'object',
   properties: {
     value:   {type: 'string'},
@@ -18,18 +18,18 @@ let tag = {
   additionalProperties: false
 };
 
-let arrowTag = deepCopy(tag);
+const arrowTag = deepCopy(tag);
 arrowTag.properties.position = {
   type: 'string',
   enum: ['start', 'middle', 'end']
 };
 
-let dashStyle = {
+const dashStyle = {
   type: 'string',
   enum: ['dashed', 'longdashed', 'dotted', 'dashdotted', 'solid']
 }
 
-let coords = {
+const coords = {
   type: 'array',
   minItems: 2,
   maxItems: 2,
@@ -39,7 +39,7 @@ let coords = {
   ]
 };
 
-let main = {
+const main = {
   type: 'object',
   properties: {
     debug:  {type: 'boolean'},
@@ -68,7 +68,7 @@ let main = {
   additionalProperties: false
 };
 
-let axes = {
+const axes = {
   type: 'object',
   properties: {
     name:       {type: 'string'},
@@ -153,9 +153,9 @@ let axes = {
   additionalProperties: false
 };
 
-let baseRequired = ['name', 'id'];
+const baseRequired = ['name', 'id'];
 
-let basePlugin = {
+const basePlugin = {
   type: 'object',
   properties: {
     name:      {type: 'string'},
@@ -170,9 +170,9 @@ let basePlugin = {
   additionalProperties: false
 };
 
-let freeform = deepCopy(basePlugin);
+const freeform = deepCopy(basePlugin);
 
-let group = {
+const group = {
   type: 'object',
   properties: {
     name:    {type: 'string'},
@@ -186,7 +186,7 @@ let group = {
   required: ['name', 'id', 'plugins']
 };
 
-let horizontalLine = deepCopy(basePlugin);
+const horizontalLine = deepCopy(basePlugin);
 deepExtend(horizontalLine, {
   properties: {
     dashStyle: dashStyle
@@ -195,7 +195,7 @@ deepExtend(horizontalLine, {
   additionalProperties: false
 });
 
-let image = {
+const image = {
   type: 'object',
   properties: {
     name: {
@@ -214,7 +214,7 @@ let image = {
   additionalProperties: false
 };
 
-let lineSegment = deepCopy(basePlugin);
+const lineSegment = deepCopy(basePlugin);
 deepExtend(lineSegment, {
   properties: {
     dashStyle: dashStyle,
@@ -237,7 +237,7 @@ deepExtend(lineSegment, {
   additionalProperties: false,
 });
 
-let point = deepCopy(basePlugin);
+const point = deepCopy(basePlugin);
 deepExtend(point, {
   properties: {
     size:   {type: 'integer'},
@@ -247,7 +247,7 @@ deepExtend(point, {
   additionalProperties: false,
 });
 
-let polyline = deepCopy(basePlugin);
+const polyline = deepCopy(basePlugin);
 deepExtend(polyline, {
   properties: {
     fillColor: {type: 'string'},
@@ -259,9 +259,9 @@ deepExtend(polyline, {
   additionalProperties: false,
 });
 
-let spline = deepCopy(basePlugin);
+const spline = deepCopy(basePlugin);
 
-let stamp = deepCopy(basePlugin);
+const stamp = deepCopy(basePlugin);
 deepExtend(stamp, {
   properties: {
     src:       {type: 'string'},
@@ -274,7 +274,7 @@ deepExtend(stamp, {
   additionalProperties: false,
 });
 
-let verticalLine = deepCopy(basePlugin);
+const verticalLine = deepCopy(basePlugin);
 deepExtend(verticalLine, {
   properties: {
     dashStyle: dashStyle
@@ -283,7 +283,7 @@ deepExtend(verticalLine, {
   additionalProperties: false,
 });
 
-let schemas = {
+const schemas = {
   'main': main,
   'axes': axes,
   'freeform': freeform,
@@ -299,12 +299,12 @@ let schemas = {
 }
 
 function validateParams(params, name) {
-  let validateSchema = validator(schemas[name], {greedy: true, verbose: true}),
+  const validateSchema = validator(schemas[name], {greedy: true, verbose: true}),
       valid = validateSchema(params),
       idStr = params.id ? ' id ' + `'${params.id}'` : '';
   console.log(`%c${name}${idStr}`, 'color: blue; font-weight: bold;');
   if (!valid) {
-    let errors = validateSchema.errors;
+    const errors = validateSchema.errors;
     for (let error of errors) {
       if (error.message === 'has additional properties') {
         console.warn(`${error.value.replace('data', '')} is not a valid key`);

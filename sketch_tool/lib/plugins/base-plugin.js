@@ -63,7 +63,8 @@ export default class BasePlugin {
     if (!this.readonly) {
       // Most icons look better if only fill is  used.
       // Stroke and fill are needed for polyline plugin.
-      let strokeColor = 'none', fillColor = 'none';
+      let strokeColor = 'none';
+      let fillColor = 'none';
       // Closed polyline
       if (this.params.fillColor  && this.params.fillColor !== 'none') {
         strokeColor = this.params.icon.color;
@@ -73,7 +74,7 @@ export default class BasePlugin {
       else if (this.params.icon.color) {
         fillColor = this.params.icon.color;
       }
-      let icon = {
+      const icon = {
         src: this.params.icon.src,
         alt: this.params.icon.alt,
       }
@@ -118,10 +119,10 @@ export default class BasePlugin {
   }
 
   static generateDefaultParams(defaultParams, params) {
-    let keys = [
+    const keys = [
       'id', 'name', 'width', 'height', 'xrange', 'yrange', 'xscale', 'yscale', 'coordinates'];
-    let allDefaultParams = deepCopy(defaultParams);
-    for (let key of keys) {
+    const allDefaultParams = deepCopy(defaultParams);
+    for (const key of keys) {
       allDefaultParams[key] = params[key];
     }
     if (params.isSubItem) {
@@ -232,7 +233,8 @@ export default class BasePlugin {
   // We do not have a dblclick event for touch devices and have to implement one using pointerdown
   addDoubleClickEventListener(el, index1, index2) {
     el.addEventListener('pointerdown', () => {
-      let newTime = Date.now(), deltaT = newTime - this.oldTime;
+      const newTime = Date.now();
+      const deltaT = newTime - this.oldTime;
       this.oldTime = newTime;
       // Double click/tap
       if (deltaT <= 1000) {

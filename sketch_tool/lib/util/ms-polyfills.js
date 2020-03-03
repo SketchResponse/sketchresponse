@@ -32,7 +32,7 @@ export function addClass(elem, name) {
 };
 
 export function removeClass(elem, name) {
-	let news = getClass(elem).replace(new RegExp('(\\s|^)' + name + '(\\s|$)', 'g'), '$2');
+	const news = getClass(elem).replace(new RegExp('(\\s|^)' + name + '(\\s|$)', 'g'), '$2');
 	hasClass(elem, name) && elem.setAttribute('class', news);
 
 };

@@ -22,9 +22,9 @@ export default class DragManager {
     else {
       this.selectionManager.deselectAll();  // possibly a no-op, but finding out is almost as expensive
       this.selectionManager.select(element);
-      let className = element.getAttribute('class');
+      const className = element.getAttribute('class');
       if (className && className.substring(0, 9) == 'invisible') {
-        let classNamePrefix = className.substring(9);
+        const classNamePrefix = className.substring(9);
         // IE and Edge do not have getElementsByClassName on SVG elements, use polyfill instead
         this.visibleElements = getElementsByClassName(element.parentNode, 'visible'+classNamePrefix);
         if (this.visibleElements) {
@@ -47,7 +47,7 @@ export default class DragManager {
       this.elementsToDrag = [element];
     }
     this.elementsToDrag = this.elementsToDrag.filter(element => {
-      let className = element.getAttribute('class');
+      const className = element.getAttribute('class');
       return !(className && className.substring(0, 7) == 'visible')
     });
     this.previousPosition = position;
@@ -73,14 +73,14 @@ export default class DragManager {
       .map(element => this.registry.get(element).inBoundsY)
       .filter(inBoundsY => inBoundsY !== undefined);
 
-    let insideX = true, insideY = true;
-    for (let inBoundsX of inBoundsXHandlers) {
+    let insideX = true; let insideY = true;
+    for (const inBoundsX of inBoundsXHandlers) {
       if (!inBoundsX(dx)) {
         insideX = false;
         break;
       }
     }
-    for (let inBoundsY of inBoundsYHandlers) {
+    for (const inBoundsY of inBoundsYHandlers) {
       if (!inBoundsY(dy)) {
         insideY = false;
         break;

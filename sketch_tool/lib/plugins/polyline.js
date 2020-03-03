@@ -22,14 +22,14 @@ const DEFAULT_PARAMS = {
 
 export default class Polyline extends BasePlugin {
   constructor(params, app) {
-    let plParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    const plParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'polyline')) {
       deepExtend(plParams, params);
     }
     else {
       console.log('The polyline config has errors, using default values instead');
     }
-    let iconSrc = plParams.closed ? './lib/plugins/polyline/polyline-closed-icon.svg'
+    const iconSrc = plParams.closed ? './lib/plugins/polyline/polyline-closed-icon.svg'
                                   : './lib/plugins/polyline/polyline-open-icon.svg';
     // Add params that are specific to this plugin
     plParams.icon = {
@@ -83,7 +83,7 @@ export default class Polyline extends BasePlugin {
   // This will be called when clicking on the SVG canvas after having
   // selected the line segment shape
   initDraw(event) {
-    let currentPosition = {
+    const currentPosition = {
       x: event.clientX - this.params.left,
       y: event.clientY - this.params.top
     };
@@ -171,14 +171,14 @@ export default class Polyline extends BasePlugin {
               element: el,
               initialBehavior: 'none',
               onDrag: ({dx, dy}) => {
-                for (let pt of this.state[polylineIndex]) {
+                for (const pt of this.state[polylineIndex]) {
                   pt.x += dx;
                   pt.y += dy;
                 }
                 this.render();
               },
               inBoundsX: (dx) => {
-                for (let pt of this.state[polylineIndex]) {
+                for (const pt of this.state[polylineIndex]) {
                   if (!this.inBoundsX(pt.x + dx)) {
                     return false;
                   }
@@ -186,7 +186,7 @@ export default class Polyline extends BasePlugin {
                 return true;
               },
               inBoundsY: (dy) => {
-                for (let pt of this.state[polylineIndex]) {
+                for (const pt of this.state[polylineIndex]) {
                   if (!this.inBoundsY(pt.y + dy)) {
                     return false;
                   }

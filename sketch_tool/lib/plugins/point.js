@@ -15,7 +15,7 @@ const DEFAULT_PARAMS = {
 
 export default class Point extends BasePlugin {
   constructor(params, app) {
-    let iconSrc, strokeColor, fillColor;
+    let iconSrc; let strokeColor; let fillColor;
     let pParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'point')) {
       deepExtend(pParams, params);
@@ -91,9 +91,9 @@ export default class Point extends BasePlugin {
   }
 
   drawMove(event) {
-    let x = event.clientX - this.params.left,
-        y = event.clientY - this.params.top,
-        lastPosition = this.state[this.state.length-1];
+    let x = event.clientX - this.params.left;
+    let y = event.clientY - this.params.top;
+    const lastPosition = this.state[this.state.length-1];
 
     x = this.clampX(x);
     y = this.clampY(y);
