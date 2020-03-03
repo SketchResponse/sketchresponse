@@ -34,7 +34,7 @@ export default class HorizontalLine extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addHorizontalLine', (id, index) => {this.addHorizontalLine(id, index);});
     this.app.__messageBus.on('deleteHorizontalLines', () => {this.deleteHorizontalLines();});
-    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
   }
 
   getGradeable() {
@@ -45,9 +45,9 @@ export default class HorizontalLine extends BasePlugin {
       this.params.width,
     ];
 
-    return this.state.map(position => {
+    return this.state.map((position) => {
       return {
-        spline: xvals.map(x => [x, position.y]),
+        spline: xvals.map((x) => [x, position.y]),
         tag: position.tag,
       };
     });
@@ -133,7 +133,7 @@ export default class HorizontalLine extends BasePlugin {
             opacity: 0;
             stroke-width: 10px;
           `,
-          onmount: el => {
+          onmount: (el) => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
@@ -160,7 +160,7 @@ export default class HorizontalLine extends BasePlugin {
             x: this.params.width / 2 + this.tag.xoffset,
             y: position.y + this.tag.yoffset,
             style: this.getStyle(),
-            onmount: el => {
+            onmount: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
@@ -168,7 +168,7 @@ export default class HorizontalLine extends BasePlugin {
                 this.addDoubleClickEventListener(el, positionIndex);
               }
             },
-            onupdate: el => {
+            onupdate: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
@@ -179,7 +179,7 @@ export default class HorizontalLine extends BasePlugin {
     );
   }
 
-  inBoundsX(x) {
+  inBoundsX() {
     return true;
   }
 

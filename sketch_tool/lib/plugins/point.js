@@ -15,7 +15,7 @@ const DEFAULT_PARAMS = {
 
 export default class Point extends BasePlugin {
   constructor(params, app) {
-    let iconSrc; let strokeColor; let fillColor;
+    let iconSrc;
     let pParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'point')) {
       deepExtend(pParams, params);
@@ -43,11 +43,11 @@ export default class Point extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addPoint', (id, index) => this.addPoint(id, index));
     this.app.__messageBus.on('deletePoints', () => this.deletePoints());
-    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
   }
 
   getGradeable() {
-    return this.state.map(position => {
+    return this.state.map((position) => {
       return {
         point: [position.x, position.y],
         tag: position.tag,
@@ -126,7 +126,7 @@ export default class Point extends BasePlugin {
             stroke: ${this.params.color};
             stroke-width: ${this.strokeWidth};
           `,
-          onmount: el => {
+          onmount: (el) => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
@@ -154,7 +154,7 @@ export default class Point extends BasePlugin {
             x: position.x + this.tag.xoffset,
             y: position.y + this.tag.yoffset,
             style: this.getStyle(),
-            onmount: el => {
+            onmount: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
@@ -162,7 +162,7 @@ export default class Point extends BasePlugin {
                 this.addDoubleClickEventListener(el, positionIndex);
               }
             },
-            onupdate: el => {
+            onupdate: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }

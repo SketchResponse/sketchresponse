@@ -2,7 +2,6 @@ import deepExtend from 'deep-extend';
 import z from '../util/zdom';
 import BasePlugin from './base-plugin';
 import fitCurve from './freeform/fitcurve';
-import { injectStyleSheet, injectSVGDefs } from '../util/dom-style-helpers';
 import { validate } from '../config-validator';
 
 export const VERSION = '0.1';
@@ -44,12 +43,12 @@ export default class Spline extends BasePlugin {
 
   getGradeable() {
     // Do not take in account single points
-    const result = this.state.filter(spline => spline.length >= 2);
+    const result = this.state.filter((spline) => spline.length >= 2);
     // State contains arrays of points of user clicks.
     // Convert these to spline data.
-    return result.map(spline => {
+    return result.map((spline) => {
       return {
-        spline: splineData(spline).map(point => [point.x, point.y]),
+        spline: splineData(spline).map((point) => [point.x, point.y]),
         tag: spline[0].tag,
       };
     });
@@ -159,7 +158,7 @@ export default class Spline extends BasePlugin {
               fill: none;
               opacity: 0;
             `,
-          onmount: el => {
+          onmount: (el) => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
@@ -203,7 +202,7 @@ export default class Spline extends BasePlugin {
               stroke-width: 0;
               opacity: 0;
             `,
-            onmount: el => {
+            onmount: (el) => {
               this.app.registerElement({
                 ownerID: this.params.id,
                 element: el,
@@ -232,7 +231,7 @@ export default class Spline extends BasePlugin {
             x: this.state[splineIndex][0].x + this.tag.xoffset,
             y: this.state[splineIndex][0].y + this.tag.yoffset,
             style: this.getStyle(),
-            onmount: el => {
+            onmount: (el) => {
               if (this.latex) {
                 this.renderKatex(el, splineIndex, 0);
               }
@@ -240,7 +239,7 @@ export default class Spline extends BasePlugin {
                 this.addDoubleClickEventListener(el, splineIndex, 0);
               }
             },
-            onupdate: el => {
+            onupdate: (el) => {
               if (this.latex) {
                 this.renderKatex(el, splineIndex, 0);
               }
@@ -263,13 +262,13 @@ export default class Spline extends BasePlugin {
 function splinePathData(points) {
   if (points.length < 2) return '';
 
-  const coords = splineData(points).map(p => `${p.x},${p.y}`);
+  const coords = splineData(points).map((p) => `${p.x},${p.y}`);
   return `M${ coords[0] }C${ coords.splice(1).join(' ') }`;
 }
 
 function splineData(points) {
   const splineData = fitCurve(points, FIT_TOLERANCE);
-  splineData.forEach(point => {
+  splineData.forEach((point) => {
     point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
     point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
   });

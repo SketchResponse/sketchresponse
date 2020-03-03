@@ -38,12 +38,12 @@ export class AttributeList {
 
   removeAll(element) {
     if (!this.cache.has(element)) return;
-    this.cache.get(element).forEach(attrName => this.toggle(element, attrName, false));
+    this.cache.get(element).forEach((attrName) => this.toggle(element, attrName, false));
   }
 }
 
 export function injectStyleSheet(innerHTML) {
-  const styleElement = document.createElement("style");
+  const styleElement = document.createElement('style');
   styleElement.innerHTML = innerHTML;
   document.head.appendChild(styleElement);
 }

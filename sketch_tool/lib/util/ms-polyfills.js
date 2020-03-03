@@ -7,7 +7,7 @@ export function getElementsByClassName(element, name) {
 
   children = element.getElementsByTagName('*');
   // HTMLCollection is an 'array-like' object that needs to be spread into an array
-  [...children].forEach(child => {
+  [...children].forEach((child) => {
     if (hasClass(child, name)) {
       result.push(child);
     }

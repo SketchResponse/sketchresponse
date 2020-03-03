@@ -2,7 +2,6 @@ import deepExtend from 'deep-extend';
 import z from '../util/zdom';
 import BasePlugin from './base-plugin';
 import fitCurve from './freeform/fitcurve';
-import { injectStyleSheet, injectSVGDefs } from '../util/dom-style-helpers';
 import { validate } from '../config-validator';
 
 export const VERSION = '0.1';
@@ -52,12 +51,12 @@ export default class Polyline extends BasePlugin {
 
   getGradeable() {
     return this.state
-      .filter(spline => {
+      .filter((spline) => {
         return spline.length > 1;
       })
-      .map(spline => {
+      .map((spline) => {
         return {
-          spline: splineData(spline).map(point => [point.x, point.y]),
+          spline: splineData(spline).map((point) => [point.x, point.y]),
           tag: spline[0].tag,
         };
       });
@@ -165,7 +164,7 @@ export default class Polyline extends BasePlugin {
               fill: ${this.params.fillColor};
               opacity: 0;
             `,
-          onmount: el => {
+          onmount: (el) => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
@@ -209,7 +208,7 @@ export default class Polyline extends BasePlugin {
               stroke-width: 0;
               opacity: ${this.pointOpacity(polylineIndex)};
             `,
-            onmount: el => {
+            onmount: (el) => {
               this.app.registerElement({
                 ownerID: this.params.id,
                 element: el,
@@ -238,7 +237,7 @@ export default class Polyline extends BasePlugin {
             x: this.state[polylineIndex][0].x + this.tag.xoffset,
             y: this.state[polylineIndex][0].y + this.tag.yoffset,
             style: this.getStyle(),
-            onmount: el => {
+            onmount: (el) => {
               if (this.latex) {
                 this.renderKatex(el, polylineIndex, 0);
               }
@@ -246,7 +245,7 @@ export default class Polyline extends BasePlugin {
                 this.addDoubleClickEventListener(el, polylineIndex, 0);
               }
             },
-            onupdate: el => {
+            onupdate: (el) => {
               if (this.latex) {
                 this.renderKatex(el, polylineIndex, 0);
               }
@@ -267,16 +266,15 @@ export default class Polyline extends BasePlugin {
 }
 
 function polylinePathData(points, closed) {
-  var result;
   if (points.length < 2) return '';
-  const coords = points.map(p => `${p.x},${p.y}`);
-  result = `M${coords[0]} L${coords.splice(1).join(' L')}`;
+  const coords = points.map((p) => `${p.x},${p.y}`);
+  const result = `M${coords[0]} L${coords.splice(1).join(' L')}`;
   return closed ? result + ` L${coords[0]}` : result;
 }
 
 function splineData(points) {
   let splineData = fitCurve(points, FIT_TOLERANCE);
-  splineData.forEach(point => {
+  splineData.forEach((point) => {
     point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
     point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
   });

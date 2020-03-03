@@ -6,7 +6,7 @@ export default class GradeableManager {
     this.messageBus = messageBus;
 
     this.registry = [];
-    messageBus.on('registerGradeable', entry => this.registry.push(entry));
+    messageBus.on('registerGradeable', (entry) => this.registry.push(entry));
   }
 
   getGradeable() {
@@ -22,7 +22,7 @@ export default class GradeableManager {
         data: {},
       };
 
-      this.registry.forEach(entry => {
+      this.registry.forEach((entry) => {
         response.data[entry.id] = entry.getGradeable();
         response.meta.dataVersions[entry.id] = entry.version;  // TODO: versioning
       });

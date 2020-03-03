@@ -34,7 +34,7 @@ export default class VerticalLine extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addVerticalLine', (id, index) => {this.addVerticalLine(id, index);});
     this.app.__messageBus.on('deleteVerticalLines', () => {this.deleteVerticalLines();});
-    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
   }
 
   getGradeable() {
@@ -45,9 +45,9 @@ export default class VerticalLine extends BasePlugin {
       this.params.height,
     ];
 
-    return this.state.map(position => {
+    return this.state.map((position) => {
       return {
-        spline: yvals.map(y => [position.x, y]),
+        spline: yvals.map((y) => [position.x, y]),
         tag: position.tag,
       };
     });
@@ -133,7 +133,7 @@ export default class VerticalLine extends BasePlugin {
             opacity: 0;
             stroke-width: 10px;
           `,
-          onmount: el => {
+          onmount: (el) => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
@@ -160,7 +160,7 @@ export default class VerticalLine extends BasePlugin {
             x: position.x + this.tag.xoffset,
             y: this.params.height / 2 + this.tag.yoffset,
             style: this.getStyle(),
-            onmount: el => {
+            onmount: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
@@ -168,7 +168,7 @@ export default class VerticalLine extends BasePlugin {
                 this.addDoubleClickEventListener(el, positionIndex);
               }
             },
-            onupdate: el => {
+            onupdate: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
@@ -183,7 +183,7 @@ export default class VerticalLine extends BasePlugin {
     return x >= this.bounds.xmin && x <= this.bounds.xmax;
   }
 
-  inBoundsY(y) {
+  inBoundsY() {
     return true;
   }
 }

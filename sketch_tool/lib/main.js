@@ -70,10 +70,10 @@ export default class SketchInput {
     };
 
     Promise.all(
-      this.params.plugins.map(pluginParams =>
-        import(`./plugins/${pluginParams.name}`).then(module => module.default),
+      this.params.plugins.map((pluginParams) =>
+        import(`./plugins/${pluginParams.name}`).then((module) => module.default),
       ),
-    ).then(plugins => this.init(plugins));
+    ).then((plugins) => this.init(plugins));
   }
 
   init(plugins) {
@@ -126,13 +126,13 @@ export default class SketchInput {
     const helpLegal = document.getElementById('si-help-legal');
     const helpLegalDialog = document.querySelector('#si-help-legal .si-dialog');  // TODO: fix ugly hack...
 
-    showHelpLegal.addEventListener('click', event => {
+    showHelpLegal.addEventListener('click', (event) => {
       event.preventDefault();
       helpLegal.setAttribute('data-visible', 'true');
     });
 
-    helpLegal.addEventListener('click', event => helpLegal.setAttribute('data-visible', 'false'));
-    helpLegalDialog.addEventListener('click', event => event.stopPropagation());
+    helpLegal.addEventListener('click', (event) => helpLegal.setAttribute('data-visible', 'false'));
+    helpLegalDialog.addEventListener('click', (event) => event.stopPropagation());
 
     this.notificationManager = new NotificationManager(this.config, this.messageBus);
     this.gradeableManager = new GradeableManager(this.config, this.messageBus);
@@ -140,9 +140,9 @@ export default class SketchInput {
     this.historyManager = new HistoryManager(this.config, this.messageBus, this.stateManager);
 
     this.app = {
-      registerState: entry => this.messageBus.emit('registerState', entry),
-      registerGradeable: entry => this.messageBus.emit('registerGradeable', entry),
-      registerToolbarItem: entry => this.messageBus.emit('registerToolbarItem', entry),
+      registerState: (entry) => this.messageBus.emit('registerState', entry),
+      registerGradeable: (entry) => this.messageBus.emit('registerGradeable', entry),
+      registerToolbarItem: (entry) => this.messageBus.emit('registerToolbarItem', entry),
       addUndoPoint: () => this.messageBus.emit('addUndoPoint'),
       __messageBus: this.messageBus,
       svg: document.getElementById('si-canvas'),
@@ -153,7 +153,7 @@ export default class SketchInput {
     // setting capture to true to get the event as soon as possible
     // NOTE: Cannot use mousedown here since that also prevents mouse move/up
     // from being captured when the mouse leaves the window/iframe (in Chrome at least)
-    this.app.svg.addEventListener('dragstart', event => event.preventDefault(), true);
+    this.app.svg.addEventListener('dragstart', (event) => event.preventDefault(), true);
 
     this.toolbar = new Toolbar(this.params, this.app);
     this.elementManager = new ElementManager(this.app);
@@ -162,7 +162,7 @@ export default class SketchInput {
     // Disable multiple pointerdown events if the events are close together in time and distance:
     // Less or equal to 500 ms and less or equal to 10 px.
     // Double clicks are still enabled though when they happen on a label element.
-    document.addEventListener('pointerdown', event => {
+    document.addEventListener('pointerdown', (event) => {
       const newTime = Date.now();
       const deltaT = newTime - this.oldTime;
       const newPt = {
@@ -265,7 +265,7 @@ export default class SketchInput {
     });
 
     this.messageBus.emit('activateItem',
-      this.params.plugins.find(pluginSpec => pluginSpec.id !== undefined).id,
+      this.params.plugins.find((pluginSpec) => pluginSpec.id !== undefined).id,
     );
 
     // Global keyboard shortcuts (TODO: move elsewhere?)
@@ -290,19 +290,19 @@ export default class SketchInput {
       https://www.npmjs.com/package/keyboardevent-key-polyfill
     */
 
-    KeyMaster('⌘+z, ctrl+z', event => { this.messageBus.emit('undo'); return false; });
-    KeyMaster('⌘+y, ctrl+y, ⌘+shift+z, ctrl+shift+z', event => { this.messageBus.emit('redo'); return false; });
-    KeyMaster('esc', event => { this.messageBus.emit('deselectAll'); return false; });
-    KeyMaster('delete, backspace', event => { this.messageBus.emit('deleteSelected'); return false; });
-    KeyMaster('enter', event => { this.messageBus.emit('finalizeShapes'); return false; });
-    document.addEventListener('mouseenter', event => window.focus());  // So we get keyboard events. Rethink this?
+    KeyMaster('⌘+z, ctrl+z', (event) => { this.messageBus.emit('undo'); return false; });
+    KeyMaster('⌘+y, ctrl+y, ⌘+shift+z, ctrl+shift+z', (event) => { this.messageBus.emit('redo'); return false; });
+    KeyMaster('esc', (event) => { this.messageBus.emit('deselectAll'); return false; });
+    KeyMaster('delete, backspace', (event) => { this.messageBus.emit('deleteSelected'); return false; });
+    KeyMaster('enter', (event) => { this.messageBus.emit('finalizeShapes'); return false; });
+    document.addEventListener('mouseenter', (event) => window.focus());  // So we get keyboard events. Rethink this?
 
     // Allow multitouch zoom on SVG element (TODO: move elsewhere?)
-    this.app.svg.addEventListener('touchstart', event => {
+    this.app.svg.addEventListener('touchstart', (event) => {
       if (event.touches.length > 1) this.app.svg.setAttribute('touch-action', 'auto');
     }, true);
 
-    this.app.svg.addEventListener('touchend', event => {
+    this.app.svg.addEventListener('touchend', (event) => {
       if (event.touches.length === 0) this.app.svg.setAttribute('touch-action', 'none');
     }, true);
 

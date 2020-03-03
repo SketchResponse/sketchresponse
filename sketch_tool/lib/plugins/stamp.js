@@ -36,11 +36,11 @@ export default class Stamp extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addStamp', (id, index) => {this.addStamp(id, index);});
     this.app.__messageBus.on('deleteStamps', () => {this.deleteStamps();});
-    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
   }
 
   getGradeable() {
-    return this.state.map(position => {
+    return this.state.map((position) => {
       return {
         point: [position.x, position.y],
         tag: position.tag,
@@ -124,7 +124,7 @@ export default class Stamp extends BasePlugin {
           height: this.params.imgheight,
           transform: this.getTransform(position.x, position.y),
           'xlink:href': this.params.src,
-          onmount: el => {
+          onmount: (el) => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
@@ -152,7 +152,7 @@ export default class Stamp extends BasePlugin {
             x: position.x + this.tag.xoffset,
             y: position.y + this.tag.yoffset,
             style: this.getStyle(),
-            onmount: el => {
+            onmount: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
@@ -160,7 +160,7 @@ export default class Stamp extends BasePlugin {
                 this.addDoubleClickEventListener(el, positionIndex);
               }
             },
-            onupdate: el => {
+            onupdate: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }

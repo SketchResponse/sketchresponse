@@ -1,5 +1,5 @@
 import * as attrCache from './util/dom-attr-cache';
-import { injectStyleSheet, injectSVGDefs } from './util/dom-style-helpers';
+import { injectStyleSheet } from './util/dom-style-helpers';
 
 // Note: data-* attributes are not officially supported in SVG 1.1 (without namespaces),
 // but they still seem to have widespread browser support and are a bit cleaner to deal with

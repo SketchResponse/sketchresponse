@@ -51,7 +51,7 @@ export default class BasePlugin {
       id: this.params.id,
       dataVersion: this.params.version,
       getState: () => this.state,
-      setState: state => { this.state = state; this.render(); },
+      setState: (state) => { this.state = state; this.render(); },
     });
 
     app.registerGradeable({
@@ -103,7 +103,7 @@ export default class BasePlugin {
       present
     */
    ['getGradeable', 'initDraw', 'render', 'inBoundsX', 'inBoundsY']
-    .forEach(fnStr => {
+    .forEach((fnStr) => {
       if (!(typeof this[fnStr] === 'function')) {
         throw new TypeError(this.getTypeErrorStr(fnStr));
       }
@@ -134,7 +134,7 @@ export default class BasePlugin {
   bindEventHandlers() {
     // TODO: simplify if we end up with only one entry
     ['initDraw']
-      .forEach(name => this[name] = this[name].bind(this));
+      .forEach((name) => this[name] = this[name].bind(this));
   }
 
   getTypeErrorStr(method) {
@@ -247,7 +247,7 @@ export default class BasePlugin {
             showCancelButton: true,
             inputValidator: (val) => {
               val.trim();
-              return new Promise(resolve => {
+              return new Promise((resolve) => {
                 if (val === '') {
                   resolve('Tag value is an empty string');
                 } else if (val === stateEl.tag) {

@@ -21,7 +21,7 @@ const DEFAULT_PARAMS = {
 
 export default class Freeform extends BasePlugin {
   constructor(params, app) {
-    let fParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    const fParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'freeform')) {
       deepExtend(fParams, params);
     }
@@ -42,15 +42,15 @@ export default class Freeform extends BasePlugin {
     this.app.__messageBus.on('addFreeform', (id, index) => {this.addFreeform(id, index);});
     this.app.__messageBus.on('deleteFreeforms', (id, index) => {this.deleteFreeforms(id, index);});
 
-    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
     this.firstPoint = true;
     this.pointsBeingDrawn = [];
   }
 
   getGradeable() {
-    return this.state.map(spline => {
+    return this.state.map((spline) => {
       return {
-        spline: spline.map(point => [point.x, point.y]),
+        spline: spline.map((point) => [point.x, point.y]),
         tag: spline[0].tag,
       };
     });
@@ -142,7 +142,7 @@ export default class Freeform extends BasePlugin {
 
     if (this.pointsBeingDrawn.length >= 2) {
       const splineData = fitCurve(this.pointsBeingDrawn, FIT_TOLERANCE);
-      splineData.forEach(point => {
+      splineData.forEach((point) => {
         point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
         point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
       });
@@ -172,7 +172,7 @@ export default class Freeform extends BasePlugin {
         z('path.invisible-' + splineIndex + this.readOnlyClass(), {
           d: cubicSplinePathData(spline),
           style: `stroke: ${this.params.color}; stroke-width: 10px; fill: none; opacity: 0;`,
-          onmount: el => {
+          onmount: (el) => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
@@ -186,7 +186,7 @@ export default class Freeform extends BasePlugin {
               },
               inBoundsX: (dx) => {
                 for (let i = 0, len = this.state[splineIndex].length; i < len - 3; i += 3) {
-                  let boundingBox = getBoundingBox(
+                  const boundingBox = getBoundingBox(
                     this.state[splineIndex][i].x + dx, this.state[splineIndex][i].y,
                     this.state[splineIndex][i + 1].x + dx, this.state[splineIndex][i + 1].y,
                     this.state[splineIndex][i + 2].x + dx, this.state[splineIndex][i + 2].y,
@@ -201,7 +201,7 @@ export default class Freeform extends BasePlugin {
               },
               inBoundsY: (dy) => {
                 for (let i = 0, len = this.state[splineIndex].length; i < len - 3; i += 3) {
-                  let boundingBox = getBoundingBox(
+                  const boundingBox = getBoundingBox(
                     this.state[splineIndex][i].x, this.state[splineIndex][i].y + dy,
                     this.state[splineIndex][i + 1].x, this.state[splineIndex][i + 1].y + dy,
                     this.state[splineIndex][i + 2].x, this.state[splineIndex][i + 2].y + dy,
@@ -239,7 +239,7 @@ export default class Freeform extends BasePlugin {
             x: this.state[splineIndex][0].x + this.tag.xoffset,
             y: this.state[splineIndex][0].y + this.tag.yoffset,
             style: this.getStyle(),
-            onmount: el => {
+            onmount: (el) => {
               if (this.latex) {
                 this.renderKatex(el, splineIndex, 0);
               }
@@ -247,7 +247,7 @@ export default class Freeform extends BasePlugin {
                 this.addDoubleClickEventListener(el, splineIndex, 0);
               }
             },
-            onupdate: el => {
+            onupdate: (el) => {
               if (this.latex) {
                 this.renderKatex(el, splineIndex, 0);
               }
@@ -270,14 +270,14 @@ export default class Freeform extends BasePlugin {
 function polylinePathData(points) {
   if (points.length < 2) return '';
 
-  const coords = points.map(p => `${p.x},${p.y}`);
+  const coords = points.map((p) => `${p.x},${p.y}`);
   return `M${ coords[0] }L${ coords.splice(1).join(' ') }`;
 }
 
 function cubicSplinePathData(points) {
   if (points.length < 4) return '';
 
-  const coords = points.map(p => `${p.x},${p.y}`);
+  const coords = points.map((p) => `${p.x},${p.y}`);
   return `M${ coords[0] }C${ coords.splice(1).join(' ') }`;
 }
 
@@ -319,10 +319,12 @@ function direction(point) {
 // Bounding box of a cubic bezier curve
 // https://github.com/adobe-webplatform/Snap.svg/blob/master/src/path.js#L849
 function getBoundingBox(x0, y0, x1, y1, x2, y2, x3, y3) {
-  var tvalues = [],
-      bounds = [[], []],
-      a, b, c, t, t1, t2, b2ac, sqrtb2ac;
-  for (var i = 0; i < 2; ++i) {
+  const tvalues = [];
+  const bounds = [[], []];
+  let a; let b; let c;
+  let t; let t1; let t2;
+  let b2ac; let sqrtb2ac;
+  for (const i = 0; i < 2; ++i) {
       if (i === 0) {
           b = 6 * x0 - 12 * x1 + 6 * x2;
           a = -3 * x0 + 9 * x1 - 9 * x2 + 3 * x3;
@@ -357,9 +359,9 @@ function getBoundingBox(x0, y0, x1, y1, x2, y2, x3, y3) {
       }
   }
 
-  var x, y, j = tvalues.length,
-      jlen = j,
-      mt;
+  let j = tvalues.length;
+  let jlen = j;
+  let mt;
   while (j--) {
       t = tvalues[j];
       mt = 1 - t;

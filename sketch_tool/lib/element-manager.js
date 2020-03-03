@@ -24,7 +24,7 @@ export default class ElementManager {
 
   bindEventHandlers() {
     ['onPointerDown', 'onPointerMove', 'onPointerUp']
-      .forEach(name => this[name] = this[name].bind(this));
+      .forEach((name) => this[name] = this[name].bind(this));
   }
 
   registerElement(entry) {
@@ -125,7 +125,7 @@ export default class ElementManager {
         }
         else { // spline
           // HTMLCollection is an 'array-like' object that needs to be spread into an array
-          [...visibleElements].forEach(el => this.selectionManager.toggleSelected(el));
+          [...visibleElements].forEach((el) => this.selectionManager.toggleSelected(el));
         }
       }
     }
@@ -145,7 +145,7 @@ export default class ElementManager {
         }
         else { // spline
           // HTMLCollection is an 'array-like' object that needs to be spread into an array
-          [...visibleElements].forEach(el => this.selectionManager.select(el));
+          [...visibleElements].forEach((el) => this.selectionManager.select(el));
         }
       }
     }

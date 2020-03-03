@@ -23,9 +23,9 @@ class FastAttr {
 
   removeAttributeNS(ns, name) { this.setAttributeNS(ns, name, NONE); }
 
-  getAttribute(name, value) { this.getAttributeNS(null, name); }
+  getAttribute(name) { this.getAttributeNS(null, name); }
   setAttribute(name, value) { this.setAttributeNS(null, name, value); }
-  removeAttribute(name, value) { this.setAttributeNS(null, name, NONE); }
+  removeAttribute(name) { this.setAttributeNS(null, name, NONE); }
 
   getCache(ns, name) {
     const key = (ns || NONE) + '|' + name;

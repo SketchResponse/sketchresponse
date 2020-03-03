@@ -65,7 +65,7 @@ export default class LineSegment extends BasePlugin {
       this.rConstraint = true;
       this.rConstraintValue = lsParams.lengthConstraint;
     }
-    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
     this.wasDragged = false;
     this.firstPoint = true;
     this.delIndices1 = [];
@@ -230,12 +230,10 @@ export default class LineSegment extends BasePlugin {
   }
 
   hConstrained(y, index) {
-    const len = this.state.length;
     return this.hConstraint ? this.state[index].y : y;
   }
 
   vConstrained(x, index) {
-    const len = this.state.length;
     return this.vConstraint ? this.state[index].x : x;
   }
 
@@ -403,7 +401,7 @@ export default class LineSegment extends BasePlugin {
               opacity: 0;
               stroke-width: 10px;
             `,
-            onmount: el => {
+            onmount: (el) => {
               this.app.registerElement({
                 ownerID: this.params.id,
                 element: el,
@@ -438,7 +436,7 @@ export default class LineSegment extends BasePlugin {
             fill: ${this.params.color};
             stroke-width: 0;
           ` + this.pointOpacity(ptIndex),
-          onmount: el => {
+          onmount: (el) => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
@@ -472,7 +470,7 @@ export default class LineSegment extends BasePlugin {
             x: this.tagXPosition(ptIndex) + this.tag.xoffset,
             y: this.tagYPosition(ptIndex) + this.tag.yoffset,
             style: this.getStyle(),
-            onmount: el => {
+            onmount: (el) => {
               if (this.latex) {
                 this.renderKatex(el, ptIndex);
               }
@@ -480,7 +478,7 @@ export default class LineSegment extends BasePlugin {
                 this.addDoubleClickEventListener(el, ptIndex);
               }
             },
-            onupdate: el => {
+            onupdate: (el) => {
               if (this.latex) {
                 this.renderKatex(el, ptIndex);
               }

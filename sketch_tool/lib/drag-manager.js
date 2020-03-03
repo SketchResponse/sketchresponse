@@ -40,13 +40,13 @@ export default class DragManager {
           }
           else { // spline
             // HTMLCollection is an 'array-like' object that needs to be spread into an array
-            [...this.visibleElements].forEach(el => this.selectionManager.select(el));
+            [...this.visibleElements].forEach((el) => this.selectionManager.select(el));
           }
         }
       }
       this.elementsToDrag = [element];
     }
-    this.elementsToDrag = this.elementsToDrag.filter(element => {
+    this.elementsToDrag = this.elementsToDrag.filter((element) => {
       const className = element.getAttribute('class');
       return !(className && className.substring(0, 7) === 'visible');
     });
@@ -60,18 +60,18 @@ export default class DragManager {
     // Note: we filter out selected elements with no onDrag callback and only drag those that have one
     // TODO: An alternative would be to prevent the entire drag altogether; is that better?
     const dragHandlers = this.elementsToDrag
-      .map(element => this.registry.get(element).onDrag)
-      .filter(onDrag => onDrag !== undefined);
+      .map((element) => this.registry.get(element).onDrag)
+      .filter((onDrag) => onDrag !== undefined);
 
     // First find out if any element is pushed out of bounds. In that case, we will
     // freeze the movement in that direction to keep the selection's overall shape.
     const inBoundsXHandlers = this.elementsToDrag
-      .map(element => this.registry.get(element).inBoundsX)
-      .filter(inBoundsX => inBoundsX !== undefined);
+      .map((element) => this.registry.get(element).inBoundsX)
+      .filter((inBoundsX) => inBoundsX !== undefined);
 
     const inBoundsYHandlers = this.elementsToDrag
-      .map(element => this.registry.get(element).inBoundsY)
-      .filter(inBoundsY => inBoundsY !== undefined);
+      .map((element) => this.registry.get(element).inBoundsY)
+      .filter((inBoundsY) => inBoundsY !== undefined);
 
     let insideX = true; let insideY = true;
     for (const inBoundsX of inBoundsXHandlers) {
@@ -89,7 +89,7 @@ export default class DragManager {
     dx = insideX ? dx : 0;
     dy = insideY ? dy : 0;
 
-    dragHandlers.forEach(onDrag => onDrag({ dx, dy }));
+    dragHandlers.forEach((onDrag) => onDrag({ dx, dy }));
     // TODO:
     // 1) monitor return value of drag callbacks + revert drags as needed
     // 2) update order of cache to optimize future attempts (and recompute dragHandlers...?)

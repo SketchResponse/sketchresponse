@@ -1,5 +1,4 @@
 import z from './util/zdom';
-import classnames from 'classnames';
 
 export const VERSION = '0.1';
 const TOOLBAR_ID = '$__toolbar';
@@ -83,9 +82,9 @@ export default class Toolbar {
     if (id === this.activeItemID) return;
     try {
       const allItems = [];
-      this.items.forEach(item => {
+      this.items.forEach((item) => {
         if (item.name === 'group') {
-          item.items.forEach(item => {
+          item.items.forEach((item) => {
             allItems.push(item);
           });
         }
@@ -93,8 +92,8 @@ export default class Toolbar {
           allItems.push(item);
         }
       });
-      const oldActiveItem = allItems.find(item => item.id === this.activeItemID);
-      const newActiveItem = allItems.find(item => item.id === id);
+      const oldActiveItem = allItems.find((item) => item.id === this.activeItemID);
+      const newActiveItem = allItems.find((item) => item.id === id);
 
       oldActiveItem && oldActiveItem.deactivate();
       newActiveItem && newActiveItem.activate();
@@ -137,7 +136,7 @@ export default class Toolbar {
   }
 
   render() {
-    const renderableItems = this.items.filter(item =>
+    const renderableItems = this.items.filter((item) =>
       ['separator', 'button', 'splitbutton'].indexOf(item.type) >= 0);
 
     z.render(this.el,
@@ -146,7 +145,7 @@ export default class Toolbar {
         let selectedItem;
         let isActive;
         if (type === 'splitbutton') {
-          selectedItem = items.find(item => item.id === this.selectedDropdownItemMap[id]);
+          selectedItem = items.find((item) => item.id === this.selectedDropdownItemMap[id]);
           icon = selectedItem.icon;
           color = selectedItem.color;
           isActive = (selectedItem.id === this.activeItemID);
@@ -166,7 +165,7 @@ export default class Toolbar {
           },
           z.if(type === 'button',
             z('button', {
-                onclick: e => {
+                onclick: () => {
                   // Finalize any shape that isn't
                   this.app.__messageBus.emit('finalizeShapes', id);
                   action ? action() : this.activateItem(id);
@@ -179,7 +178,7 @@ export default class Toolbar {
           ),
           z.if(type === 'splitbutton',
             z('button.split-button-main', {
-                onclick: e => {
+                onclick: () => {
                   // Finalize any shape that isn't
                   this.app.__messageBus.emit('finalizeShapes', this.selectedDropdownItemMap[id]);
                   this.activateItem(this.selectedDropdownItemMap[id]);
@@ -189,7 +188,7 @@ export default class Toolbar {
               renderIcon(`${id}-icon`, icon.src, icon.alt),  // TODO: title
             ),
             z('button.split-button-aux', {
-                onclick: e => {
+                onclick: () => {
                   // Finalize any shape that isn't
                   this.app.__messageBus.emit('finalizeShapes', this.selectedDropdownItemMap[id]);
                   this.activateItem(this.selectedDropdownItemMap[id]);
@@ -202,11 +201,11 @@ export default class Toolbar {
           ),
           z.if(hasDropdown,
             z('menu.dropdown',
-              z.each(items, item =>
+              z.each(items, (item) =>
                 z('div.dropdown-item',
                   z('button.dropdown-button', {
                       id: item.id,
-                      onpointerdown: e => this.selectDropdownItem(id, item.id),
+                      onpointerdown: () => this.selectDropdownItem(id, item.id),
                     },
                     renderIcon(`${id}-icon`, item.icon.src, item.icon.alt),  // TODO: title
                     renderLabel(`${id}-label`, item.label, false),

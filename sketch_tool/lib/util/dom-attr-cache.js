@@ -2,12 +2,12 @@ var FLAG = '$__DOMAttrCache';  // used as both our cache property name and as an
 
 function getCache(element, ns, name) {
   if (ns === null) ns = '';
-  var key = String(ns) + '|' + name;
+  const key = String(ns) + '|' + name;
   return (element[FLAG] || (element[FLAG] = {}))[key] || (element[FLAG][key] = { value: FLAG });
 }
 
 export function setAttributeNS(element, ns, name, value) {
-  var cache = getCache(element, ns, name.split(name.indexOf(':') + 1));  // strip prefix when storing
+  const cache = getCache(element, ns, name.split(name.indexOf(':') + 1));  // strip prefix when storing
   if (cache.value === String(value)) return;
   cache.value = String(value);
   if (!cache.pending) {
@@ -21,7 +21,7 @@ export function setAttributeNS(element, ns, name, value) {
 }
 
 export function getAttributeNS(element, ns, name) {
-  var value = getCache(element, ns, name).value;
+  const value = getCache(element, ns, name).value;
   return value === FLAG ? null : value;
 }
 

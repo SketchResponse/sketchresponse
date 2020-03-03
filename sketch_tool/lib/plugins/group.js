@@ -23,7 +23,7 @@ export default class Group {
     this.params = params;
     this.app = app;
     const items = [];
-    const plugins = this.params.plugins.map(pluginParams => pluginParams.name);
+    const plugins = this.params.plugins.map((pluginParams) => pluginParams.name);
     plugins.forEach((name, index) => {
       this.params.plugins[index].isSubItem = true;
       const plugin = this.createPlugin(name, this.params.plugins[index], this.app);
