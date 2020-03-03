@@ -34,8 +34,8 @@ export default class Stamp extends BasePlugin {
     sParams.gradeableVersion = GRADEABLE_VERSION;
     super(sParams, app);
     // Message listeners
-    this.app.__messageBus.on('addStamp', (id, index) => {this.addStamp(id, index)});
-    this.app.__messageBus.on('deleteStamps', () => {this.deleteStamps()});
+    this.app.__messageBus.on('addStamp', (id, index) => {this.addStamp(id, index);});
+    this.app.__messageBus.on('deleteStamps', () => {this.deleteStamps();});
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
   }
 
@@ -57,7 +57,7 @@ export default class Stamp extends BasePlugin {
   deleteStamps() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
-      for (let i = this.delIndices.length -1; i >= 0; i--) {
+      for (let i = this.delIndices.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
       }
       this.delIndices.length = 0;
@@ -86,7 +86,7 @@ export default class Stamp extends BasePlugin {
   drawMove(event) {
     let x = event.clientX - this.params.left;
     let y = event.clientY - this.params.top;
-    let lastPosition = this.state[this.state.length-1];
+    let lastPosition = this.state[this.state.length - 1];
 
     x = this.clampX(x);
     y = this.clampY(y);
@@ -109,8 +109,8 @@ export default class Stamp extends BasePlugin {
   // We first scale our image.
   // Then translate so that the image is centered on mouse click.
   getTransform(x, y) {
-    const xt = x - 0.5*this.params.scale*this.params.imgwidth;
-    const yt = y - 0.5*this.params.scale*this.params.imgheight;
+    const xt = x - 0.5 * this.params.scale * this.params.imgwidth;
+    const yt = y - 0.5 * this.params.scale * this.params.imgheight;
     return `translate(${xt}, ${yt}) scale(${this.params.scale})`;
   }
 
@@ -138,7 +138,7 @@ export default class Stamp extends BasePlugin {
                 return this.inBoundsX(this.state[positionIndex].x + dx);
               },
               inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[positionIndex].y + dy)
+                return this.inBoundsY(this.state[positionIndex].y + dy);
               },
             });
           },
@@ -172,7 +172,7 @@ export default class Stamp extends BasePlugin {
   }
 
   inBoundsX(x) {
-    return x>= this.bounds.xmin && x <= this.bounds.xmax;
+    return x >= this.bounds.xmin && x <= this.bounds.xmax;
   }
 
   inBoundsY(y) {

@@ -1,4 +1,4 @@
-import { getElementsByClassName } from './util/ms-polyfills'
+import { getElementsByClassName } from './util/ms-polyfills';
 
 export default class DragManager {
   constructor(registry, selectionManager) {
@@ -23,15 +23,15 @@ export default class DragManager {
       this.selectionManager.deselectAll();  // possibly a no-op, but finding out is almost as expensive
       this.selectionManager.select(element);
       const className = element.getAttribute('class');
-      if (className && className.substring(0, 9) == 'invisible') {
+      if (className && className.substring(0, 9) === 'invisible') {
         const classNamePrefix = className.substring(9);
         // IE and Edge do not have getElementsByClassName on SVG elements, use polyfill instead
-        this.visibleElements = getElementsByClassName(element.parentNode, 'visible'+classNamePrefix);
+        this.visibleElements = getElementsByClassName(element.parentNode, 'visible' + classNamePrefix);
         if (this.visibleElements) {
           // All plugins except spline
           if (this.visibleElements.length === 1) {
             // Only polyline has an opacity that needs to be overriden during selection
-            if (this.visibleElements[0].getAttribute('class').indexOf('polyline') != -1) {
+            if (this.visibleElements[0].getAttribute('class').indexOf('polyline') !== -1) {
               this.selectionManager.select(this.visibleElements[0], 'override');
             }
             else {
@@ -48,7 +48,7 @@ export default class DragManager {
     }
     this.elementsToDrag = this.elementsToDrag.filter(element => {
       const className = element.getAttribute('class');
-      return !(className && className.substring(0, 7) == 'visible')
+      return !(className && className.substring(0, 7) === 'visible');
     });
     this.previousPosition = position;
   }

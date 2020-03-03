@@ -33,7 +33,7 @@ const DEFAULT_CONFIG = {
   xscale: 'linear',
   yscale: 'linear',
   coordinates: 'cartesian',
-}
+};
 
 
 export default class SketchInput {
@@ -67,7 +67,7 @@ export default class SketchInput {
     this.oldPt = {
       x: 0,
       y: 0,
-    }
+    };
 
     Promise.all(
       this.params.plugins.map(pluginParams =>
@@ -147,7 +147,7 @@ export default class SketchInput {
       __messageBus: this.messageBus,
       svg: document.getElementById('si-canvas'),
       debug: this.debug,
-    }
+    };
 
     // Prevent default on dragstart to keep Firefox from dragging the SVG
     // setting capture to true to get the event as soon as possible
@@ -170,8 +170,8 @@ export default class SketchInput {
         y: event.clientY,
       };
       const dist = Math.sqrt(
-        (newPt.x - this.oldPt.x)*(newPt.x - this.oldPt.x) +
-        (newPt.y - this.oldPt.y)*(newPt.y - this.oldPt.y),
+        (newPt.x - this.oldPt.x) * (newPt.x - this.oldPt.x) +
+        (newPt.y - this.oldPt.y) * (newPt.y - this.oldPt.y),
       );
       if (deltaT <= 500 && dist <= 10) {
         // Stop event propagation except when it happens on a tag where a double click
@@ -203,7 +203,7 @@ export default class SketchInput {
         // Temporarily hold a reference for ulterior removal
         this.handlePointerDown = () => {
           this.messageBus.emit('deselectAll');
-        }
+        };
         this.app.svg.addEventListener('pointerdown', this.handlePointerDown);
         this.app.svg.style.cursor = 'default';
       },
@@ -303,7 +303,7 @@ export default class SketchInput {
     }, true);
 
     this.app.svg.addEventListener('touchend', event => {
-      if (event.touches.length == 0) this.app.svg.setAttribute('touch-action', 'none');
+      if (event.touches.length === 0) this.app.svg.setAttribute('touch-action', 'none');
     }, true);
 
     this.messageBus.on('deleteFinished', () => {this.app.addUndoPoint();});

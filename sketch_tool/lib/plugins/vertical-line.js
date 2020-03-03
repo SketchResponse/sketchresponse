@@ -10,7 +10,7 @@ const DEFAULT_PARAMS = {
   label: 'Vertical line',
   color: 'dimgray',
   dashStyle: 'solid',
-}
+};
 
 export default class VerticalLine extends BasePlugin {
   constructor(params, app) {
@@ -32,8 +32,8 @@ export default class VerticalLine extends BasePlugin {
     vlParams.gradeableVersion = GRADEABLE_VERSION;
     super(vlParams, app);
     // Message listeners
-    this.app.__messageBus.on('addVerticalLine', (id, index) => {this.addVerticalLine(id, index)});
-    this.app.__messageBus.on('deleteVerticalLines', () => {this.deleteVerticalLines()});
+    this.app.__messageBus.on('addVerticalLine', (id, index) => {this.addVerticalLine(id, index);});
+    this.app.__messageBus.on('deleteVerticalLines', () => {this.deleteVerticalLines();});
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
   }
 
@@ -62,7 +62,7 @@ export default class VerticalLine extends BasePlugin {
   deleteVerticalLines() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
-      for (let i = this.delIndices.length -1; i >= 0; i--) {
+      for (let i = this.delIndices.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
       }
       this.delIndices.length = 0;
@@ -79,7 +79,7 @@ export default class VerticalLine extends BasePlugin {
     document.addEventListener('pointercancel', this.drawEnd, true);
     this.currentPosition = {
       x: event.clientX - this.params.left,
-    }
+    };
     if (this.hasTag) {
       this.currentPosition.tag = this.tag.value;
     }
@@ -90,7 +90,7 @@ export default class VerticalLine extends BasePlugin {
   drawMove(event) {
     let x = event.clientX - this.params.left;
     x = this.clampX(x);
-    this.state[this.state.length-1].x = x;
+    this.state[this.state.length - 1].x = x;
     this.render();
     event.stopPropagation();
     event.preventDefault();
@@ -143,7 +143,7 @@ export default class VerticalLine extends BasePlugin {
                 this.render();
               },
               inBoundsX: (dx) => {
-                return this.inBoundsX(this.state[positionIndex].x + dx)
+                return this.inBoundsX(this.state[positionIndex].x + dx);
               },
               inBoundsY: (dy) => {
                 return true;
@@ -158,7 +158,7 @@ export default class VerticalLine extends BasePlugin {
           z(this.latex ? 'foreignObject.tag' : 'text.tag', {
             'text-anchor': (this.latex ? undefined : this.tag.align),
             x: position.x + this.tag.xoffset,
-            y: this.params.height/2 + this.tag.yoffset,
+            y: this.params.height / 2 + this.tag.yoffset,
             style: this.getStyle(),
             onmount: el => {
               if (this.latex) {

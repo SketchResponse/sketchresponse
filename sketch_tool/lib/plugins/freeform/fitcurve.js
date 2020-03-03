@@ -99,7 +99,7 @@ function FitCubic(d, first, last, tHat1, tHat2, error)
     nPts = last - first + 1;
 
     /*  Use heuristic if region only has two points in it */
-    if (nPts == 2) {
+    if (nPts === 2) {
       var dist = V2DistanceBetween2Points(d[last], d[first]) / 3.0;
 
       bezCurve = [];
@@ -231,8 +231,8 @@ function GenerateBezier(d, first, last, uPrime, tHat1, tHat2)
     det_X_C1  = X[0]    * C[1][1] - X[1]    * C[0][1];
 
     /* Finally, derive alpha values  */
-    alpha_l = (det_C0_C1 == 0) ? 0.0 : det_X_C1 / det_C0_C1;
-    alpha_r = (det_C0_C1 == 0) ? 0.0 : det_C0_X / det_C0_C1;
+    alpha_l = (det_C0_C1 === 0) ? 0.0 : det_X_C1 / det_C0_C1;
+    alpha_r = (det_C0_C1 === 0) ? 0.0 : det_C0_X / det_C0_C1;
 
     /* If alpha negative, use the Wu/Barsky heuristic (see text) */
     /* (if alpha is 0, you get coincident control points that lead to
@@ -341,7 +341,7 @@ function NewtonRaphsonRootFind(_Q, _P, u)
     numerator = (Q_u.x - P.x) * (Q1_u.x) + (Q_u.y - P.y) * (Q1_u.y);
     denominator = (Q1_u.x) * (Q1_u.x) + (Q1_u.y) * (Q1_u.y) +
               (Q_u.x - P.x) * (Q2_u.x) + (Q_u.y - P.y) * (Q2_u.y);
-    if (denominator == 0.0) return u;
+    if (denominator === 0.0) return u;
 
     /* u = u - f(u)/f'(u) */
     uPrime = u - (numerator/denominator);

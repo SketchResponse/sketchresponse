@@ -10,7 +10,7 @@ const DEFAULT_PARAMS = {
   label: 'Horizontal line',
   color: 'dimgray',
   dashStyle: 'solid',
-}
+};
 
 export default class HorizontalLine extends BasePlugin {
   constructor(params, app) {
@@ -32,8 +32,8 @@ export default class HorizontalLine extends BasePlugin {
     hlParams.gradeableVersion = GRADEABLE_VERSION;
     super(hlParams, app);
     // Message listeners
-    this.app.__messageBus.on('addHorizontalLine', (id, index) => {this.addHorizontalLine(id, index)});
-    this.app.__messageBus.on('deleteHorizontalLines', () => {this.deleteHorizontalLines()});
+    this.app.__messageBus.on('addHorizontalLine', (id, index) => {this.addHorizontalLine(id, index);});
+    this.app.__messageBus.on('deleteHorizontalLines', () => {this.deleteHorizontalLines();});
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
   }
 
@@ -62,7 +62,7 @@ export default class HorizontalLine extends BasePlugin {
   deleteHorizontalLines() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
-      for (let i = this.delIndices.length -1; i >= 0; i--) {
+      for (let i = this.delIndices.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
       }
       this.delIndices.length = 0;
@@ -79,7 +79,7 @@ export default class HorizontalLine extends BasePlugin {
     document.addEventListener('pointercancel', this.drawEnd, true);
     this.currentPosition = {
       y: event.clientY - this.params.top,
-    }
+    };
     if (this.hasTag) {
       this.currentPosition.tag = this.tag.value;
     }
@@ -90,7 +90,7 @@ export default class HorizontalLine extends BasePlugin {
   drawMove(event) {
     let y = event.clientY - this.params.top;
     y = this.clampY(y);
-    this.state[this.state.length-1].y = y;
+    this.state[this.state.length - 1].y = y;
     this.render();
     event.stopPropagation();
     event.preventDefault();
@@ -146,7 +146,7 @@ export default class HorizontalLine extends BasePlugin {
                 return true;
               },
               inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[positionIndex].y + dy)
+                return this.inBoundsY(this.state[positionIndex].y + dy);
               },
             });
           },
@@ -157,7 +157,7 @@ export default class HorizontalLine extends BasePlugin {
         z.if(this.hasTag, () =>
           z(this.latex ? 'foreignObject.tag' : 'text.tag', {
             'text-anchor': (this.latex ? undefined : this.tag.align),
-            x: this.params.width/2 + this.tag.xoffset,
+            x: this.params.width / 2 + this.tag.xoffset,
             y: position.y + this.tag.yoffset,
             style: this.getStyle(),
             onmount: el => {

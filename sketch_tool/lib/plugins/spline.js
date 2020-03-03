@@ -14,7 +14,7 @@ const ROUNDING_PRESCALER = 100;
 const DEFAULT_PARAMS = {
   label: 'Spline',
   color: 'dimgray',
-}
+};
 
 export default class Spline extends BasePlugin {
   constructor(params, app) {
@@ -37,9 +37,9 @@ export default class Spline extends BasePlugin {
     sParams.gradeableVersion = GRADEABLE_VERSION;
     super(sParams, app);
     // Message listeners
-    this.app.__messageBus.on('addSpline', (id, index) => {this.addSpline(id, index)});
-    this.app.__messageBus.on('deleteSplines', () => {this.deleteSplines()});
-    this.app.__messageBus.on('finalizeShapes', (id) => {this.drawEnd(id)});
+    this.app.__messageBus.on('addSpline', (id, index) => {this.addSpline(id, index);});
+    this.app.__messageBus.on('deleteSplines', () => {this.deleteSplines();});
+    this.app.__messageBus.on('finalizeShapes', (id) => {this.drawEnd(id);});
   }
 
   getGradeable() {
@@ -64,7 +64,7 @@ export default class Spline extends BasePlugin {
   deleteSplines() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
-      for (let i = this.delIndices.length -1; i >= 0; i--) {
+      for (let i = this.delIndices.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
       }
       this.delIndices.length = 0;
@@ -82,10 +82,10 @@ export default class Spline extends BasePlugin {
     // We already have at least one spline defined, add new points to the last one
     if (this.state.length > 0) {
       // Only add tag to first point
-      if (this.hasTag && this.state[this.state.length-1].length === 0) {
+      if (this.hasTag && this.state[this.state.length - 1].length === 0) {
         currentPosition.tag = this.tag.value;
       }
-      this.state[this.state.length-1].push(currentPosition);
+      this.state[this.state.length - 1].push(currentPosition);
     }
     // Create our first spline
     else {
@@ -105,9 +105,9 @@ export default class Spline extends BasePlugin {
     // To signal that a spline has been completed, push an empty array except when
     // associated plugin button is clicked or undo/redo
     if (id !== this.id && id !== 'undo' && id !== 'redo' &&
-        this.state.length > 0 && this.state[this.state.length-1].length > 0) {
+        this.state.length > 0 && this.state[this.state.length - 1].length > 0) {
       // Remove any dangling point
-      if (this.state[this.state.length-1].length < 2) {
+      if (this.state[this.state.length - 1].length < 2) {
         this.state.pop();
       }
       this.state.push([]);
@@ -117,7 +117,7 @@ export default class Spline extends BasePlugin {
   }
 
   splineStrokeWidth(index) {
-    return index === this.state.length-1 ? '3px' : '2px';
+    return index === this.state.length - 1 ? '3px' : '2px';
   }
 
   render() {
@@ -217,7 +217,7 @@ export default class Spline extends BasePlugin {
                   return this.inBoundsX(this.state[splineIndex][ptIndex].x + dx);
                 },
                 inBoundsY: (dy) => {
-                  return this.inBoundsY(this.state[splineIndex][ptIndex].y + dy)
+                  return this.inBoundsY(this.state[splineIndex][ptIndex].y + dy);
                 },
               });
             },

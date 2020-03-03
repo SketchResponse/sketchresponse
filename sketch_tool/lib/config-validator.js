@@ -27,7 +27,7 @@ arrowTag.properties.position = {
 const dashStyle = {
   type: 'string',
   enum: ['dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'],
-}
+};
 
 const coords = {
   type: 'array',
@@ -296,7 +296,7 @@ const schemas = {
   'spline': spline,
   'stamp': stamp,
   'vertical-line': verticalLine,
-}
+};
 
 function validateParams(params, name) {
   const validateSchema = validator(schemas[name], { greedy: true, verbose: true }),

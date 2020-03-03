@@ -1,9 +1,9 @@
 import PointerDownCache from './pointer-down-cache';
 import SelectionManager from './selection-manager';
 import DragManager from './drag-manager';
-import { getElementsByClassName } from './util/ms-polyfills'
+import { getElementsByClassName } from './util/ms-polyfills';
 
-const MIN_DRAG_DISTANCE_SQUARED = 5**2;
+const MIN_DRAG_DISTANCE_SQUARED = 5 ** 2;
 
 export default class ElementManager {
   constructor(app) {
@@ -80,7 +80,7 @@ export default class ElementManager {
     if (!this.isDragging) {
       const dx = event.clientX - this.initialEvent.clientX;
       const dy = event.clientY - this.initialEvent.clientY;
-      if (dx**2 + dy**2 < MIN_DRAG_DISTANCE_SQUARED) return;  // Don't consider this a drag for small distances
+      if (dx ** 2 + dy ** 2 < MIN_DRAG_DISTANCE_SQUARED) return;  // Don't consider this a drag for small distances
 
 
       // TODO: GAH: timing: this might not fire until after the corresponding pointerup...
@@ -98,12 +98,12 @@ export default class ElementManager {
     event.preventDefault();
 
     const element = event.currentTarget;
-    const className = element.getAttribute('class')
+    const className = element.getAttribute('class');
     let visibleElements;
-    if (className && className.substring(0, 9) == 'invisible') {
+    if (className && className.substring(0, 9) === 'invisible') {
       const classNamePrefix = className.substring(9);
       // IE and Edge do not have getElementsByClassName on SVG elements, use polyfill instead
-      visibleElements = getElementsByClassName(element.parentNode, 'visible'+classNamePrefix);
+      visibleElements = getElementsByClassName(element.parentNode, 'visible' + classNamePrefix);
     }
     if (this.isDragging) {
       this.dragManager.dragEnd();
@@ -116,7 +116,7 @@ export default class ElementManager {
         // All plugins except spline
         if (visibleElements.length === 1) {
           // Only polyline has an opacity that needs to be overriden during selection
-          if (visibleElements[0].getAttribute('class').indexOf('polyline') != -1) {
+          if (visibleElements[0].getAttribute('class').indexOf('polyline') !== -1) {
             this.selectionManager.toggleSelected(visibleElements[0], 'override');
           }
           else {
@@ -136,7 +136,7 @@ export default class ElementManager {
         // All plugins except spline
         if (visibleElements.length === 1) {
           // Only polyline has an opacity that needs to be overriden during selection
-          if (visibleElements[0].getAttribute('class').indexOf('polyline') != -1) {
+          if (visibleElements[0].getAttribute('class').indexOf('polyline') !== -1) {
             this.selectionManager.select(visibleElements[0], 'override');
           }
           else {

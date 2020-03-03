@@ -8,7 +8,7 @@ let namespaces = {
 
 function qualify(name) {
   const [nsPrefix, localName] = name.split(':');
-  if (localName == undefined || !namespaces.hasOwnProperty(nsPrefix)) {
+  if (localName === undefined || !namespaces.hasOwnProperty(nsPrefix)) {
     return { namespaceURI: null, localName: name };
   }
   return { namespaceURI: namespaces[nsPrefix], localName: localName };

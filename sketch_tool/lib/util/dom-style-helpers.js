@@ -3,7 +3,7 @@ function uniqueID() {
 }
 
 export class AttributeList {
-  constructor(prefix='data-') {
+  constructor(prefix = 'data-') {
     this.cache = new WeakMap();
     this.baseName = prefix + uniqueID() + '-';
   }
@@ -20,7 +20,7 @@ export class AttributeList {
 
     // Return early if nothing has changed to avoid unnecessary DOM manipulation
     // Note: use of `==` is intentional to allow truthy/falsy conditions
-    if (condition == attrCache.has(attrName)) return;
+    if (condition === attrCache.has(attrName)) return;
 
     if (condition) {
       element.setAttributeNS(null, this.resolve(attrName), '');

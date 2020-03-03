@@ -37,7 +37,7 @@ export default class Group {
       label: this.params.label,
       icon: items[0].icon,
       color: items[0].color,
-    }
+    };
     this.app.registerToolbarItem(this.menuItem);
   }
 

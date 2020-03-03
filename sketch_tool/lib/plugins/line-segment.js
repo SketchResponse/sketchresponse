@@ -11,7 +11,7 @@ const DEFAULT_PARAMS = {
   label: 'Line segment',
   color: 'dimgray',
   dashStyle: 'solid',
-}
+};
 
 export default class LineSegment extends BasePlugin {
   constructor(params, app) {
@@ -27,7 +27,7 @@ export default class LineSegment extends BasePlugin {
     if (lsParams.arrowHead) {
       const length = lsParams.arrowHead.length;
       const base = lsParams.arrowHead.base;
-      const refY = base/2;
+      const refY = base / 2;
       injectSVGDefs(`
         <marker id="arrowhead-${params.id}" markerWidth="${length}" markerHeight="${base}" refX="${length}" refY="${refY}" orient="auto">
           <polygon points="0 0, ${length} ${refY}, 0 ${base}" style="fill: ${params.color}; stroke: ${params.color}; stroke-width: 1;"/>
@@ -48,11 +48,11 @@ export default class LineSegment extends BasePlugin {
     lsParams.gradeableVersion = GRADEABLE_VERSION;
     super(lsParams, app);
     // Message listeners
-    this.app.__messageBus.on('addLineSegment', (id, index) => {this.addLineSegment(id, index)});
-    this.app.__messageBus.on('addLineSegmentPoint', (id, index) => {this.addLineSegmentPoint(id, index)});
-    this.app.__messageBus.on('deleteLineSegments', () => {this.deleteLineSegments()});
-    this.app.__messageBus.on('deleteLineSegmentPoints', () => {this.deleteLineSegmentPoints()});
-    this.app.__messageBus.on('finalizeShapes', (id) => {this.finalizeShape(id)});
+    this.app.__messageBus.on('addLineSegment', (id, index) => {this.addLineSegment(id, index);});
+    this.app.__messageBus.on('addLineSegmentPoint', (id, index) => {this.addLineSegmentPoint(id, index);});
+    this.app.__messageBus.on('deleteLineSegments', () => {this.deleteLineSegments();});
+    this.app.__messageBus.on('deleteLineSegmentPoints', () => {this.deleteLineSegmentPoints();});
+    this.app.__messageBus.on('finalizeShapes', (id) => {this.finalizeShape(id);});
     this.hConstraint = false;
     this.vConstraint = false;
     this.rConstraint = false;
@@ -81,18 +81,18 @@ export default class LineSegment extends BasePlugin {
     for (let i = 0; i < len; i += 2) {
       x1 = this.state[i].x;
       y1 = this.state[i].y;
-      x2 = this.state[i+1].x;
-      y2 = this.state[i+1].y;
+      x2 = this.state[i + 1].x;
+      y2 = this.state[i + 1].y;
       // Use a spline to describe a line segment
       result.push({
         spline: [
           [x1, y1],
-          [(2*x1 + x2)/3, (2*y1 + y2)/3],
-          [(x1 + 2*x2)/3, (y1 + 2*y2)/3],
+          [(2 * x1 + x2) / 3, (2 * y1 + y2) / 3],
+          [(x1 + 2 * x2) / 3, (y1 + 2 * y2) / 3],
           [x2, y2],
         ],
         tag: this.state[i].tag,
-      })
+      });
     }
     return result;
   }
@@ -112,7 +112,7 @@ export default class LineSegment extends BasePlugin {
   deleteLineSegments() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
-      for (let i = this.delIndices.length -1; i >= 0; i--) {
+      for (let i = this.delIndices.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 2);
       }
       this.delIndices.length = 0;
@@ -123,7 +123,7 @@ export default class LineSegment extends BasePlugin {
   deleteLineSegmentPoints() {
     if (this.delIndices1.length !== 0) {
       this.delIndices1.sort();
-      for (let i = this.delIndices1.length -1; i >= 0; i--) {
+      for (let i = this.delIndices1.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices1[i], 1);
       }
       this.delIndices1.length = 0;
@@ -156,7 +156,7 @@ export default class LineSegment extends BasePlugin {
     }
     // Second endpoint, constrain with first endpoint
     else {
-      const point = this.pointConstrained(x, y, this.state.length-1);
+      const point = this.pointConstrained(x, y, this.state.length - 1);
       currentPosition.x = point.x;
       currentPosition.y = point.y;
       this.state.push(currentPosition);
@@ -182,7 +182,7 @@ export default class LineSegment extends BasePlugin {
     // On a click & drag, only push a new point if the second endpoint has not been added.
     if (this.firstPoint) {
       // Constrain with first endpoint which is last in state, as second endpoint as not been yet added
-      point = this.pointConstrained(x, y, this.state.length-1);
+      point = this.pointConstrained(x, y, this.state.length - 1);
       this.state.push({
         x: point.x,
         y: point.y,
@@ -191,8 +191,8 @@ export default class LineSegment extends BasePlugin {
     }
     else {
       // Constrain with first endpoint which is before last in state, as second endpoint has been added
-      const lastPosition = this.state[this.state.length-1];
-      point = this.pointConstrained(x, y, this.state.length-2);
+      const lastPosition = this.state[this.state.length - 1];
+      point = this.pointConstrained(x, y, this.state.length - 2);
       lastPosition.x = point.x;
       lastPosition.y = point.y;
     }
@@ -249,11 +249,11 @@ export default class LineSegment extends BasePlugin {
       const y1 = this.state[index].y;
       const vx = x2 - x1;
       const vy = y2 - y1;
-      const dist = Math.sqrt(vx**2 + vy**2);
+      const dist = Math.sqrt(vx ** 2 + vy ** 2);
       if (dist > this.rConstraintValue) {
         const theta = Math.atan2(vy, vx);
-        result.x = x1 + this.rConstraintValue*Math.cos(theta);
-        result.y = y1 + this.rConstraintValue*Math.sin(theta);
+        result.x = x1 + this.rConstraintValue * Math.cos(theta);
+        result.y = y1 + this.rConstraintValue * Math.sin(theta);
       }
     }
     return result;
@@ -267,7 +267,7 @@ export default class LineSegment extends BasePlugin {
     return {
       x: xConstrained,
       y: yConstrained,
-    }
+    };
   }
 
   hConstrained1(y, index) {
@@ -292,20 +292,20 @@ export default class LineSegment extends BasePlugin {
       // First end point
       if (index % 2 === 0) {
         xm = x; ym = y;
-        xf = this.state[index+1].x; yf = this.state[index+1].y;
+        xf = this.state[index + 1].x; yf = this.state[index + 1].y;
       }
       // Second endpoint
       else {
-        xf = this.state[index-1].x; yf = this.state[index-1].y;
+        xf = this.state[index - 1].x; yf = this.state[index - 1].y;
         xm = x; ym = y;
       }
       const vx = xm - xf;
       const vy = ym - yf;
-      const dist = Math.sqrt(vx**2 + vy**2);
+      const dist = Math.sqrt(vx ** 2 + vy ** 2);
       if (dist > this.rConstraintValue) {
         const theta = Math.atan2(vy, vx);
-        result.x = xf + this.rConstraintValue*Math.cos(theta);
-        result.y = yf + this.rConstraintValue*Math.sin(theta);
+        result.x = xf + this.rConstraintValue * Math.cos(theta);
+        result.y = yf + this.rConstraintValue * Math.sin(theta);
       }
     }
     return result;
@@ -324,7 +324,7 @@ export default class LineSegment extends BasePlugin {
   }
 
   arrowHead() {
-    return this.params.arrowHead ? `url(#arrowhead-${this.params.id})` : ''
+    return this.params.arrowHead ? `url(#arrowhead-${this.params.id})` : '';
   }
 
   lineIsDefined(ptIndex) {
@@ -336,12 +336,12 @@ export default class LineSegment extends BasePlugin {
     let x2;
     // The two points of the line segment have been defined
     if (this.lineIsDefined(ptIndex)) {
-      x2 = this.state[ptIndex+1].x;
+      x2 = this.state[ptIndex + 1].x;
       switch(this.tag.position) {
         case 'start':
           return x1;
         case 'middle':
-          return (x1+x2)/2;
+          return (x1 + x2) / 2;
         case 'end':
           return x2;
       }
@@ -356,12 +356,12 @@ export default class LineSegment extends BasePlugin {
     let y2;
     // The two points of the line segment have been defined
     if (this.lineIsDefined(ptIndex)) {
-      y2 = this.state[ptIndex+1].y;
+      y2 = this.state[ptIndex + 1].y;
       switch(this.tag.position) {
         case 'start':
           return y1;
         case 'middle':
-          return (y1+y2)/2;
+          return (y1 + y2) / 2;
         case 'end':
           return y2;
       }
@@ -379,8 +379,8 @@ export default class LineSegment extends BasePlugin {
           z('line.visible-' + ptIndex + '.line-segment' + '.plugin-id-' + this.id, {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
-            x2: this.state[ptIndex+1].x,
-            y2: this.state[ptIndex+1].y,
+            x2: this.state[ptIndex + 1].x,
+            y2: this.state[ptIndex + 1].y,
             style: `
               stroke: ${this.params.color};
               stroke-width: 2px;
@@ -396,8 +396,8 @@ export default class LineSegment extends BasePlugin {
           z('line.invisible-' + ptIndex + this.readOnlyClass(), {
             x1: this.state[ptIndex].x,
             y1: this.state[ptIndex].y,
-            x2: this.state[ptIndex+1].x,
-            y2: this.state[ptIndex+1].y,
+            x2: this.state[ptIndex + 1].x,
+            y2: this.state[ptIndex + 1].y,
             style: `
               stroke: ${this.params.color};
               opacity: 0;
@@ -411,17 +411,17 @@ export default class LineSegment extends BasePlugin {
                 onDrag: ({ dx, dy }) => {
                   this.state[ptIndex].x += dx;
                   this.state[ptIndex].y += dy;
-                  this.state[ptIndex+1].x += dx;
-                  this.state[ptIndex+1].y += dy;
+                  this.state[ptIndex + 1].x += dx;
+                  this.state[ptIndex + 1].y += dy;
                   this.render();
                 },
                 inBoundsX: (dx) => {
                   return this.inBoundsX(this.state[ptIndex].x + dx) &&
-                         this.inBoundsX(this.state[ptIndex+1].x + dx);
+                         this.inBoundsX(this.state[ptIndex + 1].x + dx);
                 },
                 inBoundsY: (dy) => {
                   return this.inBoundsY(this.state[ptIndex].y + dy) &&
-                         this.inBoundsY(this.state[ptIndex+1].y + dy)
+                         this.inBoundsY(this.state[ptIndex + 1].y + dy);
                 },
               });
             },
@@ -458,7 +458,7 @@ export default class LineSegment extends BasePlugin {
                 return this.inBoundsX(this.state[ptIndex].x + dx);
               },
               inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[ptIndex].y + dy)
+                return this.inBoundsY(this.state[ptIndex].y + dy);
               },
             });
           },

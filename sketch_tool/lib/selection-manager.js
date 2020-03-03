@@ -32,8 +32,8 @@ export default class SelectionManager {
     this.selectMode = false;
     messageBus.on('enableSelectMode', () => {this.setSelectMode(true);});
     messageBus.on('disableSelectMode', () => {this.setSelectMode(false);});
-    messageBus.on('deselectAll', () => {this.deselectAll()});
-    messageBus.on('deleteSelected', () => {this.deleteSelected()});
+    messageBus.on('deselectAll', () => {this.deselectAll();});
+    messageBus.on('deleteSelected', () => {this.deleteSelected();});
     this.messageBus = messageBus;
   }
 
@@ -44,7 +44,7 @@ export default class SelectionManager {
     }
   }
   select(element, mode) {
-    attrCache.setAttributeNS(element, null, SELECTED_ATTR, mode == 'override' ? 'override' : 'default');
+    attrCache.setAttributeNS(element, null, SELECTED_ATTR, mode === 'override' ? 'override' : 'default');
   }
   deselect(element) { attrCache.removeAttributeNS(element, null, SELECTED_ATTR); }
   isSelected(element) {return attrCache.getAttributeNS(element, null, SELECTED_ATTR) !== null; }
@@ -65,7 +65,7 @@ export default class SelectionManager {
     let elWasDeleted = false;
     this.getSelected().forEach((element) => {
       let elementClasses = element.getAttribute('class').split(' ');
-      if (elementClasses.indexOf('point') != -1) {
+      if (elementClasses.indexOf('point') !== -1) {
         this.messageBus.emit(
           'addPoint',
           elementClasses[1].substring(10),
@@ -73,7 +73,7 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
-      else if (elementClasses.indexOf('horizontal-line') != -1) {
+      else if (elementClasses.indexOf('horizontal-line') !== -1) {
         this.messageBus.emit(
           'addHorizontalLine',
           elementClasses[2].substring(10),
@@ -81,7 +81,7 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
-      else if (elementClasses.indexOf('vertical-line') != -1) {
+      else if (elementClasses.indexOf('vertical-line') !== -1) {
         this.messageBus.emit(
           'addVerticalLine',
           elementClasses[2].substring(10),
@@ -89,7 +89,7 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
-      else if (elementClasses.indexOf('line-segment') != -1) {
+      else if (elementClasses.indexOf('line-segment') !== -1) {
         this.messageBus.emit(
           'addLineSegment',
           elementClasses[2].substring(10),
@@ -97,7 +97,7 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
-      else if (elementClasses.indexOf('line-segment-point') != -1) {
+      else if (elementClasses.indexOf('line-segment-point') !== -1) {
         this.messageBus.emit(
           'addLineSegmentPoint',
           elementClasses[2].substring(10),
@@ -105,7 +105,7 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
-      else if (elementClasses.indexOf('freeform') != -1) {
+      else if (elementClasses.indexOf('freeform') !== -1) {
         this.messageBus.emit(
           'addFreeform',
           elementClasses[2].substring(10),
@@ -113,7 +113,7 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
-      else if (elementClasses.indexOf('stamp') != -1) {
+      else if (elementClasses.indexOf('stamp') !== -1) {
         this.messageBus.emit(
           'addStamp',
           elementClasses[1].substring(10),
@@ -121,7 +121,7 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
-      else if (elementClasses.indexOf('polyline') != -1) {
+      else if (elementClasses.indexOf('polyline') !== -1) {
         this.messageBus.emit(
           'addPolyline',
           elementClasses[2].substring(10),
@@ -129,7 +129,7 @@ export default class SelectionManager {
         );
         elWasDeleted = true;
       }
-      else if (elementClasses.indexOf('spline') != -1) {
+      else if (elementClasses.indexOf('spline') !== -1) {
         this.messageBus.emit(
           'addSpline',
           elementClasses[2].substring(10),

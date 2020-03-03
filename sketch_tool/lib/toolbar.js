@@ -87,7 +87,7 @@ export default class Toolbar {
         if (item.name === 'group') {
           item.items.forEach(item => {
             allItems.push(item);
-          })
+          });
         }
         else {
           allItems.push(item);

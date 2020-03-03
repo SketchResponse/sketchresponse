@@ -17,7 +17,7 @@ const ROUNDING_PRESCALER = 100;  // e.g., Math.round(value * ROUNDING_PRESCALER)
 const DEFAULT_PARAMS = {
   label: 'Freeform',
   color: 'dimgray',
-}
+};
 
 export default class Freeform extends BasePlugin {
   constructor(params, app) {
@@ -39,8 +39,8 @@ export default class Freeform extends BasePlugin {
     fParams.gradeableVersion = GRADEABLE_VERSION;
     super(fParams, app);
     // Message listeners
-    this.app.__messageBus.on('addFreeform', (id, index) => {this.addFreeform(id, index)});
-    this.app.__messageBus.on('deleteFreeforms', (id, index) => {this.deleteFreeforms(id, index)});
+    this.app.__messageBus.on('addFreeform', (id, index) => {this.addFreeform(id, index);});
+    this.app.__messageBus.on('deleteFreeforms', (id, index) => {this.deleteFreeforms(id, index);});
 
     ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
     this.firstPoint = true;
@@ -65,7 +65,7 @@ export default class Freeform extends BasePlugin {
   deleteFreeforms() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
-      for (let i = this.delIndices.length -1; i >= 0; i--) {
+      for (let i = this.delIndices.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
       }
       this.delIndices.length = 0;
@@ -188,9 +188,9 @@ export default class Freeform extends BasePlugin {
                 for (let i = 0, len = this.state[splineIndex].length; i < len - 3; i += 3) {
                   let boundingBox = getBoundingBox(
                     this.state[splineIndex][i].x + dx, this.state[splineIndex][i].y,
-                    this.state[splineIndex][i+1].x + dx, this.state[splineIndex][i+1].y,
-                    this.state[splineIndex][i+2].x + dx, this.state[splineIndex][i+2].y,
-                    this.state[splineIndex][i+3].x + dx, this.state[splineIndex][i+3].y,
+                    this.state[splineIndex][i + 1].x + dx, this.state[splineIndex][i + 1].y,
+                    this.state[splineIndex][i + 2].x + dx, this.state[splineIndex][i + 2].y,
+                    this.state[splineIndex][i + 3].x + dx, this.state[splineIndex][i + 3].y,
                   );
                   if (!(this.inBoundsX(boundingBox.min.x) &&
                       this.inBoundsX(boundingBox.max.x))) {
@@ -203,9 +203,9 @@ export default class Freeform extends BasePlugin {
                 for (let i = 0, len = this.state[splineIndex].length; i < len - 3; i += 3) {
                   let boundingBox = getBoundingBox(
                     this.state[splineIndex][i].x, this.state[splineIndex][i].y + dy,
-                    this.state[splineIndex][i+1].x, this.state[splineIndex][i+1].y + dy,
-                    this.state[splineIndex][i+2].x, this.state[splineIndex][i+2].y + dy,
-                    this.state[splineIndex][i+3].x, this.state[splineIndex][i+3].y + dy,
+                    this.state[splineIndex][i + 1].x, this.state[splineIndex][i + 1].y + dy,
+                    this.state[splineIndex][i + 2].x, this.state[splineIndex][i + 2].y + dy,
+                    this.state[splineIndex][i + 3].x, this.state[splineIndex][i + 3].y + dy,
                   );
                   if (!(this.inBoundsY(boundingBox.min.y) &&
                       this.inBoundsY(boundingBox.max.y))) {
@@ -291,7 +291,7 @@ function add(point1, point2) {
   return {
     x: point1.x + point2.x,
     y: point1.y + point2.y,
-  }
+  };
 }
 
 function substract(point1, point2) {
@@ -323,7 +323,7 @@ function getBoundingBox(x0, y0, x1, y1, x2, y2, x3, y3) {
       bounds = [[], []],
       a, b, c, t, t1, t2, b2ac, sqrtb2ac;
   for (var i = 0; i < 2; ++i) {
-      if (i == 0) {
+      if (i === 0) {
           b = 6 * x0 - 12 * x1 + 6 * x2;
           a = -3 * x0 + 9 * x1 - 9 * x2 + 3 * x3;
           c = 3 * x1 - 3 * x0;

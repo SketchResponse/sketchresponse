@@ -18,7 +18,7 @@ const DEFAULT_PARAMS = {
   closed: false,
   fillColor: 'none',
   opacity: 1,
-}
+};
 
 export default class Polyline extends BasePlugin {
   constructor(params, app) {
@@ -45,9 +45,9 @@ export default class Polyline extends BasePlugin {
     plParams.gradeableVersion = GRADEABLE_VERSION;
     super(plParams, app);
     // Message listeners
-    this.app.__messageBus.on('addPolyline', (id, index) => {this.addPolyline(id, index)});
-    this.app.__messageBus.on('deletePolylines', () => {this.deletePolylines()});
-    this.app.__messageBus.on('finalizeShapes', (id) => {this.drawEnd(id)});
+    this.app.__messageBus.on('addPolyline', (id, index) => {this.addPolyline(id, index);});
+    this.app.__messageBus.on('deletePolylines', () => {this.deletePolylines();});
+    this.app.__messageBus.on('finalizeShapes', (id) => {this.drawEnd(id);});
   }
 
   getGradeable() {
@@ -72,7 +72,7 @@ export default class Polyline extends BasePlugin {
   deletePolylines() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
-      for (let i = this.delIndices.length -1; i >= 0; i--) {
+      for (let i = this.delIndices.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
       }
       this.delIndices.length = 0;
@@ -90,10 +90,10 @@ export default class Polyline extends BasePlugin {
     // We already have at least one polyline defined, add new points to the last one
     if (this.state.length > 0) {
       // Only add tag to first point
-      if (this.hasTag && this.state[this.state.length-1].length === 0) {
+      if (this.hasTag && this.state[this.state.length - 1].length === 0) {
         currentPosition.tag = this.tag.value;
       }
-      this.state[this.state.length-1].push(currentPosition);
+      this.state[this.state.length - 1].push(currentPosition);
     }
     // Create our first polyline
     else {
@@ -114,10 +114,10 @@ export default class Polyline extends BasePlugin {
     // To signal that a polyline has been completed, push an empty array except when
     // associated plugin button is clicked or undo/redo
     if (id !== this.id && id !== 'undo' && id !== 'redo' &&
-        this.state.length > 0 && this.state[this.state.length-1].length > 0) {
+        this.state.length > 0 && this.state[this.state.length - 1].length > 0) {
       // Remove any dangling point for a polyline or polygon
       // Remove any line segment for a polygon
-      len = this.state[this.state.length-1].length;
+      len = this.state[this.state.length - 1].length;
       if ((!this.params.closed && len < 2) || (this.params.closed && len < 3)) {
         this.state.pop();
       }
@@ -128,7 +128,7 @@ export default class Polyline extends BasePlugin {
   }
 
   polylineStrokeWidth(index) {
-    return index === this.state.length-1 ? '3px' : '2px';
+    return index === this.state.length - 1 ? '3px' : '2px';
   }
 
   pointRadius(polylineIndex) {
@@ -223,7 +223,7 @@ export default class Polyline extends BasePlugin {
                   return this.inBoundsX(this.state[polylineIndex][ptIndex].x + dx);
                 },
                 inBoundsY: (dy) => {
-                  return this.inBoundsY(this.state[polylineIndex][ptIndex].y + dy)
+                  return this.inBoundsY(this.state[polylineIndex][ptIndex].y + dy);
                 },
               });
             },

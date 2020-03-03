@@ -1,4 +1,4 @@
-export function createInheritingObjectTree(oldObj, parent=Object.prototype) {
+export function createInheritingObjectTree(oldObj, parent = Object.prototype) {
   const typeString = Object.prototype.toString.call(oldObj);
 
   if (typeString === '[object Object]') {

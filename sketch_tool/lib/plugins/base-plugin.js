@@ -15,7 +15,7 @@ export default class BasePlugin {
       xmax: this.params.width,
       ymin: 0,
       ymax: this.params.height,
-    }
+    };
 
     this.el = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     app.svg.appendChild(this.el);
@@ -77,7 +77,7 @@ export default class BasePlugin {
       const icon = {
         src: this.params.icon.src,
         alt: this.params.icon.alt,
-      }
+      };
       // Do not color stamp icon as it would require an XHR with its potential SOP issues
       if (this.params.name !== 'stamp') {
         icon.src = colorIcon(icon.src, strokeColor, fillColor);
@@ -157,24 +157,20 @@ export default class BasePlugin {
     if (x < this.bounds.xmin) {
       return this.bounds.xmin;
     }
-    else if (x > this.bounds.xmax) {
-      return this.bounds.xmax
+    if (x > this.bounds.xmax) {
+      return this.bounds.xmax;
     }
-    else {
-      return x;
-    }
+    return x;
   }
 
   clampY(y) {
     if (y < this.bounds.ymin) {
       return this.bounds.ymin;
     }
-    else if (y > this.bounds.ymax) {
-      return this.bounds.ymax
+    if (y > this.bounds.ymax) {
+      return this.bounds.ymax;
     }
-    else {
-      return y;
-    }
+    return y;
   }
 
   readOnlyClass() {
@@ -203,7 +199,7 @@ export default class BasePlugin {
         fill: #333;
         font-size: 14px;
         cursor: ${this.getTagCursor()};
-      `
+      `;
   }
 
   renderKatex(el, index1, index2) {
@@ -280,10 +276,10 @@ export default class BasePlugin {
   computeDashArray(dashStyle, strokeWidth) {
     let scale = Math.pow(strokeWidth, 0.6); // seems about right perceptually
     switch (dashStyle) {
-      case 'dashed': return 5*scale + ',' + 3*scale;
-      case 'longdashed': return 10*scale + ',' + 3*scale;
-      case 'dotted': return 2*scale + ',' + 2*scale;
-      case 'dashdotted': return 7*scale + ',' + 3*scale + ',' + 1.5*scale + ',' + 3*scale;
+      case 'dashed': return 5 * scale + ',' + 3 * scale;
+      case 'longdashed': return 10 * scale + ',' + 3 * scale;
+      case 'dotted': return 2 * scale + ',' + 2 * scale;
+      case 'dashdotted': return 7 * scale + ',' + 3 * scale + ',' + 1.5 * scale + ',' + 3 * scale;
       // 'solid' or anything else
       default: return 'none';
     }

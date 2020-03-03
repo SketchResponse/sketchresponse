@@ -11,7 +11,7 @@ const DEFAULT_PARAMS = {
   color: 'dimgray',
   size: 15,
   hollow: false,
-}
+};
 
 export default class Point extends BasePlugin {
   constructor(params, app) {
@@ -39,7 +39,7 @@ export default class Point extends BasePlugin {
     this.fillOpacity = pParams.hollow ? 0 : 1;
     // Given a params.size, to have identical visible radiuses in both cases, we need to shrink
     // the hollow point to take in account the 2px width of the stroke
-    this.radius = pParams.hollow ? (pParams.size/2)-1 : pParams.size/2;
+    this.radius = pParams.hollow ? (pParams.size / 2) - 1 : pParams.size / 2;
     // Message listeners
     this.app.__messageBus.on('addPoint', (id, index) => this.addPoint(id, index));
     this.app.__messageBus.on('deletePoints', () => this.deletePoints());
@@ -64,7 +64,7 @@ export default class Point extends BasePlugin {
   deletePoints() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
-      for (let i = this.delIndices.length -1; i >= 0; i--) {
+      for (let i = this.delIndices.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
       }
       this.delIndices.length = 0;
@@ -93,7 +93,7 @@ export default class Point extends BasePlugin {
   drawMove(event) {
     let x = event.clientX - this.params.left;
     let y = event.clientY - this.params.top;
-    const lastPosition = this.state[this.state.length-1];
+    const lastPosition = this.state[this.state.length - 1];
 
     x = this.clampX(x);
     y = this.clampY(y);
@@ -140,7 +140,7 @@ export default class Point extends BasePlugin {
                 return this.inBoundsX(this.state[positionIndex].x + dx);
               },
               inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[positionIndex].y + dy)
+                return this.inBoundsY(this.state[positionIndex].y + dy);
               },
             });
           },
