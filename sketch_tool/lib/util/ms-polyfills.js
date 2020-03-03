@@ -1,11 +1,11 @@
 // IE and Edge do not have getElementsByClassName on SVG elements
 export function getElementsByClassName(element, name) {
-  let children, result = [];
+  const result = [];
   if (element.getElementsByClassName) {
     return element.getElementsByClassName(name);
   }
 
-  children = element.getElementsByTagName('*');
+  const children = element.getElementsByTagName('*');
   // HTMLCollection is an 'array-like' object that needs to be spread into an array
   [...children].forEach((child) => {
     if (hasClass(child, name)) {

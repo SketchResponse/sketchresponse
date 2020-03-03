@@ -14,7 +14,7 @@ const DEFAULT_PARAMS = {
 
 export default class VerticalLine extends BasePlugin {
   constructor(params, app) {
-    let vlParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    const vlParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'vertical-line')) {
       deepExtend(vlParams, params);
     }
@@ -145,7 +145,7 @@ export default class VerticalLine extends BasePlugin {
               inBoundsX: (dx) => {
                 return this.inBoundsX(this.state[positionIndex].x + dx);
               },
-              inBoundsY: (dy) => {
+              inBoundsY: () => {
                 return true;
               },
             });

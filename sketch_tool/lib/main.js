@@ -16,9 +16,6 @@ import deepExtend from 'deep-extend';
 
 import Toolbar from './toolbar';
 
-
-import * as attrCache from './util/dom-attr-cache';
-
 // Load all CSS
 import 'normalize-css';
 import 'typeface-noto-sans';
@@ -131,7 +128,7 @@ export default class SketchInput {
       helpLegal.setAttribute('data-visible', 'true');
     });
 
-    helpLegal.addEventListener('click', (event) => helpLegal.setAttribute('data-visible', 'false'));
+    helpLegal.addEventListener('click', () => helpLegal.setAttribute('data-visible', 'false'));
     helpLegalDialog.addEventListener('click', (event) => event.stopPropagation());
 
     this.notificationManager = new NotificationManager(this.config, this.messageBus);
@@ -290,12 +287,12 @@ export default class SketchInput {
       https://www.npmjs.com/package/keyboardevent-key-polyfill
     */
 
-    KeyMaster('⌘+z, ctrl+z', (event) => { this.messageBus.emit('undo'); return false; });
-    KeyMaster('⌘+y, ctrl+y, ⌘+shift+z, ctrl+shift+z', (event) => { this.messageBus.emit('redo'); return false; });
-    KeyMaster('esc', (event) => { this.messageBus.emit('deselectAll'); return false; });
-    KeyMaster('delete, backspace', (event) => { this.messageBus.emit('deleteSelected'); return false; });
-    KeyMaster('enter', (event) => { this.messageBus.emit('finalizeShapes'); return false; });
-    document.addEventListener('mouseenter', (event) => window.focus());  // So we get keyboard events. Rethink this?
+    KeyMaster('⌘+z, ctrl+z', () => { this.messageBus.emit('undo'); return false; });
+    KeyMaster('⌘+y, ctrl+y, ⌘+shift+z, ctrl+shift+z', () => { this.messageBus.emit('redo'); return false; });
+    KeyMaster('esc', () => { this.messageBus.emit('deselectAll'); return false; });
+    KeyMaster('delete, backspace', () => { this.messageBus.emit('deleteSelected'); return false; });
+    KeyMaster('enter', () => { this.messageBus.emit('finalizeShapes'); return false; });
+    document.addEventListener('mouseenter', () => window.focus());  // So we get keyboard events. Rethink this?
 
     // Allow multitouch zoom on SVG element (TODO: move elsewhere?)
     this.app.svg.addEventListener('touchstart', (event) => {

@@ -273,7 +273,7 @@ function polylinePathData(points, closed) {
 }
 
 function splineData(points) {
-  let splineData = fitCurve(points, FIT_TOLERANCE);
+  const splineData = fitCurve(points, FIT_TOLERANCE);
   splineData.forEach((point) => {
     point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
     point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;

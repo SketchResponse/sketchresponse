@@ -14,7 +14,7 @@ const DEFAULT_PARAMS = {
 
 export default class HorizontalLine extends BasePlugin {
   constructor(params, app) {
-    let hlParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    const hlParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'horizontal-line')) {
       deepExtend(hlParams, params);
     }
@@ -138,11 +138,11 @@ export default class HorizontalLine extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({ dx, dy }) => {
+              onDrag: ({ dy }) => {
                 this.state[positionIndex].y += dy;
                 this.render();
               },
-              inBoundsX: (dx) => {
+              inBoundsX: () => {
                 return true;
               },
               inBoundsY: (dy) => {

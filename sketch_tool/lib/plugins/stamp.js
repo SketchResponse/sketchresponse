@@ -17,7 +17,7 @@ const DEFAULT_PARAMS = {
 
 export default class Stamp extends BasePlugin {
   constructor(params, app) {
-    let sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    const sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'stamp')) {
       deepExtend(sParams, params);
     }
@@ -86,7 +86,7 @@ export default class Stamp extends BasePlugin {
   drawMove(event) {
     let x = event.clientX - this.params.left;
     let y = event.clientY - this.params.top;
-    let lastPosition = this.state[this.state.length - 1];
+    const lastPosition = this.state[this.state.length - 1];
 
     x = this.clampX(x);
     y = this.clampY(y);

@@ -3,7 +3,7 @@ export const USER_MESSAGES = {
   pluginError: 'An error occured in a SketchInput plugin',
   getStateError: 'An error occured while preparing your submission for saving',
   setStateError: 'An error occured while importing your saved data',
-  getGradeableError: 'An error occured while preparing your submission for grading'
+  getGradeableError: 'An error occured while preparing your submission for grading',
 };
 
 export default class NotificationManager {

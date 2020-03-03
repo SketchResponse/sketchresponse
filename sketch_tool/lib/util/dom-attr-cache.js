@@ -1,4 +1,4 @@
-var FLAG = '$__DOMAttrCache';  // used as both our cache property name and as an "Unset" value
+const FLAG = '$__DOMAttrCache';  // used as both our cache property name and as an "Unset" value
 
 function getCache(element, ns, name) {
   if (ns === null) ns = '';

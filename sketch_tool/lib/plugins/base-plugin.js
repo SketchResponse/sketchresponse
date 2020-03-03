@@ -268,13 +268,13 @@ export default class BasePlugin {
   }
 
   adjustBoundingBox(el) {
-    let bRect = getElementsByClassName(el, 'katex-html')[0].getBoundingClientRect();
+    const bRect = getElementsByClassName(el, 'katex-html')[0].getBoundingClientRect();
     el.setAttributeNS(null, 'width', bRect.width.toString());
     el.setAttributeNS(null, 'height', bRect.height.toString());
   }
 
   computeDashArray(dashStyle, strokeWidth) {
-    let scale = Math.pow(strokeWidth, 0.6); // seems about right perceptually
+    const scale = Math.pow(strokeWidth, 0.6); // seems about right perceptually
     switch (dashStyle) {
       case 'dashed': return 5 * scale + ',' + 3 * scale;
       case 'longdashed': return 10 * scale + ',' + 3 * scale;

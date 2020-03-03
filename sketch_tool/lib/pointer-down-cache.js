@@ -20,7 +20,7 @@ export default class PointerDownCache {
   getNearestByClientXY({ clientX, clientY }) {
     let minDistSquared = Infinity;
     let nearestEvent = null;
-    for (let event of this.cache.values()) {
+    for (const event of this.cache.values()) {
       const distSquared = (clientX - event.clientX) ** 2 + (clientY - event.clientY) ** 2;
       if (distSquared < minDistSquared) {
         minDistSquared = distSquared;

@@ -59,12 +59,12 @@ export default class SelectionManager {
   getSelected() { return Array.from(this.rootElement.querySelectorAll(`[${ SELECTED_ATTR }]`)); }
 
   // Expensive; call circumspectly
-  deselectAll() { this.getSelected().forEach(element => this.deselect(element)); }
+  deselectAll() { this.getSelected().forEach((element) => this.deselect(element)); }
 
   deleteSelected() {
     let elWasDeleted = false;
     this.getSelected().forEach((element) => {
-      let elementClasses = element.getAttribute('class').split(' ');
+      const elementClasses = element.getAttribute('class').split(' ');
       if (elementClasses.indexOf('point') !== -1) {
         this.messageBus.emit(
           'addPoint',

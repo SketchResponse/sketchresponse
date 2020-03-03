@@ -17,14 +17,14 @@ const DEFAULT_PARAMS = {
 
 export default class Spline extends BasePlugin {
   constructor(params, app) {
-    let sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    const sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'spline')) {
       deepExtend(sParams, params);
     }
     else {
       console.log('The spline config has errors, using default values instead');
     }
-    let iconSrc = './lib/plugins/spline/spline-icon.svg';
+    const iconSrc = './lib/plugins/spline/spline-icon.svg';
     // Add params that are specific to this plugin
     sParams.icon = {
       src: iconSrc,
@@ -164,14 +164,14 @@ export default class Spline extends BasePlugin {
               element: el,
               initialBehavior: 'none',
               onDrag: ({ dx, dy }) => {
-                for (let pt of this.state[splineIndex]) {
+                for (const pt of this.state[splineIndex]) {
                   pt.x += dx;
                   pt.y += dy;
                 }
                 this.render();
               },
               inBoundsX: (dx) => {
-                for (let pt of this.state[splineIndex]) {
+                for (const pt of this.state[splineIndex]) {
                   if (!this.inBoundsX(pt.x + dx)) {
                     return false;
                   }
@@ -179,7 +179,7 @@ export default class Spline extends BasePlugin {
                 return true;
               },
               inBoundsY: (dy) => {
-                for (let pt of this.state[splineIndex]) {
+                for (const pt of this.state[splineIndex]) {
                   if (!this.inBoundsY(pt.y + dy)) {
                     return false;
                   }

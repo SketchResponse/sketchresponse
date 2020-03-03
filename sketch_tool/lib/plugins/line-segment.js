@@ -1,7 +1,7 @@
 import deepExtend from 'deep-extend';
 import z from '../util/zdom';
 import BasePlugin from './base-plugin';
-import { injectStyleSheet, injectSVGDefs } from '../util/dom-style-helpers';
+import { injectSVGDefs } from '../util/dom-style-helpers';
 import { validate } from '../config-validator';
 
 export const VERSION = '0.1';
@@ -280,7 +280,7 @@ export default class LineSegment extends BasePlugin {
 
   rConstrained1(x, y, index) {
     const len = this.state.length;
-    let result = {
+    const result = {
       x: x,
       y: y,
     };

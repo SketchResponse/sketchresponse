@@ -15,8 +15,7 @@ const DEFAULT_PARAMS = {
 
 export default class Point extends BasePlugin {
   constructor(params, app) {
-    let iconSrc;
-    let pParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    const pParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'point')) {
       deepExtend(pParams, params);
     }
@@ -24,7 +23,7 @@ export default class Point extends BasePlugin {
       console.log('The point config has errors, using default values instead');
     }
     // Add params that are specific to this plugin
-    iconSrc = pParams.hollow ? './lib/plugins/point/point-hollow-icon.svg'
+    const iconSrc = pParams.hollow ? './lib/plugins/point/point-hollow-icon.svg'
                              : './lib/plugins/point/point-icon.svg';
     pParams.icon = {
       src: iconSrc,

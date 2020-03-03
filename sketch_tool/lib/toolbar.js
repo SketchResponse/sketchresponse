@@ -214,7 +214,7 @@ export default class Toolbar {
               ),
             ),
           ),
-        )
+        );
       }),
     );
 
