@@ -10,7 +10,7 @@ export const GRADEABLE_VERSION = '0.1';
 const DEFAULT_PARAMS = {
   label: 'Line segment',
   color: 'dimgray',
-  dashStyle: 'solid'
+  dashStyle: 'solid',
 }
 
 export default class LineSegment extends BasePlugin {
@@ -31,7 +31,7 @@ export default class LineSegment extends BasePlugin {
       injectSVGDefs(`
         <marker id="arrowhead-${params.id}" markerWidth="${length}" markerHeight="${base}" refX="${length}" refY="${refY}" orient="auto">
           <polygon points="0 0, ${length} ${refY}, 0 ${base}" style="fill: ${params.color}; stroke: ${params.color}; stroke-width: 1;"/>
-        </marker>`
+        </marker>`,
       );
       iconSrc = './lib/plugins/line-segment/arrow-icon.svg';
     }
@@ -41,7 +41,7 @@ export default class LineSegment extends BasePlugin {
     lsParams.icon = {
       src: iconSrc,
       alt: 'Line segment tool',
-      color: lsParams.color
+      color: lsParams.color,
     };
     // Add versions
     lsParams.version = VERSION;
@@ -89,9 +89,9 @@ export default class LineSegment extends BasePlugin {
           [x1, y1],
           [(2*x1 + x2)/3, (2*y1 + y2)/3],
           [(x1 + 2*x2)/3, (y1 + 2*y2)/3],
-          [x2, y2]
+          [x2, y2],
         ],
-        tag: this.state[i].tag
+        tag: this.state[i].tag,
       })
     }
     return result;
@@ -138,7 +138,7 @@ export default class LineSegment extends BasePlugin {
     const y = event.clientY - this.params.top;
     const currentPosition = {
       x: x,
-      y: y
+      y: y,
     };
     // Add event listeners in capture phase
     document.addEventListener('pointermove', this.drawMove, true);
@@ -185,7 +185,7 @@ export default class LineSegment extends BasePlugin {
       point = this.pointConstrained(x, y, this.state.length-1);
       this.state.push({
         x: point.x,
-        y: point.y
+        y: point.y,
       });
       this.firstPoint = false;
     }
@@ -242,7 +242,7 @@ export default class LineSegment extends BasePlugin {
   rConstrained(x2, y2, index) {
     const result = {
       x: x2,
-      y: y2
+      y: y2,
     };
     if (this.rConstraint) {
       const x1 = this.state[index].x;
@@ -266,7 +266,7 @@ export default class LineSegment extends BasePlugin {
 
     return {
       x: xConstrained,
-      y: yConstrained
+      y: yConstrained,
     }
   }
 
@@ -284,7 +284,7 @@ export default class LineSegment extends BasePlugin {
     const len = this.state.length;
     let result = {
       x: x,
-      y: y
+      y: y,
     };
     if (this.rConstraint && (len !== 0) && (len % 2 === 0)) {
       let xf; let yf;
@@ -386,9 +386,9 @@ export default class LineSegment extends BasePlugin {
               stroke-width: 2px;
               stroke-dasharray: ${this.computeDashArray(this.params.dashStyle, 2)};
               marker-end: ${this.arrowHead()};
-            `
-          })
-        )
+            `,
+          }),
+        ),
       ),
       // Draw invisible and selectable line, under invisible endpoints
       z.each(this.state, (pt, ptIndex) =>
@@ -408,7 +408,7 @@ export default class LineSegment extends BasePlugin {
                 ownerID: this.params.id,
                 element: el,
                 initialBehavior: 'none',
-                onDrag: ({dx, dy}) => {
+                onDrag: ({ dx, dy }) => {
                   this.state[ptIndex].x += dx;
                   this.state[ptIndex].y += dy;
                   this.state[ptIndex+1].x += dx;
@@ -424,9 +424,9 @@ export default class LineSegment extends BasePlugin {
                          this.inBoundsY(this.state[ptIndex+1].y + dy)
                 },
               });
-            }
-          })
-        )
+            },
+          }),
+        ),
       ),
       // Draw invisible and selectable line endpoints
       z.each(this.state, (pt, ptIndex) =>
@@ -443,7 +443,7 @@ export default class LineSegment extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
+              onDrag: ({ dx, dy }) => {
                 const x = this.state[ptIndex].x + dx;
                 const y = this.state[ptIndex].y + dy;
                 const point = this.rConstrained1(x, y, ptIndex);
@@ -461,8 +461,8 @@ export default class LineSegment extends BasePlugin {
                 return this.inBoundsY(this.state[ptIndex].y + dy)
               },
             });
-          }
-        })
+          },
+        }),
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (pt, ptIndex) =>
@@ -484,10 +484,10 @@ export default class LineSegment extends BasePlugin {
               if (this.latex) {
                 this.renderKatex(el, ptIndex);
               }
-            }
-          }, this.latex ? '' : this.state[ptIndex].tag)
-        )
-      )
+            },
+          }, this.latex ? '' : this.state[ptIndex].tag),
+        ),
+      ),
     );
   }
 

@@ -14,7 +14,7 @@ export default class BasePlugin {
       xmin: 0,
       xmax: this.params.width,
       ymin: 0,
-      ymax: this.params.height
+      ymax: this.params.height,
     }
 
     this.el = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -90,7 +90,7 @@ export default class BasePlugin {
         icon: icon,
         color: this.params.color ? this.params.color : 'black',
         activate: this.activate.bind(this),
-        deactivate: this.deactivate.bind(this)
+        deactivate: this.deactivate.bind(this),
       };
       if (!this.params.isSubItem) {
         app.registerToolbarItem(this.menuItem);
@@ -110,11 +110,11 @@ export default class BasePlugin {
     });
 
     Object.defineProperty(this.params, 'left', {
-      get: () => { return this.app.svg.getBoundingClientRect().left; }
+      get: () => { return this.app.svg.getBoundingClientRect().left; },
     });
 
     Object.defineProperty(this.params, 'top', {
-      get: () => { return this.app.svg.getBoundingClientRect().top; }
+      get: () => { return this.app.svg.getBoundingClientRect().top; },
     });
   }
 
@@ -217,14 +217,14 @@ export default class BasePlugin {
       el.setAttributeNS(null, 'width', '100%');
       el.setAttributeNS(null, 'height', '100%');
       katex.render(stateEl.tag, el, {
-        errorColor: '#0000ff'
+        errorColor: '#0000ff',
       });
       // Set the foreignObject bounding box to match the Katex rendering
       this.adjustBoundingBox(el);
     }
     catch(e) {
       katex.render('\\text{\\color{red}{Error: invalid markup}}', el, {
-        errorColor: '#0000ff'
+        errorColor: '#0000ff',
       });
       this.adjustBoundingBox(el);
     }

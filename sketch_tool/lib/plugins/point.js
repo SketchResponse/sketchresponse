@@ -10,7 +10,7 @@ const DEFAULT_PARAMS = {
   label: 'Point',
   color: 'dimgray',
   size: 15,
-  hollow: false
+  hollow: false,
 }
 
 export default class Point extends BasePlugin {
@@ -29,7 +29,7 @@ export default class Point extends BasePlugin {
     pParams.icon = {
       src: iconSrc,
       alt: 'Point tool',
-      color: pParams.color
+      color: pParams.color,
     };
     // Add versions
     pParams.version = VERSION;
@@ -50,7 +50,7 @@ export default class Point extends BasePlugin {
     return this.state.map(position => {
       return {
         point: [position.x, position.y],
-        tag: position.tag
+        tag: position.tag,
       };
     });
   }
@@ -81,7 +81,7 @@ export default class Point extends BasePlugin {
     document.addEventListener('pointercancel', this.drawEnd, true);
     this.currentPosition = {
       x: event.clientX - this.params.left,
-      y: event.clientY - this.params.top
+      y: event.clientY - this.params.top,
     };
     if (this.hasTag) {
       this.currentPosition.tag = this.tag.value;
@@ -131,7 +131,7 @@ export default class Point extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
+              onDrag: ({ dx, dy }) => {
                 this.state[positionIndex].x += dx;
                 this.state[positionIndex].y += dy;
                 this.render();
@@ -143,8 +143,8 @@ export default class Point extends BasePlugin {
                 return this.inBoundsY(this.state[positionIndex].y + dy)
               },
             });
-          }
-        })
+          },
+        }),
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (position, positionIndex) =>
@@ -166,10 +166,10 @@ export default class Point extends BasePlugin {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
-            }
-          }, this.latex ? '' : this.state[positionIndex].tag)
-        )
-      )
+            },
+          }, this.latex ? '' : this.state[positionIndex].tag),
+        ),
+      ),
     );
   }
 

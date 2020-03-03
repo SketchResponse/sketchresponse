@@ -32,14 +32,14 @@ const DEFAULT_CONFIG = {
   yrange: [-2.5, 2.5],
   xscale: 'linear',
   yscale: 'linear',
-  coordinates: 'cartesian'
+  coordinates: 'cartesian',
 }
 
 
 export default class SketchInput {
   constructor(el, config) {
     if (!(el instanceof HTMLElement)) throw new TypeError(
-      'The first argument to the SketchInput constructor must be an HTMLElement'
+      'The first argument to the SketchInput constructor must be an HTMLElement',
     );
 
     this.el = el;
@@ -66,13 +66,13 @@ export default class SketchInput {
     this.oldTime = Date.now();
     this.oldPt = {
       x: 0,
-      y: 0
+      y: 0,
     }
 
     Promise.all(
       this.params.plugins.map(pluginParams =>
-        import(`./plugins/${pluginParams.name}`).then(module => module.default)
-      )
+        import(`./plugins/${pluginParams.name}`).then(module => module.default),
+      ),
     ).then(plugins => this.init(plugins));
   }
 
@@ -146,7 +146,7 @@ export default class SketchInput {
       addUndoPoint: () => this.messageBus.emit('addUndoPoint'),
       __messageBus: this.messageBus,
       svg: document.getElementById('si-canvas'),
-      debug: this.debug
+      debug: this.debug,
     }
 
     // Prevent default on dragstart to keep Firefox from dragging the SVG
@@ -167,11 +167,11 @@ export default class SketchInput {
       const deltaT = newTime - this.oldTime;
       const newPt = {
         x: event.clientX,
-        y: event.clientY
+        y: event.clientY,
       };
       const dist = Math.sqrt(
         (newPt.x - this.oldPt.x)*(newPt.x - this.oldPt.x) +
-        (newPt.y - this.oldPt.y)*(newPt.y - this.oldPt.y)
+        (newPt.y - this.oldPt.y)*(newPt.y - this.oldPt.y),
       );
       if (deltaT <= 500 && dist <= 10) {
         // Stop event propagation except when it happens on a tag where a double click
@@ -215,7 +215,7 @@ export default class SketchInput {
       action: () => {
         this.messageBus.emit('enableSelectMode');
         this.messageBus.emit('activateItem', 'select');
-      }
+      },
     });
 
     plugins.forEach((Plugin, idx) => {
@@ -226,7 +226,7 @@ export default class SketchInput {
 
     // Add action buttons (Delete, Undo, and Redo) to the right of the toolbar
     // TODO: factor into... something
-    this.app.registerToolbarItem({type: 'separator'});
+    this.app.registerToolbarItem({ type: 'separator' });
     this.app.registerToolbarItem({
       type: 'button',
       id: 'delete',
@@ -265,7 +265,7 @@ export default class SketchInput {
     });
 
     this.messageBus.emit('activateItem',
-      this.params.plugins.find(pluginSpec => pluginSpec.id !== undefined).id
+      this.params.plugins.find(pluginSpec => pluginSpec.id !== undefined).id,
     );
 
     // Global keyboard shortcuts (TODO: move elsewhere?)

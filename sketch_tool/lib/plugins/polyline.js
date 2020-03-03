@@ -17,7 +17,7 @@ const DEFAULT_PARAMS = {
   dashStyle: 'solid',
   closed: false,
   fillColor: 'none',
-  opacity: 1
+  opacity: 1,
 }
 
 export default class Polyline extends BasePlugin {
@@ -35,7 +35,7 @@ export default class Polyline extends BasePlugin {
     plParams.icon = {
       src: iconSrc,
       alt: 'Polyline tool',
-      color: plParams.color
+      color: plParams.color,
     };
     if (plParams.closed && plParams.fillColor !== 'none') {
         plParams.icon.fillColor = plParams.fillColor;
@@ -58,7 +58,7 @@ export default class Polyline extends BasePlugin {
       .map(spline => {
         return {
           spline: splineData(spline).map(point => [point.x, point.y]),
-          tag: spline[0].tag
+          tag: spline[0].tag,
         };
       });
   }
@@ -85,7 +85,7 @@ export default class Polyline extends BasePlugin {
   initDraw(event) {
     const currentPosition = {
       x: event.clientX - this.params.left,
-      y: event.clientY - this.params.top
+      y: event.clientY - this.params.top,
     };
     // We already have at least one polyline defined, add new points to the last one
     if (this.state.length > 0) {
@@ -151,8 +151,8 @@ export default class Polyline extends BasePlugin {
                 stroke-dasharray: ${this.computeDashArray(this.params.dashStyle, this.polylineStrokeWidth(polylineIndex))};
                 fill: ${this.params.fillColor};
                 opacity: ${this.params.opacity};
-              `
-          })
+              `,
+          }),
 
       ),
       z.each(this.state, (polyline, polylineIndex) =>
@@ -170,7 +170,7 @@ export default class Polyline extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
+              onDrag: ({ dx, dy }) => {
                 for (const pt of this.state[polylineIndex]) {
                   pt.x += dx;
                   pt.y += dy;
@@ -192,10 +192,10 @@ export default class Polyline extends BasePlugin {
                   }
                 }
                 return true;
-              }
+              },
             });
-          }
-        })
+          },
+        }),
       ),
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw invisible (when length of polyline > 1) and selectable points
@@ -214,7 +214,7 @@ export default class Polyline extends BasePlugin {
                 ownerID: this.params.id,
                 element: el,
                 initialBehavior: 'none',
-                onDrag: ({dx, dy}) => {
+                onDrag: ({ dx, dy }) => {
                   this.state[polylineIndex][ptIndex].x += dx;
                   this.state[polylineIndex][ptIndex].y += dy;
                   this.render();
@@ -226,9 +226,9 @@ export default class Polyline extends BasePlugin {
                   return this.inBoundsY(this.state[polylineIndex][ptIndex].y + dy)
                 },
               });
-            }
-          })
-        )
+            },
+          }),
+        ),
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (polyline, polylineIndex) =>
@@ -250,10 +250,10 @@ export default class Polyline extends BasePlugin {
               if (this.latex) {
                 this.renderKatex(el, polylineIndex, 0);
               }
-            }
-          }, this.latex ? '' : this.state[polylineIndex][0].tag)
-        )
-      )
+            },
+          }, this.latex ? '' : this.state[polylineIndex][0].tag),
+        ),
+      ),
     );
   }
 

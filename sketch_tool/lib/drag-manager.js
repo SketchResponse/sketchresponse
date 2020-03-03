@@ -1,4 +1,4 @@
-import {getElementsByClassName} from './util/ms-polyfills'
+import { getElementsByClassName } from './util/ms-polyfills'
 
 export default class DragManager {
   constructor(registry, selectionManager) {
@@ -89,7 +89,7 @@ export default class DragManager {
     dx = insideX ? dx : 0;
     dy = insideY ? dy : 0;
 
-    dragHandlers.forEach(onDrag => onDrag({dx, dy}));
+    dragHandlers.forEach(onDrag => onDrag({ dx, dy }));
     // TODO:
     // 1) monitor return value of drag callbacks + revert drags as needed
     // 2) update order of cache to optimize future attempts (and recompute dragHandlers...?)

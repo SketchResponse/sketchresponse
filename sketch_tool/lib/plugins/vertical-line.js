@@ -1,7 +1,7 @@
 import deepExtend from 'deep-extend';
 import z from '../util/zdom';
 import BasePlugin from './base-plugin';
-import {validate} from '../config-validator';
+import { validate } from '../config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -9,7 +9,7 @@ export const GRADEABLE_VERSION = '0.1';
 const DEFAULT_PARAMS = {
   label: 'Vertical line',
   color: 'dimgray',
-  dashStyle: 'solid'
+  dashStyle: 'solid',
 }
 
 export default class VerticalLine extends BasePlugin {
@@ -25,7 +25,7 @@ export default class VerticalLine extends BasePlugin {
     vlParams.icon = {
       src: './lib/plugins/vertical-line/vertical-line-icon.svg',
       alt: 'Vertical line tool',
-      color: vlParams.color
+      color: vlParams.color,
     };
     // Add versions
     vlParams.version = VERSION;
@@ -48,7 +48,7 @@ export default class VerticalLine extends BasePlugin {
     return this.state.map(position => {
       return {
         spline: yvals.map(y => [position.x, y]),
-        tag: position.tag
+        tag: position.tag,
       };
     });
   }
@@ -78,7 +78,7 @@ export default class VerticalLine extends BasePlugin {
     document.addEventListener('pointerup', this.drawEnd, true);
     document.addEventListener('pointercancel', this.drawEnd, true);
     this.currentPosition = {
-      x: event.clientX - this.params.left
+      x: event.clientX - this.params.left,
     }
     if (this.hasTag) {
       this.currentPosition.tag = this.tag.value;
@@ -118,8 +118,8 @@ export default class VerticalLine extends BasePlugin {
             stroke: ${this.params.color};
             stroke-width: 2px;
             stroke-dasharray: ${this.computeDashArray(this.params.dashStyle, 2)};
-          `
-        })
+          `,
+        }),
       ),
       // Draw invisible and selectable line
       z.each(this.state, (position, positionIndex) =>
@@ -138,7 +138,7 @@ export default class VerticalLine extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
+              onDrag: ({ dx, dy }) => {
                 this.state[positionIndex].x += dx;
                 this.render();
               },
@@ -149,8 +149,8 @@ export default class VerticalLine extends BasePlugin {
                 return true;
               },
             });
-          }
-        })
+          },
+        }),
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (position, positionIndex) =>
@@ -172,10 +172,10 @@ export default class VerticalLine extends BasePlugin {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
-            }
-          }, this.latex ? '' : this.state[positionIndex].tag)
-        )
-      )
+            },
+          }, this.latex ? '' : this.state[positionIndex].tag),
+        ),
+      ),
     );
   }
 

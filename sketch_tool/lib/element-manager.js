@@ -1,7 +1,7 @@
 import PointerDownCache from './pointer-down-cache';
 import SelectionManager from './selection-manager';
 import DragManager from './drag-manager';
-import {getElementsByClassName} from './util/ms-polyfills'
+import { getElementsByClassName } from './util/ms-polyfills'
 
 const MIN_DRAG_DISTANCE_SQUARED = 5**2;
 

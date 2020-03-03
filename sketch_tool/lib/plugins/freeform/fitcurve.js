@@ -282,7 +282,7 @@ function Reparameterize(d, first, last, u, bezCurve)
           point2(bezCurve[0].x, bezCurve[0].y),
           point2(bezCurve[1].x, bezCurve[1].y),
           point2(bezCurve[2].x, bezCurve[2].y),
-          point2(bezCurve[3].x, bezCurve[3].y)
+          point2(bezCurve[3].x, bezCurve[3].y),
         ];
 
     for (i = first; i <= last; i++) {

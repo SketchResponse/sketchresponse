@@ -5,7 +5,7 @@ export const DEFAULT_PARAMS = {
   scale: 1,
   align: '',
   offset: [0, 0],
-  src: '' // Put a default image?
+  src: '', // Put a default image?
 };
 
 export default class Image {

@@ -3,7 +3,7 @@ var FLAG = '$__DOMAttrCache';  // used as both our cache property name and as an
 function getCache(element, ns, name) {
   if (ns === null) ns = '';
   var key = String(ns) + '|' + name;
-  return (element[FLAG] || (element[FLAG] = {}))[key] || (element[FLAG][key] = {value: FLAG});
+  return (element[FLAG] || (element[FLAG] = {}))[key] || (element[FLAG][key] = { value: FLAG });
 }
 
 export function setAttributeNS(element, ns, name, value) {

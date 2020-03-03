@@ -10,14 +10,14 @@ export default class PointerDownCache {
   add(event) { this.cache.set(event.pointerId, event); }
   delete(event) { this.cache.delete(event.pointerId); }
 
-  getNearestByClientRect({left, right, top, bottom}) {
+  getNearestByClientRect({ left, right, top, bottom }) {
     // Find the center
     const clientX = (left + right) / 2;
     const clientY = (top + bottom) / 2;
-    return this.getNearestByClientXY({clientX, clientY});
+    return this.getNearestByClientXY({ clientX, clientY });
   }
 
-  getNearestByClientXY({clientX, clientY}) {
+  getNearestByClientXY({ clientX, clientY }) {
     let minDistSquared = Infinity;
     let nearestEvent = null;
     for (let event of this.cache.values()) {

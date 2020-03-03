@@ -17,10 +17,10 @@ function renderIcon(id, src, alt) {
 
 function renderLabel(id, text, hasDropdown) {
   return z('div.label',
-    z('span', {id: id}, text),
+    z('span', { id: id }, text),
     z.if(hasDropdown,
-      z('span', {'aria-label': 'Open dropdown menu'}, ' \u25be')
-    )
+      z('span', { 'aria-label': 'Open dropdown menu' }, ' \u25be'),
+    ),
   );
 }
 
@@ -35,7 +35,7 @@ export default class Toolbar {
     this.openDropdownID = null;  // TODO: better name
 
     this.items = [
-      {id: TOOLBAR_ID, activate: this.activate.bind(this), deactivate: this.deactivate.bind(this)},
+      { id: TOOLBAR_ID, activate: this.activate.bind(this), deactivate: this.deactivate.bind(this) },
     ];
 
     this.activeItemID = null;
@@ -141,7 +141,7 @@ export default class Toolbar {
       ['separator', 'button', 'splitbutton'].indexOf(item.type) >= 0);
 
     z.render(this.el,
-      z.each(renderableItems, ({type, id, icon, label, color, items, action}) => {
+      z.each(renderableItems, ({ type, id, icon, label, color, items, action }) => {
         if (type === 'separator') return z('hr');
         let selectedItem;
         let isActive;
@@ -162,7 +162,7 @@ export default class Toolbar {
             id: id,
             'data-is-open': isOpen,
             'data-is-active': isActive,
-            style: isActive ? `border-bottom-color: ${color};` : ''
+            style: isActive ? `border-bottom-color: ${color};` : '',
           },
           z.if(type === 'button',
             z('button', {
@@ -174,8 +174,8 @@ export default class Toolbar {
                 'aria-labelledby': `${id}-label ${id}-icon`,
               },
               renderIcon(`${id}-icon`, icon.src, icon.alt),
-              renderLabel(`${id}-label`, label, hasDropdown)
-            )
+              renderLabel(`${id}-label`, label, hasDropdown),
+            ),
           ),
           z.if(type === 'splitbutton',
             z('button.split-button-main', {
@@ -197,8 +197,8 @@ export default class Toolbar {
                 },
                 'aria-haspopup': 'true',
               },
-              renderLabel(`${id}-label`, label, hasDropdown)
-            )
+              renderLabel(`${id}-label`, label, hasDropdown),
+            ),
           ),
           z.if(hasDropdown,
             z('menu.dropdown',
@@ -206,17 +206,17 @@ export default class Toolbar {
                 z('div.dropdown-item',
                   z('button.dropdown-button', {
                       id: item.id,
-                      onpointerdown: e => this.selectDropdownItem(id, item.id)
+                      onpointerdown: e => this.selectDropdownItem(id, item.id),
                     },
                     renderIcon(`${id}-icon`, item.icon.src, item.icon.alt),  // TODO: title
-                    renderLabel(`${id}-label`, item.label, false)
-                  )
-                )
-              )
-            )
-          )
+                    renderLabel(`${id}-label`, item.label, false),
+                  ),
+                ),
+              ),
+            ),
+          ),
         )
-      })
+      }),
     );
 
     // Update focus if needed

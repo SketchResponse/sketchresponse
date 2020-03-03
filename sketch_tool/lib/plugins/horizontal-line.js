@@ -9,7 +9,7 @@ export const GRADEABLE_VERSION = '0.1';
 const DEFAULT_PARAMS = {
   label: 'Horizontal line',
   color: 'dimgray',
-  dashStyle: 'solid'
+  dashStyle: 'solid',
 }
 
 export default class HorizontalLine extends BasePlugin {
@@ -25,7 +25,7 @@ export default class HorizontalLine extends BasePlugin {
     hlParams.icon = {
       src: './lib/plugins/horizontal-line/horizontal-line-icon.svg',
       alt: 'Horizontal line tool',
-      color: hlParams.color
+      color: hlParams.color,
     };
     // Add versions
     hlParams.version = VERSION;
@@ -48,7 +48,7 @@ export default class HorizontalLine extends BasePlugin {
     return this.state.map(position => {
       return {
         spline: xvals.map(x => [x, position.y]),
-        tag: position.tag
+        tag: position.tag,
       };
     });
   }
@@ -78,7 +78,7 @@ export default class HorizontalLine extends BasePlugin {
     document.addEventListener('pointerup', this.drawEnd, true);
     document.addEventListener('pointercancel', this.drawEnd, true);
     this.currentPosition = {
-      y: event.clientY - this.params.top
+      y: event.clientY - this.params.top,
     }
     if (this.hasTag) {
       this.currentPosition.tag = this.tag.value;
@@ -118,8 +118,8 @@ export default class HorizontalLine extends BasePlugin {
             stroke: ${this.params.color};
             stroke-width: 2px;
             stroke-dasharray: ${this.computeDashArray(this.params.dashStyle, 2)};
-          `
-        })
+          `,
+        }),
       ),
       // Draw invisible and selectable line
       z.each(this.state, (position, positionIndex) =>
@@ -138,7 +138,7 @@ export default class HorizontalLine extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
+              onDrag: ({ dx, dy }) => {
                 this.state[positionIndex].y += dy;
                 this.render();
               },
@@ -149,8 +149,8 @@ export default class HorizontalLine extends BasePlugin {
                 return this.inBoundsY(this.state[positionIndex].y + dy)
               },
             });
-          }
-        })
+          },
+        }),
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (position, positionIndex) =>
@@ -172,10 +172,10 @@ export default class HorizontalLine extends BasePlugin {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
-            }
-          }, this.latex ? '' : this.state[positionIndex].tag)
-        )
-      )
+            },
+          }, this.latex ? '' : this.state[positionIndex].tag),
+        ),
+      ),
     );
   }
 

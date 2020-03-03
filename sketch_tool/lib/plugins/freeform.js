@@ -16,7 +16,7 @@ const ROUNDING_PRESCALER = 100;  // e.g., Math.round(value * ROUNDING_PRESCALER)
 
 const DEFAULT_PARAMS = {
   label: 'Freeform',
-  color: 'dimgray'
+  color: 'dimgray',
 }
 
 export default class Freeform extends BasePlugin {
@@ -32,7 +32,7 @@ export default class Freeform extends BasePlugin {
     fParams.icon = {
       src: './lib/plugins/freeform/freeform-icon.svg',
       alt: 'Freeform tool',
-      color: fParams.color
+      color: fParams.color,
     };
     // Add versions
     fParams.version = VERSION;
@@ -51,7 +51,7 @@ export default class Freeform extends BasePlugin {
     return this.state.map(spline => {
       return {
         spline: spline.map(point => [point.x, point.y]),
-        tag: spline[0].tag
+        tag: spline[0].tag,
       };
     });
   }
@@ -92,12 +92,12 @@ export default class Freeform extends BasePlugin {
   drawMove(event) {
     this.pointerPosition = {
       x: event.clientX - this.params.left,
-      y: event.clientY - this.params.top
+      y: event.clientY - this.params.top,
     };
 
     let pointerDistance = Math.sqrt(
       Math.pow(this.pointerPosition.x - this.lastPoint.x, 2) +
-      Math.pow(this.pointerPosition.y - this.lastPoint.y, 2)
+      Math.pow(this.pointerPosition.y - this.lastPoint.y, 2),
     );
 
     let drawDirection;
@@ -109,7 +109,7 @@ export default class Freeform extends BasePlugin {
       const drawDistance = clamp(
         pointerDistance - RUBBER_BAND_LENGTH,
         MIN_POINT_SPACING,
-        MAX_POINT_SPACING
+        MAX_POINT_SPACING,
       );
 
       const nextPoint = add(this.lastPoint, scale(drawDirection, drawDistance));
@@ -165,7 +165,7 @@ export default class Freeform extends BasePlugin {
         z('path.visible-' + splineIndex + '.freeform' + '.plugin-id-' + this.id, {
           d: cubicSplinePathData(spline),
           style: `stroke: ${this.params.color}; stroke-width: 3px; fill: none;`,
-        })
+        }),
       ),
       // Draw invisible, selectable spline
       z.each(this.state, (spline, splineIndex) =>
@@ -177,7 +177,7 @@ export default class Freeform extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
+              onDrag: ({ dx, dy }) => {
                 this.state[splineIndex].forEach((pt) => {
                   pt.x += dx;
                   pt.y += dy;
@@ -190,7 +190,7 @@ export default class Freeform extends BasePlugin {
                     this.state[splineIndex][i].x + dx, this.state[splineIndex][i].y,
                     this.state[splineIndex][i+1].x + dx, this.state[splineIndex][i+1].y,
                     this.state[splineIndex][i+2].x + dx, this.state[splineIndex][i+2].y,
-                    this.state[splineIndex][i+3].x + dx, this.state[splineIndex][i+3].y
+                    this.state[splineIndex][i+3].x + dx, this.state[splineIndex][i+3].y,
                   );
                   if (!(this.inBoundsX(boundingBox.min.x) &&
                       this.inBoundsX(boundingBox.max.x))) {
@@ -205,7 +205,7 @@ export default class Freeform extends BasePlugin {
                     this.state[splineIndex][i].x, this.state[splineIndex][i].y + dy,
                     this.state[splineIndex][i+1].x, this.state[splineIndex][i+1].y + dy,
                     this.state[splineIndex][i+2].x, this.state[splineIndex][i+2].y + dy,
-                    this.state[splineIndex][i+3].x, this.state[splineIndex][i+3].y + dy
+                    this.state[splineIndex][i+3].x, this.state[splineIndex][i+3].y + dy,
                   );
                   if (!(this.inBoundsY(boundingBox.min.y) &&
                       this.inBoundsY(boundingBox.max.y))) {
@@ -215,8 +215,8 @@ export default class Freeform extends BasePlugin {
                 return true;
               },
             });
-          }
-        })
+          },
+        }),
       ),
       z('path', {
         d: polylinePathData(this.pointsBeingDrawn),
@@ -229,7 +229,7 @@ export default class Freeform extends BasePlugin {
           x2: this.pointerPosition.x,
           y2: this.pointerPosition.y,
           style: 'stroke: lightgray; stroke-width: 2px',
-        })
+        }),
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (spline, splineIndex) =>
@@ -251,10 +251,10 @@ export default class Freeform extends BasePlugin {
               if (this.latex) {
                 this.renderKatex(el, splineIndex, 0);
               }
-            }
-          }, this.latex ? '' : this.state[splineIndex][0].tag)
-        )
-      )
+            },
+          }, this.latex ? '' : this.state[splineIndex][0].tag),
+        ),
+      ),
     );
   }
 
@@ -374,7 +374,7 @@ function getBoundingBox(x0, y0, x1, y1, x2, y2, x3, y3) {
   bounds[0].length = bounds[1].length = jlen + 2;
 
   return {
-    min: {x: Math.min.apply(0, bounds[0]), y: Math.min.apply(0, bounds[1])},
-    max: {x: Math.max.apply(0, bounds[0]), y: Math.max.apply(0, bounds[1])}
+    min: { x: Math.min.apply(0, bounds[0]), y: Math.min.apply(0, bounds[1]) },
+    max: { x: Math.max.apply(0, bounds[0]), y: Math.max.apply(0, bounds[1]) },
   };
 }

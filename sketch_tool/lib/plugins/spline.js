@@ -13,7 +13,7 @@ const ROUNDING_PRESCALER = 100;
 
 const DEFAULT_PARAMS = {
   label: 'Spline',
-  color: 'dimgray'
+  color: 'dimgray',
 }
 
 export default class Spline extends BasePlugin {
@@ -30,7 +30,7 @@ export default class Spline extends BasePlugin {
     sParams.icon = {
       src: iconSrc,
       alt: 'Spline tool',
-      color: sParams.color
+      color: sParams.color,
     };
     // Add versions
     sParams.version = VERSION;
@@ -50,7 +50,7 @@ export default class Spline extends BasePlugin {
     return result.map(spline => {
       return {
         spline: splineData(spline).map(point => [point.x, point.y]),
-        tag: spline[0].tag
+        tag: spline[0].tag,
       };
     });
   }
@@ -77,7 +77,7 @@ export default class Spline extends BasePlugin {
   initDraw(event) {
     const currentPosition = {
       x: event.clientX - this.params.left,
-      y: event.clientY - this.params.top
+      y: event.clientY - this.params.top,
     };
     // We already have at least one spline defined, add new points to the last one
     if (this.state.length > 0) {
@@ -132,8 +132,8 @@ export default class Spline extends BasePlugin {
               stroke-width: ${this.splineStrokeWidth(splineIndex)};
               stroke-dasharray: ${this.computeDashArray(this.params.dashStyle, this.splineStrokeWidth(splineIndex))};
               fill: none;
-            `
-        })
+            `,
+        }),
       ),
       // Draw points
       z.each(this.state, (spline, splineIndex) =>
@@ -145,9 +145,9 @@ export default class Spline extends BasePlugin {
             style: `
               fill: ${this.params.color};
               stroke: none;
-            `
-          })
-        )
+            `,
+          }),
+        ),
       ),
       z.each(this.state, (spline, splineIndex) =>
         // Draw invisible and selectable spline under invisible points
@@ -164,7 +164,7 @@ export default class Spline extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
+              onDrag: ({ dx, dy }) => {
                 for (let pt of this.state[splineIndex]) {
                   pt.x += dx;
                   pt.y += dy;
@@ -186,10 +186,10 @@ export default class Spline extends BasePlugin {
                   }
                 }
                 return true;
-              }
+              },
             });
-          }
-        })
+          },
+        }),
       ),
       z.each(this.state, (spline, splineIndex) =>
         // Draw invisible and selectable points
@@ -208,7 +208,7 @@ export default class Spline extends BasePlugin {
                 ownerID: this.params.id,
                 element: el,
                 initialBehavior: 'none',
-                onDrag: ({dx, dy}) => {
+                onDrag: ({ dx, dy }) => {
                   this.state[splineIndex][ptIndex].x += dx;
                   this.state[splineIndex][ptIndex].y += dy;
                   this.render();
@@ -220,9 +220,9 @@ export default class Spline extends BasePlugin {
                   return this.inBoundsY(this.state[splineIndex][ptIndex].y + dy)
                 },
               });
-            }
-          })
-        )
+            },
+          }),
+        ),
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (spline, splineIndex) =>
@@ -244,10 +244,10 @@ export default class Spline extends BasePlugin {
               if (this.latex) {
                 this.renderKatex(el, splineIndex, 0);
               }
-            }
-          }, this.latex ? '' : this.state[splineIndex][0].tag)
-        )
-      )
+            },
+          }, this.latex ? '' : this.state[splineIndex][0].tag),
+        ),
+      ),
     );
   }
 

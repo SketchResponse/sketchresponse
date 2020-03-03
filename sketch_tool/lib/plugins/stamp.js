@@ -12,7 +12,7 @@ const DEFAULT_PARAMS = {
   imgheight: 100,
   scale: 1,
   src: './lib/plugins/stamp/stamp.svg',
-  iconSrc: './lib/plugins/stamp/stamp-icon.svg'
+  iconSrc: './lib/plugins/stamp/stamp-icon.svg',
 };
 
 export default class Stamp extends BasePlugin {
@@ -27,7 +27,7 @@ export default class Stamp extends BasePlugin {
     // Add params that are specific to this plugin
     sParams.icon = {
       src: sParams.iconSrc,
-      alt: 'Stamp tool'
+      alt: 'Stamp tool',
     };
     // Add versions
     sParams.version = VERSION;
@@ -43,7 +43,7 @@ export default class Stamp extends BasePlugin {
     return this.state.map(position => {
       return {
         point: [position.x, position.y],
-        tag: position.tag
+        tag: position.tag,
       };
     });
   }
@@ -74,7 +74,7 @@ export default class Stamp extends BasePlugin {
     document.addEventListener('pointercancel', this.drawEnd, true);
     this.currentPosition = {
       x: event.clientX - this.params.left,
-      y: event.clientY - this.params.top
+      y: event.clientY - this.params.top,
     };
     if (this.hasTag) {
       this.currentPosition.tag = this.tag.value;
@@ -129,7 +129,7 @@ export default class Stamp extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
+              onDrag: ({ dx, dy }) => {
                 this.state[positionIndex].x += dx;
                 this.state[positionIndex].y += dy;
                 this.render();
@@ -141,8 +141,8 @@ export default class Stamp extends BasePlugin {
                 return this.inBoundsY(this.state[positionIndex].y + dy)
               },
             });
-          }
-        })
+          },
+        }),
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (position, positionIndex) =>
@@ -164,10 +164,10 @@ export default class Stamp extends BasePlugin {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
-            }
-          }, this.latex ? '' : this.state[positionIndex].tag)
-        )
-      )
+            },
+          }, this.latex ? '' : this.state[positionIndex].tag),
+        ),
+      ),
     );
   }
 
