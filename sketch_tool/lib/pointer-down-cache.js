@@ -4,7 +4,7 @@ export default class PointerDownCache {
     rootElement.addEventListener('pointerdown', this.add.bind(this), true);
     rootElement.addEventListener('pointerup', this.delete.bind(this), true);
     rootElement.addEventListener('pointercancel', this.delete.bind(this), true);
-    rootElement.addEventListener('gotpointercapture', this.delete.bind(this), true);  // So we don't steal captured pointers
+    rootElement.addEventListener('gotpointercapture', this.delete.bind(this), true); // So we don't steal captured pointers
   }
 
   add(event) { this.cache.set(event.pointerId, event); }

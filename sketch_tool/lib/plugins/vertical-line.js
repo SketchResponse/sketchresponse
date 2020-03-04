@@ -45,12 +45,10 @@ export default class VerticalLine extends BasePlugin {
       this.params.height,
     ];
 
-    return this.state.map((position) => {
-      return {
-        spline: yvals.map((y) => [position.x, y]),
-        tag: position.tag,
-      };
-    });
+    return this.state.map((position) => ({
+      spline: yvals.map((y) => [position.x, y]),
+      tag: position.tag,
+    }));
   }
 
   addVerticalLine(id, index) {
@@ -109,6 +107,7 @@ export default class VerticalLine extends BasePlugin {
     z.render(this.el,
       // Draw visible line, under invisible line
       z.each(this.state, (position, positionIndex) =>
+        // eslint-disable-next-line prefer-template, no-useless-concat
         z('line.visible-' + positionIndex + '.vertical-line' + '.plugin-id-' + this.id, {
           x1: position.x,
           y1: 0,
@@ -123,6 +122,7 @@ export default class VerticalLine extends BasePlugin {
       ),
       // Draw invisible and selectable line
       z.each(this.state, (position, positionIndex) =>
+        // eslint-disable-next-line prefer-template
         z('line.invisible-' + positionIndex + this.readOnlyClass(), {
           x1: position.x,
           y1: 0,
@@ -138,16 +138,12 @@ export default class VerticalLine extends BasePlugin {
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({ dx, dy }) => {
+              onDrag: ({ dx }) => {
                 this.state[positionIndex].x += dx;
                 this.render();
               },
-              inBoundsX: (dx) => {
-                return this.inBoundsX(this.state[positionIndex].x + dx);
-              },
-              inBoundsY: () => {
-                return true;
-              },
+              inBoundsX: (dx) => this.inBoundsX(this.state[positionIndex].x + dx),
+              inBoundsY: () => true,
             });
           },
         }),
@@ -183,6 +179,7 @@ export default class VerticalLine extends BasePlugin {
     return x >= this.bounds.xmin && x <= this.bounds.xmax;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   inBoundsY() {
     return true;
   }

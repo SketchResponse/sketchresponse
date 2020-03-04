@@ -21,11 +21,11 @@ export default class StateManager {
     this.registry.forEach((entry) => {
       state[entry.id] = entry.getState();
     });
-    return deepCopy(state);  // Use deepCopy to keep plugin state isolated
+    return deepCopy(state); // Use deepCopy to keep plugin state isolated
   }
 
   setPluginState(state) {
-    state = deepCopy(state);  // Use deepCopy to keep plugin state isolated
+    state = deepCopy(state); // Use deepCopy to keep plugin state isolated
     this.registry.forEach((entry) => {
       if (state.hasOwnProperty(entry.id)) entry.setState(state[entry.id]);
     });

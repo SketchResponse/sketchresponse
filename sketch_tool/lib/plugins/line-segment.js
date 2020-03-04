@@ -413,14 +413,10 @@ export default class LineSegment extends BasePlugin {
                   this.state[ptIndex + 1].y += dy;
                   this.render();
                 },
-                inBoundsX: (dx) => {
-                  return this.inBoundsX(this.state[ptIndex].x + dx) &&
-                         this.inBoundsX(this.state[ptIndex + 1].x + dx);
-                },
-                inBoundsY: (dy) => {
-                  return this.inBoundsY(this.state[ptIndex].y + dy) &&
-                         this.inBoundsY(this.state[ptIndex + 1].y + dy);
-                },
+                inBoundsX: (dx) => this.inBoundsX(this.state[ptIndex].x + dx)
+                                && this.inBoundsX(this.state[ptIndex + 1].x + dx),
+                inBoundsY: (dy) => this.inBoundsY(this.state[ptIndex].y + dy)
+                                && this.inBoundsY(this.state[ptIndex + 1].y + dy),
               });
             },
           }),

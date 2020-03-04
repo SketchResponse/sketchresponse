@@ -1,9 +1,10 @@
+import deepExtend from 'deep-extend';
+import { EventEmitter } from 'events';
+import KeyMaster from 'keymaster';
+
 import './util/polyfills';
 import { createInheritingObjectTree } from './util/inheriting-object-tree';
 import { disableDoubleTapZoom, preventClickDelay } from './util/workarounds';
-
-import { EventEmitter } from 'events';
-import KeyMaster from 'keymaster';
 
 import NotificationManager from './notification-manager';
 import GradeableManager from './gradeable-manager';
@@ -12,7 +13,7 @@ import HistoryManager from './history-manager';
 import ElementManager from './element-manager';
 import { validate } from './config-validator';
 import deepCopy from './util/deep-copy';
-import deepExtend from 'deep-extend';
+
 
 import Toolbar from './toolbar';
 
@@ -35,9 +36,11 @@ const DEFAULT_CONFIG = {
 
 export default class SketchInput {
   constructor(el, config) {
-    if (!(el instanceof HTMLElement)) throw new TypeError(
-      'The first argument to the SketchInput constructor must be an HTMLElement',
-    );
+    if (!(el instanceof HTMLElement)) {
+      throw new TypeError(
+        'The first argument to the SketchInput constructor must be an HTMLElement',
+      );
+    }
 
     this.el = el;
     if (config.initialstate) {
@@ -121,7 +124,7 @@ export default class SketchInput {
 
     const showHelpLegal = document.getElementById('si-show-help-legal');
     const helpLegal = document.getElementById('si-help-legal');
-    const helpLegalDialog = document.querySelector('#si-help-legal .si-dialog');  // TODO: fix ugly hack...
+    const helpLegalDialog = document.querySelector('#si-help-legal .si-dialog'); // TODO: fix ugly hack...
 
     showHelpLegal.addEventListener('click', (event) => {
       event.preventDefault();
@@ -292,7 +295,7 @@ export default class SketchInput {
     KeyMaster('esc', () => { this.messageBus.emit('deselectAll'); return false; });
     KeyMaster('delete, backspace', () => { this.messageBus.emit('deleteSelected'); return false; });
     KeyMaster('enter', () => { this.messageBus.emit('finalizeShapes'); return false; });
-    document.addEventListener('mouseenter', () => window.focus());  // So we get keyboard events. Rethink this?
+    document.addEventListener('mouseenter', () => window.focus()); // So we get keyboard events. Rethink this?
 
     // Allow multitouch zoom on SVG element (TODO: move elsewhere?)
     this.app.svg.addEventListener('touchstart', (event) => {

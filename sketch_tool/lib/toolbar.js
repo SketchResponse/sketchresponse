@@ -27,18 +27,18 @@ export default class Toolbar {
   constructor(params, app) {
     this.params = params;
     this.app = app;
-    this.el = document.getElementById('si-toolbar');  // TODO: pass container element in
+    this.el = document.getElementById('si-toolbar'); // TODO: pass container element in
 
     this.isActive = false;
     this.focusedItemID = null;
-    this.openDropdownID = null;  // TODO: better name
+    this.openDropdownID = null; // TODO: better name
 
     this.items = [
       { id: TOOLBAR_ID, activate: this.activate.bind(this), deactivate: this.deactivate.bind(this) },
     ];
 
     this.activeItemID = null;
-    this.selectedDropdownItemMap = {};  // TODO: better name
+    this.selectedDropdownItemMap = {}; // TODO: better name
 
     app.registerState({
       id: TOOLBAR_ID,
@@ -185,7 +185,7 @@ export default class Toolbar {
                 },
                 'aria-labelledby': `${id}-label ${id}-icon`,
               },
-              renderIcon(`${id}-icon`, icon.src, icon.alt),  // TODO: title
+              renderIcon(`${id}-icon`, icon.src, icon.alt), // TODO: title
             ),
             z('button.split-button-aux', {
                 onclick: () => {
@@ -207,7 +207,7 @@ export default class Toolbar {
                       id: item.id,
                       onpointerdown: () => this.selectDropdownItem(id, item.id),
                     },
-                    renderIcon(`${id}-icon`, item.icon.src, item.icon.alt),  // TODO: title
+                    renderIcon(`${id}-icon`, item.icon.src, item.icon.alt), // TODO: title
                     renderLabel(`${id}-label`, item.label, false),
                   ),
                 ),

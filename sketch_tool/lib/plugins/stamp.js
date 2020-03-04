@@ -40,12 +40,10 @@ export default class Stamp extends BasePlugin {
   }
 
   getGradeable() {
-    return this.state.map((position) => {
-      return {
-        point: [position.x, position.y],
-        tag: position.tag,
-      };
-    });
+    return this.state.map((position) => ({
+      point: [position.x, position.y],
+      tag: position.tag,
+    }));
   }
 
   addStamp(id, index) {
@@ -117,7 +115,8 @@ export default class Stamp extends BasePlugin {
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
-        z('image.stamp' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex + this.readOnlyClass(), {
+        // eslint-disable-next-line prefer-template, no-useless-concat
+        z('image.stamp' + '.plugin-id-' + this.id + '.state-index-' + positionIndex + this.readOnlyClass(), {
           x: 0,
           y: 0,
           width: this.params.imgwidth,
@@ -134,12 +133,8 @@ export default class Stamp extends BasePlugin {
                 this.state[positionIndex].y += dy;
                 this.render();
               },
-              inBoundsX: (dx) => {
-                return this.inBoundsX(this.state[positionIndex].x + dx);
-              },
-              inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[positionIndex].y + dy);
-              },
+              inBoundsX: (dx) => this.inBoundsX(this.state[positionIndex].x + dx),
+              inBoundsY: (dy) => this.inBoundsY(this.state[positionIndex].y + dy),
             });
           },
         }),
@@ -176,6 +171,6 @@ export default class Stamp extends BasePlugin {
   }
 
   inBoundsY(y) {
-    return y  >= this.bounds.ymin && y <= this.bounds.ymax;
+    return y >= this.bounds.ymin && y <= this.bounds.ymax;
   }
 }

@@ -46,12 +46,10 @@ export default class Point extends BasePlugin {
   }
 
   getGradeable() {
-    return this.state.map((position) => {
-      return {
-        point: [position.x, position.y],
-        tag: position.tag,
-      };
-    });
+    return this.state.map((position) => ({
+      point: [position.x, position.y],
+      tag: position.tag,
+    }));
   }
 
   addPoint(id, index) {
@@ -135,12 +133,8 @@ export default class Point extends BasePlugin {
                 this.state[positionIndex].y += dy;
                 this.render();
               },
-              inBoundsX: (dx) => {
-                return this.inBoundsX(this.state[positionIndex].x + dx);
-              },
-              inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[positionIndex].y + dy);
-              },
+              inBoundsX: (dx) => this.inBoundsX(this.state[positionIndex].x + dx),
+              inBoundsY: (dy) => this.inBoundsY(this.state[positionIndex].y + dy),
             });
           },
         }),

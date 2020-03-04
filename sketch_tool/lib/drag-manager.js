@@ -20,7 +20,7 @@ export default class DragManager {
       this.elementsToDrag = this.selectionManager.getSelected();
     }
     else {
-      this.selectionManager.deselectAll();  // possibly a no-op, but finding out is almost as expensive
+      this.selectionManager.deselectAll(); // possibly a no-op, but finding out is almost as expensive
       this.selectionManager.select(element);
       const className = element.getAttribute('class');
       if (className && className.substring(0, 9) === 'invisible') {
@@ -100,6 +100,6 @@ export default class DragManager {
   dragEnd() {
     this.visibleElements = null;
     this.previousPosition = null;
-    this.elementsToDrag = null;  // Important: allows these elements to be garbage collected if removed
+    this.elementsToDrag = null; // Important: allows these elements to be garbage collected if removed
   }
 }

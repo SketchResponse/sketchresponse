@@ -66,7 +66,7 @@ export default class BasePlugin {
       let strokeColor = 'none';
       let fillColor = 'none';
       // Closed polyline
-      if (this.params.fillColor  && this.params.fillColor !== 'none') {
+      if (this.params.fillColor && this.params.fillColor !== 'none') {
         strokeColor = this.params.icon.color;
         fillColor = this.params.icon.fillColor;
       }
@@ -253,7 +253,7 @@ export default class BasePlugin {
                 } else if (val === stateEl.tag) {
                   resolve('Tag value has not been changed');
                 }
-                else  {
+                else {
                   stateEl.tag = val;
                   this.app.addUndoPoint();
                   this.render();

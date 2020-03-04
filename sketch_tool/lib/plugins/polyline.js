@@ -26,6 +26,7 @@ export default class Polyline extends BasePlugin {
       deepExtend(plParams, params);
     }
     else {
+      // eslint-disable-next-line no-console
       console.log('The polyline config has errors, using default values instead');
     }
     const iconSrc = plParams.closed ? './lib/plugins/polyline/polyline-closed-icon.svg'
@@ -51,15 +52,11 @@ export default class Polyline extends BasePlugin {
 
   getGradeable() {
     return this.state
-      .filter((spline) => {
-        return spline.length > 1;
-      })
-      .map((spline) => {
-        return {
-          spline: splineData(spline).map((point) => [point.x, point.y]),
-          tag: spline[0].tag,
-        };
-      });
+      .filter((spline) => spline.length > 1)
+      .map((spline) => ({
+        spline: splineData(spline).map((point) => [point.x, point.y]),
+        tag: spline[0].tag,
+      }));
   }
 
   addPolyline(id, index) {
@@ -218,12 +215,8 @@ export default class Polyline extends BasePlugin {
                   this.state[polylineIndex][ptIndex].y += dy;
                   this.render();
                 },
-                inBoundsX: (dx) => {
-                  return this.inBoundsX(this.state[polylineIndex][ptIndex].x + dx);
-                },
-                inBoundsY: (dy) => {
-                  return this.inBoundsY(this.state[polylineIndex][ptIndex].y + dy);
-                },
+                inBoundsX: (dx) => this.inBoundsX(this.state[polylineIndex][ptIndex].x + dx),
+                inBoundsY: (dy) => this.inBoundsY(this.state[polylineIndex][ptIndex].y + dy),
               });
             },
           }),

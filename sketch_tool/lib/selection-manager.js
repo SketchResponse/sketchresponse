@@ -43,14 +43,20 @@ export default class SelectionManager {
       this.deselectAll();
     }
   }
+
+  // eslint-disable-next-line class-methods-use-this
   select(element, mode) {
     attrCache.setAttributeNS(element, null, SELECTED_ATTR, mode === 'override' ? 'override' : 'default');
   }
+
+  // eslint-disable-next-line class-methods-use-this
   deselect(element) { attrCache.removeAttributeNS(element, null, SELECTED_ATTR); }
-  isSelected(element) {return attrCache.getAttributeNS(element, null, SELECTED_ATTR) !== null; }
+
+  // eslint-disable-next-line class-methods-use-this
+  isSelected(element) { return attrCache.getAttributeNS(element, null, SELECTED_ATTR) !== null; }
 
   toggleSelected(element, mode) {
-    const condition = !this.isSelected(element);  // toggle current value
+    const condition = !this.isSelected(element); // toggle current value
     if (condition) this.select(element, mode);
     else this.deselect(element);
   }
@@ -69,7 +75,7 @@ export default class SelectionManager {
         this.messageBus.emit(
           'addPoint',
           elementClasses[1].substring(10),
-          parseInt(elementClasses[2].substring(12)),
+          parseInt(elementClasses[2].substring(12), 10),
         );
         elWasDeleted = true;
       }
@@ -77,7 +83,7 @@ export default class SelectionManager {
         this.messageBus.emit(
           'addHorizontalLine',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8)),
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
       }
@@ -85,7 +91,7 @@ export default class SelectionManager {
         this.messageBus.emit(
           'addVerticalLine',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8)),
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
       }
@@ -93,7 +99,7 @@ export default class SelectionManager {
         this.messageBus.emit(
           'addLineSegment',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8)),
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
       }
@@ -101,7 +107,7 @@ export default class SelectionManager {
         this.messageBus.emit(
           'addLineSegmentPoint',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(10)),
+          parseInt(elementClasses[0].substring(10), 10),
         );
         elWasDeleted = true;
       }
@@ -109,7 +115,7 @@ export default class SelectionManager {
         this.messageBus.emit(
           'addFreeform',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8)),
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
       }
@@ -117,7 +123,7 @@ export default class SelectionManager {
         this.messageBus.emit(
           'addStamp',
           elementClasses[1].substring(10),
-          parseInt(elementClasses[2].substring(12)),
+          parseInt(elementClasses[2].substring(12), 10),
         );
         elWasDeleted = true;
       }
@@ -125,7 +131,7 @@ export default class SelectionManager {
         this.messageBus.emit(
           'addPolyline',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8)),
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
       }
@@ -133,7 +139,7 @@ export default class SelectionManager {
         this.messageBus.emit(
           'addSpline',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8)),
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
       }

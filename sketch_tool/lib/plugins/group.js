@@ -17,6 +17,7 @@ export default class Group {
         params.label = 'Group'; // Default value
       }
       if (!validate(params, 'group')) {
+        // eslint-disable-next-line no-console
         console.log('The group config has errors, using default values instead');
       }
     }
@@ -41,32 +42,25 @@ export default class Group {
     this.app.registerToolbarItem(this.menuItem);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   createPlugin(name, params, app) {
     switch (name) {
       case 'freeform':
         return new Freeform(params, app);
-        break;
       case 'horizontal-line':
         return new HorizontalLine(params, app);
-        break;
       case 'line-segment':
         return new LineSegment(params, app);
-        break;
       case 'point':
         return new Point(params, app);
-        break;
       case 'polyline':
         return new Polyline(params, app);
-        break;
       case 'spline':
         return new Spline(params, app);
-        break;
       case 'stamp':
         return new Stamp(params, app);
-        break;
       case 'vertical-line':
         return new VerticalLine(params, app);
-        break;
     }
   }
 }

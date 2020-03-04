@@ -30,7 +30,7 @@ export default class ElementManager {
   registerElement(entry) {
     const element = entry.element;
     if (this.registry.has(element)) {
-      this.registry.set(element, entry);  // Just overwrite old entry
+      this.registry.set(element, entry); // Just overwrite old entry
       return;
     }
 
@@ -80,13 +80,13 @@ export default class ElementManager {
     if (!this.isDragging) {
       const dx = event.clientX - this.initialEvent.clientX;
       const dy = event.clientY - this.initialEvent.clientY;
-      if (dx ** 2 + dy ** 2 < MIN_DRAG_DISTANCE_SQUARED) return;  // Don't consider this a drag for small distances
+      if (dx ** 2 + dy ** 2 < MIN_DRAG_DISTANCE_SQUARED) return; // Don't consider this a drag for small distances
 
 
       // TODO: GAH: timing: this might not fire until after the corresponding pointerup...
 
 
-      this.dragManager.dragStart(event.currentTarget, this.initialEvent);  // Note: initialEvent has clientX/Y
+      this.dragManager.dragStart(event.currentTarget, this.initialEvent); // Note: initialEvent has clientX/Y
       this.isDragging = true;
     }
     this.dragManager.dragMove(event);
@@ -160,7 +160,7 @@ export default class ElementManager {
     element.setPointerCapture(event.pointerId);
     element.addEventListener('pointermove', this.onPointerMove, false);
     element.addEventListener('pointerup', this.onPointerUp, false);
-    element.addEventListener('pointercancel', this.onPointerUp, false);  // TODO: dedicated handler?
+    element.addEventListener('pointercancel', this.onPointerUp, false); // TODO: dedicated handler?
   }
 
   removeCaptureAndListeners(event) {

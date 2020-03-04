@@ -1,4 +1,4 @@
-const FLAG = '$__DOMAttrCache';  // used as both our cache property name and as an "Unset" value
+const FLAG = '$__DOMAttrCache'; // used as both our cache property name and as an "Unset" value
 
 function getCache(element, ns, name) {
   if (ns === null) ns = '';
@@ -7,7 +7,7 @@ function getCache(element, ns, name) {
 }
 
 export function setAttributeNS(element, ns, name, value) {
-  const cache = getCache(element, ns, name.split(name.indexOf(':') + 1));  // strip prefix when storing
+  const cache = getCache(element, ns, name.split(name.indexOf(':') + 1)); // strip prefix when storing
   if (cache.value === String(value)) return;
   cache.value = String(value);
   if (!cache.pending) {

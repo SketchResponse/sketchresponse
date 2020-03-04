@@ -124,6 +124,7 @@ export default class Spline extends BasePlugin {
       // Draw visible elements under invisible elements
       z.each(this.state, (spline, splineIndex) =>
         // Draw spline
+        // eslint-disable-next-line prefer-template
         z('path.visible-' + splineIndex + '.spline' + '.plugin-id-' + this.id, {
           d: splinePathData(this.state[splineIndex]),
           style: `
@@ -137,6 +138,7 @@ export default class Spline extends BasePlugin {
       // Draw points
       z.each(this.state, (spline, splineIndex) =>
         z.each(spline, (pt, ptIndex) =>
+          // eslint-disable-next-line prefer-template
           z('circle.visible-' + splineIndex + '.spline' + '.plugin-id-' + this.id, {
             cx: this.state[splineIndex][ptIndex].x,
             cy: this.state[splineIndex][ptIndex].y,
@@ -150,6 +152,7 @@ export default class Spline extends BasePlugin {
       ),
       z.each(this.state, (spline, splineIndex) =>
         // Draw invisible and selectable spline under invisible points
+        // eslint-disable-next-line prefer-template
         z('path.invisible-' + splineIndex + this.readOnlyClass(), {
           d: splinePathData(this.state[splineIndex]),
           style: `
@@ -193,6 +196,7 @@ export default class Spline extends BasePlugin {
       z.each(this.state, (spline, splineIndex) =>
         // Draw invisible and selectable points
         z.each(spline, (pt, ptIndex) =>
+          // eslint-disable-next-line prefer-template
           z('circle.invisible-' + splineIndex + this.readOnlyClass(), {
             cx: this.state[splineIndex][ptIndex].x,
             cy: this.state[splineIndex][ptIndex].y,
@@ -212,12 +216,8 @@ export default class Spline extends BasePlugin {
                   this.state[splineIndex][ptIndex].y += dy;
                   this.render();
                 },
-                inBoundsX: (dx) => {
-                  return this.inBoundsX(this.state[splineIndex][ptIndex].x + dx);
-                },
-                inBoundsY: (dy) => {
-                  return this.inBoundsY(this.state[splineIndex][ptIndex].y + dy);
-                },
+                inBoundsX: (dx) => this.inBoundsX(this.state[splineIndex][ptIndex].x + dx),
+                inBoundsY: (dy) => this.inBoundsY(this.state[splineIndex][ptIndex].y + dy),
               });
             },
           }),

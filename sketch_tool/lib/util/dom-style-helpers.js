@@ -16,7 +16,7 @@ export class AttributeList {
     if (!this.cache.has(element)) this.cache.set(element, new Set());
     const attrCache = this.cache.get(element);
 
-    if (arguments.length === 2) condition = !attrCache.has(attrName);  // no third argument passed
+    if (arguments.length === 2) condition = !attrCache.has(attrName); // no third argument passed
 
     // Return early if nothing has changed to avoid unnecessary DOM manipulation
     // Note: use of `==` is intentional to allow truthy/falsy conditions
@@ -55,12 +55,12 @@ export function injectSVGDefs(xmlStr) {
   const canvas = document.getElementById('si-canvas');
   const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
   xmlStr = '<svg xmlns=\'http://www.w3.org/2000/svg\'>' + xmlStr + '</svg>';
-  let svgDocElement = new DOMParser().parseFromString(xmlStr, 'text/xml').documentElement;
+  const svgDocElement = new DOMParser().parseFromString(xmlStr, 'text/xml').documentElement;
   // Do not use svgDocElement.children, no support on Safari & Edge:
   // https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children
   // Loop through childNodes instead.
   let childNode = svgDocElement.firstChild;
-  while(childNode) {
+  while (childNode) {
     if (childNode.nodeType === 1) { // Only append Element nodes
       defs.appendChild(canvas.ownerDocument.importNode(childNode, true));
     }

@@ -19,6 +19,7 @@ export default class HorizontalLine extends BasePlugin {
       deepExtend(hlParams, params);
     }
     else {
+      // eslint-disable-next-line no-console
       console.log('The horizontalLine config has errors, using default values instead');
     }
     // Add params that are specific to this plugin
@@ -45,12 +46,10 @@ export default class HorizontalLine extends BasePlugin {
       this.params.width,
     ];
 
-    return this.state.map((position) => {
-      return {
-        spline: xvals.map((x) => [x, position.y]),
-        tag: position.tag,
-      };
-    });
+    return this.state.map((position) => ({
+      spline: xvals.map((x) => [x, position.y]),
+      tag: position.tag,
+    }));
   }
 
   addHorizontalLine(id, index) {
@@ -109,6 +108,7 @@ export default class HorizontalLine extends BasePlugin {
     z.render(this.el,
       // Draw visible line, under invisible line
       z.each(this.state, (position, positionIndex) =>
+        // eslint-disable-next-line prefer-template
         z('line.visible-' + positionIndex + '.horizontal-line' + '.plugin-id-' + this.id, {
           x1: 0,
           y1: position.y,
@@ -123,6 +123,7 @@ export default class HorizontalLine extends BasePlugin {
       ),
       // Draw invisible and selectable line
       z.each(this.state, (position, positionIndex) =>
+        // eslint-disable-next-line prefer-template
         z('line.invisible-' + positionIndex + this.readOnlyClass(), {
           x1: 0,
           y1: position.y,
@@ -142,12 +143,8 @@ export default class HorizontalLine extends BasePlugin {
                 this.state[positionIndex].y += dy;
                 this.render();
               },
-              inBoundsX: () => {
-                return true;
-              },
-              inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[positionIndex].y + dy);
-              },
+              inBoundsX: () => true,
+              inBoundsY: (dy) => this.inBoundsY(this.state[positionIndex].y + dy),
             });
           },
         }),
@@ -179,6 +176,7 @@ export default class HorizontalLine extends BasePlugin {
     );
   }
 
+  // eslint-disable-next-line class-methods-use-this
   inBoundsX() {
     return true;
   }
