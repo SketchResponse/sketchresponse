@@ -136,8 +136,8 @@ export default class Axes {
 
   generateDefaultParams(params) {
     this.params = DEFAULT_PARAMS;
-    const keys = ['name', 'width', 'height', 'xrange', 'yrange', 'xscale', 'yscale', 'coordinates'];
-    for (const key of keys) {
+    let keys = ['name', 'width', 'height', 'xrange', 'yrange', 'xscale', 'yscale', 'coordinates'];
+    for (let key of keys) {
       this.params[key] = params[key];
     }
   }
@@ -279,8 +279,7 @@ export default class Axes {
   generateCircles(rSpacing, rMax) {
     rSpacing = Math.abs(rSpacing);  // Being defensive
 
-    const circles = [];
-    let r = 0;
+    let circles = [], r = 0;
 
     while (r < rMax) {
       r += rSpacing;
@@ -293,9 +292,7 @@ export default class Axes {
   generateRays(angleSpacing) {
     angleSpacing = Math.abs(angleSpacing);  // Being defensive
 
-    const rays = [];
-    let angle = 0;
-    const radius = this.rRange + 0.25;
+    let rays = [], angle = 0, radius = this.rRange + 0.25;
 
     while (angle < TWO_PI) {
       angle += angleSpacing;
@@ -313,7 +310,8 @@ export default class Axes {
   render() {
     if (this.params.coordinates === 'cartesian') {
       z.render(this.el,
-        z.each(this.xMinor, xval => z('line.xminor', {
+        z.each(this.xMinor, xval =>
+          z('line.xminor', {
             x1: this.x.pixelVal(xval),
             x2: this.x.pixelVal(xval),
             y1: this.y.pixelMin,
@@ -325,7 +323,8 @@ export default class Axes {
             `,
           })
         ),
-        z.each(this.yMinor, yval => z('line.yminor', {
+        z.each(this.yMinor, yval =>
+          z('line.yminor', {
             x1: this.x.pixelMin,
             x2: this.x.pixelMax,
             y1: this.y.pixelVal(yval),
@@ -337,7 +336,8 @@ export default class Axes {
             `,
           })
         ),
-        z.each(this.xMajor, (xval, idx) => z('g',
+        z.each(this.xMajor, (xval, idx) =>
+          z('g',
             z('line.xmajor', {
               x1: this.x.pixelVal(xval),
               x2: this.x.pixelVal(xval),
@@ -360,7 +360,8 @@ export default class Axes {
             }, String(this.xLabels[idx]))
           )
         ),
-        z.each(this.yMajor, (yval, idx) => z('g',
+        z.each(this.yMajor, (yval, idx) =>
+          z('g',
             z('line.ymajor', {
               x1: this.x.pixelMin,
               x2: this.x.pixelMax,
@@ -383,7 +384,8 @@ export default class Axes {
             }, String(this.yLabels[idx]))
           )
         ),
-        z.if(this.params.zerolabel !== undefined && this.params.zerolabel !== null, () => z('text.default-text', {
+        z.if(this.params.zerolabel !== undefined && this.params.zerolabel !== null, () =>
+          z('text.default-text', {
             'text-anchor': 'end',
             x: this.x.pixelVal(0) - 4,
             y: this.y.pixelVal(0) + 15,
@@ -415,7 +417,8 @@ export default class Axes {
             shape-rendering: crispEdges;
           `,
         }),
-        z.if(this.params.xaxisLabel, () => z('text.default-text', {
+        z.if(this.params.xaxisLabel, () =>
+          z('text.default-text', {
             'text-anchor': 'end',
             x: this.x.pixelMax - this.params.xaxisLabel.dx,
             y: this.y.pixelVal(0) - this.params.xaxisLabel.dy,
@@ -425,7 +428,8 @@ export default class Axes {
             `,
           }, this.params.xaxisLabel.value)
         ),
-        z.if(this.params.yaxisLabel, () => z('text.default-text', {
+        z.if(this.params.yaxisLabel, () =>
+          z('text.default-text', {
             'text-anchor': 'start',
             x: this.x.pixelVal(0) + this.params.yaxisLabel.dx,
             y: this.y.pixelMax + this.params.yaxisLabel.dy,
@@ -439,7 +443,8 @@ export default class Axes {
     }
     else {
       z.render(this.el,
-        z.each(this.circles, circle => z('polyline', {
+        z.each(this.circles, circle =>
+          z('polyline', {
             points: polylineData(circle),
             style: `
               stroke: ${this.params.colors.circle};
@@ -449,7 +454,8 @@ export default class Axes {
             `,
           })
         ),
-        z.each(this.rays, ray => z('line', {
+        z.each(this.rays, ray =>
+          z('line', {
             x1: ray.x1,
             y1: ray.y1,
             x2: ray.x2,
@@ -484,7 +490,8 @@ export default class Axes {
             shape-rendering: geometricPrecision;
           `,
         }),
-        z.if(this.params.xaxisLabel, () => z('text.default-text', {
+        z.if(this.params.xaxisLabel, () =>
+          z('text.default-text', {
             'text-anchor': 'end',
             x: this.x.pixelMax - this.params.xaxisLabel.dx,
             y: this.y.pixelVal(0) - this.params.xaxisLabel.dy,
@@ -494,7 +501,8 @@ export default class Axes {
             `,
           }, this.params.xaxisLabel.value)
         ),
-        z.if(this.params.yaxisLabel, () => z('text.default-text', {
+        z.if(this.params.yaxisLabel, () =>
+          z('text.default-text', {
             'text-anchor': 'start',
             x: this.x.pixelVal(0) + this.params.yaxisLabel.dx,
             y: this.y.pixelMax + this.params.yaxisLabel.dy,

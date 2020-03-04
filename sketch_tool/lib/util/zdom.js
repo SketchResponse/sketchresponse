@@ -8,10 +8,10 @@ let namespaces = {
 
 function qualify(name) {
   const [nsPrefix, localName] = name.split(':');
-  if (localName === undefined || !namespaces.hasOwnProperty(nsPrefix)) {
-    return { namespaceURI: null, localName: name };
+  if (localName == undefined || !namespaces.hasOwnProperty(nsPrefix)) {
+    return {namespaceURI: null, localName: name};
   }
-  return { namespaceURI: namespaces[nsPrefix], localName: localName };
+  return {namespaceURI: namespaces[nsPrefix], localName: localName};
 }
 
 function implementsZNodeInterface(obj) {
@@ -142,7 +142,7 @@ class ZElement extends ZNode {
   }
 
   mount(parentEl, refEl) {
-    const { namespaceURI, localName } = qualify(this.tagName);
+    const {namespaceURI, localName} = qualify(this.tagName);
 
     // Note: namespaceURI is inherited from the parent unless it's explicitly given
     this.el = document.createElementNS(namespaceURI || parentEl.namespaceURI, localName);
@@ -178,8 +178,8 @@ class ZElement extends ZNode {
         if (['key', 'onmount'].indexOf(propName) >= 0) return;
         if (['key', 'onupdate'].indexOf(propName) >= 0) return;
 
-        const { namespaceURI, localName } = qualify(propName);
-        if (localName.slice(0, 2) === 'on' && namespaceURI === null) {
+        const {namespaceURI, localName} = qualify(propName);
+        if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Handle event listeners since we can't set them with setAttribute
           const eventName = localName.slice(2);
           this.el.removeEventListener(eventName, oldProps[localName], false);  // clean up
@@ -199,8 +199,8 @@ class ZElement extends ZNode {
         if (['key', 'onmount'].indexOf(propName) >= 0) return;  // TODO: eliminate code duplication
         if (['key', 'onupdate'].indexOf(propName) >= 0) return;
 
-        const { namespaceURI, localName } = qualify(propName);
-        if (localName.slice(0, 2) === 'on' && namespaceURI === null) {
+        const {namespaceURI, localName} = qualify(propName);
+        if (localName.slice(0,2) === 'on' && namespaceURI === null) {
           // Remove an event listener
           const eventName = localName.slice(2);
           this.el.removeEventListener(eventName, oldProps[localName], false);  // clean up
