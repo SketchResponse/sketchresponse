@@ -23,14 +23,17 @@ export function getClass(el) {
 }
 
 export function hasClass(elem, name) {
+  // eslint-disable-next-line prefer-template
   return new RegExp('(\\s|^)' + name + '(\\s|$)').test(getClass(elem));
 }
 
 export function addClass(elem, name) {
+  // eslint-disable-next-line prefer-template
   !hasClass(elem, name) && elem.setAttribute('class', (getClass(elem) && getClass(elem) + ' ') + name);
 }
 
 export function removeClass(elem, name) {
+  // eslint-disable-next-line prefer-template
   const news = getClass(elem).replace(new RegExp('(\\s|^)' + name + '(\\s|$)', 'g'), '$2');
   hasClass(elem, name) && elem.setAttribute('class', news);
 }

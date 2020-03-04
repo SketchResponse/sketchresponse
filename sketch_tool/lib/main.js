@@ -51,14 +51,14 @@ export default class SketchInput {
     this.debug = typeof config.debug === 'boolean' ? config.debug : false;
     // Load default config
     this.config = DEFAULT_CONFIG;
-    // If in debug mode, validate config except plugins array entries that will be validated by each plugin
+    // If in debug mode, validate config except plugins array entries that will be validated by each
+    // plugin.
     // If we are not in debug mode or have a valid config, overwrite default keys/values
     if (!this.debug || validate(config, 'main')) {
       deepExtend(this.config, config);
-    }
-    // Otherwise use default values and add plugins array to the config
-    else {
+    } else { // Otherwise use default values and add plugins array to the config
       this.config.plugins = deepExtend(config.plugins);
+      // eslint-disable-next-line no-console
       console.log('The main config has errors, using default values instead');
     }
     this.params = createInheritingObjectTree(this.config);
@@ -78,7 +78,8 @@ export default class SketchInput {
 
   init(plugins) {
     // NOTE: transparent rectangle seems necessary for touch events to work on iOS Safari;
-    // this may be related to https://bugs.webkit.org/show_bug.cgi?id=135628. TODO: remove when fixed.
+    // this may be related to https://bugs.webkit.org/show_bug.cgi?id=135628.
+    // TODO: remove when fixed.
     this.el.innerHTML = `
       <menu id="si-toolbar"></menu>
       <svg id="si-canvas" touch-action="none" width="${this.config.width}" height="${this.config.height}">
@@ -124,7 +125,8 @@ export default class SketchInput {
 
     const showHelpLegal = document.getElementById('si-show-help-legal');
     const helpLegal = document.getElementById('si-help-legal');
-    const helpLegalDialog = document.querySelector('#si-help-legal .si-dialog'); // TODO: fix ugly hack...
+    // TODO: fix ugly hack...
+    const helpLegalDialog = document.querySelector('#si-help-legal .si-dialog');
 
     showHelpLegal.addEventListener('click', (event) => {
       event.preventDefault();
@@ -306,7 +308,7 @@ export default class SketchInput {
       if (event.touches.length === 0) this.app.svg.setAttribute('touch-action', 'none');
     }, true);
 
-    this.messageBus.on('deleteFinished', () => {this.app.addUndoPoint();});
+    this.messageBus.on('deleteFinished', () => { this.app.addUndoPoint(); });
     //////////// TEMPORARY TEST CODE FOR ELEMENT MANAGER //////////////
 
     // {
@@ -337,6 +339,8 @@ export default class SketchInput {
   }
 
   setState(state) { return this.stateManager.setState(state); }
+
   getState() { return this.stateManager.getState(); }
+
   getGradeable() { return this.gradeableManager.getGradeable(); }
 }

@@ -25,7 +25,7 @@ export default class HistoryManager {
         undoStack: this.undoStack,
         redoStack: this.redoStack,
       }),
-      setState: state => {
+      setState: (state) => {
         this.undoStack = state.undoStack;
         this.redoStack = state.redoStack;
       },

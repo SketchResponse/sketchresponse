@@ -30,10 +30,10 @@ export default class SelectionManager {
   constructor(rootElement, messageBus) {
     this.rootElement = rootElement;
     this.selectMode = false;
-    messageBus.on('enableSelectMode', () => {this.setSelectMode(true);});
-    messageBus.on('disableSelectMode', () => {this.setSelectMode(false);});
-    messageBus.on('deselectAll', () => {this.deselectAll();});
-    messageBus.on('deleteSelected', () => {this.deleteSelected();});
+    messageBus.on('enableSelectMode', () => { this.setSelectMode(true); });
+    messageBus.on('disableSelectMode', () => { this.setSelectMode(false); });
+    messageBus.on('deselectAll', () => { this.deselectAll(); });
+    messageBus.on('deleteSelected', () => { this.deleteSelected(); });
     this.messageBus = messageBus;
   }
 
@@ -78,64 +78,56 @@ export default class SelectionManager {
           parseInt(elementClasses[2].substring(12), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('horizontal-line') !== -1) {
+      } else if (elementClasses.indexOf('horizontal-line') !== -1) {
         this.messageBus.emit(
           'addHorizontalLine',
           elementClasses[2].substring(10),
           parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('vertical-line') !== -1) {
+      } else if (elementClasses.indexOf('vertical-line') !== -1) {
         this.messageBus.emit(
           'addVerticalLine',
           elementClasses[2].substring(10),
           parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('line-segment') !== -1) {
+      } else if (elementClasses.indexOf('line-segment') !== -1) {
         this.messageBus.emit(
           'addLineSegment',
           elementClasses[2].substring(10),
           parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('line-segment-point') !== -1) {
+      } else if (elementClasses.indexOf('line-segment-point') !== -1) {
         this.messageBus.emit(
           'addLineSegmentPoint',
           elementClasses[2].substring(10),
           parseInt(elementClasses[0].substring(10), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('freeform') !== -1) {
+      } else if (elementClasses.indexOf('freeform') !== -1) {
         this.messageBus.emit(
           'addFreeform',
           elementClasses[2].substring(10),
           parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('stamp') !== -1) {
+      } else if (elementClasses.indexOf('stamp') !== -1) {
         this.messageBus.emit(
           'addStamp',
           elementClasses[1].substring(10),
           parseInt(elementClasses[2].substring(12), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('polyline') !== -1) {
+      } else if (elementClasses.indexOf('polyline') !== -1) {
         this.messageBus.emit(
           'addPolyline',
           elementClasses[2].substring(10),
           parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('spline') !== -1) {
+      } else if (elementClasses.indexOf('spline') !== -1) {
         this.messageBus.emit(
           'addSpline',
           elementClasses[2].substring(10),

@@ -24,7 +24,7 @@ export default class BasePlugin {
     this.delIndices = [];
     this.readonly = this.params.readonly;
 
-    if(!this.readonly) {
+    if (!this.readonly) {
       this.bindEventHandlers();
     }
 
@@ -69,9 +69,7 @@ export default class BasePlugin {
       if (this.params.fillColor && this.params.fillColor !== 'none') {
         strokeColor = this.params.icon.color;
         fillColor = this.params.icon.fillColor;
-      }
-      // Other plugins except stamp
-      else if (this.params.icon.color) {
+      } else if (this.params.icon.color) { // Other plugins except stamp
         fillColor = this.params.icon.color;
       }
       const icon = {
@@ -87,7 +85,7 @@ export default class BasePlugin {
         id: this.params.id,
         name: this.params.name,
         label: this.params.label,
-        icon: icon,
+        icon,
         color: this.params.color ? this.params.color : 'black',
         activate: this.activate.bind(this),
         deactivate: this.deactivate.bind(this),
@@ -102,7 +100,7 @@ export default class BasePlugin {
       Check if all the methods that must be implemented in extended classes are
       present
     */
-   ['getGradeable', 'initDraw', 'render', 'inBoundsX', 'inBoundsY']
+    ['getGradeable', 'initDraw', 'render', 'inBoundsX', 'inBoundsY']
     .forEach((fnStr) => {
       if (!(typeof this[fnStr] === 'function')) {
         throw new TypeError(this.getTypeErrorStr(fnStr));
@@ -110,11 +108,11 @@ export default class BasePlugin {
     });
 
     Object.defineProperty(this.params, 'left', {
-      get: () => { return this.app.svg.getBoundingClientRect().left; },
+      get: () => this.app.svg.getBoundingClientRect().left,
     });
 
     Object.defineProperty(this.params, 'top', {
-      get: () => { return this.app.svg.getBoundingClientRect().top; },
+      get: () => this.app.svg.getBoundingClientRect().top,
     });
   }
 
@@ -122,6 +120,7 @@ export default class BasePlugin {
     const keys = [
       'id', 'name', 'width', 'height', 'xrange', 'yrange', 'xscale', 'yscale', 'coordinates'];
     const allDefaultParams = deepCopy(defaultParams);
+    // eslint-disable-next-line no-restricted-syntax
     for (const key of keys) {
       allDefaultParams[key] = params[key];
     }
@@ -137,6 +136,7 @@ export default class BasePlugin {
       .forEach((name) => this[name] = this[name].bind(this));
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getTypeErrorStr(method) {
     return `You must implement the ${method} method in a class extending
            BasePlugin`;
@@ -188,14 +188,14 @@ export default class BasePlugin {
   }
 
   getStyle() {
-    return this.latex ?
-      `
+    return this.latex
+      ? `
         color: #333;
         font-size: 14px;
         cursor: ${this.getTagCursor()};
         overflow: visible;
-      ` :
       `
+      : `
         fill: #333;
         font-size: 14px;
         cursor: ${this.getTagCursor()};
@@ -217,8 +217,7 @@ export default class BasePlugin {
       });
       // Set the foreignObject bounding box to match the Katex rendering
       this.adjustBoundingBox(el);
-    }
-    catch(e) {
+    } catch (e) {
       katex.render('\\text{\\color{red}{Error: invalid markup}}', el, {
         errorColor: '#0000ff',
       });
@@ -252,8 +251,7 @@ export default class BasePlugin {
                   resolve('Tag value is an empty string');
                 } else if (val === stateEl.tag) {
                   resolve('Tag value has not been changed');
-                }
-                else {
+                } else {
                   stateEl.tag = val;
                   this.app.addUndoPoint();
                   this.render();
@@ -267,18 +265,24 @@ export default class BasePlugin {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
   adjustBoundingBox(el) {
     const bRect = getElementsByClassName(el, 'katex-html')[0].getBoundingClientRect();
     el.setAttributeNS(null, 'width', bRect.width.toString());
     el.setAttributeNS(null, 'height', bRect.height.toString());
   }
 
+  // eslint-disable-next-line class-methods-use-this
   computeDashArray(dashStyle, strokeWidth) {
-    const scale = Math.pow(strokeWidth, 0.6); // seems about right perceptually
+    const scale = strokeWidth ** 0.6; // seems about right perceptually
     switch (dashStyle) {
+      // eslint-disable-next-line prefer-template
       case 'dashed': return 5 * scale + ',' + 3 * scale;
+      // eslint-disable-next-line prefer-template
       case 'longdashed': return 10 * scale + ',' + 3 * scale;
+      // eslint-disable-next-line prefer-template
       case 'dotted': return 2 * scale + ',' + 2 * scale;
+      // eslint-disable-next-line prefer-template
       case 'dashdotted': return 7 * scale + ',' + 3 * scale + ',' + 1.5 * scale + ',' + 3 * scale;
       // 'solid' or anything else
       default: return 'none';

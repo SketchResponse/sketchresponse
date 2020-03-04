@@ -24,8 +24,7 @@ export default class Polyline extends BasePlugin {
     const plParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'polyline')) {
       deepExtend(plParams, params);
-    }
-    else {
+    } else {
       // eslint-disable-next-line no-console
       console.log('The polyline config has errors, using default values instead');
     }
@@ -45,9 +44,9 @@ export default class Polyline extends BasePlugin {
     plParams.gradeableVersion = GRADEABLE_VERSION;
     super(plParams, app);
     // Message listeners
-    this.app.__messageBus.on('addPolyline', (id, index) => {this.addPolyline(id, index);});
-    this.app.__messageBus.on('deletePolylines', () => {this.deletePolylines();});
-    this.app.__messageBus.on('finalizeShapes', (id) => {this.drawEnd(id);});
+    this.app.__messageBus.on('addPolyline', (id, index) => { this.addPolyline(id, index); });
+    this.app.__messageBus.on('deletePolylines', () => { this.deletePolylines(); });
+    this.app.__messageBus.on('finalizeShapes', (id) => { this.drawEnd(id); });
   }
 
   getGradeable() {
@@ -90,9 +89,7 @@ export default class Polyline extends BasePlugin {
         currentPosition.tag = this.tag.value;
       }
       this.state[this.state.length - 1].push(currentPosition);
-    }
-    // Create our first polyline
-    else {
+    } else { // Create our first polyline
       // Only add tag to first point
       if (this.hasTag) {
         currentPosition.tag = this.tag.value;
@@ -139,6 +136,7 @@ export default class Polyline extends BasePlugin {
     z.render(this.el,
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw visible polyline under invisible polyline
+          // eslint-disable-next-line prefer-template, no-useless-concat
           z('path.visible-' + polylineIndex + '.polyline' + '.plugin-id-' + this.id, {
             d: polylinePathData(this.state[polylineIndex], this.params.closed),
             style: `
@@ -153,6 +151,7 @@ export default class Polyline extends BasePlugin {
       ),
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw invisible and selectable polyline under invisible points
+        // eslint-disable-next-line prefer-template
         z('path.invisible-' + polylineIndex + this.readOnlyClass(), {
           d: polylinePathData(this.state[polylineIndex], this.params.closed),
           style: `
@@ -167,6 +166,7 @@ export default class Polyline extends BasePlugin {
               element: el,
               initialBehavior: 'none',
               onDrag: ({ dx, dy }) => {
+                // eslint-disable-next-line no-restricted-syntax
                 for (const pt of this.state[polylineIndex]) {
                   pt.x += dx;
                   pt.y += dy;
@@ -174,6 +174,7 @@ export default class Polyline extends BasePlugin {
                 this.render();
               },
               inBoundsX: (dx) => {
+                // eslint-disable-next-line no-restricted-syntax
                 for (const pt of this.state[polylineIndex]) {
                   if (!this.inBoundsX(pt.x + dx)) {
                     return false;
@@ -182,6 +183,7 @@ export default class Polyline extends BasePlugin {
                 return true;
               },
               inBoundsY: (dy) => {
+                // eslint-disable-next-line no-restricted-syntax
                 for (const pt of this.state[polylineIndex]) {
                   if (!this.inBoundsY(pt.y + dy)) {
                     return false;
@@ -196,6 +198,7 @@ export default class Polyline extends BasePlugin {
       z.each(this.state, (polyline, polylineIndex) =>
         // Draw invisible (when length of polyline > 1) and selectable points
         z.each(polyline, (pt, ptIndex) =>
+          // eslint-disable-next-line prefer-template
           z('circle.invisible-' + polylineIndex + this.readOnlyClass(), {
             cx: this.state[polylineIndex][ptIndex].x,
             cy: this.state[polylineIndex][ptIndex].y,
@@ -224,6 +227,7 @@ export default class Polyline extends BasePlugin {
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (polyline, polylineIndex) =>
+        // eslint-disable-next-line max-len
         z.if(this.hasTag && this.state[polylineIndex].length > 0 && this.state[polylineIndex][0].tag, () =>
           z(this.latex ? 'foreignObject.tag' : 'text.tag', {
             'text-anchor': (this.latex ? undefined : this.tag.align),
@@ -262,7 +266,7 @@ function polylinePathData(points, closed) {
   if (points.length < 2) return '';
   const coords = points.map((p) => `${p.x},${p.y}`);
   const result = `M${coords[0]} L${coords.splice(1).join(' L')}`;
-  return closed ? result + ` L${coords[0]}` : result;
+  return closed ? `${result} L${coords[0]}` : result;
 }
 
 function splineData(points) {

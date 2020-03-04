@@ -18,8 +18,8 @@ export default class Point extends BasePlugin {
     const pParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'point')) {
       deepExtend(pParams, params);
-    }
-    else {
+    } else {
+      // eslint-disable-next-line no-console
       console.log('The point config has errors, using default values instead');
     }
     // Add params that are specific to this plugin
@@ -113,7 +113,8 @@ export default class Point extends BasePlugin {
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
-        z('circle.point' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex + this.readOnlyClass(), {
+        // eslint-disable-next-line prefer-template, no-useless-concat
+        z('circle.point' + '.plugin-id-' + this.id + '.state-index-' + positionIndex + this.readOnlyClass(), {
           cx: position.x,
           cy: position.y,
           r: this.radius,

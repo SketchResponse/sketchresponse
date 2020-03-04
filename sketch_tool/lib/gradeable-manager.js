@@ -28,8 +28,7 @@ export default class GradeableManager {
       });
 
       return JSON.stringify(response);
-    }
-    catch(error) {
+    } catch (error) {
       this.messageBus.emit('warnUser', 'getGradeableError', error);
       throw error;
     }

@@ -20,8 +20,8 @@ export default class Stamp extends BasePlugin {
     const sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'stamp')) {
       deepExtend(sParams, params);
-    }
-    else {
+    } else {
+      // eslint-disable-next-line no-console
       console.log('The stamp config has errors, using default values instead');
     }
     // Add params that are specific to this plugin
@@ -34,8 +34,8 @@ export default class Stamp extends BasePlugin {
     sParams.gradeableVersion = GRADEABLE_VERSION;
     super(sParams, app);
     // Message listeners
-    this.app.__messageBus.on('addStamp', (id, index) => {this.addStamp(id, index);});
-    this.app.__messageBus.on('deleteStamps', () => {this.deleteStamps();});
+    this.app.__messageBus.on('addStamp', (id, index) => { this.addStamp(id, index); });
+    this.app.__messageBus.on('deleteStamps', () => { this.deleteStamps(); });
     ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
   }
 

@@ -20,8 +20,8 @@ export default class Spline extends BasePlugin {
     const sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'spline')) {
       deepExtend(sParams, params);
-    }
-    else {
+    } else {
+      // eslint-disable-next-line no-console
       console.log('The spline config has errors, using default values instead');
     }
     const iconSrc = './lib/plugins/spline/spline-icon.svg';
@@ -36,9 +36,9 @@ export default class Spline extends BasePlugin {
     sParams.gradeableVersion = GRADEABLE_VERSION;
     super(sParams, app);
     // Message listeners
-    this.app.__messageBus.on('addSpline', (id, index) => {this.addSpline(id, index);});
-    this.app.__messageBus.on('deleteSplines', () => {this.deleteSplines();});
-    this.app.__messageBus.on('finalizeShapes', (id) => {this.drawEnd(id);});
+    this.app.__messageBus.on('addSpline', (id, index) => { this.addSpline(id, index); });
+    this.app.__messageBus.on('deleteSplines', () => { this.deleteSplines(); });
+    this.app.__messageBus.on('finalizeShapes', (id) => { this.drawEnd(id); });
   }
 
   getGradeable() {
@@ -46,12 +46,10 @@ export default class Spline extends BasePlugin {
     const result = this.state.filter((spline) => spline.length >= 2);
     // State contains arrays of points of user clicks.
     // Convert these to spline data.
-    return result.map((spline) => {
-      return {
-        spline: splineData(spline).map((point) => [point.x, point.y]),
-        tag: spline[0].tag,
-      };
-    });
+    return result.map((spline) => ({
+      spline: splineData(spline).map((point) => [point.x, point.y]),
+      tag: spline[0].tag,
+    }));
   }
 
   addSpline(id, index) {
@@ -85,9 +83,7 @@ export default class Spline extends BasePlugin {
         currentPosition.tag = this.tag.value;
       }
       this.state[this.state.length - 1].push(currentPosition);
-    }
-    // Create our first spline
-    else {
+    } else { // Create our first spline
       // Only add tag to first point
       if (this.hasTag) {
         currentPosition.tag = this.tag.value;
@@ -124,7 +120,7 @@ export default class Spline extends BasePlugin {
       // Draw visible elements under invisible elements
       z.each(this.state, (spline, splineIndex) =>
         // Draw spline
-        // eslint-disable-next-line prefer-template
+        // eslint-disable-next-line prefer-template, no-useless-concat
         z('path.visible-' + splineIndex + '.spline' + '.plugin-id-' + this.id, {
           d: splinePathData(this.state[splineIndex]),
           style: `
@@ -138,7 +134,7 @@ export default class Spline extends BasePlugin {
       // Draw points
       z.each(this.state, (spline, splineIndex) =>
         z.each(spline, (pt, ptIndex) =>
-          // eslint-disable-next-line prefer-template
+          // eslint-disable-next-line prefer-template, no-useless-concat
           z('circle.visible-' + splineIndex + '.spline' + '.plugin-id-' + this.id, {
             cx: this.state[splineIndex][ptIndex].x,
             cy: this.state[splineIndex][ptIndex].y,
@@ -167,6 +163,7 @@ export default class Spline extends BasePlugin {
               element: el,
               initialBehavior: 'none',
               onDrag: ({ dx, dy }) => {
+                // eslint-disable-next-line no-restricted-syntax
                 for (const pt of this.state[splineIndex]) {
                   pt.x += dx;
                   pt.y += dy;
@@ -174,6 +171,7 @@ export default class Spline extends BasePlugin {
                 this.render();
               },
               inBoundsX: (dx) => {
+                // eslint-disable-next-line no-restricted-syntax
                 for (const pt of this.state[splineIndex]) {
                   if (!this.inBoundsX(pt.x + dx)) {
                     return false;
@@ -182,6 +180,7 @@ export default class Spline extends BasePlugin {
                 return true;
               },
               inBoundsY: (dy) => {
+                // eslint-disable-next-line no-restricted-syntax
                 for (const pt of this.state[splineIndex]) {
                   if (!this.inBoundsY(pt.y + dy)) {
                     return false;
@@ -225,6 +224,7 @@ export default class Spline extends BasePlugin {
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (spline, splineIndex) =>
+        // eslint-disable-next-line max-len
         z.if(this.hasTag && this.state[splineIndex].length > 0 && this.state[splineIndex][0].tag, () =>
           z(this.latex ? 'foreignObject.tag' : 'text.tag', {
             'text-anchor': (this.latex ? undefined : this.tag.align),

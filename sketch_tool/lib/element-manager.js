@@ -28,7 +28,7 @@ export default class ElementManager {
   }
 
   registerElement(entry) {
-    const element = entry.element;
+    const { element } = entry;
     if (this.registry.has(element)) {
       this.registry.set(element, entry); // Just overwrite old entry
       return;
@@ -48,7 +48,7 @@ export default class ElementManager {
   }
 
   unregisterElement(entry) {
-    const element = entry.element;
+    const { element } = entry;
     element.removeEventListener('pointerdown', this.onPointerDown, false);
     this.registry.delete(element);
   }
@@ -62,8 +62,9 @@ export default class ElementManager {
     // This can only trigger when the element is active, so no need to check that again
     // We do check that (1) there isn't already an active pointer, and (2) this is a left click
     // or touch/pen equivalent (see http://www.w3.org/TR/pointerevents/#button-states)
-    if (this.activePointerId !== null || event.buttons !== 1 ||
-        !this.selectionManager.selectMode) return;
+    if (
+      this.activePointerId !== null || event.buttons !== 1 || !this.selectionManager.selectMode
+    ) return;
     event.stopPropagation();
     event.preventDefault();
 
@@ -80,13 +81,11 @@ export default class ElementManager {
     if (!this.isDragging) {
       const dx = event.clientX - this.initialEvent.clientX;
       const dy = event.clientY - this.initialEvent.clientY;
-      if (dx ** 2 + dy ** 2 < MIN_DRAG_DISTANCE_SQUARED) return; // Don't consider this a drag for small distances
-
-
+       // Don't consider this a drag for small distances
+      if (dx ** 2 + dy ** 2 < MIN_DRAG_DISTANCE_SQUARED) return;
       // TODO: GAH: timing: this might not fire until after the corresponding pointerup...
-
-
-      this.dragManager.dragStart(event.currentTarget, this.initialEvent); // Note: initialEvent has clientX/Y
+      // Note: initialEvent has clientX/Y
+      this.dragManager.dragStart(event.currentTarget, this.initialEvent);
       this.isDragging = true;
     }
     this.dragManager.dragMove(event);
@@ -103,14 +102,14 @@ export default class ElementManager {
     if (className && className.substring(0, 9) === 'invisible') {
       const classNamePrefix = className.substring(9);
       // IE and Edge do not have getElementsByClassName on SVG elements, use polyfill instead
+      // eslint-disable-next-line prefer-template
       visibleElements = getElementsByClassName(element.parentNode, 'visible' + classNamePrefix);
     }
     if (this.isDragging) {
       this.dragManager.dragEnd();
       this.app.addUndoPoint();
       this.isDragging = false;
-    }
-    else if (event.shiftKey || event.pointerType === 'touch') {
+    } else if (event.shiftKey || event.pointerType === 'touch') {
       this.selectionManager.toggleSelected(element);
       if (visibleElements) {
         // All plugins except spline
@@ -118,18 +117,15 @@ export default class ElementManager {
           // Only polyline has an opacity that needs to be overriden during selection
           if (visibleElements[0].getAttribute('class').indexOf('polyline') !== -1) {
             this.selectionManager.toggleSelected(visibleElements[0], 'override');
-          }
-          else {
+          } else {
             this.selectionManager.toggleSelected(visibleElements[0]);
           }
-        }
-        else { // spline
+        } else { // spline
           // HTMLCollection is an 'array-like' object that needs to be spread into an array
           [...visibleElements].forEach((el) => this.selectionManager.toggleSelected(el));
         }
       }
-    }
-    else {
+    } else {
       this.selectionManager.deselectAll();
       this.selectionManager.select(element);
       if (visibleElements) {
@@ -138,12 +134,10 @@ export default class ElementManager {
           // Only polyline has an opacity that needs to be overriden during selection
           if (visibleElements[0].getAttribute('class').indexOf('polyline') !== -1) {
             this.selectionManager.select(visibleElements[0], 'override');
-          }
-          else {
+          } else {
             this.selectionManager.select(visibleElements[0]);
           }
-        }
-        else { // spline
+        } else { // spline
           // HTMLCollection is an 'array-like' object that needs to be spread into an array
           [...visibleElements].forEach((el) => this.selectionManager.select(el));
         }

@@ -17,8 +17,8 @@ export default class VerticalLine extends BasePlugin {
     const vlParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'vertical-line')) {
       deepExtend(vlParams, params);
-    }
-    else {
+    } else {
+      // eslint-disable-next-line no-console
       console.log('The verticalLine config has errors, using default values instead');
     }
     // Add params that are specific to this plugin
@@ -32,8 +32,8 @@ export default class VerticalLine extends BasePlugin {
     vlParams.gradeableVersion = GRADEABLE_VERSION;
     super(vlParams, app);
     // Message listeners
-    this.app.__messageBus.on('addVerticalLine', (id, index) => {this.addVerticalLine(id, index);});
-    this.app.__messageBus.on('deleteVerticalLines', () => {this.deleteVerticalLines();});
+    this.app.__messageBus.on('addVerticalLine', (id, index) => { this.addVerticalLine(id, index); });
+    this.app.__messageBus.on('deleteVerticalLines', () => { this.deleteVerticalLines(); });
     ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
   }
 
@@ -41,6 +41,7 @@ export default class VerticalLine extends BasePlugin {
     const yvals = [
       0,
       Math.round(this.params.height / 3),
+      // eslint-disable-next-line no-mixed-operators
       Math.round(2 * this.params.height / 3),
       this.params.height,
     ];

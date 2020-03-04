@@ -14,9 +14,7 @@ export default class Image {
     if (!app.debug || validate(params, 'image')) {
       deepExtend(this.params, params);
     }
-    const scale = this.params.scale;
-    const align = this.params.align; // Note: params.align.toLowerCase() was removed
-    const offset = this.params.offset;
+    const { scale, align, offset } = this.params; // Note: params.align.toLowerCase() was removed
 
     const x = (offset[0] / 100 + (
       (align.match('left')) ? 0 :
@@ -24,7 +22,7 @@ export default class Image {
       0.5 * (1 - scale)
     )) / scale;
 
-    const y = (-offset[1] / 100 + (  // Sign is flipped so positive y offsets move image upward
+    const y = (-offset[1] / 100 + ( // Sign is flipped so positive y offsets move image upward
       (align.match('top')) ? 0 :
       (align.match('bottom')) ? (1 - scale) :
       0.5 * (1 - scale)

@@ -8,6 +8,7 @@ export default class PointerDownCache {
   }
 
   add(event) { this.cache.set(event.pointerId, event); }
+
   delete(event) { this.cache.delete(event.pointerId); }
 
   getNearestByClientRect({ left, right, top, bottom }) {

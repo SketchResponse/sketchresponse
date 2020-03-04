@@ -11,8 +11,10 @@ export default class NotificationManager {
     messageBus.on('warnUser', this.warnUser.bind(this));
   }
 
+  // eslint-disable-next-line class-methods-use-this
   warnUser(type, error) {
     const message = USER_MESSAGES[type] || USER_MESSAGES.unknownError;
+    // eslint-disable-next-line no-alert
     window.alert(`SketchInput: ${message}; please contact your instructor. Details: ${error.stack}`);
   }
 }

@@ -2,6 +2,7 @@ const FLAG = '$__DOMAttrCache'; // used as both our cache property name and as a
 
 function getCache(element, ns, name) {
   if (ns === null) ns = '';
+  // eslint-disable-next-line prefer-template
   const key = String(ns) + '|' + name;
   return (element[FLAG] || (element[FLAG] = {}))[key] || (element[FLAG][key] = { value: FLAG });
 }
@@ -21,7 +22,7 @@ export function setAttributeNS(element, ns, name, value) {
 }
 
 export function getAttributeNS(element, ns, name) {
-  const value = getCache(element, ns, name).value;
+  const { value } = getCache(element, ns, name);
   return value === FLAG ? null : value;
 }
 

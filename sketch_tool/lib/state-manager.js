@@ -49,8 +49,7 @@ export default class StateManager {
       });
 
       return JSON.stringify(response);
-    }
-    catch(error) {
+    } catch (error) {
       this.messageBus.emit('warnUser', 'getStateError', error);
       throw error;
     }
@@ -67,8 +66,7 @@ export default class StateManager {
       });
 
       this.messageBus.emit('stateSet');
-    }
-    catch(error) {
+    } catch (error) {
       this.messageBus.emit('warnUser', 'setStateError', error);
       throw error;
     }
@@ -81,8 +79,7 @@ export default class StateManager {
       });
 
       this.messageBus.emit('stateSet');
-    }
-    catch(error) {
+    } catch (error) {
       this.messageBus.emit('warnUser', 'setStateError', error);
       throw error;
     }

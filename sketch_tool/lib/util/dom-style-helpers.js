@@ -5,7 +5,7 @@ function uniqueID() {
 export class AttributeList {
   constructor(prefix = 'data-') {
     this.cache = new WeakMap();
-    this.baseName = prefix + uniqueID() + '-';
+    this.baseName = `${prefix + uniqueID()}-`;
   }
 
   resolve(attrName) { return this.baseName + attrName; }
@@ -25,8 +25,7 @@ export class AttributeList {
     if (condition) {
       element.setAttributeNS(null, this.resolve(attrName), '');
       attrCache.add(attrName);
-    }
-    else {
+    } else {
       element.removeAttributeNS(null, this.resolve(attrName));
       attrCache.delete(attrName);
     }
@@ -54,6 +53,7 @@ export function injectStyleSheet(innerHTML) {
 export function injectSVGDefs(xmlStr) {
   const canvas = document.getElementById('si-canvas');
   const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  // eslint-disable-next-line prefer-template
   xmlStr = '<svg xmlns=\'http://www.w3.org/2000/svg\'>' + xmlStr + '</svg>';
   const svgDocElement = new DOMParser().parseFromString(xmlStr, 'text/xml').documentElement;
   // Do not use svgDocElement.children, no support on Safari & Edge:

@@ -15,7 +15,12 @@
         "sourceType": "module"
     },
     "rules": {
-        "template-curly-spacing" : "off",
-        "indent" : "off"
+        "function-paren-newline": "off",
+        "implicit-arrow-linebreak": "off",
+        "indent" : "off",
+        "no-plusplus": "off",
+        "no-underscore-dangle": "off",
+        "operator-linebreak": "off",
+        "template-curly-spacing" : "off"
     }
 }

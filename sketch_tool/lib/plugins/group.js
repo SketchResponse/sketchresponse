@@ -33,7 +33,7 @@ export default class Group {
     this.menuItem = {
       type: 'splitbutton',
       id: this.params.id,
-      items: items,
+      items,
       name: this.params.name,
       label: this.params.label,
       icon: items[0].icon,

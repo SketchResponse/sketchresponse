@@ -33,9 +33,9 @@ export default class Toolbar {
     this.focusedItemID = null;
     this.openDropdownID = null; // TODO: better name
 
-    this.items = [
-      { id: TOOLBAR_ID, activate: this.activate.bind(this), deactivate: this.deactivate.bind(this) },
-    ];
+    this.items = [{
+      id: TOOLBAR_ID, activate: this.activate.bind(this), deactivate: this.deactivate.bind(this),
+    }];
 
     this.activeItemID = null;
     this.selectedDropdownItemMap = {}; // TODO: better name
@@ -87,8 +87,7 @@ export default class Toolbar {
           item.items.forEach((item) => {
             allItems.push(item);
           });
-        }
-        else {
+        } else {
           allItems.push(item);
         }
       });
@@ -99,8 +98,7 @@ export default class Toolbar {
       newActiveItem && newActiveItem.activate();
 
       this.activeItemID = id;
-    }
-    catch(error) {
+    } catch (error) {
       this.app.__messageBus.emit('warnUser', 'pluginError', error);
     }
     this.render();
@@ -149,8 +147,7 @@ export default class Toolbar {
           icon = selectedItem.icon;
           color = selectedItem.color;
           isActive = (selectedItem.id === this.activeItemID);
-        }
-        else if (type === 'button') {
+        } else if (type === 'button') {
           isActive = (id === this.activeItemID);
         }
 

@@ -17,8 +17,7 @@ export default class HorizontalLine extends BasePlugin {
     const hlParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'horizontal-line')) {
       deepExtend(hlParams, params);
-    }
-    else {
+    } else {
       // eslint-disable-next-line no-console
       console.log('The horizontalLine config has errors, using default values instead');
     }
@@ -33,8 +32,8 @@ export default class HorizontalLine extends BasePlugin {
     hlParams.gradeableVersion = GRADEABLE_VERSION;
     super(hlParams, app);
     // Message listeners
-    this.app.__messageBus.on('addHorizontalLine', (id, index) => {this.addHorizontalLine(id, index);});
-    this.app.__messageBus.on('deleteHorizontalLines', () => {this.deleteHorizontalLines();});
+    this.app.__messageBus.on('addHorizontalLine', (id, index) => { this.addHorizontalLine(id, index); });
+    this.app.__messageBus.on('deleteHorizontalLines', () => { this.deleteHorizontalLines(); });
     ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
   }
 
@@ -108,7 +107,7 @@ export default class HorizontalLine extends BasePlugin {
     z.render(this.el,
       // Draw visible line, under invisible line
       z.each(this.state, (position, positionIndex) =>
-        // eslint-disable-next-line prefer-template
+        // eslint-disable-next-line prefer-template, no-useless-concat
         z('line.visible-' + positionIndex + '.horizontal-line' + '.plugin-id-' + this.id, {
           x1: 0,
           y1: position.y,
