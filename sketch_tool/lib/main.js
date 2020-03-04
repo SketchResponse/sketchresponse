@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import KeyMaster from 'keymaster';
 
 import './util/polyfills';
-import { createInheritingObjectTree } from './util/inheriting-object-tree';
+import createInheritingObjectTree from './util/inheriting-object-tree';
 import { disableDoubleTapZoom, preventClickDelay } from './util/workarounds';
 
 import NotificationManager from './notification-manager';
@@ -45,6 +45,7 @@ export default class SketchInput {
     this.el = el;
     if (config.initialstate) {
       this.initialState = deepCopy(config.initialstate);
+      // eslint-disable-next-line no-param-reassign
       delete config.initialstate;
     }
     // Check if we are in debug mode
@@ -116,8 +117,8 @@ export default class SketchInput {
       </div>
     `;
 
-    // Workaround for iOS Safari and Chrome (the latter supports the touch-action CSS property, but let's
-    // keep everything the same for now). TODO: remove if implemented in PEP or WebKit.
+    // Workaround for iOS Safari and Chrome (the latter supports the touch-action CSS property,
+    // but let's keep everything the same for now). TODO: remove if implemented in PEP or WebKit.
     disableDoubleTapZoom(this.el);
 
     // Prevent click delay on touch devices. TODO: remove when handled by CSS touch-action or PEP.
@@ -212,7 +213,7 @@ export default class SketchInput {
       deactivate: () => {
         this.app.svg.removeEventListener('pointerdown', this.handlePointerDown);
         // Remove the temporary reference
-        delete this['handlePointerDown'];
+        delete this.handlePointerDown;
       },
       action: () => {
         this.messageBus.emit('enableSelectMode');
@@ -221,6 +222,7 @@ export default class SketchInput {
     });
 
     plugins.forEach((Plugin, idx) => {
+      // eslint-disable-next-line no-new
       new Plugin(this.params.plugins[idx], this.app);
     });
 
@@ -309,30 +311,7 @@ export default class SketchInput {
     }, true);
 
     this.messageBus.on('deleteFinished', () => { this.app.addUndoPoint(); });
-    //////////// TEMPORARY TEST CODE FOR ELEMENT MANAGER //////////////
 
-    // {
-    //   const svg = document.getElementById('si-canvas')
-    //   const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    //   attrCache.setAttributeNS(circle, null, 'cx', 150);
-    //   attrCache.setAttributeNS(circle, null, 'cy', 150);
-    //   attrCache.setAttributeNS(circle, null, 'r', 9);
-    //   attrCache.setAttributeNS(circle, null, 'style', 'fill: orange;');
-    //   svg.appendChild(circle);
-
-    //   this.elementManager.registerElement({
-    //     ownerID: 'f',
-    //     element: circle,
-    //     onDrag: ({dx, dy}) => {
-    //       const x = Number(attrCache.getAttributeNS(circle, null, 'cx'));
-    //       const y = Number(attrCache.getAttributeNS(circle, null, 'cy'));
-    //       attrCache.setAttributeNS(circle, null, 'cx', x + dx);
-    //       attrCache.setAttributeNS(circle, null, 'cy', y + dy);
-    //     },
-    //   });
-    // }
-
-    //////////// END TEMPORARY TEST CODE FOR ELEMENT MANAGER //////////////
     if (this.initialState) this.messageBus.emit('loadInitialState');
 
     this.messageBus.emit('ready');

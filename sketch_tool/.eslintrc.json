@@ -18,6 +18,8 @@
         "function-paren-newline": "off",
         "implicit-arrow-linebreak": "off",
         "indent" : "off",
+        "no-mixed-operators": "off",
+        "no-nested-ternary": "off",
         "no-plusplus": "off",
         "no-underscore-dangle": "off",
         "operator-linebreak": "off",

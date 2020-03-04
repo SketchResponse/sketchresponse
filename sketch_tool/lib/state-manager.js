@@ -25,8 +25,10 @@ export default class StateManager {
   }
 
   setPluginState(state) {
+    // eslint-disable-next-line no-param-reassign
     state = deepCopy(state); // Use deepCopy to keep plugin state isolated
     this.registry.forEach((entry) => {
+      // eslint-disable-next-line no-prototype-builtins
       if (state.hasOwnProperty(entry.id)) entry.setState(state[entry.id]);
     });
   }
@@ -62,6 +64,7 @@ export default class StateManager {
 
       this.registry.forEach((entry) => {
         // TODO: plugin version checking?
+        // eslint-disable-next-line no-prototype-builtins
         if (state.data.hasOwnProperty(entry.id)) entry.setState(state.data[entry.id]);
       });
 
@@ -75,6 +78,7 @@ export default class StateManager {
   loadInitialState() {
     try {
       this.registry.forEach((entry) => {
+        // eslint-disable-next-line no-prototype-builtins
         if (this.initialState.hasOwnProperty(entry.id)) entry.setState(this.initialState[entry.id]);
       });
 

@@ -23,8 +23,9 @@ export default class ElementManager {
   }
 
   bindEventHandlers() {
-    ['onPointerDown', 'onPointerMove', 'onPointerUp']
-      .forEach((name) => this[name] = this[name].bind(this));
+    ['onPointerDown', 'onPointerMove', 'onPointerUp'].forEach((name) => {
+      this[name] = this[name].bind(this);
+    });
   }
 
   registerElement(entry) {

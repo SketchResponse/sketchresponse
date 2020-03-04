@@ -11,6 +11,7 @@ export default class PointerDownCache {
 
   delete(event) { this.cache.delete(event.pointerId); }
 
+  // eslint-disable-next-line object-curly-newline
   getNearestByClientRect({ left, right, top, bottom }) {
     // Find the center
     const clientX = (left + right) / 2;
@@ -21,6 +22,7 @@ export default class PointerDownCache {
   getNearestByClientXY({ clientX, clientY }) {
     let minDistSquared = Infinity;
     let nearestEvent = null;
+    // eslint-disable-next-line no-restricted-syntax
     for (const event of this.cache.values()) {
       const distSquared = (clientX - event.clientX) ** 2 + (clientY - event.clientY) ** 2;
       if (distSquared < minDistSquared) {

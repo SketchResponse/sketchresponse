@@ -34,7 +34,9 @@ export default class VerticalLine extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addVerticalLine', (id, index) => { this.addVerticalLine(id, index); });
     this.app.__messageBus.on('deleteVerticalLines', () => { this.deleteVerticalLines(); });
-    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => {
+      this[name] = this[name].bind(this);
+    });
   }
 
   getGradeable() {

@@ -63,7 +63,9 @@ export default class LineSegment extends BasePlugin {
       this.rConstraint = true;
       this.rConstraintValue = lsParams.lengthConstraint;
     }
-    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => {
+      this[name] = this[name].bind(this);
+    });
     this.wasDragged = false;
     this.firstPoint = true;
     this.delIndices1 = [];
@@ -332,6 +334,7 @@ export default class LineSegment extends BasePlugin {
           return (x1 + x2) / 2;
         case 'end':
           return x2;
+        default: return undefined;
       }
     } else {
       return x1;
@@ -351,6 +354,7 @@ export default class LineSegment extends BasePlugin {
           return (y1 + y2) / 2;
         case 'end':
           return y2;
+          default: return undefined;
       }
     } else {
       return y1;

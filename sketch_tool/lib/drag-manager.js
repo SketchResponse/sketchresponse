@@ -47,8 +47,8 @@ export default class DragManager {
       }
       this.elementsToDrag = [element];
     }
-    this.elementsToDrag = this.elementsToDrag.filter((element) => {
-      const className = element.getAttribute('class');
+    this.elementsToDrag = this.elementsToDrag.filter((el) => {
+      const className = el.getAttribute('class');
       return !(className && className.substring(0, 7) === 'visible');
     });
     this.previousPosition = position;

@@ -19,6 +19,24 @@ const DEFAULT_PARAMS = {
   opacity: 1,
 };
 
+function polylinePathData(points, closed) {
+  if (points.length < 2) return '';
+  const coords = points.map((p) => `${p.x},${p.y}`);
+  const result = `M${coords[0]} L${coords.splice(1).join(' L')}`;
+  return closed ? `${result} L${coords[0]}` : result;
+}
+
+function splineData(points) {
+  const result = fitCurve(points, FIT_TOLERANCE);
+  result.forEach((point) => {
+     /* eslint-disable no-param-reassign */
+    point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
+    point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
+     /* eslint-enable no-param-reassign */
+  });
+  return result;
+}
+
 export default class Polyline extends BasePlugin {
   constructor(params, app) {
     const plParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
@@ -260,20 +278,4 @@ export default class Polyline extends BasePlugin {
   inBoundsY(y) {
     return y >= this.bounds.ymin && y <= this.bounds.ymax;
   }
-}
-
-function polylinePathData(points, closed) {
-  if (points.length < 2) return '';
-  const coords = points.map((p) => `${p.x},${p.y}`);
-  const result = `M${coords[0]} L${coords.splice(1).join(' L')}`;
-  return closed ? `${result} L${coords[0]}` : result;
-}
-
-function splineData(points) {
-  const splineData = fitCurve(points, FIT_TOLERANCE);
-  splineData.forEach((point) => {
-    point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
-    point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
-  });
-  return splineData;
 }

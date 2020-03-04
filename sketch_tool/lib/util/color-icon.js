@@ -17,5 +17,5 @@ export default function colorIcon(src, stroke, fill) {
   const svgData = new XMLSerializer().serializeToString(svg);
   const blob = new Blob([svgData], { type: 'image/svg+xml' });
   // Return the blob's URL
-  return (self.URL || self.webkitURL || self).createObjectURL(blob);
+  return (window.URL || window.webkitURL || window).createObjectURL(blob);
 }

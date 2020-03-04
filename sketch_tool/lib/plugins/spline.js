@@ -15,6 +15,24 @@ const DEFAULT_PARAMS = {
   color: 'dimgray',
 };
 
+function splineData(points) {
+  const result = fitCurve(points, FIT_TOLERANCE);
+  result.forEach((point) => {
+    /* eslint-disable no-param-reassign */
+    point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
+    point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
+    /* eslint-enable no-param-reassign */
+  });
+  return result;
+}
+
+function splinePathData(points) {
+  if (points.length < 2) return '';
+
+  const coords = splineData(points).map((p) => `${p.x},${p.y}`);
+  return `M${ coords[0] }C${ coords.splice(1).join(' ') }`;
+}
+
 export default class Spline extends BasePlugin {
   constructor(params, app) {
     const sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
@@ -257,20 +275,4 @@ export default class Spline extends BasePlugin {
   inBoundsY(y) {
     return y >= this.bounds.ymin && y <= this.bounds.ymax;
   }
-}
-
-function splinePathData(points) {
-  if (points.length < 2) return '';
-
-  const coords = splineData(points).map((p) => `${p.x},${p.y}`);
-  return `M${ coords[0] }C${ coords.splice(1).join(' ') }`;
-}
-
-function splineData(points) {
-  const splineData = fitCurve(points, FIT_TOLERANCE);
-  splineData.forEach((point) => {
-    point.x = Math.round(ROUNDING_PRESCALER * point.x) / ROUNDING_PRESCALER;
-    point.y = Math.round(ROUNDING_PRESCALER * point.y) / ROUNDING_PRESCALER;
-  });
-  return splineData;
 }

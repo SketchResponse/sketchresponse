@@ -42,7 +42,9 @@ export default class Point extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addPoint', (id, index) => this.addPoint(id, index));
     this.app.__messageBus.on('deletePoints', () => this.deletePoints());
-    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => {
+      this[name] = this[name].bind(this);
+    });
   }
 
   getGradeable() {

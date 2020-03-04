@@ -34,7 +34,9 @@ export default class HorizontalLine extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addHorizontalLine', (id, index) => { this.addHorizontalLine(id, index); });
     this.app.__messageBus.on('deleteHorizontalLines', () => { this.deleteHorizontalLines(); });
-    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => {
+      this[name] = this[name].bind(this);
+    });
   }
 
   getGradeable() {

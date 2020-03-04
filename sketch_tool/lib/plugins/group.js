@@ -14,6 +14,7 @@ export default class Group {
   constructor(params, app) {
     if (app.debug) {
       if (typeof params.label !== 'string') {
+        // eslint-disable-next-line no-param-reassign
         params.label = 'Group'; // Default value
       }
       if (!validate(params, 'group')) {
@@ -61,6 +62,8 @@ export default class Group {
         return new Stamp(params, app);
       case 'vertical-line':
         return new VerticalLine(params, app);
+      default:
+        return undefined;
     }
   }
 }

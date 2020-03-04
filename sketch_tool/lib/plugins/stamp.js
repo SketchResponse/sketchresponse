@@ -36,7 +36,9 @@ export default class Stamp extends BasePlugin {
     // Message listeners
     this.app.__messageBus.on('addStamp', (id, index) => { this.addStamp(id, index); });
     this.app.__messageBus.on('deleteStamps', () => { this.deleteStamps(); });
-    ['drawMove', 'drawEnd'].forEach((name) => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => {
+      this[name] = this[name].bind(this);
+    });
   }
 
   getGradeable() {

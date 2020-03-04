@@ -132,14 +132,14 @@ export default class BasePlugin {
 
   bindEventHandlers() {
     // TODO: simplify if we end up with only one entry
-    ['initDraw']
-      .forEach((name) => this[name] = this[name].bind(this));
+    ['initDraw'].forEach((name) => {
+      this[name] = this[name].bind(this);
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
   getTypeErrorStr(method) {
-    return `You must implement the ${method} method in a class extending
-           BasePlugin`;
+    return `You must implement the ${method} method in a class extending BasePlugin`;
   }
 
   activate() {

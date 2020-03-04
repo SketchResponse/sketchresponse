@@ -8,15 +8,15 @@ const NULL_SRC = '//:0';
 
 function renderIcon(id, src, alt) {
   return z('img.icon', {
-    id: id,
+    id,
     src: src || NULL_SRC,
-    alt: alt,
+    alt,
   });
 }
 
 function renderLabel(id, text, hasDropdown) {
   return z('div.label',
-    z('span', { id: id }, text),
+    z('span', { id }, text),
     z.if(hasDropdown,
       z('span', { 'aria-label': 'Open dropdown menu' }, ' \u25be'),
     ),
@@ -84,8 +84,8 @@ export default class Toolbar {
       const allItems = [];
       this.items.forEach((item) => {
         if (item.name === 'group') {
-          item.items.forEach((item) => {
-            allItems.push(item);
+          item.items.forEach((it) => {
+            allItems.push(it);
           });
         } else {
           allItems.push(item);
@@ -94,7 +94,9 @@ export default class Toolbar {
       const oldActiveItem = allItems.find((item) => item.id === this.activeItemID);
       const newActiveItem = allItems.find((item) => item.id === id);
 
+      // eslint-disable-next-line no-unused-expressions
       oldActiveItem && oldActiveItem.deactivate();
+      // eslint-disable-next-line no-unused-expressions
       newActiveItem && newActiveItem.activate();
 
       this.activeItemID = id;
@@ -138,13 +140,16 @@ export default class Toolbar {
       ['separator', 'button', 'splitbutton'].indexOf(item.type) >= 0);
 
     z.render(this.el,
+      // eslint-disable-next-line object-curly-newline
       z.each(renderableItems, ({ type, id, icon, label, color, items, action }) => {
         if (type === 'separator') return z('hr');
         let selectedItem;
         let isActive;
         if (type === 'splitbutton') {
           selectedItem = items.find((item) => item.id === this.selectedDropdownItemMap[id]);
+          // eslint-disable-next-line no-param-reassign
           icon = selectedItem.icon;
+          // eslint-disable-next-line no-param-reassign
           color = selectedItem.color;
           isActive = (selectedItem.id === this.activeItemID);
         } else if (type === 'button') {
@@ -155,7 +160,7 @@ export default class Toolbar {
         const isOpen = (id === this.openDropdownID);
 
         return z('div.item', {
-            id: id,
+            id,
             'data-is-open': isOpen,
             'data-is-active': isActive,
             style: isActive ? `border-bottom-color: ${color};` : '',
@@ -165,6 +170,7 @@ export default class Toolbar {
                 onclick: () => {
                   // Finalize any shape that isn't
                   this.app.__messageBus.emit('finalizeShapes', id);
+                  // eslint-disable-next-line no-unused-expressions
                   action ? action() : this.activateItem(id);
                 },
                 'aria-labelledby': `${id}-label ${id}-icon`,
