@@ -1,40 +1,36 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>grader_lib package &mdash; SketchResponse 1.0 documentation</title>
-    
+    <title>grader_lib package &#8212; SketchResponse 1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="SketchResponse 1.0 documentation" href="index.html" />
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Welcome to SketchResponse’s documentation!" href="index.html" />
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body role="document">  
+  </head><body>
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="grader-lib-package">
@@ -47,7 +43,7 @@
 <dl class="class">
 <dt id="grader_lib.Asymptote.Asymptote">
 <em class="property">class </em><code class="descclassname">grader_lib.Asymptote.</code><code class="descname">Asymptote</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptote" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>An asymptote wrapper class. Contains the x or y value that defines
 the vertical or horizontal asymptote.</p>
 <dl class="method">
@@ -69,19 +65,144 @@ the vertical or horizontal asymptote.</p>
 <dl class="method">
 <dt id="grader_lib.Asymptote.Asymptote.tag_equals">
 <code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptote.tag_equals" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
+<dd><p>Returns whether the given string is equal to the object’s tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object&#8217;s tag,
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object’s tag,
 otherwise False.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="grader_lib.Asymptote.Asymptotes">
+<em class="property">class </em><code class="descclassname">grader_lib.Asymptote.</code><code class="descname">Asymptotes</code><span class="sig-paren">(</span><em>info</em>, <em>tolerance={}</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
+<dl class="method">
+<dt id="grader_lib.Asymptote.Asymptotes.closest_asym_to_value">
+<code class="descname">closest_asym_to_value</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.closest_asym_to_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the absolute distance between v and the closest asymptote and the x or y axis value of that asymptote.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> – a value in the range of the x or y axis.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>minDistance: the absolute difference between v and the asymptote,</dt>
+<dd>or float(‘inf’) if no asymptote exists.</dd>
+<dt>closestAsym: the value of the closest asymptote to the value v,</dt>
+<dd>or None if no asymptote exists.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float, float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Asymptote.Asymptotes.contains_tag">
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.contains_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a reference to the first object found with the given tag value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The first Tag object with a tag value of to_compare, if there
+are no matching tags, returns None.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Tag</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Asymptote.Asymptotes.get_asym_at_value">
+<code class="descname">get_asym_at_value</code><span class="sig-paren">(</span><em>v</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.get_asym_at_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the asymptote at the value v, or None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> – a value in the range of the x or y axis.</li>
+<li><strong>tolerance</strong><strong>(</strong><strong>default</strong> – None): pixel distance tolerance, if None is given ‘asym_distance’ constant is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>the value of an asymptote that is within tolerances of</dt>
+<dd><p class="first last">the value v, or None if no such asymptote exists.</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Asymptote.Asymptotes.get_number_of_asyms">
+<code class="descname">get_number_of_asyms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.get_number_of_asyms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of asymptotes declared in the function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the number of asymptotes declared in the function.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.Asymptote.Asymptotes.has_asym_at_value">
+<code class="descname">has_asym_at_value</code><span class="sig-paren">(</span><em>v</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.Asymptotes.has_asym_at_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether an asymtote is declared at the given value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> – a value in the range of the x or y axis.</li>
+<li><strong>tolerance</strong><strong>(</strong><strong>default</strong> – None): pixel distance tolerance, if None is given ‘asym_distance’ constant is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if there is an asymptote declared within tolerances
+of the value v, or false otherwise.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
@@ -96,7 +217,7 @@ otherwise False.</p>
 <dl class="class">
 <dt id="grader_lib.Asymptote.HorizontalAsymptotes">
 <em class="property">class </em><code class="descclassname">grader_lib.Asymptote.</code><code class="descname">HorizontalAsymptotes</code><span class="sig-paren">(</span><em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.HorizontalAsymptotes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Asymptote.Asymptotes</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#grader_lib.Asymptote.Asymptotes" title="grader_lib.Asymptote.Asymptotes"><code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.Asymptote.Asymptotes</span></code></a></p>
 <p>Horizontal Asymptote.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -111,11 +232,11 @@ function you are grading.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> &#8211; a value in the range of the x or y axis.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> – a value in the range of the x or y axis.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
 <dt>minDistance: the absolute difference between v and the asymptote,</dt>
-<dd>or float(&#8216;inf&#8217;) if no asymptote exists.</dd>
+<dd>or float(‘inf’) if no asymptote exists.</dd>
 <dt>closestAsym: the value of the closest asymptote to the value v,</dt>
 <dd>or None if no asymptote exists.</dd>
 </dl>
@@ -136,8 +257,8 @@ function you are grading.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
@@ -161,8 +282,8 @@ are no matching tags, returns None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>v</strong> &#8211; a value in the range of the x or y axis.</li>
-<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance, if None is given &#8216;asym_distance&#8217; constant is used.</li>
+<li><strong>v</strong> – a value in the range of the x or y axis.</li>
+<li><strong>tolerance</strong><strong>(</strong><strong>default</strong> – None): pixel distance tolerance, if None is given ‘asym_distance’ constant is used.</li>
 </ul>
 </td>
 </tr>
@@ -206,8 +327,8 @@ are no matching tags, returns None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>v</strong> &#8211; a value in the range of the x or y axis.</li>
-<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance, if None is given &#8216;asym_distance&#8217; constant is used.</li>
+<li><strong>v</strong> – a value in the range of the x or y axis.</li>
+<li><strong>tolerance</strong><strong>(</strong><strong>default</strong> – None): pixel distance tolerance, if None is given ‘asym_distance’ constant is used.</li>
 </ul>
 </td>
 </tr>
@@ -227,7 +348,7 @@ of the value v, or false otherwise.</p>
 <dl class="class">
 <dt id="grader_lib.Asymptote.VerticalAsymptotes">
 <em class="property">class </em><code class="descclassname">grader_lib.Asymptote.</code><code class="descname">VerticalAsymptotes</code><span class="sig-paren">(</span><em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Asymptote.VerticalAsymptotes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Asymptote.Asymptotes</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#grader_lib.Asymptote.Asymptotes" title="grader_lib.Asymptote.Asymptotes"><code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.Asymptote.Asymptotes</span></code></a></p>
 <p>Vertical Asymptote.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -242,11 +363,11 @@ function you are grading.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> &#8211; a value in the range of the x or y axis.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> – a value in the range of the x or y axis.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
 <dt>minDistance: the absolute difference between v and the asymptote,</dt>
-<dd>or float(&#8216;inf&#8217;) if no asymptote exists.</dd>
+<dd>or float(‘inf’) if no asymptote exists.</dd>
 <dt>closestAsym: the value of the closest asymptote to the value v,</dt>
 <dd>or None if no asymptote exists.</dd>
 </dl>
@@ -267,8 +388,8 @@ function you are grading.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
@@ -292,8 +413,8 @@ are no matching tags, returns None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>v</strong> &#8211; a value in the range of the x or y axis.</li>
-<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance, if None is given &#8216;asym_distance&#8217; constant is used.</li>
+<li><strong>v</strong> – a value in the range of the x or y axis.</li>
+<li><strong>tolerance</strong><strong>(</strong><strong>default</strong> – None): pixel distance tolerance, if None is given ‘asym_distance’ constant is used.</li>
 </ul>
 </td>
 </tr>
@@ -337,8 +458,8 @@ are no matching tags, returns None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>v</strong> &#8211; a value in the range of the x or y axis.</li>
-<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance, if None is given &#8216;asym_distance&#8217; constant is used.</li>
+<li><strong>v</strong> – a value in the range of the x or y axis.</li>
+<li><strong>tolerance</strong><strong>(</strong><strong>default</strong> – None): pixel distance tolerance, if None is given ‘asym_distance’ constant is used.</li>
 </ul>
 </td>
 </tr>
@@ -361,7 +482,7 @@ of the value v, or false otherwise.</p>
 <span class="target" id="module-grader_lib.LineSegment"></span><dl class="class">
 <dt id="grader_lib.LineSegment.LineSegment">
 <em class="property">class </em><code class="descclassname">grader_lib.LineSegment.</code><code class="descname">LineSegment</code><span class="sig-paren">(</span><em>point1</em>, <em>point2</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A line segment wrapper class. Contains two Points defining the
 start point and the end point of the segment.</p>
 <dl class="method">
@@ -415,18 +536,18 @@ start point and the end point of the segment.</p>
 <dl class="method">
 <dt id="grader_lib.LineSegment.LineSegment.tag_equals">
 <code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegment.tag_equals" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
+<dd><p>Returns whether the given string is equal to the object’s tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object&#8217;s tag,
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object’s tag,
 otherwise False.</p>
 </td>
 </tr>
@@ -442,7 +563,7 @@ otherwise False.</p>
 <dl class="class">
 <dt id="grader_lib.LineSegment.LineSegments">
 <em class="property">class </em><code class="descclassname">grader_lib.LineSegment.</code><code class="descname">LineSegments</code><span class="sig-paren">(</span><em>info</em>, <em>tolerance={}</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
 <p>Line Segments.</p>
 <dl class="method">
 <dt id="grader_lib.LineSegment.LineSegments.check_segment_endpoint">
@@ -453,13 +574,13 @@ otherwise False.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>segment</strong> &#8211; the line segment to check</li>
-<li><strong>point</strong> &#8211; a list [x, y] defining the point to check</li>
-<li><strong>tolerance</strong> &#8211; the square of the distance in pixels</li>
+<li><strong>segment</strong> – the line segment to check</li>
+<li><strong>point</strong> – a list [x, y] defining the point to check</li>
+<li><strong>tolerance</strong> – the square of the distance in pixels</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the segment&#8217;s end point is at (x,y) within tolerances,
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the segment’s end point is at (x,y) within tolerances,
 otherwise false.</p>
 </td>
 </tr>
@@ -474,7 +595,7 @@ otherwise false.</p>
 <dt id="grader_lib.LineSegment.LineSegments.check_segment_endpoints">
 <code class="descname">check_segment_endpoints</code><span class="sig-paren">(</span><em>segment</em>, <em>points</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.check_segment_endpoints" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
-<dt>Return whether the segment&#8217;s start and end points are both in</dt>
+<dt>Return whether the segment’s start and end points are both in</dt>
 <dd>the list of points.</dd>
 </dl>
 <table class="docutils field-list" frame="void" rules="none">
@@ -482,9 +603,9 @@ otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>segment</strong> &#8211; the line segment to check</li>
-<li><strong>points</strong> &#8211; a list of [x, y] coordiates</li>
-<li><strong>tolerance</strong> &#8211; the square of the distance in pixels</li>
+<li><strong>segment</strong> – the line segment to check</li>
+<li><strong>points</strong> – a list of [x, y] coordiates</li>
+<li><strong>tolerance</strong> – the square of the distance in pixels</li>
 </ul>
 </td>
 </tr>
@@ -508,13 +629,13 @@ otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>segment</strong> &#8211; the line segment to check</li>
-<li><strong>point</strong> &#8211; a list [x, y] defining the point to check</li>
-<li><strong>tolerance</strong> &#8211; the square of the distance in pixels</li>
+<li><strong>segment</strong> – the line segment to check</li>
+<li><strong>point</strong> – a list [x, y] defining the point to check</li>
+<li><strong>tolerance</strong> – the square of the distance in pixels</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the segment&#8217;s start point is at (x,y) within tolerances,
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the segment’s start point is at (x,y) within tolerances,
 otherwise false.</p>
 </td>
 </tr>
@@ -534,8 +655,8 @@ otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
@@ -562,8 +683,8 @@ are no matching tags, returns None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
+<li><strong>xmin</strong> – the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to test.</li>
 </ul>
 </td>
 </tr>
@@ -590,8 +711,8 @@ to xmax within tolerances, otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
+<li><strong>xmin</strong> – the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to test.</li>
 </ul>
 </td>
 </tr>
@@ -630,7 +751,7 @@ within tolerances, otherwise false.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segment</strong> &#8211; the line segment to check</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segment</strong> – the line segment to check</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the angle of the line segment in radians</td>
 </tr>
@@ -648,7 +769,7 @@ within tolerances, otherwise false.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segment</strong> &#8211; the line segment to check</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>segment</strong> – the line segment to check</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the length of the line segment</td>
 </tr>
@@ -667,15 +788,15 @@ within tolerances, otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>point(default</strong> &#8211; False): a Point instance at the value of interest.</li>
-<li><strong>x(default</strong> &#8211; False): the x coordinate of interest.</li>
-<li><strong>y(default</strong> &#8211; False): the y coordinate of interest.</li>
-<li><strong>distTolerance(default</strong> &#8211; None): the pixel distance tolerance if
+<li><strong>point</strong><strong>(</strong><strong>default</strong> – False): a Point instance at the value of interest.</li>
+<li><strong>x</strong><strong>(</strong><strong>default</strong> – False): the x coordinate of interest.</li>
+<li><strong>y</strong><strong>(</strong><strong>default</strong> – False): the y coordinate of interest.</li>
+<li><strong>distTolerance</strong><strong>(</strong><strong>default</strong> – None): the pixel distance tolerance if
 only the x or y coordinate is given. If None
-default constant &#8216;line_distance&#8217; is used.</li>
-<li><strong>squareDistTolerance(default</strong> &#8211; None): the square pixel distance tolerance
+default constant ‘line_distance’ is used.</li>
+<li><strong>squareDistTolerance</strong><strong>(</strong><strong>default</strong> – None): the square pixel distance tolerance
 if point, or x and y are given. If
-None, default constant &#8216;line_distance_squared&#8217;
+None, default constant ‘line_distance_squared’
 is used.</li>
 </ul>
 </td>
@@ -709,6 +830,24 @@ arguments, or None</td>
 </dd></dl>
 
 <dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.get_segments_between">
+<code class="descname">get_segments_between</code><span class="sig-paren">(</span><em>xmin</em>, <em>xmax</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.get_segments_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of line segments that exist between the given x values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>xmin</strong> – the minimum x coordinate of interest.</li>
+<li><strong>xmax</strong> – the maximum x coordinate of interest.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="grader_lib.LineSegment.LineSegments.has_angle_t_at_x">
 <code class="descname">has_angle_t_at_x</code><span class="sig-paren">(</span><em>t</em>, <em>x</em>, <em>ignoreDirection=True</em>, <em>tolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.has_angle_t_at_x" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
@@ -720,15 +859,41 @@ arguments, or None</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>t</strong> &#8211; the angle in radians</li>
-<li><strong>x</strong> &#8211; the position on the x-axis to test against.</li>
-<li><strong>(default</strong> (<em>ignoreDirection</em>) &#8211; true): ignore segment direction</li>
-<li><strong>tolerance</strong> &#8211; the angle tolerance in degrees</li>
+<li><strong>t</strong> – the angle in radians</li>
+<li><strong>x</strong> – the position on the x-axis to test against.</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignoreDirection</em>) – true): ignore segment direction</li>
+<li><strong>tolerance</strong> – the angle tolerance in degrees</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the function at value x has angle t within tolerances,
 otherwise false.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.has_constant_value_y_between">
+<code class="descname">has_constant_value_y_between</code><span class="sig-paren">(</span><em>y</em>, <em>xmin</em>, <em>xmax</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.has_constant_value_y_between" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the function has a constant value y over the range xmin to xmax.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>y</strong> – the constant value to check.</li>
+<li><strong>xmin</strong> – the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to test.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the function has the value y at both xmin and xmax and the function
+is straight in the range xmin to xmax, otherwise false.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
@@ -747,15 +912,15 @@ otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>point(default</strong> &#8211; False): a Point instance at the value of interest.</li>
-<li><strong>x(default</strong> &#8211; False): the x coordinate of interest.</li>
-<li><strong>y(default</strong> &#8211; False): the y coordinate of interest.</li>
-<li><strong>distTolerance(default</strong> &#8211; None): the pixel distance tolerance if
+<li><strong>point</strong><strong>(</strong><strong>default</strong> – False): a Point instance at the value of interest.</li>
+<li><strong>x</strong><strong>(</strong><strong>default</strong> – False): the x coordinate of interest.</li>
+<li><strong>y</strong><strong>(</strong><strong>default</strong> – False): the y coordinate of interest.</li>
+<li><strong>distTolerance</strong><strong>(</strong><strong>default</strong> – None): the pixel distance tolerance if
 only the x or y coordinate is given. If None
-default constant &#8216;line_distance&#8217; is used.</li>
-<li><strong>squareDistTolerance(default</strong> &#8211; None): the square pixel distance tolerance
+default constant ‘line_distance’ is used.</li>
+<li><strong>squareDistTolerance</strong><strong>(</strong><strong>default</strong> – None): the square pixel distance tolerance
 if point, or x and y are given. If
-None, default constant &#8216;line_distance_squared&#8217;
+None, default constant ‘line_distance_squared’
 is used.</li>
 </ul>
 </td>
@@ -797,15 +962,69 @@ given position, otherwise false.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>m</strong> &#8211; the slope value to test against.</li>
-<li><strong>x</strong> &#8211; the position on the x-axis to test against.</li>
-<li><strong>(default</strong> (<em>ignoreDirection</em>) &#8211; true): ignore segment direction</li>
-<li><strong>tolerance</strong> &#8211; the angle tolerance in degrees</li>
+<li><strong>m</strong> – the slope value to test against.</li>
+<li><strong>x</strong> – the position on the x-axis to test against.</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignoreDirection</em>) – true): ignore segment direction</li>
+<li><strong>tolerance</strong> – the angle tolerance in degrees</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the function at value x has slope m within tolerances,
 otherwise false.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.has_value_y_at_x">
+<code class="descname">has_value_y_at_x</code><span class="sig-paren">(</span><em>y</em>, <em>x</em>, <em>yTolerance=None</em>, <em>xTolerance=None</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.has_value_y_at_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the function has the value y at x.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>y</strong> – the target y value.</li>
+<li><strong>x</strong> – the x value.</li>
+<li><strong>yTolerance</strong><strong>(</strong><strong>default</strong> – None): the y-axis pixel distance within which
+the function value is accepted.</li>
+<li><strong>xTolerance</strong><strong>(</strong><strong>default</strong> – None): the x-axis pixel distance within which
+the function value is accepted.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the function value at x is y within tolerances, otherwise
+false</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="grader_lib.LineSegment.LineSegments.segment_has_constant_value_y">
+<code class="descname">segment_has_constant_value_y</code><span class="sig-paren">(</span><em>segment</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.LineSegment.LineSegments.segment_has_constant_value_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the line segment has the constant value of y</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>segment</strong> – the line segment to check</li>
+<li><strong>y</strong> – the y value to check against</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">true if the line segment has the constant value y within tolerances
+otherwise false</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
@@ -823,8 +1042,12 @@ otherwise false.</p>
 <dl class="class">
 <dt id="grader_lib.PolyLine.PolyLines">
 <em class="property">class </em><code class="descclassname">grader_lib.PolyLine.</code><code class="descname">PolyLines</code><span class="sig-paren">(</span><em>info</em>, <em>tolerance={}</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
 <p>PolyLines.</p>
+<p>—DEPRECATED— Only use this module if you are handling polyline
+data from SketchResponse version 1.4 or earlier. For later version,
+polyline data can be directly parsed with the GradeableFunction and
+LineSegments graders.</p>
 <dl class="method">
 <dt id="grader_lib.PolyLine.PolyLines.contains_tag">
 <code class="descname">contains_tag</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.PolyLine.PolyLines.contains_tag" title="Permalink to this definition">¶</a></dt>
@@ -834,8 +1057,8 @@ otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
@@ -861,7 +1084,7 @@ are no matching tags, returns None.</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A GradeableFunction.GradeableFunction grader object, or None if no
 polyline data exists.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#module-grader_lib.GradeableFunction" title="grader_lib.GradeableFunction">GradeableFunction</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#grader_lib.GradeableFunction.GradeableFunction" title="grader_lib.GradeableFunction.GradeableFunction">GradeableFunction</a></td>
 </tr>
 </tbody>
 </table>
@@ -898,7 +1121,7 @@ polyline data exists.</td>
 <dl class="class">
 <dt id="grader_lib.Polygon.Polygon">
 <em class="property">class </em><code class="descclassname">grader_lib.Polygon.</code><code class="descname">Polygon</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A polygon wrapper class. Contains a list of [x, y] points defining the
 vertices of the polygon.</p>
 <dl class="method">
@@ -920,18 +1143,18 @@ vertices of the polygon.</p>
 <dl class="method">
 <dt id="grader_lib.Polygon.Polygon.tag_equals">
 <code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygon.tag_equals" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
+<dd><p>Returns whether the given string is equal to the object’s tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object&#8217;s tag,
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object’s tag,
 otherwise False.</p>
 </td>
 </tr>
@@ -947,7 +1170,7 @@ otherwise False.</p>
 <dl class="class">
 <dt id="grader_lib.Polygon.Polygons">
 <em class="property">class </em><code class="descclassname">grader_lib.Polygon.</code><code class="descname">Polygons</code><span class="sig-paren">(</span><em>info</em>, <em>tolerance={}</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Polygon.Polygons" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.Gradeable.Gradeable</span></code></p>
 <p>Polygons.</p>
 <dl class="method">
 <dt id="grader_lib.Polygon.Polygons.contains_point">
@@ -958,9 +1181,9 @@ otherwise False.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>point</strong> &#8211; an list [x, y] defining a point, or
+<li><strong>point</strong> – an list [x, y] defining a point, or
 a Point object from a GradeableFunction grader</li>
-<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+<li><strong>tolerance</strong> – a pixel distance tolerance</li>
 </ul>
 </td>
 </tr>
@@ -984,9 +1207,9 @@ the given point, or None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polygon</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+<li><strong>polygon</strong> – a list of points [[x1,y1], …, [xn,yn]] defining a polygon,
 or a Polygon object</li>
-<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+<li><strong>tolerance</strong> – a pixel distance tolerance</li>
 </ul>
 </td>
 </tr>
@@ -1010,8 +1233,8 @@ the given polygon, or None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
@@ -1038,9 +1261,9 @@ are no matching tags, returns None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>line_segment</strong> &#8211; an list of two points [[x1, y1], [x2,y2]], or
+<li><strong>line_segment</strong> – an list of two points [[x1, y1], [x2,y2]], or
 a LineSegment object from a LineSegment grader</li>
-<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+<li><strong>tolerance</strong> – a pixel distance tolerance</li>
 </ul>
 </td>
 </tr>
@@ -1067,11 +1290,11 @@ in the grader.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polygon</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+<li><strong>polygon</strong> – a list of points [[x1,y1], …, [xn,yn]] defining a polygon,
 or a Polygon object</li>
-<li><strong>line_segment</strong> &#8211; an list of two points [[x1, y1], [x2,y2]], or
+<li><strong>line_segment</strong> – an list of two points [[x1, y1], [x2,y2]], or
 a LineSegment object from a LineSegment grader</li>
-<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+<li><strong>tolerance</strong> – a pixel distance tolerance</li>
 </ul>
 </td>
 </tr>
@@ -1103,9 +1326,9 @@ a LineSegment object from a LineSegment grader</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>point</strong> &#8211; an list [x, y] defining a point, or
+<li><strong>point</strong> – an list [x, y] defining a point, or
 a Point object from a GradeableFunction grader</li>
-<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+<li><strong>tolerance</strong> – a pixel distance tolerance</li>
 </ul>
 </td>
 </tr>
@@ -1132,11 +1355,11 @@ the given point, or None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polygon</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+<li><strong>polygon</strong> – a list of points [[x1,y1], …, [xn,yn]] defining a polygon,
 or a Polygon object</li>
-<li><strong>point</strong> &#8211; an list [x, y] defining a point, or
+<li><strong>point</strong> – an list [x, y] defining a point, or
 a Point object from a GradeableFunction grader</li>
-<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+<li><strong>tolerance</strong> – a pixel distance tolerance</li>
 </ul>
 </td>
 </tr>
@@ -1163,11 +1386,11 @@ otherwise False.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>polygon</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+<li><strong>polygon</strong> – a list of points [[x1,y1], …, [xn,yn]] defining a polygon,
 or a Polygon object</li>
-<li><strong>point</strong> &#8211; an list [x, y] defining a point, or
+<li><strong>point</strong> – an list [x, y] defining a point, or
 a Point object from a GradeableFunction grader</li>
-<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+<li><strong>tolerance</strong> – a pixel distance tolerance</li>
 </ul>
 </td>
 </tr>
@@ -1194,11 +1417,11 @@ otherwise False.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>container</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+<li><strong>container</strong> – a list of points [[x1,y1], …, [xn,yn]] defining a polygon,
 or a Polygon object</li>
-<li><strong>contained</strong> &#8211; a list of points [[x1,y1], ..., [xn,yn]] defining a polygon,
+<li><strong>contained</strong> – a list of points [[x1,y1], …, [xn,yn]] defining a polygon,
 or a Polygon object</li>
-<li><strong>tolerance</strong> &#8211; a pixel distance tolerance</li>
+<li><strong>tolerance</strong> – a pixel distance tolerance</li>
 </ul>
 </td>
 </tr>
@@ -1221,7 +1444,7 @@ polygon, otherwise False.</p>
 <dl class="class">
 <dt id="grader_lib.GradeableFunction.GradeableFunction">
 <em class="property">class </em><code class="descclassname">grader_lib.GradeableFunction.</code><code class="descname">GradeableFunction</code><span class="sig-paren">(</span><em>gradeable</em>, <em>tolerance={}</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.MultipleSplinesFunction.MultipleSplinesFunction</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.MultipleSplinesFunction.MultipleSplinesFunction</span></code></p>
 <p>GradeableFunction.</p>
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.closest_point_to_point">
@@ -1231,17 +1454,17 @@ polygon, otherwise False.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> &#8211; a Point instance</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>point</strong> – a Point instance</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
 <dt>minDistanceSquared: the square of the pixel distance between point</dt>
-<dd>and the closest point, or float(&#8216;inf&#8217;) if no
+<dd>and the closest point, or float(‘inf’) if no
 point exists.</dd>
 </dl>
 <p>minPoint: the closest Point to x, or None if no point exists.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float, Point</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float, <a class="reference internal" href="#grader_lib.Point.Point" title="grader_lib.Point.Point">Point</a></td>
 </tr>
 </tbody>
 </table>
@@ -1255,16 +1478,16 @@ point exists.</dd>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; a value in the range of the x axis.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – a value in the range of the x axis.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
 <dt>minDistance: the absolute distance between x and the point, or</dt>
-<dd>float(&#8216;inf&#8217;) if no point exists.</dd>
+<dd>float(‘inf’) if no point exists.</dd>
 </dl>
 <p>minPoint: the closest Point to x, or None if no point exists.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float, Point</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float, <a class="reference internal" href="#grader_lib.Point.Point" title="grader_lib.Point.Point">Point</a></td>
 </tr>
 </tbody>
 </table>
@@ -1279,8 +1502,8 @@ point exists.</dd>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
@@ -1304,11 +1527,11 @@ are no matching tags, returns None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
-<li><strong>end_tolerance(default</strong> &#8211; 70): the pixel tolerance for the endpoints of the
+<li><strong>xmin</strong> – the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to test.</li>
+<li><strong>end_tolerance</strong><strong>(</strong><strong>default</strong> – 70): the pixel tolerance for the endpoints of the
 range xmin to xmax.</li>
-<li><strong>gap_tolerance(default</strong> &#8211; 40): the pixel tolerance for gaps in the function
+<li><strong>gap_tolerance</strong><strong>(</strong><strong>default</strong> – 40): the pixel tolerance for gaps in the function
 in the range xmin to xmax.</li>
 </ul>
 </td>
@@ -1333,8 +1556,8 @@ to xmax, otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
+<li><strong>xmin</strong> – the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to test.</li>
 </ul>
 </td>
 </tr>
@@ -1357,7 +1580,7 @@ to xmax, otherwise false.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>yval</strong> &#8211; the y-axis value of the horizontal line.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>yval</strong> – the y-axis value of the horizontal line.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the list of values where the function crosses the line y=yval.</td>
 </tr>
@@ -1376,8 +1599,8 @@ to xmax, otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value.</li>
+<li><strong>xmin</strong> – the minimum x-axis value.</li>
+<li><strong>xmax</strong> – the maximum x-axis value.</li>
 </ul>
 </td>
 </tr>
@@ -1401,8 +1624,8 @@ the function is not defined in that range.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value.</li>
+<li><strong>xmin</strong> – the minimum x-axis value.</li>
+<li><strong>xmax</strong> – the maximum x-axis value.</li>
 </ul>
 </td>
 </tr>
@@ -1432,15 +1655,15 @@ the function is not defined in that range.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>point(default</strong> &#8211; False): a Point instance at the value of interest.</li>
-<li><strong>x(default</strong> &#8211; False): the x coordinate of interest.</li>
-<li><strong>y(default</strong> &#8211; False): the y coordinate of interest.</li>
-<li><strong>distTolerance(default</strong> &#8211; None): the pixel distance tolerance if
+<li><strong>point</strong><strong>(</strong><strong>default</strong> – False): a Point instance at the value of interest.</li>
+<li><strong>x</strong><strong>(</strong><strong>default</strong> – False): the x coordinate of interest.</li>
+<li><strong>y</strong><strong>(</strong><strong>default</strong> – False): the y coordinate of interest.</li>
+<li><strong>distTolerance</strong><strong>(</strong><strong>default</strong> – None): the pixel distance tolerance if
 only the x coordinate is given. If None
-default constant &#8216;point_distance&#8217; is used.</li>
-<li><strong>squareDistTolerance(default</strong> &#8211; None): the square pixel distance tolerance
+default constant ‘point_distance’ is used.</li>
+<li><strong>squareDistTolerance</strong><strong>(</strong><strong>default</strong> – None): the square pixel distance tolerance
 if point, or x and y are given. If
-None, default constant &#8216;point_distance_squared&#8217;
+None, default constant ‘point_distance_squared’
 is used.</li>
 </ul>
 </td>
@@ -1465,7 +1688,7 @@ is used.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the first Point instance within tolerances of the given arguments, or None</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#module-grader_lib.Point" title="grader_lib.Point">Point</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#grader_lib.Point.Point" title="grader_lib.Point.Point">Point</a></td>
 </tr>
 </tbody>
 </table>
@@ -1495,7 +1718,7 @@ is used.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xval</strong> &#8211; the x-axis value of the vertical line.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xval</strong> – the x-axis value of the vertical line.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the list of values where the function crosses the line x=xval.</td>
 </tr>
@@ -1514,9 +1737,9 @@ is used.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the constant value to check.</li>
-<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
+<li><strong>y</strong> – the constant value to check.</li>
+<li><strong>xmin</strong> – the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to test.</li>
 </ul>
 </td>
 </tr>
@@ -1540,12 +1763,12 @@ is straight in the range xmin to xmax, otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> &#8211; the x-axis value to test.</li>
-<li><strong>delta(default</strong> &#8211; False): the delta value to sample on either side of x
+<li><strong>x</strong> – the x-axis value to test.</li>
+<li><strong>delta</strong><strong>(</strong><strong>default</strong> – False): the delta value to sample on either side of x
 (not setting it uses a default value).</li>
-<li><strong>xmin(default</strong> &#8211; False): the position of the value left of x to compare
+<li><strong>xmin</strong><strong>(</strong><strong>default</strong> – False): the position of the value left of x to compare
 (not setting it uses the value x - delta).</li>
-<li><strong>xmax(default</strong> &#8211; False): the position of the value right of x to compare
+<li><strong>xmax</strong><strong>(</strong><strong>default</strong> – False): the position of the value right of x to compare
 (not setting it uses the value x + delta).</li>
 </ul>
 </td>
@@ -1570,12 +1793,12 @@ at xmin and xmax, otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> &#8211; the x-axis value to test.</li>
-<li><strong>delta(default</strong> &#8211; False): the delta value to sample on either side of x
+<li><strong>x</strong> – the x-axis value to test.</li>
+<li><strong>delta</strong><strong>(</strong><strong>default</strong> – False): the delta value to sample on either side of x
 (not setting it uses a default value).</li>
-<li><strong>xmin(default</strong> &#8211; False): the position of the value left of x to compare
+<li><strong>xmin</strong><strong>(</strong><strong>default</strong> – False): the position of the value left of x to compare
 (not setting it uses the value x - delta).</li>
-<li><strong>xmax(default</strong> &#8211; False): the position of the value right of x to compare
+<li><strong>xmax</strong><strong>(</strong><strong>default</strong> – False): the position of the value right of x to compare
 (not setting it uses the value x + delta).</li>
 </ul>
 </td>
@@ -1600,15 +1823,15 @@ xmin and xmax, otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
-<li><strong>numSegments(default</strong> &#8211; 5): the number of segments to divide the function
+<li><strong>xmin</strong> – the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to test.</li>
+<li><strong>numSegments</strong><strong>(</strong><strong>default</strong> – 5): the number of segments to divide the function
 into to individually test for negative
 curvature.</li>
-<li><strong>failureTolerance(default</strong> &#8211; None): the number of segments that can fail the
+<li><strong>failureTolerance</strong><strong>(</strong><strong>default</strong> – None): the number of segments that can fail the
 negative curvature test before test
 failure. If None given uses default constant
-&#8216;curve_failure&#8217;.</li>
+‘curve_failure’.</li>
 </ul>
 </td>
 </tr>
@@ -1632,15 +1855,15 @@ otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>point(default</strong> &#8211; False): a Point instance at the value of interest.</li>
-<li><strong>x(default</strong> &#8211; False): the x coordinate of interest.</li>
-<li><strong>y(default</strong> &#8211; False): the y coordinate of interest.</li>
-<li><strong>distTolerance(default</strong> &#8211; None): the pixel distance tolerance if
+<li><strong>point</strong><strong>(</strong><strong>default</strong> – False): a Point instance at the value of interest.</li>
+<li><strong>x</strong><strong>(</strong><strong>default</strong> – False): the x coordinate of interest.</li>
+<li><strong>y</strong><strong>(</strong><strong>default</strong> – False): the y coordinate of interest.</li>
+<li><strong>distTolerance</strong><strong>(</strong><strong>default</strong> – None): the pixel distance tolerance if
 only the x coordinate is given. If None
-default constant &#8216;point_distance&#8217; is used.</li>
-<li><strong>squareDistTolerance(default</strong> &#8211; None): the square pixel distance tolerance
+default constant ‘point_distance’ is used.</li>
+<li><strong>squareDistTolerance</strong><strong>(</strong><strong>default</strong> – None): the square pixel distance tolerance
 if point, or x and y are given. If
-None, default constant &#8216;point_distance_squared&#8217;
+None, default constant ‘point_distance_squared’
 is used.</li>
 </ul>
 </td>
@@ -1681,15 +1904,15 @@ argument(s), false otherwise.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
-<li><strong>numSegments(default</strong> &#8211; 5): the number of segments to divide the function
+<li><strong>xmin</strong> – the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to test.</li>
+<li><strong>numSegments</strong><strong>(</strong><strong>default</strong> – 5): the number of segments to divide the function
 into to individually test for positive
 curvature.</li>
-<li><strong>failureTolerance(default</strong> &#8211; None): the number of segments that can fail the
+<li><strong>failureTolerance</strong><strong>(</strong><strong>default</strong> – None): the number of segments that can fail the
 positive curvature test before test
 failure. If None given uses default constant
-&#8216;curve_failure&#8217;.</li>
+‘curve_failure’.</li>
 </ul>
 </td>
 </tr>
@@ -1713,10 +1936,10 @@ otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>m</strong> &#8211; the slope value to test against.</li>
-<li><strong>x</strong> &#8211; the position on the x-axis to test against.</li>
-<li><strong>tolerance(default</strong> &#8211; None): angle tolerance in degrees. If None given uses
-default constant &#8216;angle&#8217;.</li>
+<li><strong>m</strong> – the slope value to test against.</li>
+<li><strong>x</strong> – the position on the x-axis to test against.</li>
+<li><strong>tolerance</strong><strong>(</strong><strong>default</strong> – None): angle tolerance in degrees. If None given uses
+default constant ‘angle’.</li>
 </ul>
 </td>
 </tr>
@@ -1740,11 +1963,11 @@ otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the target y value.</li>
-<li><strong>x</strong> &#8211; the x value.</li>
-<li><strong>yTolerance(default</strong> &#8211; None): the y-axis pixel distance within which
+<li><strong>y</strong> – the target y value.</li>
+<li><strong>x</strong> – the x value.</li>
+<li><strong>yTolerance</strong><strong>(</strong><strong>default</strong> – None): the y-axis pixel distance within which
 the function value is accepted.</li>
-<li><strong>xTolerance(default</strong> &#8211; None): the x-axis pixel distance within which
+<li><strong>xTolerance</strong><strong>(</strong><strong>default</strong> – None): the x-axis pixel distance within which
 the function value is accepted.</li>
 </ul>
 </td>
@@ -1803,13 +2026,13 @@ domain, otherwise false.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
-<li><strong>numPoints(default</strong> &#8211; 10): the number of points to test along the range.</li>
-<li><strong>failureTolerance(default</strong> &#8211; None): the number of pairwise point decrease
+<li><strong>xmin</strong> – the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to test.</li>
+<li><strong>numPoints</strong><strong>(</strong><strong>default</strong> – 10): the number of points to test along the range.</li>
+<li><strong>failureTolerance</strong><strong>(</strong><strong>default</strong> – None): the number of pairwise point decrease
 comparisons that can fail before the test
 fails. If None give, default constant
-&#8216;inc_dec_failure&#8217; is used.</li>
+‘inc_dec_failure’ is used.</li>
 </ul>
 </td>
 </tr>
@@ -1833,11 +2056,11 @@ for the range xmin to xmax, otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the target y value.</li>
-<li><strong>xmin</strong> &#8211; the minimum x range value.</li>
-<li><strong>xmax</strong> &#8211; the maximum x range value.</li>
-<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance. If None given uses
-default constant &#8216;comparison&#8217;.</li>
+<li><strong>y</strong> – the target y value.</li>
+<li><strong>xmin</strong> – the minimum x range value.</li>
+<li><strong>xmax</strong> – the maximum x range value.</li>
+<li><strong>tolerance</strong><strong>(</strong><strong>default</strong> – None): pixel distance tolerance. If None given uses
+default constant ‘comparison’.</li>
 </ul>
 </td>
 </tr>
@@ -1861,13 +2084,13 @@ is greater than y within tolerances, otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to test.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to test.</li>
-<li><strong>numPoints(default</strong> &#8211; 10): the number of points to test along the range.</li>
-<li><strong>failureTolerance(default</strong> &#8211; None): the number of pairwise point increase
+<li><strong>xmin</strong> – the minimum x-axis value of the range to test.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to test.</li>
+<li><strong>numPoints</strong><strong>(</strong><strong>default</strong> – 10): the number of points to test along the range.</li>
+<li><strong>failureTolerance</strong><strong>(</strong><strong>default</strong> – None): the number of pairwise point increase
 comparisons that can fail before the test
 fails. If None give, default constant
-&#8216;inc_dec_failure&#8217; is used.</li>
+‘inc_dec_failure’ is used.</li>
 </ul>
 </td>
 </tr>
@@ -1891,11 +2114,11 @@ for the range xmin to xmax, otherwise false.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y</strong> &#8211; the target y value.</li>
-<li><strong>xmin</strong> &#8211; the minimum x range value.</li>
-<li><strong>xmax</strong> &#8211; the maximum x range value.</li>
-<li><strong>tolerance(default</strong> &#8211; None): pixel distance tolerance. If None given uses
-default constant &#8216;comparison&#8217;.</li>
+<li><strong>y</strong> – the target y value.</li>
+<li><strong>xmin</strong> – the minimum x range value.</li>
+<li><strong>xmax</strong> – the maximum x range value.</li>
+<li><strong>tolerance</strong><strong>(</strong><strong>default</strong> – None): pixel distance tolerance. If None given uses
+default constant ‘comparison’.</li>
 </ul>
 </td>
 </tr>
@@ -1936,8 +2159,8 @@ domain, otherwise false.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xmin</strong> &#8211; the minimum x-axis value of the range to check.</li>
-<li><strong>xmax</strong> &#8211; the maximum x-axis value of the range to check.</li>
+<li><strong>xmin</strong> – the minimum x-axis value of the range to check.</li>
+<li><strong>xmax</strong> – the maximum x-axis value of the range to check.</li>
 </ul>
 </td>
 </tr>
@@ -1961,9 +2184,9 @@ otherwise false</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>yTolerance(default</strong> &#8211; None): the y-axis pixel distance within which
+<li><strong>yTolerance</strong><strong>(</strong><strong>default</strong> – None): the y-axis pixel distance within which
 the function value is accepted.</li>
-<li><strong>xTolerance(default</strong> &#8211; None): the x-axis pixel distance within which
+<li><strong>xTolerance</strong><strong>(</strong><strong>default</strong> – None): the x-axis pixel distance within which
 the function value is accepted.</li>
 </ul>
 </td>
@@ -1982,18 +2205,18 @@ tolerances, otherwise false</p>
 <dl class="method">
 <dt id="grader_lib.GradeableFunction.GradeableFunction.tag_equals">
 <code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.GradeableFunction.GradeableFunction.tag_equals" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
+<dd><p>Returns whether the given string is equal to the object’s tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object&#8217;s tag,
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object’s tag,
 otherwise False.</p>
 </td>
 </tr>
@@ -2012,7 +2235,7 @@ otherwise False.</p>
 <dl class="class">
 <dt id="grader_lib.Point.Point">
 <em class="property">class </em><code class="descclassname">grader_lib.Point.</code><code class="descname">Point</code><span class="sig-paren">(</span><em>parent_function</em>, <em>x</em>, <em>y</em>, <em>pixel=True</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">grader_lib.Tag.Tag</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="grader_lib.Point.Point.get_px_distance_squared">
 <code class="descname">get_px_distance_squared</code><span class="sig-paren">(</span><em>point</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.get_px_distance_squared" title="Permalink to this definition">¶</a></dt>
@@ -2040,6 +2263,11 @@ otherwise False.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="grader_lib.Point.Point.next">
+<code class="descname">next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.next" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="grader_lib.Point.Point.set_tag">
 <code class="descname">set_tag</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.set_tag" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2047,18 +2275,18 @@ otherwise False.</p>
 <dl class="method">
 <dt id="grader_lib.Point.Point.tag_equals">
 <code class="descname">tag_equals</code><span class="sig-paren">(</span><em>to_compare</em>, <em>ignore_case=False</em><span class="sig-paren">)</span><a class="headerlink" href="#grader_lib.Point.Point.tag_equals" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns whether the given string is equal to the object&#8217;s tag value.</p>
+<dd><p>Returns whether the given string is equal to the object’s tag value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>to_compare</strong> &#8211; an string value</li>
-<li><strong>(default</strong> (<em>ignore_case</em>) &#8211; False): boolean ignore the case of the string</li>
+<li><strong>to_compare</strong> – an string value</li>
+<li><strong>(</strong><strong>default</strong> (<em>ignore_case</em>) – False): boolean ignore the case of the string</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object&#8217;s tag,
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the given string is the same as the object’s tag,
 otherwise False.</p>
 </td>
 </tr>
@@ -2076,48 +2304,62 @@ otherwise False.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">grader_lib package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-grader_lib.Asymptote">grader_lib.Asymptote module</a></li>
-<li><a class="reference internal" href="#grader-lib-linesegment-module">grader_lib.LineSegment module</a></li>
-<li><a class="reference internal" href="#module-grader_lib.PolyLine">grader_lib.PolyLine module</a></li>
-<li><a class="reference internal" href="#module-grader_lib.Polygon">grader_lib.Polygon module</a></li>
-<li><a class="reference internal" href="#module-grader_lib.GradeableFunction">grader_lib.GradeableFunction module</a></li>
-<li><a class="reference internal" href="#module-grader_lib.Point">grader_lib.Point module</a></li>
+<h1 class="logo"><a href="index.html">SketchResponse</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">grader_lib package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-grader_lib.Asymptote">grader_lib.Asymptote module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#grader-lib-linesegment-module">grader_lib.LineSegment module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-grader_lib.PolyLine">grader_lib.PolyLine module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-grader_lib.Polygon">grader_lib.Polygon module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-grader_lib.GradeableFunction">grader_lib.GradeableFunction module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-grader_lib.Point">grader_lib.Point module</a></li>
 </ul>
 </li>
 </ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to SketchResponse&#8217;s documentation!</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to SketchResponse’s documentation!</a></li>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/grader_lib.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -2126,11 +2368,11 @@ otherwise False.</p>
       &copy;2016 Massachusetts Institute of Technology.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/grader_lib.txt"
+      <a href="_sources/grader_lib.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
