@@ -11,7 +11,7 @@ import GradeableManager from './gradeable-manager';
 import StateManager from './state-manager';
 import HistoryManager from './history-manager';
 import ElementManager from './element-manager';
-import { validate } from './config-validator';
+import validate from './config-validator';
 import deepCopy from './util/deep-copy';
 
 

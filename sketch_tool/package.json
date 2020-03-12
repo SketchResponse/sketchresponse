@@ -43,7 +43,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --openPage /#debug:allPlugins --config webpack.development.js",
-    "lint": "eslint lib/**",
+    "lint": "eslint lib/",
     "build": "mkdir -p ../static/sketch_tool_dist/ && rm -rf ../static/sketch_tool_dist/* && gobble build ../static/sketch_tool_dist/ -f && npm run cleanjs && npm run css",
     "css": "npm run sass && npm run autoprefixer",
     "sass": "node-sass --output-style compressed --source-map true --sourceMapContents true ./styles/ --output ../static/sketch_tool_dist/",

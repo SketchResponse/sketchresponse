@@ -1,289 +1,292 @@
+/* eslint-disable no-console */
+/* eslint-disable key-spacing */
 import validator from 'is-my-json-valid';
-import deepCopy from './util/deep-copy';
 import deepExtend from 'deep-extend';
+import deepCopy from './util/deep-copy';
 
 // Schemas
-let tag = {
+const tag = {
   type: 'object',
   properties: {
-    value:   {type: 'string'},
-    latex:   {type: 'boolean'},
-    xoffset: {type: 'integer'},
-    yoffset: {type: 'integer'},
+    value:   { type: 'string' },
+    latex:   { type: 'boolean' },
+    xoffset: { type: 'integer' },
+    yoffset: { type: 'integer' },
     align: {
       type: 'string',
-      enum: ['start', 'middle', 'end']
-    }
+      enum: ['start', 'middle', 'end'],
+    },
   },
-  additionalProperties: false
+  additionalProperties: false,
 };
 
-let arrowTag = deepCopy(tag);
+const arrowTag = deepCopy(tag);
 arrowTag.properties.position = {
   type: 'string',
-  enum: ['start', 'middle', 'end']
+  enum: ['start', 'middle', 'end'],
 };
 
-let dashStyle = {
+const dashStyle = {
   type: 'string',
-  enum: ['dashed', 'longdashed', 'dotted', 'dashdotted', 'solid']
-}
+  enum: ['dashed', 'longdashed', 'dotted', 'dashdotted', 'solid'],
+};
 
-let coords = {
+const coords = {
   type: 'array',
   minItems: 2,
   maxItems: 2,
   items: [
-    {type: 'number'},
-    {type: 'number'}
-  ]
+    { type: 'number' },
+    { type: 'number' },
+  ],
 };
 
-let main = {
+const main = {
   type: 'object',
   properties: {
-    debug:  {type: 'boolean'},
-    width:  {type: 'integer'},
-    height: {type: 'integer'},
+    debug:  { type: 'boolean' },
+    width:  { type: 'integer' },
+    height: { type: 'integer' },
     xrange: coords,
     yrange: coords,
     xscale: {
       type: 'string',
-      enum: ['linear']
+      enum: ['linear'],
     },
     yscale: {
       type: 'string',
-      enum: ['linear']
+      enum: ['linear'],
     },
     coordinates: {
       type: 'string',
-      enum: ['cartesian', 'polar']
+      enum: ['cartesian', 'polar'],
     },
     plugins: {
       type:     'array',
-      minItems: 1
-    }
+      minItems: 1,
+    },
   },
   required: ['width', 'height', 'xrange', 'yrange', 'xscale', 'yscale', 'coordinates', 'plugins'],
-  additionalProperties: false
+  additionalProperties: false,
 };
 
-let axes = {
+const axes = {
   type: 'object',
   properties: {
-    name:       {type: 'string'},
-    xmajor:     {type: 'number'},
-    ymajor:     {type: 'number'},
-    xminor:     {type: 'number'},
-    yminor:     {type: 'number'},
-    xlabels:    {type: 'number'},
-    ylabels:    {type: 'number'},
-    major:      {type: 'number'},
-    minor:      {type: 'number'},
-    labels:     {type: 'number'},
-    rrange:     {type: 'number'},
-    rmajor:     {type: 'number'},
-    thetamajor: {type: 'number'},
+    name:       { type: 'string' },
+    xmajor:     { type: 'number' },
+    ymajor:     { type: 'number' },
+    xminor:     { type: 'number' },
+    yminor:     { type: 'number' },
+    xlabels:    { type: 'number' },
+    ylabels:    { type: 'number' },
+    major:      { type: 'number' },
+    minor:      { type: 'number' },
+    labels:     { type: 'number' },
+    rrange:     { type: 'number' },
+    rmajor:     { type: 'number' },
+    thetamajor: { type: 'number' },
     colors: {
       type: 'object',
       properties: {
         // Cartesian coordinates
-        xmajor:     {type: 'string'},
-        ymajor:     {type: 'string'},
-        xminor:     {type: 'string'},
-        yminor:     {type: 'string'},
-        xaxis:      {type: 'string'},
-        yaxis:      {type: 'string'},
-        xlabels:     {type: 'string'},
-        ylabels:     {type: 'string'},
-        zeroLabel:  {type: 'string'},
+        xmajor:     { type: 'string' },
+        ymajor:     { type: 'string' },
+        xminor:     { type: 'string' },
+        yminor:     { type: 'string' },
+        xaxis:      { type: 'string' },
+        yaxis:      { type: 'string' },
+        xlabels:     { type: 'string' },
+        ylabels:     { type: 'string' },
+        zeroLabel:  { type: 'string' },
         // Polar coordinates
-        circle:     {type: 'string'},
-        ray:        {type: 'string'},
+        circle:     { type: 'string' },
+        ray:        { type: 'string' },
         // Both
-        xaxisLabel: {type: 'string'},
-        yaxisLabel: {type: 'string'}
+        xaxisLabel: { type: 'string' },
+        yaxisLabel: { type: 'string' },
       },
-      additionalProperties: false
+      additionalProperties: false,
     },
     fontSize: {
       type: 'object',
       properties: {
         // Cartesian coordinates
-        xlabels:     {type: 'integer'},
-        ylabels:     {type: 'integer'},
-        zeroLabel:  {type: 'integer'},
+        xlabels:     { type: 'integer' },
+        ylabels:     { type: 'integer' },
+        zeroLabel:  { type: 'integer' },
         // Both
-        xaxisLabel: {type: 'integer'},
-        yaxisLabel: {type: 'integer'}
-      }
+        xaxisLabel: { type: 'integer' },
+        yaxisLabel: { type: 'integer' },
+      },
     },
     strokeWidth: {
       type: 'object',
       properties: {
         // Cartesian coordinates
-        xmajor: {type: 'integer'},
-        ymajor: {type: 'integer'},
-        xminor: {type: 'integer'},
-        yminor: {type: 'integer'},
-        xaxis:  {type: 'integer'},
-        yaxis:  {type: 'integer'},
+        xmajor: { type: 'integer' },
+        ymajor: { type: 'integer' },
+        xminor: { type: 'integer' },
+        yminor: { type: 'integer' },
+        xaxis:  { type: 'integer' },
+        yaxis:  { type: 'integer' },
         // Polar coordinates
-        circle: {type: 'integer'},
-        ray:    {type: 'integer'}
-      }
+        circle: { type: 'integer' },
+        ray:    { type: 'integer' },
+      },
     },
     xaxisLabel: {
       type: 'object',
       properties: {
-        value: {type: 'string'},
-        dx:    {type: 'integer'},
-        dy:    {type: 'integer'}
-      }
+        value: { type: 'string' },
+        dx:    { type: 'integer' },
+        dy:    { type: 'integer' },
+      },
     },
     yaxisLabel: {
       type: 'object',
       properties: {
-        value: {type: 'string'},
-        dx:    {type: 'integer'},
-        dy:    {type: 'integer'}
-      }
-    }
+        value: { type: 'string' },
+        dx:    { type: 'integer' },
+        dy:    { type: 'integer' },
+      },
+    },
   },
-  additionalProperties: false
+  additionalProperties: false,
 };
 
-let baseRequired = ['name', 'id'];
+const baseRequired = ['name', 'id'];
 
-let basePlugin = {
+const basePlugin = {
   type: 'object',
   properties: {
-    name:      {type: 'string'},
-    id:        {type: 'string'},
-    label:     {type: 'string'},
-    color:     {type: 'string'},
-    readonly:  {type: 'boolean'},
-    tag:       tag,
-    isSubItem: {type: 'boolean'}
+    name:      { type: 'string' },
+    id:        { type: 'string' },
+    label:     { type: 'string' },
+    color:     { type: 'string' },
+    readonly:  { type: 'boolean' },
+    tag,
+    isSubItem: { type: 'boolean' },
   },
   required: baseRequired,
-  additionalProperties: false
+  additionalProperties: false,
 };
 
-let freeform = deepCopy(basePlugin);
+const freeform = deepCopy(basePlugin);
 
-let group = {
+const group = {
   type: 'object',
   properties: {
-    name:    {type: 'string'},
-    id:      {type: 'string'},
-    label:   {type: 'string'},
+    name:    { type: 'string' },
+    id:      { type: 'string' },
+    label:   { type: 'string' },
     plugins: {
       type:     'array',
-      minItems: 1
-    }
+      minItems: 1,
+    },
   },
-  required: ['name', 'id', 'plugins']
+  required: ['name', 'id', 'plugins'],
 };
 
-let horizontalLine = deepCopy(basePlugin);
+const horizontalLine = deepCopy(basePlugin);
 deepExtend(horizontalLine, {
   properties: {
-    dashStyle: dashStyle
+    dashStyle,
   },
   required: baseRequired,
-  additionalProperties: false
+  additionalProperties: false,
 });
 
-let image = {
+const image = {
   type: 'object',
   properties: {
     name: {
       type: 'string',
-      enum: ['image']
+      enum: ['image'],
     },
-    scale: {type: 'string'},
+    scale: { type: 'string' },
     align: {
       type: 'string',
-      enum: ['top', 'left', 'bottom', 'right', '']
+      enum: ['top', 'left', 'bottom', 'right', ''],
     },
     offset: coords,
-    src: {type: 'string'}
+    src: { type: 'string' },
   },
   required: ['name', 'src'],
-  additionalProperties: false
+  additionalProperties: false,
 };
 
-let lineSegment = deepCopy(basePlugin);
+const lineSegment = deepCopy(basePlugin);
 deepExtend(lineSegment, {
   properties: {
-    dashStyle: dashStyle,
+    dashStyle,
     directionConstraint: {
       type: 'string',
-      enum: ['horizontal', 'vertical']
+      enum: ['horizontal', 'vertical'],
     },
-    lengthConstraint: {type: 'integer'},
+    lengthConstraint: { type: 'integer' },
     arrowHead: {
       type: 'object',
       properties: {
-        length: {type: 'integer'},
-        base: {type: 'integer'}
+        length: { type: 'integer' },
+        base: { type: 'integer' },
       },
-      additionalProperties: false
+      additionalProperties: false,
     },
-    tag: arrowTag
+    tag: arrowTag,
   },
   required: baseRequired,
   additionalProperties: false,
 });
 
-let point = deepCopy(basePlugin);
+const point = deepCopy(basePlugin);
 deepExtend(point, {
   properties: {
-    size:   {type: 'integer'},
-    hollow: {type: 'boolean'}
+    size:   { type: 'integer' },
+    hollow: { type: 'boolean' },
   },
   required: baseRequired,
   additionalProperties: false,
 });
 
-let polyline = deepCopy(basePlugin);
+const polyline = deepCopy(basePlugin);
 deepExtend(polyline, {
   properties: {
-    fillColor: {type: 'string'},
-    dashStyle: dashStyle,
-    closed:    {type: 'boolean'},
-    opacity:   {type: 'number'},
+    fillColor: { type: 'string' },
+    dashStyle,
+    closed:    { type: 'boolean' },
+    opacity:   { type: 'number' },
   },
   required: baseRequired,
   additionalProperties: false,
 });
 
-let spline = deepCopy(basePlugin);
+const spline = deepCopy(basePlugin);
 
-let stamp = deepCopy(basePlugin);
+const stamp = deepCopy(basePlugin);
 deepExtend(stamp, {
   properties: {
-    src:       {type: 'string'},
-    iconSrc:   {type: 'string'},
-    scale:     {type: 'number'},
-    imgwidth:  {type: 'integer'},
-    imgheight: {type: 'integer'}
+    src:       { type: 'string' },
+    iconSrc:   { type: 'string' },
+    scale:     { type: 'number' },
+    imgwidth:  { type: 'integer' },
+    imgheight: { type: 'integer' },
   },
   required: baseRequired,
   additionalProperties: false,
 });
 
-let verticalLine = deepCopy(basePlugin);
+const verticalLine = deepCopy(basePlugin);
 deepExtend(verticalLine, {
   properties: {
-    dashStyle: dashStyle
+    dashStyle,
   },
   required: baseRequired,
   additionalProperties: false,
 });
 
-let schemas = {
+const schemas = {
+  /* eslint-disable quote-props */
   'main': main,
   'axes': axes,
   'freeform': freeform,
@@ -295,31 +298,32 @@ let schemas = {
   'polyline': polyline,
   'spline': spline,
   'stamp': stamp,
-  'vertical-line': verticalLine
-}
+  'vertical-line': verticalLine,
+  /* eslint-disable quote-props */
+};
 
 function validateParams(params, name) {
-  let validateSchema = validator(schemas[name], {greedy: true, verbose: true}),
-      valid = validateSchema(params),
-      idStr = params.id ? ' id ' + `'${params.id}'` : '';
+  const validateSchema = validator(schemas[name], { greedy: true, verbose: true });
+  const valid = validateSchema(params);
+  // eslint-disable-next-line no-useless-concat
+  const idStr = params.id ? ' id ' + `'${params.id}'` : '';
   console.log(`%c${name}${idStr}`, 'color: blue; font-weight: bold;');
   if (!valid) {
-    let errors = validateSchema.errors;
-    for (let error of errors) {
+    const { errors } = validateSchema;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const error of errors) {
       if (error.message === 'has additional properties') {
         console.warn(`${error.value.replace('data', '')} is not a valid key`);
-      }
-      else {
+      } else {
         console.warn(`${error.field.replace('data', '')} ${error.message}`);
       }
     }
-  }
-  else {
+  } else {
     console.log('is valid');
   }
   return valid;
 }
 
-export function validate(params, name) {
+export default function validate(params, name) {
   return validateParams(params, name);
 }

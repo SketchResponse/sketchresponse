@@ -1,7 +1,7 @@
 import deepExtend from 'deep-extend';
 import z from '../util/zdom';
 import BasePlugin from './base-plugin';
-import { validate } from '../config-validator';
+import validate from '../config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -23,8 +23,9 @@ export default class Point extends BasePlugin {
       console.log('The point config has errors, using default values instead');
     }
     // Add params that are specific to this plugin
-    const iconSrc = pParams.hollow ? './lib/plugins/point/point-hollow-icon.svg'
-                             : './lib/plugins/point/point-icon.svg';
+    const iconSrc = pParams.hollow
+      ? './lib/plugins/point/point-hollow-icon.svg'
+      : './lib/plugins/point/point-icon.svg';
     pParams.icon = {
       src: iconSrc,
       alt: 'Point tool',

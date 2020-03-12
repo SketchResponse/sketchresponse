@@ -6,7 +6,7 @@ import Polyline from './polyline';
 import Spline from './spline';
 import Stamp from './stamp';
 import VerticalLine from './vertical-line';
-import { validate } from '../config-validator';
+import validate from '../config-validator';
 
 export const VERSION = '0.1';
 
