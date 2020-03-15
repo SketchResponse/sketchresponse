@@ -3,6 +3,8 @@ import z from '../util/zdom';
 import BasePlugin from './base-plugin';
 import { injectSVGDefs } from '../util/dom-style-helpers';
 import validate from '../config-validator';
+import arrowSvg from './line-segment/arrow-icon.svg';
+import lineSvg from './line-segment/line-icon.svg';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -32,9 +34,9 @@ export default class LineSegment extends BasePlugin {
           <polygon points="0 0, ${length} ${refY}, 0 ${base}" style="fill: ${params.color}; stroke: ${params.color}; stroke-width: 1;"/>
         </marker>`,
       );
-      iconSrc = './lib/plugins/line-segment/arrow-icon.svg';
+      iconSrc = arrowSvg;
     } else {
-      iconSrc = './lib/plugins/line-segment/line-icon.svg';
+      iconSrc = lineSvg;
     }
     lsParams.icon = {
       src: iconSrc,

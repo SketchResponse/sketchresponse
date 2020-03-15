@@ -2,6 +2,7 @@
   "name": "@sketchresponse/sketch-tool",
   "version": "1.0.0-rc",
   "description": "A configurable Javascript front-end drawing tool with plugin components",
+  "private": true,
   "license": "LGPL-2.1",
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
@@ -23,40 +24,43 @@
     "autoprefixer": "^9.7.4",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-loader": "^3.0.3",
     "eslint-plugin-import": "^2.20.1",
     "expose-loader": "^0.7.5",
     "fast-sourcemap-concat": "^2.1.0",
     "file-loader": "^5.1.0",
     "glob": "^7.1.6",
+    "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.1",
     "postcss-cli": "^7.1.0",
+    "postcss-loader": "^3.0.0",
+    "raw-loader": "^4.0.0",
+    "replace-in-file-webpack-plugin": "^1.0.6",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.3",
     "stylelint": "^13.2.1",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-scss": "^3.14.2",
     "stylelint-webpack-plugin": "^1.2.3",
-    "svg-inline-loader": "^0.8.2",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2"
   },
-  "scripts": {
-    "start": "webpack-dev-server --openPage /#debug:allPlugins --config webpack.development.js",
-    "lint": "eslint lib/",
-    "build": "mkdir -p ../static/sketch_tool_dist/ && rm -rf ../static/sketch_tool_dist/* && gobble build ../static/sketch_tool_dist/ -f && npm run cleanjs && npm run css",
-    "css": "npm run sass && npm run autoprefixer",
-    "sass": "node-sass --output-style compressed --source-map true --sourceMapContents true ./styles/ --output ../static/sketch_tool_dist/",
-    "autoprefixer": "postcss --use autoprefixer --replace ../static/sketch_tool_dist/*.css",
-    "cleanjs": "mv vendorBundle.js ../static/sketch_tool_dist/vendorBundle.js && mv vendorBundle.map ../static/sketch_tool_dist/vendorBundle.js.map"
-  },
   "browserslist": [
     "defaults",
     "last 2 versions",
     "IE 11"
-  ]
+  ],
+  "scripts": {
+    "start": "webpack-dev-server --openPage /#debug:$npm_config_debug --config webpack.development.js",
+    "lint:js": "eslint lib/",
+    "lint:css": "stylelint styles/",
+    "build": "webpack --config webpack.production.js"
+  }
 }

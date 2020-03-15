@@ -1,10 +1,7 @@
 // Colors an SVG icon and returns a blob url
 export default function colorIcon(src, stroke, fill) {
-  const ajax = new XMLHttpRequest();
-  ajax.open('GET', src, false); // For the time being, use a deprecated synchronous request
-  ajax.send(null);
   const div = document.createElement('div');
-  div.innerHTML = ajax.responseText;
+  div.innerHTML = src;
   const svg = div.children[0];
   svg.setAttribute('width', 35);
   svg.setAttribute('height', 35);

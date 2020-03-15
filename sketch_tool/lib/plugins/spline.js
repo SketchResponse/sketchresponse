@@ -3,6 +3,7 @@ import z from '../util/zdom';
 import BasePlugin from './base-plugin';
 import fitCurve from './freeform/fitcurve';
 import validate from '../config-validator';
+import splineSvg from './spline/spline-icon.svg';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -42,7 +43,7 @@ export default class Spline extends BasePlugin {
       // eslint-disable-next-line no-console
       console.log('The spline config has errors, using default values instead');
     }
-    const iconSrc = './lib/plugins/spline/spline-icon.svg';
+    const iconSrc = splineSvg;
     // Add params that are specific to this plugin
     sParams.icon = {
       src: iconSrc,

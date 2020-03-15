@@ -1,25 +1,21 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const path = require('path');
+const StylelintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
   entry: {
-    application: './lib/main.js'
+    application: './lib/main.js',
   },
   output: {
     path: path.resolve(__dirname, '../static/sketch_tool_dist/'),
     filename: '[name].min.js',
-    chunkFilename: '[name].min.js'
+    chunkFilename: '[name].min.js',
   },
   resolve: {
-    extensions: ['.js']
+    extensions: ['.js'],
   },
   module: {
     rules: [
-      {
-        test: /\.svg$/,
-        use: [
-          'svg-inline-loader'
-        ],
-      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -27,20 +23,29 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env']
+              presets: ['@babel/preset-env'],
             },
           },
           {
             loader: 'expose-loader',
-            options: 'SketchInput'
+            options: 'SketchInput',
           },
-        ]
+          {
+            loader: 'eslint-loader',
+            options: {
+              cache: true,
+              failOnError: true,
+            },
+          },
+        ],
       },
       {
         test: /\.(ttf|eot|woff|woff2)$/,
-        use: {
-          loader: 'file-loader',
-        },
+        loader: 'file-loader',
+      },
+      {
+        test: /\.svg$/,
+        use: 'raw-loader',
       },
       {
         test: /\.css$/,
@@ -49,26 +54,19 @@ module.exports = {
           'css-loader',
         ],
       },
-      {
-        test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-        ],
-      },
     ],
   },
   optimization: {
     splitChunks: {
-      chunks: "all",
+      chunks: 'all',
       minSize: 0,
       cacheGroups: {
         vendors: {
             test: /node_modules/,
-            name: 'vendors'
-        }
+            name: 'vendors',
+        },
       },
-    }
-  }
+    },
+  },
+  plugins: [new StylelintPlugin()],
 };

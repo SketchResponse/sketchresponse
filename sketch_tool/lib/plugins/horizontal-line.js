@@ -2,6 +2,7 @@ import deepExtend from 'deep-extend';
 import z from '../util/zdom';
 import BasePlugin from './base-plugin';
 import validate from '../config-validator';
+import horizontalLineSvg from './horizontal-line/horizontal-line-icon.svg';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -23,7 +24,7 @@ export default class HorizontalLine extends BasePlugin {
     }
     // Add params that are specific to this plugin
     hlParams.icon = {
-      src: './lib/plugins/horizontal-line/horizontal-line-icon.svg',
+      src: horizontalLineSvg,
       alt: 'Horizontal line tool',
       color: hlParams.color,
     };

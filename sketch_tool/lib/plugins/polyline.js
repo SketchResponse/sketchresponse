@@ -3,6 +3,8 @@ import z from '../util/zdom';
 import BasePlugin from './base-plugin';
 import fitCurve from './freeform/fitcurve';
 import validate from '../config-validator';
+import polylineClosedSvg from './polyline/polyline-closed-icon.svg';
+import polylineOpenSvg from './polyline/polyline-open-icon.svg';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.2';
@@ -46,8 +48,7 @@ export default class Polyline extends BasePlugin {
       // eslint-disable-next-line no-console
       console.log('The polyline config has errors, using default values instead');
     }
-    const iconSrc = plParams.closed ? './lib/plugins/polyline/polyline-closed-icon.svg'
-                                  : './lib/plugins/polyline/polyline-open-icon.svg';
+    const iconSrc = plParams.closed ? polylineClosedSvg : polylineOpenSvg;
     // Add params that are specific to this plugin
     plParams.icon = {
       src: iconSrc,

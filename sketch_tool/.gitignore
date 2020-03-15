@@ -1,5 +1,2 @@
-.gobble
-.gobble-build
 node_modules
-jspm_packages
 npm-debug.log
