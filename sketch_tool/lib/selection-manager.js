@@ -1,5 +1,5 @@
 import * as attrCache from './util/dom-attr-cache';
-import { injectStyleSheet, injectSVGDefs } from './util/dom-style-helpers';
+import { injectStyleSheet } from './util/dom-style-helpers';
 
 // Note: data-* attributes are not officially supported in SVG 1.1 (without namespaces),
 // but they still seem to have widespread browser support and are a bit cleaner to deal with
@@ -23,17 +23,17 @@ export const SELECTED_ATTR = 'data-si-selected';
 injectStyleSheet(`
   [${ SELECTED_ATTR }='default'] { opacity: 0.5;}
   [${ SELECTED_ATTR }='override'] { opacity: 0.5 !important;}
-`
+`,
 );
 
 export default class SelectionManager {
   constructor(rootElement, messageBus) {
     this.rootElement = rootElement;
     this.selectMode = false;
-    messageBus.on('enableSelectMode', () => {this.setSelectMode(true);});
-    messageBus.on('disableSelectMode', () => {this.setSelectMode(false);});
-    messageBus.on('deselectAll', () => {this.deselectAll()});
-    messageBus.on('deleteSelected', () => {this.deleteSelected()});
+    messageBus.on('enableSelectMode', () => { this.setSelectMode(true); });
+    messageBus.on('disableSelectMode', () => { this.setSelectMode(false); });
+    messageBus.on('deselectAll', () => { this.deselectAll(); });
+    messageBus.on('deleteSelected', () => { this.deleteSelected(); });
     this.messageBus = messageBus;
   }
 
@@ -43,14 +43,20 @@ export default class SelectionManager {
       this.deselectAll();
     }
   }
+
+  // eslint-disable-next-line class-methods-use-this
   select(element, mode) {
-    attrCache.setAttributeNS(element, null, SELECTED_ATTR, mode == 'override' ? 'override' : 'default');
+    attrCache.setAttributeNS(element, null, SELECTED_ATTR, mode === 'override' ? 'override' : 'default');
   }
+
+  // eslint-disable-next-line class-methods-use-this
   deselect(element) { attrCache.removeAttributeNS(element, null, SELECTED_ATTR); }
-  isSelected(element) {return attrCache.getAttributeNS(element, null, SELECTED_ATTR) !== null; }
+
+  // eslint-disable-next-line class-methods-use-this
+  isSelected(element) { return attrCache.getAttributeNS(element, null, SELECTED_ATTR) !== null; }
 
   toggleSelected(element, mode) {
-    let condition = !this.isSelected(element);  // toggle current value
+    const condition = !this.isSelected(element); // toggle current value
     if (condition) this.select(element, mode);
     else this.deselect(element);
   }
@@ -59,81 +65,73 @@ export default class SelectionManager {
   getSelected() { return Array.from(this.rootElement.querySelectorAll(`[${ SELECTED_ATTR }]`)); }
 
   // Expensive; call circumspectly
-  deselectAll() { this.getSelected().forEach(element => this.deselect(element)); }
+  deselectAll() { this.getSelected().forEach((element) => this.deselect(element)); }
 
   deleteSelected() {
     let elWasDeleted = false;
     this.getSelected().forEach((element) => {
-      let elementClasses = element.getAttribute('class').split(' ');
-      if (elementClasses.indexOf('point') != -1) {
+      const elementClasses = element.getAttribute('class').split(' ');
+      if (elementClasses.indexOf('point') !== -1) {
         this.messageBus.emit(
           'addPoint',
           elementClasses[1].substring(10),
-          parseInt(elementClasses[2].substring(12))
+          parseInt(elementClasses[2].substring(12), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('horizontal-line') != -1) {
+      } else if (elementClasses.indexOf('horizontal-line') !== -1) {
         this.messageBus.emit(
           'addHorizontalLine',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8))
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('vertical-line') != -1) {
+      } else if (elementClasses.indexOf('vertical-line') !== -1) {
         this.messageBus.emit(
           'addVerticalLine',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8))
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('line-segment') != -1) {
+      } else if (elementClasses.indexOf('line-segment') !== -1) {
         this.messageBus.emit(
           'addLineSegment',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8))
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('line-segment-point') != -1) {
+      } else if (elementClasses.indexOf('line-segment-point') !== -1) {
         this.messageBus.emit(
           'addLineSegmentPoint',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(10))
+          parseInt(elementClasses[0].substring(10), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('freeform') != -1) {
+      } else if (elementClasses.indexOf('freeform') !== -1) {
         this.messageBus.emit(
           'addFreeform',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8))
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('stamp') != -1) {
+      } else if (elementClasses.indexOf('stamp') !== -1) {
         this.messageBus.emit(
           'addStamp',
           elementClasses[1].substring(10),
-          parseInt(elementClasses[2].substring(12))
+          parseInt(elementClasses[2].substring(12), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('polyline') != -1) {
+      } else if (elementClasses.indexOf('polyline') !== -1) {
         this.messageBus.emit(
           'addPolyline',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8))
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
-      }
-      else if (elementClasses.indexOf('spline') != -1) {
+      } else if (elementClasses.indexOf('spline') !== -1) {
         this.messageBus.emit(
           'addSpline',
           elementClasses[2].substring(10),
-          parseInt(elementClasses[0].substring(8))
+          parseInt(elementClasses[0].substring(8), 10),
         );
         elWasDeleted = true;
       }

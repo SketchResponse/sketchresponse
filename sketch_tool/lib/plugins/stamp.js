@@ -1,7 +1,7 @@
-import z from 'sketch/util/zdom';
-import BasePlugin from './base-plugin';
 import deepExtend from 'deep-extend';
-import {validate} from 'sketch/config-validator';
+import z from '../util/zdom';
+import BasePlugin from './base-plugin';
+import validate from '../config-validator';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -11,41 +11,41 @@ const DEFAULT_PARAMS = {
   imgwidth: 100,
   imgheight: 100,
   scale: 1,
-  src: './plugins/stamp/stamp.svg',
-  iconSrc: './plugins/stamp/stamp-icon.svg'
+  src: './lib/plugins/stamp/stamp.svg',
+  iconSrc: './lib/plugins/stamp/stamp-icon.svg',
 };
 
 export default class Stamp extends BasePlugin {
   constructor(params, app) {
-    let sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    const sParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'stamp')) {
       deepExtend(sParams, params);
-    }
-    else {
+    } else {
+      // eslint-disable-next-line no-console
       console.log('The stamp config has errors, using default values instead');
     }
     // Add params that are specific to this plugin
     sParams.icon = {
       src: sParams.iconSrc,
-      alt: 'Stamp tool'
+      alt: 'Stamp tool',
     };
     // Add versions
     sParams.version = VERSION;
     sParams.gradeableVersion = GRADEABLE_VERSION;
     super(sParams, app);
     // Message listeners
-    this.app.__messageBus.on('addStamp', (id, index) => {this.addStamp(id, index)});
-    this.app.__messageBus.on('deleteStamps', () => {this.deleteStamps()});
-    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
+    this.app.__messageBus.on('addStamp', (id, index) => { this.addStamp(id, index); });
+    this.app.__messageBus.on('deleteStamps', () => { this.deleteStamps(); });
+    ['drawMove', 'drawEnd'].forEach((name) => {
+      this[name] = this[name].bind(this);
+    });
   }
 
   getGradeable() {
-    return this.state.map(position => {
-      return {
-        point: [position.x, position.y],
-        tag: position.tag
-      };
-    });
+    return this.state.map((position) => ({
+      point: [position.x, position.y],
+      tag: position.tag,
+    }));
   }
 
   addStamp(id, index) {
@@ -57,7 +57,7 @@ export default class Stamp extends BasePlugin {
   deleteStamps() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
-      for (let i = this.delIndices.length -1; i >= 0; i--) {
+      for (let i = this.delIndices.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
       }
       this.delIndices.length = 0;
@@ -74,7 +74,7 @@ export default class Stamp extends BasePlugin {
     document.addEventListener('pointercancel', this.drawEnd, true);
     this.currentPosition = {
       x: event.clientX - this.params.left,
-      y: event.clientY - this.params.top
+      y: event.clientY - this.params.top,
     };
     if (this.hasTag) {
       this.currentPosition.tag = this.tag.value;
@@ -84,9 +84,9 @@ export default class Stamp extends BasePlugin {
   }
 
   drawMove(event) {
-    let x = event.clientX - this.params.left,
-        y = event.clientY - this.params.top,
-        lastPosition = this.state[this.state.length-1];
+    let x = event.clientX - this.params.left;
+    let y = event.clientY - this.params.top;
+    const lastPosition = this.state[this.state.length - 1];
 
     x = this.clampX(x);
     y = this.clampY(y);
@@ -109,40 +109,37 @@ export default class Stamp extends BasePlugin {
   // We first scale our image.
   // Then translate so that the image is centered on mouse click.
   getTransform(x, y) {
-    let xt = x - 0.5*this.params.scale*this.params.imgwidth,
-        yt = y - 0.5*this.params.scale*this.params.imgheight;
+    const xt = x - 0.5 * this.params.scale * this.params.imgwidth;
+    const yt = y - 0.5 * this.params.scale * this.params.imgheight;
     return `translate(${xt}, ${yt}) scale(${this.params.scale})`;
   }
 
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
-        z('image.stamp' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex + this.readOnlyClass(), {
+        // eslint-disable-next-line prefer-template, no-useless-concat
+        z('image.stamp' + '.plugin-id-' + this.id + '.state-index-' + positionIndex + this.readOnlyClass(), {
           x: 0,
           y: 0,
           width: this.params.imgwidth,
           height: this.params.imgheight,
           transform: this.getTransform(position.x, position.y),
           'xlink:href': this.params.src,
-          onmount: el => {
+          onmount: (el) => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
+              onDrag: ({ dx, dy }) => {
                 this.state[positionIndex].x += dx;
                 this.state[positionIndex].y += dy;
                 this.render();
               },
-              inBoundsX: (dx) => {
-                return this.inBoundsX(this.state[positionIndex].x + dx);
-              },
-              inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[positionIndex].y + dy)
-              },
+              inBoundsX: (dx) => this.inBoundsX(this.state[positionIndex].x + dx),
+              inBoundsY: (dy) => this.inBoundsY(this.state[positionIndex].y + dy),
             });
-          }
-        })
+          },
+        }),
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (position, positionIndex) =>
@@ -152,7 +149,7 @@ export default class Stamp extends BasePlugin {
             x: position.x + this.tag.xoffset,
             y: position.y + this.tag.yoffset,
             style: this.getStyle(),
-            onmount: el => {
+            onmount: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
@@ -160,22 +157,22 @@ export default class Stamp extends BasePlugin {
                 this.addDoubleClickEventListener(el, positionIndex);
               }
             },
-            onupdate: el => {
+            onupdate: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
-            }
-          }, this.latex ? '' : this.state[positionIndex].tag)
-        )
-      )
+            },
+          }, this.latex ? '' : this.state[positionIndex].tag),
+        ),
+      ),
     );
   }
 
   inBoundsX(x) {
-    return x>= this.bounds.xmin && x <= this.bounds.xmax;
+    return x >= this.bounds.xmin && x <= this.bounds.xmax;
   }
 
   inBoundsY(y) {
-    return y  >= this.bounds.ymin && y <= this.bounds.ymax;
+    return y >= this.bounds.ymin && y <= this.bounds.ymax;
   }
 }

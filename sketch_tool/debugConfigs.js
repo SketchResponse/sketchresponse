@@ -1,5 +1,8 @@
+/* eslint-disable key-spacing */
+/* eslint-disable no-multi-spaces */
+// eslint-disable-next-line no-unused-vars
 function loadConfig(configId) {
-  var configs = {
+  const configs = {
     initialState: {
       width: 750,
       height: 420,
@@ -14,12 +17,12 @@ function loadConfig(configId) {
           xaxisLabel: {
             value: 'x',
             dx: 5,
-            dy: 5
+            dy: 5,
           },
           yaxisLabel: {
             value: 'y',
             dx: 5,
-            dy: 13
+            dy: 13,
           },
           colors: {
             xaxisLabel: 'blue',
@@ -27,8 +30,8 @@ function loadConfig(configId) {
           },
           fontSize: {
             xaxisLabel: 14,
-            yaxisLabel: 14
-          }
+            yaxisLabel: 14,
+          },
         },
         {
           name: 'point',
@@ -36,28 +39,28 @@ function loadConfig(configId) {
           readonly: true,
           label: 'Point',
           color: 'sienna',
-          size: 15
+          size: 15,
         },
         {
           name: 'horizontal-line',
           id: 'ha',
           label: 'Horizontal line',
           color: 'dimgray',
-          dashStyle: 'dashdotted'
+          dashStyle: 'dashdotted',
         },
         {
           name: 'vertical-line',
           id: 'va',
           label: 'Vertical line',
           color: 'dimgray',
-          dashStyle: 'dashdotted'
+          dashStyle: 'dashdotted',
         },
         {
           name: 'line-segment',
           id: 'ls',
           label: 'Segment',
           color: 'cornflowerblue',
-          dashStyle: 'solid'
+          dashStyle: 'solid',
         },
         {
           name: 'line-segment',
@@ -68,8 +71,8 @@ function loadConfig(configId) {
           dashStyle: 'solid',
           arrowHead: {
             length: 10,
-            base: 7
-          }
+            base: 7,
+          },
         },
         {
           name: 'line-segment',
@@ -80,50 +83,50 @@ function loadConfig(configId) {
           lengthConstraint: 100,
           arrowHead: {
             length: 10,
-            base: 7
+            base: 7,
           },
         },
         {
           name: 'freeform',
           id: 'f',
           label: 'Function f(x)',
-          color: 'orange'
-        }
+          color: 'orange',
+        },
       ],
       initialstate: {
-        'cp': [
+        cp: [
           {
-            'x': 100,
-            'y': 100
+            x: 100,
+            y: 100,
           },
           {
-            'x': 200,
-            'y': 200
+            x: 200,
+            y: 200,
           },
           {
-            'x': 300,
-            'y': 300
-          }
+            x: 300,
+            y: 300,
+          },
         ],
-        'ar':  [
+        ar: [
           {
-            'x': 250,
-            'y': 150
+            x: 250,
+            y: 150,
           },
           {
-            'x': 350,
-            'y': 250
+            x: 350,
+            y: 250,
           },
           {
-            'x': 150,
-            'y': 150
+            x: 150,
+            y: 150,
           },
           {
-            'x': 120,
-            'y': 120
-          }
-        ]
-      }
+            x: 120,
+            y: 120,
+          },
+        ],
+      },
     },
     axesParams: {
       width: 750,
@@ -142,12 +145,12 @@ function loadConfig(configId) {
           xaxisLabel: {
             value: 'x',
             dx: 5,
-            dy: 5
+            dy: 5,
           },
           yaxisLabel: {
             value: 'y',
             dx: 5,
-            dy: 13
+            dy: 13,
           },
           colors: {
             circle: 'red',
@@ -157,12 +160,12 @@ function loadConfig(configId) {
           },
           fontSize: {
             xaxisLabel: 14,
-            yaxisLabel: 14
+            yaxisLabel: 14,
           },
           strokeWidth: {
             circle: 3,
-            ray: 3
-          }
+            ray: 3,
+          },
         },
         {
           name: 'point',
@@ -170,28 +173,28 @@ function loadConfig(configId) {
           label: 'Point',
           color: 'sienna',
           size: 15,
-          hollow: true
+          hollow: true,
         },
         {
           name: 'horizontal-line',
           id: 'ha',
           label: 'Horizontal line',
           color: 'dimgray',
-          dashStyle: 'dashdotted'
+          dashStyle: 'dashdotted',
         },
         {
           name: 'vertical-line',
           id: 'va',
           label: 'Vertical line',
           color: 'dimgray',
-          dashStyle: 'dashdotted'
+          dashStyle: 'dashdotted',
         },
         {
           name: 'line-segment',
           id: 'ls',
           label: 'Segment',
           color: 'cornflowerblue',
-          dashStyle: 'solid'
+          dashStyle: 'solid',
         },
         {
           name: 'line-segment',
@@ -201,8 +204,8 @@ function loadConfig(configId) {
           dashStyle: 'solid',
           arrowHead: {
             length: 10,
-            base: 7
-          }
+            base: 7,
+          },
         },
         {
           name: 'line-segment',
@@ -213,16 +216,16 @@ function loadConfig(configId) {
           lengthConstraint: 100,
           arrowHead: {
             length: 10,
-            base: 7
+            base: 7,
           },
         },
         {
           name: 'freeform',
           id: 'f',
           label: 'Function f(x)',
-          color: 'orange'
-        }
-      ]
+          color: 'orange',
+        },
+      ],
     },
     newPlugins: {
       width: 750,
@@ -242,14 +245,14 @@ function loadConfig(configId) {
           label: 'Beam',
           imgwidth: 450,
           imgheight: 100,
-          scale: 0.5
+          scale: 0.5,
         },
         {
           name: 'polyline',
           id: 'pll',
           label: 'Polyline',
           color: 'cornflowerblue',
-          dashStyle: 'solid'
+          dashStyle: 'solid',
         },
         {
           name: 'polyline',
@@ -259,15 +262,15 @@ function loadConfig(configId) {
           color: 'mediumseagreen',
           fillColor: 'lightsteelblue',
           dashStyle: 'solid',
-          opacity: 0.8
+          opacity: 0.8,
         },
         {
           name: 'spline',
           id: 'spl',
           label: 'Spline',
           color: 'orange',
-        }
-      ]
+        },
+      ],
     },
     allPlugins: {
       debug: true,
@@ -280,7 +283,7 @@ function loadConfig(configId) {
       coordinates: 'cartesian',
       plugins: [
         {
-          name: 'axes'
+          name: 'axes',
         },
         {
           name: 'point',
@@ -289,11 +292,11 @@ function loadConfig(configId) {
           color: 'sienna',
           size: 15,
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: 15,
-            align: 'start'
-          }
+            align: 'start',
+          },
         },
         {
           name: 'horizontal-line',
@@ -302,11 +305,11 @@ function loadConfig(configId) {
           color: 'dimgray',
           dashStyle: 'dashdotted',
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: 15,
-            align: 'start'
-          }
+            align: 'start',
+          },
         },
         {
           name: 'vertical-line',
@@ -315,11 +318,11 @@ function loadConfig(configId) {
           color: 'dimgray',
           dashStyle: 'dashdotted',
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: -15,
-            align: 'start'
-          }
+            align: 'start',
+          },
         },
         {
           name: 'stamp',
@@ -329,11 +332,11 @@ function loadConfig(configId) {
           imgheight: 100,
           scale: 0.5,
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 0,
             yoffset: -35,
-            align: 'middle'
-          }
+            align: 'middle',
+          },
         },
         {
           name: 'line-segment',
@@ -343,15 +346,15 @@ function loadConfig(configId) {
           dashStyle: 'solid',
           arrowHead: {
             length: 10,
-            base: 7
+            base: 7,
           },
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: 15,
             align: 'middle',
-            position: 'end'
-          }
+            position: 'end',
+          },
         },
         {
           name: 'polyline',
@@ -363,11 +366,11 @@ function loadConfig(configId) {
           dashStyle: 'solid',
           opacity: 0.8,
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: 15,
-            align: 'start'
-          }
+            align: 'start',
+          },
         },
         {
           name: 'spline',
@@ -375,11 +378,11 @@ function loadConfig(configId) {
           label: 'Spline',
           color: 'royalblue',
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: 15,
-            align: 'start'
-          }
+            align: 'start',
+          },
         },
         {
           name: 'freeform',
@@ -387,13 +390,13 @@ function loadConfig(configId) {
           label: 'Freeform',
           color: 'orange',
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: 15,
-            align: 'start'
-          }
-        }
-      ]
+            align: 'start',
+          },
+        },
+      ],
     },
     tagPosition: {
       width: 750,
@@ -405,7 +408,7 @@ function loadConfig(configId) {
       coordinates: 'cartesian',
       plugins: [
         {
-          name: 'axes'
+          name: 'axes',
         },
         {
           name: 'line-segment',
@@ -415,15 +418,15 @@ function loadConfig(configId) {
           dashStyle: 'solid',
           arrowHead: {
             length: 10,
-            base: 7
+            base: 7,
           },
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: -10,
             yoffset: 4,
             align: 'end',
-            position: 'start'
-          }
+            position: 'start',
+          },
         },
         {
           name: 'line-segment',
@@ -433,15 +436,15 @@ function loadConfig(configId) {
           dashStyle: 'solid',
           arrowHead: {
             length: 10,
-            base: 7
+            base: 7,
           },
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 0,
             yoffset: -15,
             align: 'middle',
-            position: 'middle'
-          }
+            position: 'middle',
+          },
         },
         {
           name: 'line-segment',
@@ -451,17 +454,17 @@ function loadConfig(configId) {
           dashStyle: 'solid',
           arrowHead: {
             length: 10,
-            base: 7
+            base: 7,
           },
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 10,
             yoffset: 4,
             align: 'start',
-            position: 'end'
-          }
-        }
-      ]
+            position: 'end',
+          },
+        },
+      ],
     },
     allPluginsLatex: {
       width: 750,
@@ -473,7 +476,7 @@ function loadConfig(configId) {
       coordinates: 'cartesian',
       plugins: [
         {
-          name: 'axes'
+          name: 'axes',
         },
         {
           name: 'point',
@@ -483,10 +486,10 @@ function loadConfig(configId) {
           size: 15,
           tag: {
             latex: true,
-            value : '\\displaystyle \\oint \\vec{F} \\cdot d\\vec{s}=0',
+            value: '\\displaystyle \\oint \\vec{F} \\cdot d\\vec{s}=0',
             xoffset: 5,
-            yoffset: 5
-          }
+            yoffset: 5,
+          },
         },
         {
           name: 'horizontal-line',
@@ -496,10 +499,10 @@ function loadConfig(configId) {
           dashStyle: 'dashdotted',
           tag: {
             latex: true,
-            value : '\\displaystyle \\left.\\frac{x^3}{3}\\right|_0^1',
+            value: '\\displaystyle \\left.\\frac{x^3}{3}\\right|_0^1',
             xoffset: 20,
-            yoffset: 5
-          }
+            yoffset: 5,
+          },
         },
         {
           name: 'vertical-line',
@@ -509,10 +512,10 @@ function loadConfig(configId) {
           dashStyle: 'dashdotted',
           tag: {
             latex: true,
-            value : '\\displaystyle {n \\choose k}',
+            value: '\\displaystyle {n \\choose k}',
             xoffset: 5,
-            yoffset: 5
-          }
+            yoffset: 5,
+          },
         },
         {
           name: 'stamp',
@@ -523,10 +526,10 @@ function loadConfig(configId) {
           scale: 0.5,
           tag: {
             latex: true,
-            value : '\\displaystyle \\left(\\frac{x^2}{y^3}\\right)',
+            value: '\\displaystyle \\left(\\frac{x^2}{y^3}\\right)',
             xoffset: -20,
             yoffset: -75,
-          }
+          },
         },
         {
           name: 'line-segment',
@@ -536,15 +539,15 @@ function loadConfig(configId) {
           dashStyle: 'solid',
           arrowHead: {
             length: 10,
-            base: 7
+            base: 7,
           },
           tag: {
             latex: true,
-            value : '\\displaystyle \\vec{x}',
+            value: '\\displaystyle \\vec{x}',
             xoffset: 5,
             yoffset: 5,
-            position: 'end'
-          }
+            position: 'end',
+          },
         },
         {
           name: 'polyline',
@@ -557,10 +560,10 @@ function loadConfig(configId) {
           opacity: 0.8,
           tag: {
             latex: true,
-            value : '\\displaystyle \\frac{n!}{k!(n-k)!} = {^n}C_k',
+            value: '\\displaystyle \\frac{n!}{k!(n-k)!} = {^n}C_k',
             xoffset: 15,
-            yoffset: 15
-          }
+            yoffset: 15,
+          },
         },
         {
           name: 'spline',
@@ -569,10 +572,10 @@ function loadConfig(configId) {
           color: 'royalblue',
           tag: {
             latex: true,
-            value : '\\displaystyle f(x) \\sim x^2 \\quad (x\\to\\infty)',
+            value: '\\displaystyle f(x) \\sim x^2 \\quad (x\\to\\infty)',
             xoffset: 15,
-            yoffset: 15
-          }
+            yoffset: 15,
+          },
         },
         {
           name: 'freeform',
@@ -581,62 +584,62 @@ function loadConfig(configId) {
           color: 'orange',
           tag: {
             latex: true,
-            value : '\\displaystyle \\sqrt[n]{1+x+x^2+x^3+\\ldots}',
+            value: '\\displaystyle \\sqrt[n]{1+x+x^2+x^3+\\ldots}',
             xoffset: 15,
-            yoffset: 15
-          }
-        }
-      ]
+            yoffset: 15,
+          },
+        },
+      ],
     },
     invalidConfig: {
-      debug: true,                    // Enables validation of config
-      width: '750',                   // Incorrect type
-      // height: 420,                 // Missing mandatory key
-      xrange: [-4.5, '4.5', 3],       // Extra element and incorrect type
+      debug: true,                      // Enables validation of config
+      width: '750',                     // Incorrect type
+      // height: 420,                   // Missing mandatory key
+      xrange: [-4.5, '4.5', 3],         // Extra element and incorrect type
       yrange: [-2.5, 2.5],
-      xscale: 'not linear',           // Only linear is valid
+      xscale: 'not linear',             // Only linear is valid
       yscale: 'linear',
-      coordinates: 'spheric',         // Only cartesian or polar
+      coordinates: 'spheric',           // Only cartesian or polar
       plugins: [
         {
           name: 'axes',
-          xmajor: [3, 4],             // Wrong type
-          // xminor: 2,               // Missing optional, won't report
+          xmajor: [3, 4],               // Wrong type
+          // xminor: 2,                 // Missing optional, won't report
           ymajor: 3,
           yminor: 2,
-          wrongkey: 'wrong',          // Wrong key
+          wrongkey: 'wrong',            // Wrong key
           colors: {
             // Cartesian coordinates
-            xmajor:     2,            // Wrong type
+            xmajor:     2,              // Wrong type
             ymajor:     '#f0f0f0',
             xminor:     '#f6f6f6',
             yminor:     '#f6f6f6',
             xaxis:      '#333',
             yaxis:      '#333',
-            xlabels:     '#333',
-            ylabels:     '#333',
+            xlabels:    '#333',
+            ylabels:    '#333',
             zeroLabel:  '#333',
             // Polar coordinates
             circle:     '#f0f0f0',
             ray:        '#f0f0f0',
             // Both
             xaxisLabel: '#333',
-            yaxisLabel: '#333'
-          }
+            yaxisLabel: '#333',
+          },
         },
         {
           name: 'point',
           id: 'pt',
           label: 'Point',
           color: 'sienna',
-          size: '15',       // Wrong type
+          size: '15',                   // Wrong type
           tag: {
-            value : 'tag',
-            xoffset: [15],  // Wrong type
+            value: 'tag',
+            xoffset: [15],              // Wrong type
             yoffset: 15,
-            align: 'start'
+            align: 'start',
           },
-          wrongkey: 2       // Wrong key
+          wrongkey: 2,                  // Wrong key
         },
         {
           name: 'stamp',
@@ -644,33 +647,33 @@ function loadConfig(configId) {
           label: 'Stamp',
           imgwidth: 450,
           imgheight: 100,
-          scale: 'wrong',            // Wrong value
+          scale: 'wrong',               // Wrong value
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 0,
             yoffset: -35,
-            align: 'middle'
+            align: 'middle',
           },
-          wrongkey: 2                 // Wrong key
+          wrongkey: 2,                  // Wrong key
         },
         {
           name: 'line-segment',
           id: 'ar',
           label: 'Arrow',
           color: 'mediumseagreen',
-          dashStyle: 'wrong',        // Wrong value
+          dashStyle: 'wrong',           // Wrong value
           arrowHead: {
-            length: '10',            // Wrong value
+            length: '10',               // Wrong value
             base: 7,
-            wrongkey: 2              // Wrong key
+            wrongkey: 2,                // Wrong key
           },
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: 15,
             align: 'middle',
-            position: 'end'
-          }
+            position: 'end',
+          },
         },
         {
           name: 'polyline',
@@ -678,62 +681,62 @@ function loadConfig(configId) {
           label: 'Polygon',
           closed: true,
           color: 'mediumseagreen',
-          fillColor: 1,             // Wrong value
+          fillColor: 1,                 // Wrong value
           dashStyle: 'solid',
           opacity: 0.8,
-          wrongkey: 2,              // Wrong key
+          wrongkey: 2,                  // Wrong key
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: 15,
-            align: 'start'
-          }
+            align: 'start',
+          },
         },
         {
           name: 'spline',
           id: 'spl',
-          label: 1,                   // wrong value
+          label: 1,                     // Wrong value
           color: 'royalblue',
-          wrongkey: 2 ,               // Wrong key
+          wrongkey: 2 ,                 // Wrong key
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: 15,
-            align: 'start'
-          }
+            align: 'start',
+          },
         },
         {
           name: 'freeform',
           id: 'f',
-          label: 1,                   // Wrong value
+          label: 1,                     // Wrong value
           color: 'orange',
           tag: {
-            value : 'tag',
+            value: 'tag',
             xoffset: 15,
             yoffset: 15,
-            align: 'start'
+            align: 'start',
           },
-          wrongkey: 2                 // Wrong key
+          wrongkey: 2,                  // Wrong key
         },
         {
           name: 'group',
           id: 'lns',
-          // label: 'Lines',              // Missing optional, won't report
+          // label: 'Lines',            // Missing optional, won't report
           plugins: [
             {
               name: 'horizontal-line',
               id: 'hl',
               label: 'Horizontal line',
-              color: 2,                   // wrong type
-              dashStyle: 'wrong',         // wrong value
+              color: 2,                 // Wrong type
+              dashStyle: 'wrong',       // Wrong value
               tag: {
-                value : 'tag',
+                value: 'tag',
                 xoffset: 15,
                 yoffset: 15,
-                align: 'wrong',           // wrong value
-                wrongkey: 2               // Wrong key
+                align: 'wrong',         // Wrong value
+                wrongkey: 2,            // Wrong key
               },
-              wrongkey: 2                 // Wrong key
+              wrongkey: 2,              // Wrong key
             },
             {
               name: 'vertical-line',
@@ -742,16 +745,16 @@ function loadConfig(configId) {
               color: 'dimgray',
               dashStyle: 'dashdotted',
               tag: {
-                value : 'tag',
+                value: 'tag',
                 xoffset: 15,
                 yoffset: -15,
                 align: 'wrong',           // Wrong value
-                wrongkey: 2               // Wrong key
-              }
-            }
-          ]
-        }
-      ]
+                wrongkey: 2,              // Wrong key
+              },
+            },
+          ],
+        },
+      ],
     },
     pluginGroup: {
       width: 750,
@@ -763,13 +766,13 @@ function loadConfig(configId) {
       coordinates: 'cartesian',
       plugins: [
         {
-          name: 'axes'
+          name: 'axes',
         },
         {
           name: 'freeform',
           id: 'f',
           label: 'Freeform',
-          color:'cornflowerblue'
+          color: 'cornflowerblue',
         },
         {
           name: 'group',
@@ -779,19 +782,19 @@ function loadConfig(configId) {
             {
               name: 'vertical-line',
               id: 'vl',
-              color: 'dimgray'
+              color: 'dimgray',
             },
             {
               name: 'horizontal-line',
               id: 'hl',
-              color: 'dimgray'
+              color: 'dimgray',
             },
             {
               name: 'line-segment',
               id: 'ls',
               label: 'Line segment',
               color: 'cornflowerblue',
-              dashStyle: 'solid'
+              dashStyle: 'solid',
             },
             {
               name: 'line-segment',
@@ -801,10 +804,10 @@ function loadConfig(configId) {
               dashStyle: 'solid',
               arrowHead: {
                 length: 10,
-                base: 7
-              }
-            }
-          ]
+                base: 7,
+              },
+            },
+          ],
         },
         {
           name: 'group',
@@ -816,7 +819,7 @@ function loadConfig(configId) {
               id: 'cp',
               label: 'Point',
               color: 'orange',
-              size: 15
+              size: 15,
             },
             {
               name: 'point',
@@ -824,23 +827,22 @@ function loadConfig(configId) {
               label: 'Hollow point',
               color: 'mediumseagreen',
               size: 15,
-              hollow: true
-            }
-          ]
+              hollow: true,
+            },
+          ],
         },
         {
           name: 'spline',
           id: 'spl',
           label: 'Spline',
-          color: 'mediumseagreen'
-        }
-      ]
-    }
+          color: 'mediumseagreen',
+        },
+      ],
+    },
   };
+  // eslint-disable-next-line no-prototype-builtins
   if (configs.hasOwnProperty(configId)) {
     return configs[configId];
   }
-  else {
-    return null;
-  }
+  return null;
 }

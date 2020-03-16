@@ -1,5 +1,5 @@
-import jsondiffpatch from 'jsondiffpatch';
-import deepCopy from 'sketch/util/deep-copy';
+import { diff, patch, unpatch } from 'jsondiffpatch';
+import deepCopy from './util/deep-copy';
 
 export const VERSION = '0.1';
 
@@ -25,7 +25,7 @@ export default class HistoryManager {
         undoStack: this.undoStack,
         redoStack: this.redoStack,
       }),
-      setState: state => {
+      setState: (state) => {
         this.undoStack = state.undoStack;
         this.redoStack = state.redoStack;
       },
@@ -46,9 +46,9 @@ export default class HistoryManager {
     }
 
     const newState = this.getUndoableState();
-    const diff = jsondiffpatch.diff(this.currentState, newState);
+    const stateDiff = diff(this.currentState, newState);
 
-    this.undoStack.push(deepCopy(diff));
+    this.undoStack.push(deepCopy(stateDiff));
     this.redoStack = [];
     this.currentState = newState;
   }
@@ -59,10 +59,10 @@ export default class HistoryManager {
     // TODO: is there a better way to do this as calling deselectAll is expensive
     this.messageBus.emit('deselectAll');
 
-    const diff = this.undoStack.pop();
-    this.redoStack.push(deepCopy(diff));
+    const stateDiff = this.undoStack.pop();
+    this.redoStack.push(deepCopy(stateDiff));
 
-    this.currentState = jsondiffpatch.unpatch(this.currentState, diff);
+    this.currentState = unpatch(this.currentState, stateDiff);
     this.stateManager.setPluginState(this.currentState);
   }
 
@@ -72,10 +72,10 @@ export default class HistoryManager {
     // TODO: is there a better way to do this as calling deselectAll is expensive
     this.messageBus.emit('deselectAll');
 
-    const diff = this.redoStack.pop();
-    this.undoStack.push(deepCopy(diff));
+    const stateDiff = this.redoStack.pop();
+    this.undoStack.push(deepCopy(stateDiff));
 
-    this.currentState = jsondiffpatch.patch(this.currentState, diff);
+    this.currentState = patch(this.currentState, stateDiff);
     this.stateManager.setPluginState(this.currentState);
   }
 }

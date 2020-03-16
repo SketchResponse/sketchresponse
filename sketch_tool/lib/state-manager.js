@@ -1,4 +1,4 @@
-import deepCopy from 'sketch/util/deep-copy';
+import deepCopy from './util/deep-copy';
 
 export const VERSION = '0.1';
 
@@ -13,20 +13,22 @@ export default class StateManager {
 
     // TODO: convert to a key-based registry?
     this.registry = [];
-    messageBus.on('registerState', entry => this.registry.push(entry));
+    messageBus.on('registerState', (entry) => this.registry.push(entry));
   }
 
   getPluginState() {
     const state = {};
-    this.registry.forEach(entry => {
+    this.registry.forEach((entry) => {
       state[entry.id] = entry.getState();
     });
-    return deepCopy(state);  // Use deepCopy to keep plugin state isolated
+    return deepCopy(state); // Use deepCopy to keep plugin state isolated
   }
 
   setPluginState(state) {
-    state = deepCopy(state);  // Use deepCopy to keep plugin state isolated
-    this.registry.forEach(entry => {
+    // eslint-disable-next-line no-param-reassign
+    state = deepCopy(state); // Use deepCopy to keep plugin state isolated
+    this.registry.forEach((entry) => {
+      // eslint-disable-next-line no-prototype-builtins
       if (state.hasOwnProperty(entry.id)) entry.setState(state[entry.id]);
     });
   }
@@ -42,15 +44,14 @@ export default class StateManager {
         data: {},
       };
 
-      this.registry.forEach(entry => {
+      this.registry.forEach((entry) => {
         // TODO: only save state when plugins actually have state
         response.data[entry.id] = entry.getState();
         response.meta.dataVersions[entry.id] = entry.dataVersion;
       });
 
       return JSON.stringify(response);
-    }
-    catch(error) {
+    } catch (error) {
       this.messageBus.emit('warnUser', 'getStateError', error);
       throw error;
     }
@@ -61,14 +62,14 @@ export default class StateManager {
       const state = JSON.parse(stateString);
       // TODO: format version checking
 
-      this.registry.forEach(entry => {
+      this.registry.forEach((entry) => {
         // TODO: plugin version checking?
+        // eslint-disable-next-line no-prototype-builtins
         if (state.data.hasOwnProperty(entry.id)) entry.setState(state.data[entry.id]);
       });
 
       this.messageBus.emit('stateSet');
-    }
-    catch(error) {
+    } catch (error) {
       this.messageBus.emit('warnUser', 'setStateError', error);
       throw error;
     }
@@ -76,13 +77,13 @@ export default class StateManager {
 
   loadInitialState() {
     try {
-      this.registry.forEach(entry => {
+      this.registry.forEach((entry) => {
+        // eslint-disable-next-line no-prototype-builtins
         if (this.initialState.hasOwnProperty(entry.id)) entry.setState(this.initialState[entry.id]);
       });
 
       this.messageBus.emit('stateSet');
-    }
-    catch(error) {
+    } catch (error) {
       this.messageBus.emit('warnUser', 'setStateError', error);
       throw error;
     }

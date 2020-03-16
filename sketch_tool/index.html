@@ -33,9 +33,7 @@
         });
       }
     </script>
-    <link rel="stylesheet" href="<@css_path@>">
-    <link href='<@font_css_path@>' rel='stylesheet' type='text/css'>
-    <link rel="shortcut icon" href="about:blank">
+    <!-- Insert production css -->
   </head>
   <body>
     <div id="si-container">
@@ -43,8 +41,9 @@
         Loading SketchInput...
       </div>
     </div>
-    <script src="<@vendor_bundle_path@>"></script>
-    <script src="<@config_or_app_bundle_path@>"></script>
+    <script src="vendors.min.js"></script>
+    <script src="application.min.js"></script>
+    <script src="debugConfigs.js"></script>
     <script>
       (function() {
         // Globals: channel, __state, isLoaded, config, si, setState, getState, getGrade, useBase64Encoding, DATA_URI_PREAMBLE;
@@ -120,32 +119,28 @@
         }
 
         function loadApp() {
-          System.import('lib/main').then(function(main) {
-            window.si = new main.default(document.getElementById('si-container'), config);
+          window.si = new window.SketchInput.default(document.getElementById('si-container'), config);
 
-            window.si.messageBus.on('ready', function() {
-              window.isLoaded = true;
-              if (window.__state) window.si.setState(window.__state);
-            });
-
-            window.si.messageBus.on('warnUser', function(type, error) {
-              console.error(error);
-            });
-
-            window.getState = function() {
-              return window.useBase64Encoding ? DATA_URI_PREAMBLE + btoa(si.getState()) : si.getState();
-            };
-
-            window.getGrade = si.getGradeable.bind(si);
-
-            if (window.channel) {
-              window.channel
-                .bind('getState', window.getState)
-                .bind('getGrade', window.getGrade);
-            }
-          }).catch(function(error) {
-            console.error('Import promise error')
+          window.si.messageBus.on('ready', function() {
+            window.isLoaded = true;
+            if (window.__state) window.si.setState(window.__state);
           });
+
+          window.si.messageBus.on('warnUser', function(type, error) {
+            console.error(error);
+          });
+
+          window.getState = function() {
+            return window.useBase64Encoding ? DATA_URI_PREAMBLE + btoa(si.getState()) : si.getState();
+          };
+
+          window.getGrade = si.getGradeable.bind(si);
+
+          if (window.channel) {
+            window.channel
+              .bind('getState', window.getState)
+              .bind('getGrade', window.getGrade);
+          }
         }
       }());
     </script>

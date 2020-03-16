@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
  * FitCurves.js - Piecewise cubic fitting code
  *

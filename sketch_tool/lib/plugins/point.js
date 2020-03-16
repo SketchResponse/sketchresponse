@@ -1,7 +1,9 @@
-import z from 'sketch/util/zdom';
-import BasePlugin from './base-plugin';
 import deepExtend from 'deep-extend';
-import {validate} from 'sketch/config-validator';
+import z from '../util/zdom';
+import BasePlugin from './base-plugin';
+import validate from '../config-validator';
+import pointSvg from './point/point-icon.svg';
+import pointHollowSvg from './point/point-hollow-icon.svg';
 
 export const VERSION = '0.1';
 export const GRADEABLE_VERSION = '0.1';
@@ -10,26 +12,26 @@ const DEFAULT_PARAMS = {
   label: 'Point',
   color: 'dimgray',
   size: 15,
-  hollow: false
-}
+  hollow: false,
+};
 
 export default class Point extends BasePlugin {
   constructor(params, app) {
-    let iconSrc, strokeColor, fillColor;
-    let pParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
+    const pParams = BasePlugin.generateDefaultParams(DEFAULT_PARAMS, params);
     if (!app.debug || validate(params, 'point')) {
       deepExtend(pParams, params);
-    }
-    else {
+    } else {
+      // eslint-disable-next-line no-console
       console.log('The point config has errors, using default values instead');
     }
     // Add params that are specific to this plugin
-    iconSrc = pParams.hollow ? './plugins/point/point-hollow-icon.svg'
-                             : './plugins/point/point-icon.svg';
+    const iconSrc = pParams.hollow
+      ? pointHollowSvg
+      : pointSvg;
     pParams.icon = {
       src: iconSrc,
       alt: 'Point tool',
-      color: pParams.color
+      color: pParams.color,
     };
     // Add versions
     pParams.version = VERSION;
@@ -39,20 +41,20 @@ export default class Point extends BasePlugin {
     this.fillOpacity = pParams.hollow ? 0 : 1;
     // Given a params.size, to have identical visible radiuses in both cases, we need to shrink
     // the hollow point to take in account the 2px width of the stroke
-    this.radius = pParams.hollow ? (pParams.size/2)-1 : pParams.size/2;
+    this.radius = pParams.hollow ? (pParams.size / 2) - 1 : pParams.size / 2;
     // Message listeners
     this.app.__messageBus.on('addPoint', (id, index) => this.addPoint(id, index));
     this.app.__messageBus.on('deletePoints', () => this.deletePoints());
-    ['drawMove', 'drawEnd'].forEach(name => this[name] = this[name].bind(this));
+    ['drawMove', 'drawEnd'].forEach((name) => {
+      this[name] = this[name].bind(this);
+    });
   }
 
   getGradeable() {
-    return this.state.map(position => {
-      return {
-        point: [position.x, position.y],
-        tag: position.tag
-      };
-    });
+    return this.state.map((position) => ({
+      point: [position.x, position.y],
+      tag: position.tag,
+    }));
   }
 
   addPoint(id, index) {
@@ -64,7 +66,7 @@ export default class Point extends BasePlugin {
   deletePoints() {
     if (this.delIndices.length !== 0) {
       this.delIndices.sort();
-      for (let i = this.delIndices.length -1; i >= 0; i--) {
+      for (let i = this.delIndices.length - 1; i >= 0; i--) {
         this.state.splice(this.delIndices[i], 1);
       }
       this.delIndices.length = 0;
@@ -81,7 +83,7 @@ export default class Point extends BasePlugin {
     document.addEventListener('pointercancel', this.drawEnd, true);
     this.currentPosition = {
       x: event.clientX - this.params.left,
-      y: event.clientY - this.params.top
+      y: event.clientY - this.params.top,
     };
     if (this.hasTag) {
       this.currentPosition.tag = this.tag.value;
@@ -91,9 +93,9 @@ export default class Point extends BasePlugin {
   }
 
   drawMove(event) {
-    let x = event.clientX - this.params.left,
-        y = event.clientY - this.params.top,
-        lastPosition = this.state[this.state.length-1];
+    let x = event.clientX - this.params.left;
+    let y = event.clientY - this.params.top;
+    const lastPosition = this.state[this.state.length - 1];
 
     x = this.clampX(x);
     y = this.clampY(y);
@@ -116,7 +118,8 @@ export default class Point extends BasePlugin {
   render() {
     z.render(this.el,
       z.each(this.state, (position, positionIndex) =>
-        z('circle.point' + '.plugin-id-' + this.id  + '.state-index-' + positionIndex + this.readOnlyClass(), {
+        // eslint-disable-next-line prefer-template, no-useless-concat
+        z('circle.point' + '.plugin-id-' + this.id + '.state-index-' + positionIndex + this.readOnlyClass(), {
           cx: position.x,
           cy: position.y,
           r: this.radius,
@@ -126,25 +129,21 @@ export default class Point extends BasePlugin {
             stroke: ${this.params.color};
             stroke-width: ${this.strokeWidth};
           `,
-          onmount: el => {
+          onmount: (el) => {
             this.app.registerElement({
               ownerID: this.params.id,
               element: el,
               initialBehavior: 'none',
-              onDrag: ({dx, dy}) => {
+              onDrag: ({ dx, dy }) => {
                 this.state[positionIndex].x += dx;
                 this.state[positionIndex].y += dy;
                 this.render();
               },
-              inBoundsX: (dx) => {
-                return this.inBoundsX(this.state[positionIndex].x + dx);
-              },
-              inBoundsY: (dy) => {
-                return this.inBoundsY(this.state[positionIndex].y + dy)
-              },
+              inBoundsX: (dx) => this.inBoundsX(this.state[positionIndex].x + dx),
+              inBoundsY: (dy) => this.inBoundsY(this.state[positionIndex].y + dy),
             });
-          }
-        })
+          },
+        }),
       ),
       // Tags, regular or rendered by Katex
       z.each(this.state, (position, positionIndex) =>
@@ -154,7 +153,7 @@ export default class Point extends BasePlugin {
             x: position.x + this.tag.xoffset,
             y: position.y + this.tag.yoffset,
             style: this.getStyle(),
-            onmount: el => {
+            onmount: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
@@ -162,14 +161,14 @@ export default class Point extends BasePlugin {
                 this.addDoubleClickEventListener(el, positionIndex);
               }
             },
-            onupdate: el => {
+            onupdate: (el) => {
               if (this.latex) {
                 this.renderKatex(el, positionIndex);
               }
-            }
-          }, this.latex ? '' : this.state[positionIndex].tag)
-        )
-      )
+            },
+          }, this.latex ? '' : this.state[positionIndex].tag),
+        ),
+      ),
     );
   }
 

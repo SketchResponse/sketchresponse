@@ -1,5 +1,4 @@
 import z from './util/zdom';
-import classnames from 'classnames';
 
 export const VERSION = '0.1';
 const TOOLBAR_ID = '$__toolbar';
@@ -9,18 +8,18 @@ const NULL_SRC = '//:0';
 
 function renderIcon(id, src, alt) {
   return z('img.icon', {
-    id: id,
+    id,
     src: src || NULL_SRC,
-    alt: alt,
+    alt,
   });
 }
 
 function renderLabel(id, text, hasDropdown) {
   return z('div.label',
-    z('span', {id: id}, text),
+    z('span', { id }, text),
     z.if(hasDropdown,
-      z('span', {'aria-label': 'Open dropdown menu'}, ' \u25be')
-    )
+      z('span', { 'aria-label': 'Open dropdown menu' }, ' \u25be'),
+    ),
   );
 }
 
@@ -28,18 +27,18 @@ export default class Toolbar {
   constructor(params, app) {
     this.params = params;
     this.app = app;
-    this.el = document.getElementById('si-toolbar');  // TODO: pass container element in
+    this.el = document.getElementById('si-toolbar'); // TODO: pass container element in
 
     this.isActive = false;
     this.focusedItemID = null;
-    this.openDropdownID = null;  // TODO: better name
+    this.openDropdownID = null; // TODO: better name
 
-    this.items = [
-      {id: TOOLBAR_ID, activate: this.activate.bind(this), deactivate: this.deactivate.bind(this)},
-    ];
+    this.items = [{
+      id: TOOLBAR_ID, activate: this.activate.bind(this), deactivate: this.deactivate.bind(this),
+    }];
 
     this.activeItemID = null;
-    this.selectedDropdownItemMap = {};  // TODO: better name
+    this.selectedDropdownItemMap = {}; // TODO: better name
 
     app.registerState({
       id: TOOLBAR_ID,
@@ -82,26 +81,26 @@ export default class Toolbar {
   activateItem(id) {
     if (id === this.activeItemID) return;
     try {
-      let allItems = [];
-      this.items.forEach(item => {
+      const allItems = [];
+      this.items.forEach((item) => {
         if (item.name === 'group') {
-          item.items.forEach(item => {
-            allItems.push(item);
-          })
-        }
-        else {
+          item.items.forEach((it) => {
+            allItems.push(it);
+          });
+        } else {
           allItems.push(item);
         }
       });
-      let oldActiveItem = allItems.find(item => item.id === this.activeItemID);
-      let newActiveItem = allItems.find(item => item.id === id);
+      const oldActiveItem = allItems.find((item) => item.id === this.activeItemID);
+      const newActiveItem = allItems.find((item) => item.id === id);
 
+      // eslint-disable-next-line no-unused-expressions
       oldActiveItem && oldActiveItem.deactivate();
+      // eslint-disable-next-line no-unused-expressions
       newActiveItem && newActiveItem.activate();
 
       this.activeItemID = id;
-    }
-    catch(error) {
+    } catch (error) {
       this.app.__messageBus.emit('warnUser', 'pluginError', error);
     }
     this.render();
@@ -137,20 +136,23 @@ export default class Toolbar {
   }
 
   render() {
-    const renderableItems = this.items.filter(item =>
+    const renderableItems = this.items.filter((item) =>
       ['separator', 'button', 'splitbutton'].indexOf(item.type) >= 0);
 
     z.render(this.el,
-      z.each(renderableItems, ({type, id, icon, label, color, items, action}) => {
+      // eslint-disable-next-line object-curly-newline
+      z.each(renderableItems, ({ type, id, icon, label, color, items, action }) => {
         if (type === 'separator') return z('hr');
-        let selectedItem, isActive;
+        let selectedItem;
+        let isActive;
         if (type === 'splitbutton') {
-          selectedItem = items.find(item => item.id === this.selectedDropdownItemMap[id]);
+          selectedItem = items.find((item) => item.id === this.selectedDropdownItemMap[id]);
+          // eslint-disable-next-line no-param-reassign
           icon = selectedItem.icon;
+          // eslint-disable-next-line no-param-reassign
           color = selectedItem.color;
           isActive = (selectedItem.id === this.activeItemID);
-        }
-        else if (type === 'button') {
+        } else if (type === 'button') {
           isActive = (id === this.activeItemID);
         }
 
@@ -158,37 +160,38 @@ export default class Toolbar {
         const isOpen = (id === this.openDropdownID);
 
         return z('div.item', {
-            id: id,
+            id,
             'data-is-open': isOpen,
             'data-is-active': isActive,
-            style: isActive ? `border-bottom-color: ${color};` : ''
+            style: isActive ? `border-bottom-color: ${color};` : '',
           },
           z.if(type === 'button',
             z('button', {
-                onclick: e => {
+                onclick: () => {
                   // Finalize any shape that isn't
                   this.app.__messageBus.emit('finalizeShapes', id);
+                  // eslint-disable-next-line no-unused-expressions
                   action ? action() : this.activateItem(id);
                 },
                 'aria-labelledby': `${id}-label ${id}-icon`,
               },
               renderIcon(`${id}-icon`, icon.src, icon.alt),
-              renderLabel(`${id}-label`, label, hasDropdown)
-            )
+              renderLabel(`${id}-label`, label, hasDropdown),
+            ),
           ),
           z.if(type === 'splitbutton',
             z('button.split-button-main', {
-                onclick: e => {
+                onclick: () => {
                   // Finalize any shape that isn't
                   this.app.__messageBus.emit('finalizeShapes', this.selectedDropdownItemMap[id]);
                   this.activateItem(this.selectedDropdownItemMap[id]);
                 },
                 'aria-labelledby': `${id}-label ${id}-icon`,
               },
-              renderIcon(`${id}-icon`, icon.src, icon.alt),  // TODO: title
+              renderIcon(`${id}-icon`, icon.src, icon.alt), // TODO: title
             ),
             z('button.split-button-aux', {
-                onclick: e => {
+                onclick: () => {
                   // Finalize any shape that isn't
                   this.app.__messageBus.emit('finalizeShapes', this.selectedDropdownItemMap[id]);
                   this.activateItem(this.selectedDropdownItemMap[id]);
@@ -196,26 +199,26 @@ export default class Toolbar {
                 },
                 'aria-haspopup': 'true',
               },
-              renderLabel(`${id}-label`, label, hasDropdown)
-            )
+              renderLabel(`${id}-label`, label, hasDropdown),
+            ),
           ),
           z.if(hasDropdown,
             z('menu.dropdown',
-              z.each(items, item =>
+              z.each(items, (item) =>
                 z('div.dropdown-item',
                   z('button.dropdown-button', {
                       id: item.id,
-                      onpointerdown: e => this.selectDropdownItem(id, item.id)
+                      onpointerdown: () => this.selectDropdownItem(id, item.id),
                     },
-                    renderIcon(`${id}-icon`, item.icon.src, item.icon.alt),  // TODO: title
-                    renderLabel(`${id}-label`, item.label, false)
-                  )
-                )
-              )
-            )
-          )
-        )
-      })
+                    renderIcon(`${id}-icon`, item.icon.src, item.icon.alt), // TODO: title
+                    renderLabel(`${id}-label`, item.label, false),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }),
     );
 
     // Update focus if needed

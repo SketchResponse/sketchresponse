@@ -10,6 +10,7 @@ export default class Background {
     this.el.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', params.src);
     this.el.setAttributeNS(null, 'width', '100%');
     this.el.setAttributeNS(null, 'height', '100%');
+    // eslint-disable-next-line dot-notation
     this.el.setAttributeNS(null, 'preserveAspectRatio', SCALING_TYPES[params.scaling] || SCALING_TYPES['fill']);
     app.svg.appendChild(this.el);
   }
