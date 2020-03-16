@@ -51,8 +51,7 @@
   },
   "browserslist": [
     "defaults",
-    "last 2 versions",
-    "IE 11"
+    "not ie >= 0"
   ],
   "scripts": {
     "start": "webpack-dev-server --openPage /#debug:$npm_config_debug --config webpack.development.js",
