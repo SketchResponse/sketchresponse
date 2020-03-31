@@ -54,13 +54,13 @@ Running either of the above commands will create a new directory called SketchRe
   $ npm install
   ```
   
-  [JSPM](http://jspm.io) will pull in additional dependencies automatically on a post-install script.
 
 * Build a distribution of the Sketch Tool. The distribution directory will be found in the `/static/sketch_tool_dist/` directory.
 
   ```sh
   $ npm run build
   ```
+  You can change the target browsers of the build by modifying the [BrowserList](https://github.com/browserslist/browserslist) entry in [`package.json`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/package.json). Currently the target is set to the last 2 versions of every major browser excluding IE.
 
 Now you have a built distribution of the Sketch Tool front-end, we will use it later to let us test grading scripts. The front-end distribution is also what you will need to have hosted on a public server when deploying SketchResponse for your application.
 

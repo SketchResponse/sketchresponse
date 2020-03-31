@@ -1,4 +1,4 @@
-Copyright (c) 2015-2017 Massachusetts Institute of Technology
+Copyright (c) 2015-2020 Massachusetts Institute of Technology
 
 This library is free software; you can redistribute it and/or modify it under
 the terms of the GNU Lesser General Public License as published by the Free
@@ -23,43 +23,38 @@ provided in Appendix A: Third-Party Licenses.
 
 The following third-party code is used under the terms of the MIT license:
 
-    SystemJS
-    Copyright (C) 2013-2015 Guy Bedford
-
-    core-js
-    Copyright (c) 2015 Denis Pushkarev
-
-    classnames
+    Babel
+    Copyright (c) 2014-present Sebastian McKenzie and other contributors
+    
+    Classnames
     Copyright (c) 2015 Jed Watson
 
-    Pointer Events Polyfill
-    Copyright jQuery Foundation and other contributors, https://jquery.org/
+    Deep Extend
+    Copyright (c) 2013-2018, Viacheslav Lotsmanov
+
+    FastClick
+    Copyright (c) 2014 The Financial Times Ltd
+
+    fitCurves (Python implementation of original C code by Philip J. Schneider)
+    Copyright (c) 2014 Volker Poplawski
+
+    is-my-json-valid
+    Copyright (c) 2014 Mathias Buus
 
     jsondiffpatch
     Copyright (c) 2014 Benjamin Eidelman twitter.com/beneidel
 
-    Babel
-    Copyright (c) 2014-2015 Sebastian McKenzie <sebmck@gmail.com>
+    Katex
+    Copyright (c) 2013-2019 Khan Academy and other contributors
 
-    Node.js events library
-    Copyright Joyent, Inc. and other Node contributors.
-
-    FastClick
-    Copyright (c) 2014 The Financial Times Ltd.
-
-    Keymaster
-    Copyright (c) 2011-2013 Thomas Fuchs.
+    keymaster.js
+    Copyright (c) 2011-2013 Thomas Fuchs
 
     normalize.css
     Copyright (c) Nicolas Gallagher and Jonathan Neal
 
-    fitCurves (Python implementation of original C code by Philip J. Schneider)
-    Copyright (c) 2014 Volker Poplawski
-    
-    KaTeX
-    Copyright (c) 2015 Khan Academy
-    Includes portions of the underscore.js project, Copyright (c) 2009-2015
-    Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+    Pointer Events Polyfill
+    Copyright jQuery Foundation and other contributors, https://jquery.org/
 
     SweetAlert2
     Copyright (c) 2014 Tristan Edwards & Limon Monte

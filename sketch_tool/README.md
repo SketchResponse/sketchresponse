@@ -20,7 +20,6 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
   ```sh
   $ npm install
   ```
-  [JSPM](http://jspm.io) will pull in additional dependencies automatically on a post-install script.
 
 
 ### Usage
@@ -34,36 +33,45 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
 * To start the development server:
 
   ```sh
-  $ npm run start
+  $ npm run start --debug=allPlugins
   ```
-  Then point your browser to the following address: http://localhost:4567/#debug:allPlugins
-
-  This will load the tool with options listed in the config1 object in the following [`file`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/html/debugConfigs.js).
+  This will automatically open your default browser and load the tool with options listed in the `allPlugins` object located in [`debugConfigs.js`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/html/debugConfigs.js).
 
   Options are:
-  * width, height: dimensions of the tool.
-  * xrange, yrange: dimension of the drawing canvas.
-  * xscale, yscale: linear or logarithmic scales. Only linear is supported for the moment.
-  * coordinates: cartesian or polar.
-  * plugins: modules that extend drawing functionality either automatically (for example axes and image) or are placed in the top toolbar (freeform, horizontal and vertical lines) and let the user draw the corresponding shape on the canvas.
+  * *width, height:* dimensions of the tool.
+  * *xrange, yrange:* dimension of the drawing canvas.
+  * *xscale, yscale:* linear or logarithmic scales. Only linear is supported for the moment.
+  * *coordinates:* cartesian or polar.
+  * *plugins:* modules that extend drawing functionality either automatically (for example axes and image) or are placed in the top toolbar (freeform, horizontal and vertical lines) and let the user draw the corresponding shape on the canvas.
 
   You can also load these additional configurations which show various features of the tool:
-  * http://localhost:4567/#debug:allPluginsLatex
-  * http://localhost:4567/#debug:initialState
-  * http://localhost:4567/#debug:axesParams
-  * http://localhost:4567/#debug:tagPosition
-  * http://localhost:4567/#debug:newPlugins
-  * http://localhost:4567/#debug:invalidConfig
-  * http://localhost:4567/#debug:pluginGroup
+  * allPluginsLatex
+  * initialState
+  * axesParams
+  * tagPosition
+  * newPlugins
+  * invalidConfig
+  * pluginGroup
 
+* To use [ESLint](https://eslint.org) on the JS code located in `sketch_tool/lib`:
+  ```sh
+  $ npm run lint:js
+  ```
+* To use [StyleLint](https://stylelint.io) on the SCSS (or CSS) code located in `sketch_tool/styles`:
+  ```sh
+  $ npm run lint:css
+  ```
 
 * To build the *sketchresponse/static/sketch_tool_dist* directory:
 
   ```sh
   $ npm run build
   ```
+  You can change the target browsers of the build by modifying the [BrowserList](https://github.com/browserslist/browserslist) entry in [`package.json`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/package.json). Currently the target is set to the last 2 versions of every major browser excluding IE.
+
 
 ### Plugins
+
 They are located in the following [`directory`](https://github.com/SketchResponse/sketchresponse/tree/master/sketch_tool/lib/plugins/).
 * **axes:**
   Adds horizontal and vertical axes with major and minor ticks and their associated gridlines. *Params:* xmajor (major x tick spacing, default value: 1), ymajor (major x tick spacing, default value: 1), xminor (minor x tick spacing, default value: 0.25), yminor (minor y tick spacing, default value: 0.25).
@@ -87,15 +95,14 @@ They are located in the following [`directory`](https://github.com/SketchRespons
 ### Main dev dependencies
 
 NPM modules (see [`package.json`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/package.json))
-* [`autoprefixer`](https://www.npmjs.com/package/autoprefixer)
-* [`fast-sourcemap-concat`](https://www.npmjs.com/package/fast-sourcemap-concat)
-* [`glob`](https://www.npmjs.com/package/glob)
-* [`gobble`](https://www.npmjs.com/package/gobble)
-* [`jspm`](https://www.npmjs.com/package/jspm)
+* [`Autoprefixer`](https://www.npmjs.com/package/autoprefixer)
+* [`Babel`](https://babeljs.io)
+* [`ESLint`](https://eslint.org)
 * [`node-sass`](https://www.npmjs.com/package/node-sass)
-* [`postcss-cli`](https://www.npmjs.com/package/postcss-cli)
+* [`PostCSS`](https://postcss.org)
+* [`StyleLint`](https://stylelint.io)
+* [`Webpack`](https://webpack.js.org)
 
-JSPM fetched modules (see [`config.js`](https://github.com/SketchResponse/sketchresponse/blob/master/sketch_tool/config.js))
 
 ### License
 

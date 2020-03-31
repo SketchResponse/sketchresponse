@@ -31,6 +31,7 @@ module.exports = merge(common, {
       { from: './index.html' },
       { from: './favicon.ico' },
       { from: './debugConfigs.js' },
+      { from: '../LICENSE', to: './LICENSE.txt' },
       { from: './lib/delete-icon.svg', to: './lib/delete-icon.svg' },
       { from: './lib/redo-icon.svg', to: './lib/redo-icon.svg' },
       { from: './lib/select-icon.svg', to: './lib/select-icon.svg' },
