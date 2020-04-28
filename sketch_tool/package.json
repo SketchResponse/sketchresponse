@@ -55,8 +55,8 @@
   ],
   "scripts": {
     "start": "webpack-dev-server --openPage /#debug:$npm_config_debug --config webpack.development.js",
-    "lint:js": "eslint lib/",
-    "lint:css": "stylelint styles/",
+    "lint:js": "eslint lib/ || exit 0",
+    "lint:css": "stylelint styles/ || exit 0",
     "build": "webpack --config webpack.production.js"
   }
 }
