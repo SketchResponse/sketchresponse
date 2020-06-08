@@ -10,7 +10,6 @@ standard_library.install_aliases()
 from builtins import zip
 from builtins import range
 from builtins import object
-from past.utils import old_div
 from numpy import array
 from .bezier import *
 from .fitCurves import *
@@ -19,7 +18,7 @@ from tkinter import *
 
 # center of bounding box
 def cntr(x1, y1, x2, y2):
-    return x1+old_div((x2-x1),2), y1+old_div((y2-y1),2)
+    return x1 + ((x2 - x1) / 2), y1 + ((y2 - y1) /2)
 
 
 # tkinter Canvas plus some addons

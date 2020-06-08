@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from __future__ import division
 from builtins import str
-from past.utils import old_div
 from . import datalayer
 from . import Gradeable
 from . import Point
@@ -56,13 +55,13 @@ class LineSegments(Gradeable.Gradeable):
 
         coeffs, res, _, _, _ = np.polyfit(xs, ys, 1, full=True)
 
-        ybar = old_div(np.sum(ys), len(ys))
+        ybar = np.sum(ys) / len(ys)
         sstot = np.sum((ys - ybar) ** 2)
         if sstot == 0 or len(res) == 0:
             # sstot == 0 means horizontal line, len(res) == 0 means vertical line
             return True
         else:
-            r2 = old_div((sstot - res), sstot)
+            r2 = (sstot - res) / sstot
 
         #print r2[0] > 0.99
         return r2[0] > 0.99
@@ -140,7 +139,7 @@ class LineSegments(Gradeable.Gradeable):
     def unit(self, v):
         x, y = v
         mag = self.length(v)
-        return (old_div(x, mag), old_div(y, mag))
+        return (x / mag, y / mag)
 
     def distance(self, p0, p1):
         return self.length(self.vector(p0, p1))
@@ -190,10 +189,10 @@ class LineSegments(Gradeable.Gradeable):
         else:
             tolerance = tolerance * self.DEGREES
 
-        dist_tolerance = old_div(self.tolerance['line_distance'], self.xscale)
+        dist_tolerance = self.tolerance['line_distance'] / self.xscale
 
         if ignoreDirection:
-            expectedAngle = np.arctan(old_div(self.yscale * m, self.xscale))
+            expectedAngle = np.arctan((self.yscale * m) / self.xscale)
         else:
             expectedAngle = np.arctan2(self.yscale * m, self.xscale * 1)
         for segment in self.segments:
@@ -207,7 +206,7 @@ class LineSegments(Gradeable.Gradeable):
                 ydiff = pt2.y - pt1.y
                 xdiff = pt2.x - pt1.x
                 if ignoreDirection:
-                    actualAngle = np.arctan(old_div(ydiff, xdiff))
+                    actualAngle = np.arctan(ydiff / xdiff)
                 else:
                     actualAngle = np.arctan2(ydiff, xdiff)
                 return abs(expectedAngle - actualAngle) < tolerance
@@ -231,7 +230,7 @@ class LineSegments(Gradeable.Gradeable):
         if tolerance == None:
             tolerance = self.tolerance['line_angle'] * self.DEGREES
 
-        dist_tolerance = old_div(self.tolerance['line_distance'], self.xscale)
+        dist_tolerance = self.tolerance['line_distance'] / self.xscale
 
         for segment in self.segments:
             pt1 = segment.start
@@ -244,7 +243,7 @@ class LineSegments(Gradeable.Gradeable):
                 ydiff = pt2.y - pt1.y
                 xdiff = pt2.x - pt1.x
                 if ignoreDirection:
-                    actualAngle = np.arctan(old_div(ydiff, xdiff))
+                    actualAngle = np.arctan(ydiff / xdiff)
                 else:
                     actualAngle = np.arctan2(ydiff, xdiff)
 
@@ -265,7 +264,7 @@ class LineSegments(Gradeable.Gradeable):
             within tolerances, otherwise false.
         """
         # tolerances should shrink the range slightly so make it negative
-        dist_tolerance = old_div(self.tolerance['line_distance'], self.xscale)
+        dist_tolerance = self.tolerance['line_distance'] / self.xscale
 
         for segment in self.segments:
 
@@ -288,7 +287,7 @@ class LineSegments(Gradeable.Gradeable):
             to xmax within tolerances, otherwise false.
         """
         # tolerances should shrink the range slightly so make it negative
-        dist_tolerance = old_div(self.tolerance['line_distance'], self.xscale)
+        dist_tolerance = self.tolerance['line_distance'] / self.xscale
 
         for segment in self.segments:
             overlap = self.get_overlap_length(segment, xmin, xmax)
@@ -457,9 +456,9 @@ class LineSegments(Gradeable.Gradeable):
         """
         if distTolerance is None:
             if x is not False:
-                distTolerance = old_div(self.tolerance['line_distance'], self.xscale)
+                distTolerance = self.tolerance['line_distance'] / self.xscale
             else:
-                distTolerance = old_div(self.tolerance['line_distance'], self.yscale)
+                distTolerance = self.tolerance['line_distance'] / self.yscale
         else:
             if x is not False:
                 distTolerance /= self.xscale

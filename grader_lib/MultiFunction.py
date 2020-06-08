@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 from __future__ import division
-from past.utils import old_div
 from . import datalayer
 import numpy as np
 import math
@@ -192,7 +191,7 @@ class MultiFunction(datalayer.Function):
 
         # Fit a straight line and find the maximum perpendicular distance from it:
         m, b = np.polyfit(xvals, yvals, 1)
-        max_dist = np.max(old_div(np.abs(m*np.array(xvals) - np.array(yvals) + b), np.sqrt(m**2 + 1)))
+        max_dist = np.max(np.abs(m*np.array(xvals) - np.array(yvals) + b) / np.sqrt(m**2 + 1))
 
         # Approximate the "length" of the line by taking the distance between first/last points:
         length = np.sqrt((xvals[-1] - xvals[0])**2 + (yvals[-1] - yvals[0])**2)

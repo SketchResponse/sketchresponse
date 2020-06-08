@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 from builtins import map
 from builtins import object
-from past.utils import old_div
 from . import GradeableFunction
 from . import MultipleSplinesFunction
 from . import SplineFunction
@@ -219,9 +218,9 @@ class PolarTransform(object):
 
         # now segment any curves that wrap around theta=0/2pi boundary
         width = self.f.params['width']
-        minTen = old_div(width, 10)
+        minTen = width // 10
         maxTen = 9 * minTen
-        center = old_div(width, 2)
+        center = width // 2
         wrap_segmented = []
         for curve in curves:
             minTheta, maxTheta = self.getThetaRange(curve)
@@ -397,11 +396,11 @@ class PolarTransform(object):
             for i, (theta, r) in enumerate(ps):
                 if i < len(ps) - 1:
                     theta_n, r_n = ps[i + 1]
-                    rmean = old_div((r + r_n), 2)
+                    rmean = (r + r_n) / 2
                     rdiff = r - r_n
                     tdiff = theta - theta_n
                     #print rdiff / tdiff
-                    if not abs(old_div(rdiff, tdiff)) > 60 * (1 + old_div(rmean, rmax)):
+                    if not abs(rdiff / tdiff) > 60 * (1 + (rmean / rmax)):
                         subfiltered.append([theta, r])
 #                    else:
 #                        print 't = ' + str(theta) + " tn = " + str(theta_n)

@@ -1,6 +1,5 @@
 from __future__ import division
 from builtins import zip
-from past.utils import old_div
 import re
 import json
 
@@ -21,7 +20,7 @@ def points_from_path(path):
     return points
 
 def delta_decode_spline_points(points):
-    num_segments = old_div((len(points) - 1), 3)
+    num_segments = (len(points) - 1) // 3
 
     i = 0
     while i+3 < len(points):
