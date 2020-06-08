@@ -24,6 +24,8 @@ class LineSegments(Gradeable.Gradeable):
         self.set_default_tolerance('line_distance_squared', 400)
         self.set_default_tolerance('line_angle', 10)
         self.set_default_tolerance('pixel', 20)
+        self.set_default_tolerance('extrema', 20)
+        self.set_default_tolerance('comparison', 20)
 
         self.segments = []
         for spline in info:
@@ -408,23 +410,23 @@ class LineSegments(Gradeable.Gradeable):
         return distances
 
     def get_segments_between(self, xmin, xmax):
-         """ Return a list of line segments that exist between the given x values.
+        """ Return a list of line segments that exist between the given x values.
 
-         Args:
-            xmin: the minimum x coordinate of interest.
-            xmax: the maximum x coordinate of interest.
-         """
-         tolerance = self.tolerance['pixel'] / self.xscale
+        Args:
+           xmin: the minimum x coordinate of interest.
+           xmax: the maximum x coordinate of interest.
+        """
+        tolerance = self.tolerance['pixel'] / self.xscale
          
-         segmentsBetween = []
-         for segment in self.segments:
-             x0 = segment.start.x
-             x1 = segment.end.x
-             x0, x1 = self.swap(x0, x1)
-             if self.x_is_between(xmin, x0, x1, tolerance) or self.x_is_between(xmax, x0, x1, tolerance):
-                 segmentsBetween.append(segment)
+        segmentsBetween = []
+        for segment in self.segments:
+            x0 = segment.start.x
+            x1 = segment.end.x
+            x0, x1 = self.swap(x0, x1)
+            if self.x_is_between(xmin, x0, x1, tolerance) or self.x_is_between(xmax, x0, x1, tolerance):
+                segmentsBetween.append(segment)
 
-         return segmentsBetween
+        return segmentsBetween
 
     def get_segments_at(self, point=False, x=False, y=False, distTolerance=None,
                         squareDistTolerance=None):
@@ -515,7 +517,8 @@ class LineSegments(Gradeable.Gradeable):
 
     def has_segments_at(self, point=False, x=False, y=False, distTolerance=None,
                         squareDistTolerance=None):
-        """ Return a list of line segments declared at the given value.
+        """ Return true if one or more line segment exists at the given point, x coord,
+            y coord, or combination.
 
         Args:
             point(default: False): a Point instance at the value of interest.
@@ -540,10 +543,10 @@ class LineSegments(Gradeable.Gradeable):
             true if there is at least one line segment within tolerance of the
             given position, otherwise false.
         """
-        return self.get_point_at(point, x, y, distTolerance,
+        return self.get_segments_at(point, x, y, distTolerance,
                                  squareDistTolerance) is not None
 
-    def check_segment_endpoints(self, segment, points, tolerance=None):
+    def check_both_segment_endpoints(self, segment, points, tolerance=None):
         """Return whether the segment's start and end points are both in
            the list of points.
 
@@ -651,6 +654,184 @@ class LineSegments(Gradeable.Gradeable):
             the number of line segments in this grader module
         """
         return len(self.segments)
+
+    def get_min_value_between(self, xmin, xmax):
+        """Return the minimum value of the function in the domain [xmin, xmax].
+
+        Args:
+            xmin: the minimum x-axis value.
+            xmax: the maximum x-axis value.
+        Returns:
+            [float|bool]:
+            the minimum function value in the domain [xmin, xmax], or False if
+            the function is not defined in that range.
+        """
+        segments = self.get_segments_between(xmin, xmax)
+        minVals = []
+        for segment in segments:
+            startx, starty = segment.getStartPoint()
+            endx, endy = segment.getEndPoint()
+            val = np.min([starty, endy])
+            minVals.append(val)
+
+        if len(minVals):
+            return np.min(minVals)
+        else:
+            return False
+
+    def get_max_value_between(self, xmin, xmax):
+        """Return the maximum value of the function in the domain [xmin, xmax].
+
+        Args:
+            xmin: the minimum x-axis value.
+            xmax: the maximum x-axis value.
+        Returns:
+            [float|bool]:
+            the maximum function value in the domain [xmin, xmax], or False if
+            the function is not defined in that range.
+        """
+        segments = self.get_segments_between(xmin, xmax)
+        maxVals = []
+        for segment in segments:
+            startx, starty = segment.getStartPoint()
+            endx, endy = segment.getEndPoint()
+            val = np.max([starty, endy])
+            maxVals.append(val)
+
+        if len(maxVals):
+            return np.max(maxVals)
+        else:
+            return False
+
+    def is_zero_at_x_equals_zero(self, yTolerance=None, xTolerance=None):
+        """Return whether the function is zero at x equals zero.
+
+        Args:
+            yTolerance(default:None): the y-axis pixel distance within which
+                                       the function value is accepted.
+            xTolerance(default:None): the x-axis pixel distance within which
+                                       the function value is accepted.
+        Returns:
+            bool:
+            true if the function value at x equals zero is zero within
+            tolerances, otherwise false
+        """
+        return self.has_value_y_at_x(0, 0, yTolerance=yTolerance,
+                                     xTolerance=xTolerance)
+
+    def is_greater_than_y_between(self, y, xmin, xmax, tolerance=None):
+        """Return whether function is always greater than y in the range xmin to xmax.
+
+        Args:
+            y: the target y value.
+            xmin: the minimum x range value.
+            xmax: the maximum x range value.
+            tolerance(default:None): pixel distance tolerance. If None given uses
+                                     default constant 'comparison'.
+        Returns:
+            bool:
+            true if the minimum value of the function in the range (xmin,xmax)
+            is greater than y within tolerances, otherwise false.
+        """
+        if tolerance is None:
+            tolerance = self.tolerance['comparison'] / self.yscale
+        else:
+            tolerance /= self.yscale
+
+        return self.get_min_value_between(xmin, xmax) > y - tolerance
+
+    def is_less_than_y_between(self, y, xmin, xmax, tolerance=None):
+        """Return whether function is always less than y in the range xmin to xmax.
+
+        Args:
+            y: the target y value.
+            xmin: the minimum x range value.
+            xmax: the maximum x range value.
+            tolerance(default:None): pixel distance tolerance. If None given uses
+                                     default constant 'comparison'.
+        Returns:
+            bool:
+            true if the maximum value of the function in the range (xmin,xmax)
+            is less than y within tolerances, otherwise false.
+        """
+        if tolerance is None:
+            tolerance = self.tolerance['comparison'] / self.yscale
+        else:
+            tolerance /= self.yscale
+
+        return self.get_max_value_between(xmin, xmax) < y + tolerance
+    
+    # checks that the local minima between xmin and xmax is at x
+    # may specify xmin and xmax directly, or with a delta value that indicates them, or leave it to the default delta
+    def has_min_at(self, x, delta=False, xmin=False, xmax=False):
+        """Return if the function has a local minimum at the value x.
+
+        Args:
+            x: the x-axis value to test.
+            delta(default:False): the delta value to sample on either side of x
+                                  (not setting it uses a default value).
+            xmin(default:False): the position of the value left of x to compare
+                                 (not setting it uses the value x - delta).
+            xmax(default:False): the position of the value right of x to compare
+                                 (not setting it uses the value x + delta).
+        Returns:
+            bool:
+            true if the value of the function at x is less than both the values at
+            xmin and xmax, otherwise false.
+        """
+        # checks if the actual local minima is 'close' to the value at x. if it is, this should probably be accepted as a local minima
+        if delta is False:
+            delta = self.tolerance['extrema'] / self.xscale
+        if xmin is False:
+            xmin = x - delta
+        if xmax is False:
+            xmax = x + delta
+
+        segments = self.get_segments_at(x=x)
+        min_val_at_x = float('inf')
+        for segment in segments:
+            val = self.get_y_value_at_x(segment, x)
+            if val < min_val_at_x:
+                min_val_at_x = val
+                
+        min_val_in_range = self.get_min_value_between(xmin, xmax)
+
+        return abs(min_val_at_x - min_val_in_range) <= delta
+    
+    # see has_min_at
+    def has_max_at(self, x, delta=False, xmin=False, xmax=False):
+        """Return if the function has a local maximum at the value x.
+
+        Args:
+            x: the x-axis value to test.
+            delta(default:False): the delta value to sample on either side of x
+                                  (not setting it uses a default value).
+            xmin(default:False): the position of the value left of x to compare
+                                 (not setting it uses the value x - delta).
+            xmax(default:False): the position of the value right of x to compare
+                                 (not setting it uses the value x + delta).
+        Returns:
+            bool:
+            true if the value of the function at x is greater than both the values
+            at xmin and xmax, otherwise false.
+        """
+        if delta is False:
+            delta = self.tolerance['extrema'] / self.xscale
+        if xmin is False:
+            xmin = x - delta
+        if xmax is False:
+            xmax = x + delta
+
+        segments = self.get_segments_at(x=x)
+        max_val_at_x = float('-inf')
+        for segment in segments:
+            val = self.get_y_value_at_x(segment, x)
+            if val > max_val_at_x:
+                max_val_at_x = val
+                
+        max_val_in_range = self.get_max_value_between(xmin, xmax)
+
+        return abs(max_val_at_x - max_val_in_range) <= delta
 
 #  has_point_at
 #  

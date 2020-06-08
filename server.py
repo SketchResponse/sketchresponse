@@ -11,6 +11,8 @@ app = Flask(__name__)
 SCRIPT_PATH = 'sketchresponse/grader_scripts/'
 PACKAGE = 'sketchresponse.grader_scripts.'
 
+ENABLE_DATA_PRINTING = False
+
 @app.route('/')
 def list_grader_scripts():
     path = SCRIPT_PATH  # os.path.expanduser(u'~')
@@ -53,6 +55,8 @@ def check_local(path=None, grader_module_name=None):
 
     # Dispatch to grader in the required format
     # Assume no 'expect' value for now
+    if ENABLE_DATA_PRINTING == True:
+        print(json.dumps(submitted_data))
     grader_response = grader_module.grader(None, json.dumps(submitted_data))
 
     # Allow boolean grader return values instead of dicts
@@ -106,4 +110,7 @@ def make_tree(path):
     return tree
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        if sys.argv[1] == '-p':
+            ENABLE_DATA_PRINTING = True
     app.run(debug=True)
