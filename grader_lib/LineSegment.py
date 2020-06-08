@@ -24,6 +24,8 @@ class LineSegments(Gradeable.Gradeable):
         self.set_default_tolerance('line_distance_squared', 400)
         self.set_default_tolerance('line_angle', 10)
         self.set_default_tolerance('pixel', 20)
+        self.set_default_tolerance('extrema', 20)
+        self.set_default_tolerance('comparison', 20)
 
         self.segments = []
         for spline in info:
@@ -515,7 +517,8 @@ class LineSegments(Gradeable.Gradeable):
 
     def has_segments_at(self, point=False, x=False, y=False, distTolerance=None,
                         squareDistTolerance=None):
-        """ Return a list of line segments declared at the given value.
+        """ Return true if one or more line segment exists at the given point, x coord,
+            y coord, or combination.
 
         Args:
             point(default: False): a Point instance at the value of interest.
@@ -540,10 +543,10 @@ class LineSegments(Gradeable.Gradeable):
             true if there is at least one line segment within tolerance of the
             given position, otherwise false.
         """
-        return self.get_point_at(point, x, y, distTolerance,
+        return self.get_segments_at(point, x, y, distTolerance,
                                  squareDistTolerance) is not None
 
-    def check_segment_endpoints(self, segment, points, tolerance=None):
+    def check_both_segment_endpoints(self, segment, points, tolerance=None):
         """Return whether the segment's start and end points are both in
            the list of points.
 
@@ -793,7 +796,7 @@ class LineSegments(Gradeable.Gradeable):
                 
         min_val_in_range = self.get_min_value_between(xmin, xmax)
 
-        return min_val_at_x < min_val_in_range
+        return abs(min_val_at_x - min_val_in_range) <= delta
     
     # see has_min_at
     def has_max_at(self, x, delta=False, xmin=False, xmax=False):
@@ -823,12 +826,12 @@ class LineSegments(Gradeable.Gradeable):
         max_val_at_x = float('-inf')
         for segment in segments:
             val = self.get_y_value_at_x(segment, x)
-            if val > min_val_at_x:
+            if val > max_val_at_x:
                 max_val_at_x = val
                 
         max_val_in_range = self.get_max_value_between(xmin, xmax)
 
-        return max_val_at_x > max_val_in_range
+        return abs(max_val_at_x - max_val_in_range) <= delta
 
 #  has_point_at
 #  

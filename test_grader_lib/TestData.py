@@ -12,6 +12,10 @@ class TestData(unittest.TestCase):
     # hw4A-tab8-problem1.anon.csv
     # hw4B-tab4-problem4.anon.csv
 
+    ls_constant = {"ls-constant": [{"apiVersion":"0.1","meta":{"config":{"width":420,"height":420,"xrange":[-4,4],"yrange":[-4,4],"xscale":"linear","yscale":"linear","coordinates":"cartesian","plugins":[{"name":"axes"},{"name":"line-segment","id":"ls","label":"Line Segment 1","color":"blue"},{"name":"line-segment","id":"ls2","label":"Line Segment 2","color":"green"}]},"dataVersions":{"ls":"0.1","ls2":"0.1"}},"data":{"ls":[{"spline":[[158,157],[193,157],[228,157],[263,157]]}],"ls2":[]}}]}
+
+    ls_not_constant = {"ls-not-constant": [{"apiVersion":"0.1","meta":{"config":{"width":420,"height":420,"xrange":[-4,4],"yrange":[-4,4],"xscale":"linear","yscale":"linear","coordinates":"cartesian","plugins":[{"name":"axes"},{"name":"line-segment","id":"ls","label":"Line Segment 1","color":"blue"},{"name":"line-segment","id":"ls2","label":"Line Segment 2","color":"green"}]},"dataVersions":{"ls":"0.1","ls2":"0.1"}},"data":{"ls":[{"spline":[[158,262],[193,226.66666666666666],[228,191.33333333333334],[263,156]]}],"ls2":[]}}]}
+
     ls_slope_2 = {'ls-slope-2': [{"apiVersion":"0.1","meta":{"config":{"width":420,"coords":"polar","yrange":[-4,4],"yscale":"linear","xscale":"linear","xrange":[-4,4],"plugins":[{"name":"axes"},{"color":"blue","label":"Function f(x)","name":"freeform","id":"f"},{"color":"blue","label":"Line Segment","name":"line-segment","id":"ls"}],"height":420},"dataVersions":{"f":"0.1","ls":"0.1"}},"data":{"f":[],"ls":[{"spline":[[159,314],[193.66666666666666,244.33333333333334],[228.33333333333334,174.66666666666666],[263,105]]}]}}]}
 
     ls_not_exist = {'ls-not-exist': [{"apiVersion":"0.1","meta":{"config":{"width":420,"coords":"polar","yrange":[-4,4],"yscale":"linear","xscale":"linear","xrange":[-4,4],"plugins":[{"name":"axes"},{"color":"blue","label":"Function f(x)","name":"freeform","id":"f"},{"color":"blue","label":"Line Segment","name":"line-segment","id":"ls"}],"height":420},"dataVersions":{"f":"0.1","ls":"0.1"}},"data":{"f":[],"ls":[{"spline":[[156,104],[113,125.66666666666667],[70,147.33333333333334],[27,169]]},{"spline":[[263,105],[312.3333333333333,123.66666666666667],[361.6666666666667,142.33333333333334],[411,161]]}]}}]}
@@ -67,7 +71,8 @@ class TestData(unittest.TestCase):
                   not_constant, not_exist, ls_slope_2,
                   ls_not_exist, ls_exist, ls_segs,
                   polylines, polygonPoint, polygonBoundary,
-                  polygonIntersection, tag_data, tag_none]
+                  polygonIntersection, tag_data, tag_none,
+                  ls_constant, ls_not_constant]
 
     def get_data(self, source):
         if source in self.data_dict:

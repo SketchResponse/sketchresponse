@@ -61,6 +61,52 @@ class TestAsymptoteMethods(TestData.TestData):
             ls = LineSegment.LineSegments(d['ls'])
             self.assertFalse(ls.does_exist_between(-1, 1))
 
+    def test_true_has_constant_value_y_between(self):
+        data = self.load_as_gradeable_collections('ls-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertTrue(ls.has_constant_value_y_between(1, -1, 1))
+
+    def test_false_has_constant_value_y_between(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertFalse(ls.has_constant_value_y_between(1, -1, 1))
+    
+    def test_true_has_value_y_at_x(self):
+        data = self.load_as_gradeable_collections('ls-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertTrue(ls.has_value_y_at_x(1, 0))
+
+    def test_false_has_value_y_at_x(self):
+        data = self.load_as_gradeable_collections('ls-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertFalse(ls.has_value_y_at_x(0, 0))
+
+    def test_true_segment_has_constant_value_y(self):
+        data = self.load_as_gradeable_collections('ls-constant')
+        print(data)
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            segments = ls.get_segments_at(x=0)
+            self.assertTrue(ls.segment_has_constant_value_y(segments[0], 1))
+
+    def test_false_segment_has_constant_value_y(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            segments = ls.get_segments_at(x=0)
+            self.assertFalse(ls.segment_has_constant_value_y(segments[0], 1))
+
+    def test_get_segments_between(self):
+        data = self.load_as_gradeable_collections('ls-segs')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            segs = ls.get_segments_between(0, 2)
+            self.assertEqual(len(segs), 2)
+
     def test_get_segments_at_point(self):
         data = self.load_as_gradeable_collections('ls-segs')
         for d in data:
@@ -89,23 +135,23 @@ class TestAsymptoteMethods(TestData.TestData):
             segs = ls.get_segments_at(x=3, y=3)
             self.assertIsNone(segs, None)
 
-    def test_has_segments_at_point(self):
+    def test_true_has_segments_at_point(self):
         data = self.load_as_gradeable_collections('ls-segs')
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
-            self.assertTrue(ls.get_segments_at(x=1, y=1))
+            self.assertTrue(ls.has_segments_at(x=1, y=1))
 
-    def test_get_segments_at_x(self):
+    def test_true_has_segments_at_x(self):
         data = self.load_as_gradeable_collections('ls-segs')
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
-            self.assertTrue(ls.get_segments_at(x=1))
+            self.assertTrue(ls.has_segments_at(x=1))
 
-    def test_get_segments_at_y(self):
+    def test_true_has_segments_at_y(self):
         data = self.load_as_gradeable_collections('ls-segs')
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
-            self.assertTrue(ls.get_segments_at(y=1))
+            self.assertTrue(ls.has_segments_at(y=1))
 
     def test_false_has_segments_at(self):
         data = self.load_as_gradeable_collections('ls-segs')
@@ -113,19 +159,19 @@ class TestAsymptoteMethods(TestData.TestData):
             ls = LineSegment.LineSegments(d['ls'])
             self.assertFalse(ls.get_segments_at(x=3, y=3))
 
-    def test_true_check_segment_endpoints(self):
+    def test_true_check_both_segment_endpoints(self):
         data = self.load_as_gradeable_collections('ls-segs')
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
             seg = ls.get_segments_at(x=1, y=1)[0]
-            self.assertTrue(ls.check_segment_endpoints(seg, [[0, 0], [2, 2]]))
+            self.assertTrue(ls.check_both_segment_endpoints(seg, [[0, 0], [2, 2]]))
 
-    def test_false_check_segment_endpoints(self):
+    def test_false_check_both_segment_endpoints(self):
         data = self.load_as_gradeable_collections('ls-segs')
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
             seg = ls.get_segments_at(x=1, y=1)[0]
-            self.assertFalse(ls.check_segment_endpoints(seg, [[-1, 0], [2, 1.5]]))
+            self.assertFalse(ls.check_both_segment_endpoints(seg, [[-1, 0], [2, 1.5]]))
 
     def test_true_check_segment_startpoint(self):
         data = self.load_as_gradeable_collections('ls-segs')
@@ -195,5 +241,90 @@ class TestAsymptoteMethods(TestData.TestData):
             ls = LineSegment.LineSegments(d['ls'])
             self.assertNotEqual(ls.get_number_of_segments(), 0)
 
+    def test_true_get_min_value_between(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertAlmostEqual(ls.get_min_value_between(-1, 1), -1, 1)
+
+    def test_false_get_min_value_between(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertNotAlmostEqual(ls.get_min_value_between(-1, 1), 1, 1)
+
+    def test_true_get_max_value_between(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertAlmostEqual(ls.get_max_value_between(-1, 1), 1, 1)
+
+    def test_false_get_max_value_between(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertNotAlmostEqual(ls.get_max_value_between(-1, 1), -1, 1)
+
+    def test_true_is_zero_at_x_equals_zero(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertTrue(ls.is_zero_at_x_equals_zero())
+
+    def test_false_is_zero_at_x_equals_zero(self):
+        data = self.load_as_gradeable_collections('ls-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertFalse(ls.is_zero_at_x_equals_zero())
+
+    def test_true_is_greater_than_y_between(self):
+        data = self.load_as_gradeable_collections('ls-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertTrue(ls.is_greater_than_y_between(0, -1, 1))
+
+    def test_false_is_greater_than_y_between(self):
+        data = self.load_as_gradeable_collections('ls-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertFalse(ls.is_greater_than_y_between(2, -1, 1))
+
+    def test_true_is_less_than_y_between(self):
+        data = self.load_as_gradeable_collections('ls-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertTrue(ls.is_less_than_y_between(2, -1, 1))
+
+    def test_false_is_less_than_y_between(self):
+        data = self.load_as_gradeable_collections('ls-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertFalse(ls.is_less_than_y_between(0, -1, 1))
+
+    def test_true_has_min_at(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertTrue(ls.has_min_at(-1))
+
+    def test_false_has_min_at(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertFalse(ls.has_min_at(0))
+
+    def test_true_has_max_at(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertTrue(ls.has_max_at(1))
+
+    def test_false_has_max_at(self):
+        data = self.load_as_gradeable_collections('ls-not-constant')
+        for d in data:
+            ls = LineSegment.LineSegments(d['ls'])
+            self.assertFalse(ls.has_max_at(0))
+
+            
 if __name__ == '__main__':
     unittest.main()
