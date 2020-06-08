@@ -86,7 +86,6 @@ class TestAsymptoteMethods(TestData.TestData):
 
     def test_true_segment_has_constant_value_y(self):
         data = self.load_as_gradeable_collections('ls-constant')
-        print(data)
         for d in data:
             ls = LineSegment.LineSegments(d['ls'])
             segments = ls.get_segments_at(x=0)
