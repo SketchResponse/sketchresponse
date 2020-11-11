@@ -1,18 +1,22 @@
-FROM node:8 AS frontend-builder
+FROM node:12 AS frontend-builder
 WORKDIR /app/sketch_tool
-COPY sketch_tool/package.json sketch_tool/config.js ./
+COPY sketch_tool/package.json sketch_tool/package-lock.json ./
 RUN npm install --unsafe-perm=true
 COPY sketch_tool .
 COPY LICENSE ..
 RUN npm run build
 
-FROM python:2.7
-WORKDIR /app
+FROM python:3.8
+WORKDIR /app/sketchresponse
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 COPY --from=frontend-builder \
   /app/static/sketch_tool_dist static/sketch_tool_dist
+WORKDIR /app
 EXPOSE 5000
-ENV FLASK_APP=server.py FLASK_DEBUG=1 PYTHONPATH=/app
-CMD ["flask", "run", "-h 0.0.0.0"]
+ENV FLASK_APP=sketchresponse.server \
+  FLASK_RUN_HOST=0.0.0.0 \
+  FLASK_RUN_PORT=5000 \
+  FLASK_DEBUG=1
+CMD ["flask", "run"]

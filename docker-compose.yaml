@@ -6,4 +6,4 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ./grader_scripts:/app/grader_scripts
+      - ./grader_scripts:/app/sketchresponse/grader_scripts
