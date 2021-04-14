@@ -24,7 +24,6 @@ function implementsZNodeInterface(obj) {
     typeof obj.update === 'function';
 }
 
-
 class ZNode {
   mount(parentEl, refEl) {
     parentEl.insertBefore(this.el, refEl || null); // null inserts as last child
@@ -39,7 +38,6 @@ class ZNode {
     this.el.parentNode.insertBefore(this.el, refEl || null);
   }
 }
-
 
 class ZTextNode extends ZNode {
   constructor(text) {
@@ -65,7 +63,6 @@ class ZTextNode extends ZNode {
     super.update(refEl);
   }
 }
-
 
 class ZNodeCollection {
   constructor(...nodes) {
@@ -132,7 +129,6 @@ class ZNodeCollection {
     this.keys = next.keys;
   }
 }
-
 
 class ZElement extends ZNode {
   constructor(tagName, props, ...children) {
@@ -213,7 +209,6 @@ class ZElement extends ZNode {
       });
   }
 }
-
 
 function z(tagName, props, ...children) {
   props = props || {};

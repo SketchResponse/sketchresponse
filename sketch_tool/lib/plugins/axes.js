@@ -179,7 +179,6 @@ export default class Axes {
     let defaultMinorYSpacing = nearestNiceNumber(
       defaultMajorYSpacing / DEFAULTS.targetMinorMajorTickRatio);
 
-
     // Note: can't use `||` since 0 and null are falsy
     this.xMajor = (this.params.xmajor !== undefined) ? this.params.xmajor
       : (this.params.major !== undefined) ? this.params.major
@@ -196,7 +195,6 @@ export default class Axes {
       defaultMinorXSpacing = null;
     }
 
-
     this.xLabels = (this.params.xlabels !== undefined) ? this.params.xlabels
       : (this.params.labels !== undefined) ? this.params.labels
       : this.xMajor;
@@ -209,7 +207,6 @@ export default class Axes {
 
     this.xLabels = this.xLabels.filter((_, idx) => this.xMajor[idx] !== 0);
     this.xMajor = this.xMajor.filter((val) => val !== 0);
-
 
     // Note: can't use `||` since 0 and null are falsy
     this.yMajor = (this.params.ymajor !== undefined) ? this.params.ymajor
@@ -227,7 +224,6 @@ export default class Axes {
       defaultMinorYSpacing = null;
     }
 
-
     this.yLabels = (this.params.ylabels !== undefined) ? this.params.ylabels
       : (this.params.labels !== undefined) ? this.params.labels
       : this.yMajor;
@@ -240,7 +236,6 @@ export default class Axes {
 
     this.yLabels = this.yLabels.filter((_, idx) => this.yMajor[idx] !== 0);
     this.yMajor = this.yMajor.filter((val) => val !== 0);
-
 
     // Note: can't use `||` since 0 and null are falsy
     this.xMinor = (this.params.xminor !== undefined) ? this.params.xminor
@@ -255,7 +250,6 @@ export default class Axes {
     }
      // Exclude values in xMajor
     this.xMinor = this.xMinor.filter((val) => !(this.xMajor.indexOf(val) >= 0));
-
 
     // Note: can't use `||` since 0 and null are falsy
     this.yMinor = (this.params.yminor !== undefined) ? this.params.yminor

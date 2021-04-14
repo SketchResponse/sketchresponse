@@ -14,7 +14,6 @@ import ElementManager from './element-manager';
 import validate from './config-validator';
 import deepCopy from './util/deep-copy';
 
-
 import Toolbar from './toolbar';
 
 // Load all CSS
@@ -32,7 +31,6 @@ const DEFAULT_CONFIG = {
   yscale: 'linear',
   coordinates: 'cartesian',
 };
-
 
 export default class SketchInput {
   constructor(el, config) {
