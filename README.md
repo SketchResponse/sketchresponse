@@ -50,9 +50,8 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
 * Install dependencies listed in *package.json*:
 
   ```sh
-  $ npm install
+  $ npm ci
   ```
-  [JSPM](http://jspm.io) will pull in additional dependencies automatically on a post-install script.
 
 * Build a local distribution of the *sketch_tool*:
 

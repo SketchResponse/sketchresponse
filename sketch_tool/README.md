@@ -18,7 +18,7 @@ You'll need to have [Node.js](http://nodejs.org) and npm (which is now packaged 
 * Install dependencies listed in *package.json*:
 
   ```sh
-  $ npm install
+  $ npm ci
   ```
 
 
