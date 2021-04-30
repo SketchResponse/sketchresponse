@@ -1,7 +1,7 @@
-FROM node:12 AS frontend-builder
+FROM node:14 AS frontend-builder
 WORKDIR /app/sketch_tool
 COPY sketch_tool/package.json sketch_tool/package-lock.json ./
-RUN npm install --unsafe-perm=true
+RUN npm ci --unsafe-perm=true
 COPY sketch_tool .
 COPY LICENSE ..
 RUN npm run build
