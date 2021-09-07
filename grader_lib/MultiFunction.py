@@ -136,7 +136,7 @@ class MultiFunction(datalayer.Function):
         return xvals
 
     def get_vertical_line_crossings(self, xval):
-        """Return a list of the values where the function crosses the horizontal line x=xval.
+        """Return a list of the values where the function crosses the vertical line x=xval.
 
         Args:
             xval: the x-axis value of the vertical line.
@@ -168,7 +168,6 @@ class MultiFunction(datalayer.Function):
 
     def is_straight_between(self, xmin, xmax):
         """Return whether the function is straight within the range xmin to xmax. An alternate approximate implementation until we sort out some issues above
-
         Args:
             xmin: the minimum x-axis value of the range to check.
             xmax: the maximum x-axis value of the range to check.
@@ -180,20 +179,66 @@ class MultiFunction(datalayer.Function):
         if self.does_not_exist_between(xmin, xmax):
             return False
 
-        # Apply tolerances at boundaries:
-        xmin = self.px_to_xval(self.xval_to_px(xmin) + self.tolerance['point_distance'])
-        xmax = self.px_to_xval(self.xval_to_px(xmax) - self.tolerance['point_distance'])
+        if len(self.functions) > 1:
+            raise Exception("Too many functions: only 1 function can be checked for straightness")
 
-        # Sample between boundaries and convert to pixels:
-        xvals, yvals, _ = self.get_sample_points(25, xmin, xmax)
+        if not self.functions:
+            raise Exception("Not enough functions: one 1 function can be checked for straightness")
+
+        # Sample from Bezier curves directly and convert to pixels:
+        def Bezier_curve_n3(c0, c1, c2, c3, t):
+            curve_coordinate_value = (1 - t)**3 * c0 + 3 * (1 - t)**2 * t * c1 + 3 * (1 - t) * t**2 * c2 + t**3 * c3
+            return curve_coordinate_value
+
+        num_pts_per_curve = 19
+        t_vals = np.linspace(0, 1, num = (num_pts_per_curve + 2))
+        t_vals = t_vals[1:len(t_vals) - 1] # exclude endpoints of curve to avoid collisions
+        xvals = []
+        yvals = []
+
+        spline_function = self.functions[0]
+        for bezier_function in spline_function.functions:
+            p0 = bezier_function.p0
+            p1 = bezier_function.p1
+            p2 = bezier_function.p2
+            p3 = bezier_function.p3
+
+            for t in t_vals:
+                xval = Bezier_curve_n3(p0[0], p1[0], p2[0], p3[0], t)
+                yval = Bezier_curve_n3(p0[1], p1[1], p2[1], p3[1], t)
+                xvals.append(xval)
+                yvals.append(yval)
+
         xvals = [self.xval_to_px(xval) for xval in xvals]
         yvals = [self.yval_to_px(yval) for yval in yvals]
 
+        # Find x and y range:
+        x_min = np.min(xvals)
+        x_max = np.max(xvals)
+        x_range = x_max - x_min
+
+        y_min = np.min(yvals)
+        y_max = np.max(yvals)
+        y_range = y_max - y_min
+
+        # If necessary, swap x and y values because linear regression (used in polyfit)
+        # is unstable when points are vertical
+        # So, if y_range > x_range swap x and y values such that points become
+        # horizontal to check if the function is straight
+        if y_range > x_range: # swap x and y values
+            xvals_ = yvals
+            yvals_ = xvals
+        else:
+            xvals_ = xvals
+            yvals_ = yvals
+
         # Fit a straight line and find the maximum perpendicular distance from it:
-        m, b = np.polyfit(xvals, yvals, 1)
-        max_dist = np.max(np.abs(m*np.array(xvals) - np.array(yvals) + b) / np.sqrt(m**2 + 1))
+        p, stats = np.polynomial.polynomial.polyfit(xvals_, yvals_, deg=1, full=True)
+        m = p[1]
+        b = p[0]
+        max_dist = np.max(np.abs(m * np.array(xvals_) - np.array(yvals_) + b) / np.sqrt(m**2 + 1))
 
         # Approximate the "length" of the line by taking the distance between first/last points:
-        length = np.sqrt((xvals[-1] - xvals[0])**2 + (yvals[-1] - yvals[0])**2)
+        length = np.sqrt((xvals_[-1] - xvals_[0])**2 + (yvals_[-1] - yvals_[0])**2)
 
-        return bool(max_dist < 0.4*self.tolerance['straight_line']*length)
+        return max_dist < (0.4 * self.tolerance['straight_line'] * length)
