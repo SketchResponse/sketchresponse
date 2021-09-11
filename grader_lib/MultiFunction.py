@@ -15,7 +15,7 @@ class MultiFunction(datalayer.Function):
     # will use functions if they exist
     def __init__(self, xaxis, yaxis, path_info=[], functions=[], tolerance = dict()):
         datalayer.Function.__init__(self, xaxis, yaxis, path_info, tolerance)
-        self.set_default_tolerance('straight_line', 0.1) # threshold for straight lines
+        self.set_default_tolerance('straight_line', 0.005) # threshold for straight lines
         if functions:
             self.functions = functions
 
@@ -183,14 +183,14 @@ class MultiFunction(datalayer.Function):
             raise Exception("Too many functions: only 1 function can be checked for straightness")
 
         if not self.functions:
-            raise Exception("Not enough functions: one 1 function can be checked for straightness")
+            raise Exception("Not enough functions: only 1 function can be checked for straightness")
 
         # Sample from Bezier curves directly and convert to pixels:
         def Bezier_curve_n3(c0, c1, c2, c3, t):
             curve_coordinate_value = (1 - t)**3 * c0 + 3 * (1 - t)**2 * t * c1 + 3 * (1 - t) * t**2 * c2 + t**3 * c3
             return curve_coordinate_value
 
-        num_pts_per_curve = 19
+        num_pts_per_curve = 29
         t_vals = np.linspace(0, 1, num = (num_pts_per_curve + 2))
         t_vals = t_vals[1:len(t_vals) - 1] # exclude endpoints of curve to avoid collisions
         xvals = []
@@ -212,33 +212,20 @@ class MultiFunction(datalayer.Function):
         xvals = [self.xval_to_px(xval) for xval in xvals]
         yvals = [self.yval_to_px(yval) for yval in yvals]
 
-        # Find x and y range:
-        x_min = np.min(xvals)
-        x_max = np.max(xvals)
-        x_range = x_max - x_min
+        # Distance function
+        def dist(xstart, ystart, xend, yend):
+            distance = np.sqrt((xend - xstart)**2 + (yend - ystart)**2)
+            return distance
 
-        y_min = np.min(yvals)
-        y_max = np.max(yvals)
-        y_range = y_max - y_min
+        # Find length between endpoints
+        length_endpoints = dist(xvals[0], yvals[0], xvals[-1], yvals[-1])
 
-        # If necessary, swap x and y values because linear regression (used in polyfit)
-        # is unstable when points are vertical
-        # So, if y_range > x_range swap x and y values such that points become
-        # horizontal to check if the function is straight
-        if y_range > x_range: # swap x and y values
-            xvals_ = yvals
-            yvals_ = xvals
-        else:
-            xvals_ = xvals
-            yvals_ = yvals
+        # Approximate actual length of function
+        xvals = np.array(xvals)
+        yvals = np.array(yvals)
+        length = np.sum(dist(xvals[1:], yvals[1:], xvals[:-1], yvals[:-1]))
 
-        # Fit a straight line and find the maximum perpendicular distance from it:
-        p, stats = np.polynomial.polynomial.polyfit(xvals_, yvals_, deg=1, full=True)
-        m = p[1]
-        b = p[0]
-        max_dist = np.max(np.abs(m * np.array(xvals_) - np.array(yvals_) + b) / np.sqrt(m**2 + 1))
+        diff_percent = abs(length_endpoints - length) / length
+        # raise Exception(f"length_endpoints = {length_endpoints}, length = {length}, diff_percent = {diff_percent}")
 
-        # Approximate the "length" of the line by taking the distance between first/last points:
-        length = np.sqrt((xvals_[-1] - xvals_[0])**2 + (yvals_[-1] - yvals_[0])**2)
-
-        return max_dist < (0.4 * self.tolerance['straight_line'] * length)
+        return diff_percent < self.tolerance['straight_line']
