@@ -75,3 +75,6 @@ target/
 
 # front-end build
 static/sketch_tool_dist/
+
+# jupyter notebooks
+jupyter_notebook
