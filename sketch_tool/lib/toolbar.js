@@ -10,6 +10,7 @@ function renderIcon(id, src, alt) {
   return z('img.icon', {
     id,
     src: src || NULL_SRC,
+    draggable: 'false',
     alt,
   });
 }
